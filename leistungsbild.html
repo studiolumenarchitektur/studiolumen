@@ -24,6 +24,38 @@
             font-weight: bold;
             margin-top: 20px;
         }
+        #bedarf-button {
+            color: #800020;
+            font-weight: bold;
+            font-size: 18px;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            background: none;
+            margin-top: 10px;
+            display: block;
+        }
+        #selected-option {
+            color: #800020;
+            font-size: 16px;
+            margin-top: 10px;
+            display: none;
+        }
+        .accordion-content {
+            display: none;
+            flex-direction: column;
+            margin-top: 10px;
+        }
+        .accordion-content div {
+            color: #000;
+            font-weight: normal;
+            cursor: pointer;
+            padding: 5px 0;
+        }
+        .accordion-content div.selected {
+            color: #800020;
+            font-weight: bold;
+        }
         .leistung {
             cursor: pointer;
             text-align: left;
@@ -40,30 +72,70 @@
             margin: 0 auto;
             text-align: left;
         }
-        .subleistung { 
-            margin-left: 20px;
-            cursor: pointer;
-        }
-        .subleistung.selected {
-            font-weight: bold;
-            color: #800020;
-        }
-        #anfrage-button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #800020;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            display: none;
-        }
+        .subleistung { margin-left: 20px; }
     </style>
 </head>
 <body>
     <header>Leistungsbild</header>
     
+    <button id="bedarf-button" onclick="toggleAccordion()">wie kann ich dir helfen?</button>
+    
     <div id="selected-option"></div>
+    
+    <div id="accordion" class="accordion-content">
+        <div onclick="toggleLeistungsphasen(this, ['l0'])">Ich bin noch unsicher und brauche Orientierung.</div>
+        <div onclick="toggleLeistungsphasen(this, ['l1', 'l2'])">Ich habe eine Wohnung oder ein Gebäude, aber keine Grundrisse.</div>
+        <div onclick="toggleLeistungsphasen(this, ['l1', 'l2', 'l3'])">Ich möchte umbauen oder sanieren, weiß aber nicht, was möglich ist.</div>
+        <div onclick="toggleLeistungsphasen(this, ['l1', 'l2', 'l3', 'l4', 'l5'])">Ich will ein Haus oder ein Gebäude neu bauen und habe erste Ideen.</div>
+        <div onclick="toggleLeistungsphasen(this, ['l3', 'l4'])">Ich brauche eine detaillierte Planung und Genehmigungsunterlagen.</div>
+        <div onclick="toggleLeistungsphasen(this, ['l5'])">Ich brauche Bauzeichnungen und eine detaillierte Planung für die Umsetzung.</div>
+        <div onclick="toggleLeistungsphasen(this, ['l6', 'l7'])">Ich suche Unterstützung bei der Vergabe von Bauleistungen.</div>
+    </div>
+    
+    <script>
+        function toggleAccordion() {
+            var acc = document.getElementById("accordion");
+            acc.style.display = (acc.style.display === "flex") ? "none" : "flex";
+        }
+
+        function toggleLeistungsphasen(element, ids) {
+            let selectedOption = document.getElementById("selected-option");
+            document.querySelectorAll('.accordion-content div').forEach(el => {
+                el.classList.remove('selected');
+            });
+            
+            if (element.classList.contains('selected')) {
+                element.classList.remove('selected');
+                resetLeistungsphasen();
+                selectedOption.style.display = 'none';
+                return;
+            }
+            
+            element.classList.add('selected');
+            resetLeistungsphasen();
+            
+            ids.forEach(id => {
+                let leistung = document.getElementById(`leistung-${id}`);
+                let content = document.getElementById(id);
+                if (leistung && content) {
+                    leistung.classList.add('active');
+                    content.style.display = 'block';
+                }
+            });
+            
+            selectedOption.textContent = element.textContent;
+            selectedOption.style.display = 'block';
+        }
+
+        function resetLeistungsphasen() {
+            document.querySelectorAll('.leistung').forEach(el => {
+                el.classList.remove('active');
+            });
+            document.querySelectorAll('.leistung-content').forEach(el => {
+                el.style.display = 'none';
+            });
+        }
+    </script>
 
     <!-- Leistungsphasen -->
     <div class="leistung" id="leistung-l0">LPH 0 - Zielfindungsphase</div>
@@ -119,55 +191,11 @@
         <div class="subleistung" onclick="toggleSelection(this, 'l7')">Unterstützung bei der Vergabeentscheidung</div>
     </div>
 
-<button id="anfrage-button">Anfrage starten</button>
-    
-    <script>
-        function toggle(id) {
-            var content = document.getElementById(id);
-            content.style.display = content.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function toggleSelection(element, leistungId) {
-            element.classList.toggle('selected');
-            updateAnfrageButton();
-            saveSelection();
-        }
-
-        function updateAnfrageButton() {
-            let selectedItems = document.querySelectorAll('.subleistung.selected');
-            document.getElementById("anfrage-button").style.display = selectedItems.length > 0 ? "block" : "none";
-        }
-
-        function saveSelection() {
-            let selected = [];
-            document.querySelectorAll('.subleistung.selected').forEach(el => {
-                selected.push({ id: el.parentElement.id, text: el.textContent });
-            });
-            localStorage.setItem("selectedSubleistungen", JSON.stringify(selected));
-        }
-
-        function loadSelection() {
-            let stored = localStorage.getItem("selectedSubleistungen");
-            if (stored) {
-                let selected = JSON.parse(stored);
-                selected.forEach(item => {
-                    let container = document.getElementById(item.id);
-                    if (container) {
-                        let elements = container.getElementsByClassName("subleistung");
-                        for (let el of elements) {
-                            if (el.textContent === item.text) {
-                                el.classList.add("selected");
-                                container.style.display = 'block';
-                            }
-                        }
-                    }
-                });
-                updateAnfrageButton();
-            }
-        }
-
-        document.addEventListener("DOMContentLoaded", loadSelection);
-    </script>
+    <div class="button-container">
+        <button id="anfrage-button" disabled onclick="window.location.href='anfrage.html'">
+            anfrage starten
+        </button>
+    </div>
 
     <footer class="footer">
         <div onclick="window.location.href='impressum.html'">Impressum</div>
