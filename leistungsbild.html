@@ -138,6 +138,7 @@
                 let leistung = document.getElementById(`leistung-${id}`);
                 if (leistung) {
                     leistung.classList.add('active');
+                    leistung.style.display = 'block';
                 }
             });
             selectedOption.textContent = selectedText;
@@ -152,11 +153,16 @@
             let storedIds = localStorage.getItem("selectedIds");
             if (storedOption && storedIds) {
                 let ids = JSON.parse(storedIds);
-                let selectedElement = document.querySelector(`[data-option='${storedOption}']`);
-                if (selectedElement) {
-                    selectedElement.classList.add('selected');
-                    selectLeistungsphasen(selectedElement, ids);
-                }
+                let selectedOption = document.getElementById("selected-option");
+                selectedOption.textContent = storedOption;
+                selectedOption.style.display = 'block';
+                ids.forEach(id => {
+                    let leistung = document.getElementById(`leistung-${id}`);
+                    if (leistung) {
+                        leistung.classList.add('active');
+                        leistung.style.display = 'block';
+                    }
+                });
             }
         });
     </script>
