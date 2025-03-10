@@ -87,6 +87,16 @@
             font-weight: bold;
             color: #800020;
         }
+        #anfrage-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #800020;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -106,64 +116,18 @@
         <div onclick="selectLeistungsphasen(this, ['l6', 'l7'])">Ich suche Unterstützung bei der Vergabe von Bauleistungen.</div>
     </div>
     
+    <button id="anfrage-button" onclick="window.location.href='anfrage.html'">Anfrage senden</button>
+    
     <script>
-        function toggleAccordion() {
-            var acc = document.getElementById("accordion");
-            acc.style.display = (acc.style.display === "flex") ? "none" : "flex";
+        function toggleSelection(element) {
+            element.classList.toggle('selected');
+            updateAnfrageButton();
         }
 
-        function selectLeistungsphasen(element, ids) {
-            let selectedOption = document.getElementById("selected-option");
-            document.querySelectorAll('.accordion-content div').forEach(el => {
-                el.classList.remove('selected');
-            });
-            
-            element.classList.add('selected');
-            resetLeistungsphasen();
-            
-            ids.forEach(id => {
-                let leistung = document.getElementById(`leistung-${id}`);
-                let content = document.getElementById(id);
-                if (leistung && content) {
-                    leistung.classList.add('active');
-                    content.style.display = 'block';
-                }
-            });
-            
-            selectedOption.textContent = element.textContent;
-            selectedOption.style.display = 'block';
-            localStorage.setItem("selectedOption", element.textContent);
-            localStorage.setItem("selectedIds", JSON.stringify(ids));
-            
-            // Schließt das Akkordeon nach Auswahl
-            document.getElementById("accordion").style.display = "none";
+        function updateAnfrageButton() {
+            let selectedItems = document.querySelectorAll('.subleistung.selected');
+            document.getElementById("anfrage-button").style.display = selectedItems.length > 0 ? "block" : "none";
         }
-
-        function resetLeistungsphasen() {
-            document.querySelectorAll('.leistung').forEach(el => {
-                el.classList.remove('active');
-            });
-            document.querySelectorAll('.leistung-content').forEach(el => {
-                el.style.display = 'none';
-            });
-        }
-
-        document.addEventListener("DOMContentLoaded", function() {
-            let storedOption = localStorage.getItem("selectedOption");
-            let storedIds = localStorage.getItem("selectedIds");
-            if (storedOption && storedIds) {
-                let ids = JSON.parse(storedIds);
-                document.querySelectorAll('.accordion-content div').forEach(el => {
-                    if (el.textContent === storedOption) {
-                        el.classList.add('selected');
-                        selectLeistungsphasen(el, ids);
-                    }
-                });
-                let selectedOption = document.getElementById("selected-option");
-                selectedOption.textContent = storedOption;
-                selectedOption.style.display = 'block';
-            }
-        });
     </script>
 
     <!-- Leistungsphasen -->
