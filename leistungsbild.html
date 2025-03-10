@@ -69,6 +69,7 @@
             width: 300px;
             margin: 10px auto;
             color: #777;
+            display: none;
         }
         .leistung.active {
             color: #000;
@@ -131,19 +132,14 @@
             document.querySelectorAll('.accordion-content div').forEach(el => {
                 el.classList.remove('selected');
             });
-            
             element.classList.add('selected');
             resetLeistungsphasen();
-            
             ids.forEach(id => {
                 let leistung = document.getElementById(`leistung-${id}`);
-                let content = document.getElementById(id);
-                if (leistung && content) {
+                if (leistung) {
                     leistung.classList.add('active');
-                    content.style.display = 'block';
                 }
             });
-            
             selectedOption.textContent = selectedText;
             selectedOption.style.display = 'block';
             localStorage.setItem("selectedOption", selectedText);
@@ -156,7 +152,15 @@
             let storedIds = localStorage.getItem("selectedIds");
             if (storedOption && storedIds) {
                 let ids = JSON.parse(storedIds);
-                selectLeistungsphasen(document.querySelector(`[data-option='${storedOption}']`), ids);
+                let selectedOption = document.getElementById("selected-option");
+                selectedOption.textContent = storedOption;
+                selectedOption.style.display = 'block';
+                ids.forEach(id => {
+                    let leistung = document.getElementById(`leistung-${id}`);
+                    if (leistung) {
+                        leistung.classList.add('active');
+                    }
+                });
             }
         });
     </script>
