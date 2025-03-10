@@ -40,17 +40,24 @@
             font-size: 16px;
             margin-top: 10px;
             display: none;
+            text-align: center;
+            max-width: 300px;
+            word-wrap: break-word;
         }
         .accordion-content {
             display: none;
             flex-direction: column;
             margin-top: 10px;
+            align-items: center;
         }
         .accordion-content div {
             color: #000;
             font-weight: normal;
             cursor: pointer;
             padding: 5px 0;
+            max-width: 300px;
+            text-align: center;
+            word-wrap: break-word;
         }
         .accordion-content div.selected {
             color: #800020;
@@ -72,7 +79,14 @@
             margin: 0 auto;
             text-align: left;
         }
-        .subleistung { margin-left: 20px; }
+        .subleistung { 
+            margin-left: 20px;
+            cursor: pointer;
+        }
+        .subleistung.selected {
+            font-weight: bold;
+            color: #800020;
+        }
     </style>
 </head>
 <body>
@@ -83,13 +97,13 @@
     <div id="selected-option"></div>
     
     <div id="accordion" class="accordion-content">
-        <div onclick="toggleLeistungsphasen(this, ['l0'])">Ich bin noch unsicher und brauche Orientierung.</div>
-        <div onclick="toggleLeistungsphasen(this, ['l1', 'l2'])">Ich habe eine Wohnung oder ein Gebäude, aber keine Grundrisse.</div>
-        <div onclick="toggleLeistungsphasen(this, ['l1', 'l2', 'l3'])">Ich möchte umbauen oder sanieren, weiß aber nicht, was möglich ist.</div>
-        <div onclick="toggleLeistungsphasen(this, ['l1', 'l2', 'l3', 'l4', 'l5'])">Ich will ein Haus oder ein Gebäude neu bauen und habe erste Ideen.</div>
-        <div onclick="toggleLeistungsphasen(this, ['l3', 'l4'])">Ich brauche eine detaillierte Planung und Genehmigungsunterlagen.</div>
-        <div onclick="toggleLeistungsphasen(this, ['l5'])">Ich brauche Bauzeichnungen und eine detaillierte Planung für die Umsetzung.</div>
-        <div onclick="toggleLeistungsphasen(this, ['l6', 'l7'])">Ich suche Unterstützung bei der Vergabe von Bauleistungen.</div>
+        <div onclick="selectLeistungsphasen(this, ['l0'])">Ich bin noch unsicher und brauche Orientierung.</div>
+        <div onclick="selectLeistungsphasen(this, ['l1', 'l2'])">Ich habe eine Wohnung oder ein Gebäude, aber keine Grundrisse.</div>
+        <div onclick="selectLeistungsphasen(this, ['l1', 'l2', 'l3'])">Ich möchte umbauen oder sanieren, weiß aber nicht, was möglich ist.</div>
+        <div onclick="selectLeistungsphasen(this, ['l1', 'l2', 'l3', 'l4', 'l5'])">Ich will ein Haus oder ein Gebäude neu bauen und habe erste Ideen.</div>
+        <div onclick="selectLeistungsphasen(this, ['l3', 'l4'])">Ich brauche eine detaillierte Planung und Genehmigungsunterlagen.</div>
+        <div onclick="selectLeistungsphasen(this, ['l5'])">Ich brauche Bauzeichnungen und eine detaillierte Planung für die Umsetzung.</div>
+        <div onclick="selectLeistungsphasen(this, ['l6', 'l7'])">Ich suche Unterstützung bei der Vergabe von Bauleistungen.</div>
     </div>
     
     <script>
@@ -98,18 +112,11 @@
             acc.style.display = (acc.style.display === "flex") ? "none" : "flex";
         }
 
-        function toggleLeistungsphasen(element, ids) {
+        function selectLeistungsphasen(element, ids) {
             let selectedOption = document.getElementById("selected-option");
             document.querySelectorAll('.accordion-content div').forEach(el => {
                 el.classList.remove('selected');
             });
-            
-            if (element.classList.contains('selected')) {
-                element.classList.remove('selected');
-                resetLeistungsphasen();
-                selectedOption.style.display = 'none';
-                return;
-            }
             
             element.classList.add('selected');
             resetLeistungsphasen();
@@ -125,6 +132,11 @@
             
             selectedOption.textContent = element.textContent;
             selectedOption.style.display = 'block';
+            localStorage.setItem("selectedOption", element.textContent);
+            localStorage.setItem("selectedIds", JSON.stringify(ids));
+            
+            // Schließt das Akkordeon nach Auswahl
+            document.getElementById("accordion").style.display = "none";
         }
 
         function resetLeistungsphasen() {
@@ -135,6 +147,23 @@
                 el.style.display = 'none';
             });
         }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            let storedOption = localStorage.getItem("selectedOption");
+            let storedIds = localStorage.getItem("selectedIds");
+            if (storedOption && storedIds) {
+                let ids = JSON.parse(storedIds);
+                document.querySelectorAll('.accordion-content div').forEach(el => {
+                    if (el.textContent === storedOption) {
+                        el.classList.add('selected');
+                        selectLeistungsphasen(el, ids);
+                    }
+                });
+                let selectedOption = document.getElementById("selected-option");
+                selectedOption.textContent = storedOption;
+                selectedOption.style.display = 'block';
+            }
+        });
     </script>
 
     <!-- Leistungsphasen -->
