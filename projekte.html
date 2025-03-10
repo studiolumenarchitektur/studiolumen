@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>projekte</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #fff;
+            color: #000;
+            margin: 0;
+            padding-bottom: 60px; 
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; text-transform: lowercase; font-size: 16px;
+        }
+        header { font-size: 2rem; font-weight: bold; margin-top: 20px; }
+        }
+        .project-container {
+            max-width: 300px;
+            width: 100%;
+            text-align: justify;
+            margin-bottom: 40px;
+        }
+        .project { 
+            cursor: pointer; 
+            margin: 10px 0; 
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .project-content { display: none; max-width: 300px; margin: 0 auto; }
+        img { max-width: 100%; height: auto; }
+        .footer {
+            position: fixed; bottom: 0; width: 100%; text-align: center; padding: 10px;
+            display: flex; justify-content: center; gap: 20px; color: #777;
+            background: #fff; 
+        }
+        .back-arrow {
+            position: fixed; top: 10px; left: 10px; cursor: pointer; font-size: 2rem; 
+            color: #800020; font-weight: 900; z-index: 9999;
+        }
+        .active {
+            font-weight: bold;
+            color: #800020;
+        }
+    </style>
+</head>
+<body>
+    <div class="back-arrow" onclick="window.location.href='index.html'">&larr;</div>
+
+    <header>projekte</header>
+
+    <div class="project" onclick="toggle(1, this)">bürozentrum überseehafen rostock</div>
+    <div class="project-content" id="p1"><img src="WhatsApp Image 2025-02-26 at 15.18.25.jpeg"><p>beschreibung projekt 1.</p></div>
+    
+    <div class="project" onclick="toggle(2, this)">behördenzentrum blücherstraße</div>
+    <div class="project-content" id="p2"><img src="WhatsApp Image 2025-02-26 at 15.18.25.jpeg"><p>beschreibung projekt 2.</p></div>
+    
+    <div class="project" onclick="toggle(3, this)">kita warnemünde</div>
+    <div class="project-content" id="p3"><img src="WhatsApp Image 2025-02-26 at 15.18.25.jpeg"><p>beschreibung projekt 3.</p></div>
+    
+    <div class="project" onclick="toggle(4, this)">wohnheim nienhagen</div>
+    <div class="project-content" id="p4"><img src="WhatsApp Image 2025-02-26 at 15.18.25.jpeg"><p>beschreibung projekt 4.</p></div>
+    
+    <div class="project" onclick="toggle(5, this)">bestandsanbau sanitz</div>
+    <div class="project-content" id="p5"><img src="WhatsApp Image 2025-02-26 at 15.18.25.jpeg"><p>beschreibung projekt 5.</p></div>
+    
+    <div class="project" onclick="toggle(6, this)">erweiterungsanbau ribnitz-damgarten</div>
+    <div class="project-content" id="p6"><img src="WhatsApp Image 2025-02-26 at 15.18.25.jpeg"><p>beschreibung projekt 6.</p></div>
+    
+    <div class="project" onclick="toggle(7, this)">temporärer sakralbau studienarbeit</div>
+    <div class="project-content" id="p7"><img src="WhatsApp Image 2025-02-26 at 15.18.25.jpeg"><p>beschreibung projekt 7.</p></div>
+    
+    <div class="project" onclick="toggle(8, this)">hochhaus am ICC studienarbeit</div>
+    <div class="project-content" id="p8"><img src="WhatsApp Image 2025-02-26 at 15.18.25.jpeg"><p>beschreibung projekt 8.</p></div>
+    
+    <div class="project" onclick="toggle(9, this)">masterthesis lübeck</div>
+    <div class="project-content" id="p9"><img src="WhatsApp Image 2025-02-26 at 15.18.25.jpeg"><p>beschreibung projekt 9.</p></div>
+    
+    <div class="project" onclick="toggle(10, this)">machbarkeitsstudie leipzig oratorium</div>
+    <div class="project-content" id="p10"><img src="WhatsApp Image 2025-02-26 at 15.18.25.jpeg"><p>beschreibung projekt 10.</p></div>
+
+    <footer class="footer">
+        <div onclick="window.location.href='impressum.html'">impressum</div>
+        <div>© 2025 studio lumen</div>
+    </footer>
+
+    <script>
+        function toggle(num, element) {
+            var el = document.getElementById('p'+num);
+
+            if (el.style.display === 'block') {
+                el.style.display = 'none';
+                element.classList.remove('active');
+            } else {
+                document.querySelectorAll('.project-content').forEach(content => content.style.display = 'none');
+                document.querySelectorAll('.project').forEach(proj => proj.classList.remove('active'));
+
+                el.style.display = 'block';
+                element.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>

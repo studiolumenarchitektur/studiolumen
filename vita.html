@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vita</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #fff;
+            color: #000;
+            margin: 0;
+            padding: 20px; /* Gleicher Abstand wie in Haltung */
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Titel bleibt zentriert */
+            min-height: 100vh;
+            text-transform: lowercase;
+            font-size: 16px;
+            line-height: 1.2; /* Reduzierter Zeilenabstand für direkte Untereinander-Positionierung */
+        }
+        header {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .vita-container {
+            max-width: 300px; /* Exakte Breite wie in Haltung */
+            width: 100%;
+            text-align: left; /* Linksbündig, wie du es willst */
+            margin-bottom: 40px;
+            white-space: pre-wrap;
+        }
+        .unterpunkt {
+            margin: 0; /* Kein zusätzlicher Abstand zwischen den Einträgen */
+            padding: 2px 0; /* Minimaler Abstand für bessere Lesbarkeit */
+            text-align: left;
+        }
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            color: #777;
+            background: #fff;
+        }
+    </style>
+</head>
+<body>
+<div onclick="window.location.href='index.html'" style="position:fixed; top:10px; left:10px; cursor:pointer; font-size:2rem; color:#800020; font-weight:900; z-index:9999;">
+    &larr;
+</div>
+
+    <header>vita</header>
+
+    <div class="vita-container">
+        <div class="unterpunkt">2008-2010 - tischlerlehre</div>
+        <div class="unterpunkt">2010 - abitur</div>
+        <div class="unterpunkt">2011-2012 - mitarbeit cengiz bektas mimarlik, istanbul</div>
+        <div class="unterpunkt">2012-2019 - studium der architektur in konstanz und leipzig</div>
+        <div class="unterpunkt">2019-2025 - mitarbeit in büros in lübeck und rostock</div>
+        <div class="unterpunkt">2021 - eintragung in die architektenkammer m-v</div>
+        <div class="unterpunkt">2025 - gründung studio lumen</div>
+    </div>
+
+    <footer class="footer">
+        <div onclick="window.location.href='impressum.html'">impressum</div>
+        <div>© 2025 studio lumen</div>
+    </footer>
+</body>
+</html>

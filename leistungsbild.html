@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leistungsbild</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #fff;
+            color: #000;
+            margin: 0;
+            padding-bottom: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            text-transform: lowercase;
+            font-size: 16px;
+        }
+        header {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        #bedarf-button {
+            color: #800020;
+            font-weight: bold;
+            font-size: 18px;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            background: none;
+            margin-top: 10px;
+            display: block;
+        }
+        #selected-option {
+            color: #800020;
+            font-size: 16px;
+            margin-top: 10px;
+            display: none;
+            text-align: center;
+            max-width: 300px;
+            word-wrap: break-word;
+        }
+        .accordion-content {
+            display: none;
+            flex-direction: column;
+            margin-top: 10px;
+            align-items: center;
+        }
+        .accordion-content div {
+            color: #000;
+            font-weight: normal;
+            cursor: pointer;
+            padding: 5px 0;
+            max-width: 300px;
+            text-align: center;
+            word-wrap: break-word;
+        }
+        .accordion-content div.selected {
+            color: #800020;
+            font-weight: bold;
+        }
+        .leistung {
+            cursor: pointer;
+            text-align: left;
+            width: 300px;
+            margin: 10px auto;
+            color: #777;
+        }
+        .leistung.active {
+            color: #000;
+        }
+        .leistung-content {
+            display: none;
+            max-width: 300px;
+            margin: 0 auto;
+            text-align: left;
+        }
+        .subleistung { margin-left: 20px; }
+    </style>
+</head>
+<body>
+    <header>Leistungsbild</header>
+    
+    <button id="bedarf-button" onclick="toggleAccordion()">wie kann ich dir helfen?</button>
+    
+    <div id="selected-option"></div>
+    
+    <div id="accordion" class="accordion-content">
+        <div onclick="toggleLeistungsphasen(this, ['l0'])">Ich bin noch unsicher und brauche Orientierung.</div>
+        <div onclick="toggleLeistungsphasen(this, ['l1', 'l2'])">Ich habe eine Wohnung oder ein Gebäude, aber keine Grundrisse.</div>
+        <div onclick="toggleLeistungsphasen(this, ['l1', 'l2', 'l3'])">Ich möchte umbauen oder sanieren, weiß aber nicht, was möglich ist.</div>
+        <div onclick="toggleLeistungsphasen(this, ['l1', 'l2', 'l3', 'l4', 'l5'])">Ich will ein Haus oder ein Gebäude neu bauen und habe erste Ideen.</div>
+        <div onclick="toggleLeistungsphasen(this, ['l3', 'l4'])">Ich brauche eine detaillierte Planung und Genehmigungsunterlagen.</div>
+        <div onclick="toggleLeistungsphasen(this, ['l5'])">Ich brauche Bauzeichnungen und eine detaillierte Planung für die Umsetzung.</div>
+        <div onclick="toggleLeistungsphasen(this, ['l6', 'l7'])">Ich suche Unterstützung bei der Vergabe von Bauleistungen.</div>
+    </div>
+    
+    <script>
+        function toggleAccordion() {
+            var acc = document.getElementById("accordion");
+            acc.style.display = (acc.style.display === "flex") ? "none" : "flex";
+        }
+
+        function toggleLeistungsphasen(element, ids) {
+            let selectedOption = document.getElementById("selected-option");
+            document.querySelectorAll('.accordion-content div').forEach(el => {
+                el.classList.remove('selected');
+            });
+            
+            if (element.classList.contains('selected')) {
+                element.classList.remove('selected');
+                resetLeistungsphasen();
+                selectedOption.style.display = 'none';
+                localStorage.removeItem("selectedOption");
+                return;
+            }
+            
+            element.classList.add('selected');
+            resetLeistungsphasen();
+            
+            ids.forEach(id => {
+                let leistung = document.getElementById(`leistung-${id}`);
+                let content = document.getElementById(id);
+                if (leistung && content) {
+                    leistung.classList.add('active');
+                    content.style.display = 'block';
+                }
+            });
+            
+            selectedOption.textContent = element.textContent;
+            selectedOption.style.display = 'block';
+            localStorage.setItem("selectedOption", element.textContent);
+            
+            // Schließt das Akkordeon nach Auswahl
+            document.getElementById("accordion").style.display = "none";
+        }
+
+        function resetLeistungsphasen() {
+            document.querySelectorAll('.leistung').forEach(el => {
+                el.classList.remove('active');
+            });
+            document.querySelectorAll('.leistung-content').forEach(el => {
+                el.style.display = 'none';
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            let storedOption = localStorage.getItem("selectedOption");
+            if (storedOption) {
+                document.querySelectorAll('.accordion-content div').forEach(el => {
+                    if (el.textContent === storedOption) {
+                        el.classList.add('selected');
+                        toggleLeistungsphasen(el, JSON.parse(el.getAttribute('data-ids')));
+                    }
+                });
+                let selectedOption = document.getElementById("selected-option");
+                selectedOption.textContent = storedOption;
+                selectedOption.style.display = 'block';
+            }
+        });
+    </script>
+
+    <!-- Leistungsphasen -->
+    <div class="leistung" id="leistung-l0">LPH 0 - Zielfindungsphase</div>
+    <div class="leistung-content" id="l0">
+        <div class="subleistung">Ermittlung der Planungsziele</div>
+        <div class="subleistung">Erstellung einer Planungsgrundlage</div>
+    </div>
+    
+    <div class="leistung" id="leistung-l1">LPH 1 - Grundlagenermittlung</div>
+    <div class="leistung-content" id="l1">
+        <div class="subleistung">Sichtung vorhandener Planunterlagen</div>
+        <div class="subleistung">Erfassung räumlicher und baulicher Gegebenheiten</div>
+        <div class="subleistung">Beratung zu Planungszielen</div>
+    </div>
+    
+    <div class="leistung" id="leistung-l2">LPH 2 - Vorplanung</div>
+    <div class="leistung-content" id="l2">
+        <div class="subleistung">Ermittlung von Flächen nach DIN277 und WoflV</div>
+        <div class="subleistung">Bewertung der Bestandssituation</div>
+        <div class="subleistung">Erstellung erster Zeichnungen</div>
+    </div>
+    
+    <div class="leistung" id="leistung-l3">LPH 3 - Entwurfsplanung</div>
+    <div class="leistung-content" id="l3">
+        <div class="subleistung">Erstellung von Schnitten und Ansichten</div>
+        <div class="subleistung">3D-Visualisierung zur Konzeptentwicklung</div>
+        <div class="subleistung">Überprüfung der Flächennutzung</div>
+    </div>
+    
+    <div class="leistung" onclick="toggle('l4')" id="leistung-l4">LPH 4 - Genehmigungsplanung</div>
+    <div class="leistung-content" id="l4">
+        <div class="subleistung" onclick="toggleSelection(this, 'l4')">Erstellung genehmigungsfähiger Pläne</div>
+        <div class="subleistung" onclick="toggleSelection(this, 'l4')">Abstimmung mit Behörden</div>
+        <div class="subleistung" onclick="toggleSelection(this, 'l4')">Flächen- und Maßkonzepte für den Bauantrag</div>
+    </div>
+    
+    <div class="leistung" onclick="toggle('l5')" id="leistung-l5">LPH 5 - Ausführungsplanung</div>
+    <div class="leistung-content" id="l5">
+        <div class="subleistung" onclick="toggleSelection(this, 'l5')">Erstellung detaillierter Bauzeichnungen</div>
+        <div class="subleistung" onclick="toggleSelection(this, 'l5')">Integration technischer und gestalterischer Anforderungen</div>
+        <div class="subleistung" onclick="toggleSelection(this, 'l5')">Anpassung der Pläne an bauliche Gegebenheiten</div>
+    </div>
+
+    <div class="leistung" onclick="toggle('l6')" id="leistung-l6">LPH 6 - Vorbereitung der Vergabe</div>
+    <div class="leistung-content" id="l6">
+        <div class="subleistung" onclick="toggleSelection(this, 'l6')">Erstellung von Leistungsverzeichnissen</div>
+    </div>
+        
+    <div class="leistung" onclick="toggle('l7')" id="leistung-l7">LPH 7 - Mitwirkung bei der Vergabe</div>
+    <div class="leistung-content" id="l7">
+        <div class="subleistung" onclick="toggleSelection(this, 'l7')">Prüfung und Auswertung von Angeboten</div>
+        <div class="subleistung" onclick="toggleSelection(this, 'l7')">Vergleich von Leistungs- und Kostenstrukturen</div>
+        <div class="subleistung" onclick="toggleSelection(this, 'l7')">Unterstützung bei der Vergabeentscheidung</div>
+    </div>
+
+    <div class="button-container">
+        <button id="anfrage-button" disabled onclick="window.location.href='anfrage.html'">
+            anfrage starten
+        </button>
+    </div>
+
+    <footer class="footer">
+        <div onclick="window.location.href='impressum.html'">Impressum</div>
+        <div>© 2025 Studio Lumen</div>
+    </footer>

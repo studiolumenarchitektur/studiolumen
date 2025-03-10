@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>haltung</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #fff;
+            color: #000;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            text-transform: lowercase;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        header {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .text-block {
+            max-width: 300px;
+            width: 100%;
+            text-align: justify; /* Blocksatz */
+            margin-bottom: 40px;
+            white-space: pre-wrap;
+        }
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            color: #777;
+            background: #fff;
+        }
+    </style>
+</head>
+<body>
+<div onclick="window.location.href='index.html'" style="position:fixed; top:10px; left:10px; cursor:pointer; font-size:2rem; color:#800020; font-weight:900; z-index:9999;">
+    &larr;
+</div>
+
+    <header>haltung</header>
+    <div class="text-block">
+Manifest für eine Architektur mit Haltung
+
+Architektur ist eine Entscheidung darüber, wie wir leben, arbeiten und zusammenkommen. Sie beeinflusst unser tägliches Handeln, formt Städte und hinterlässt Spuren, die weit über den Moment hinauswirken.
+
+Ich entwerfe Gebäude, die nicht nur gebaut werden – sondern gebraucht, gelebt, weitergedacht. Architektur, die sich mit ihrem Ort auseinandersetzt, mit ihren Nutzer*innen arbeitet und über ihre Zeit hinaus Bestand hat.
+
+Gute Architektur ist kein Stil, kein Budget und kein Selbstzweck – sie ist eine Haltung.
+
+Architektur bedeutet Verantwortung
+
+Jedes Gebäude verändert seine Umgebung. Es kann öffnen oder abschotten, Gemeinschaft fördern oder verhindern, Stadt verdichten oder zerteilen.
+
+Ein Haus ist nie nur ein privater Raum – es ist immer auch Teil einer größeren Struktur. Deshalb entwerfe ich Architektur, die mehr leistet als nur das Nötige.
+
+Das bedeutet:
+• Räume, die durchdacht sind, statt nur gefällig.
+• Strukturen, die flexibel bleiben, statt sich in einer Funktion zu erschöpfen.
+• Materialien, die Substanz haben, statt bloß Effekte zu erzeugen.
+
+Gute Architektur ist nicht die, die am meisten zeigt, sondern die, die am meisten kann.
+
+Materialien sind eine Entscheidung über Zeit
+
+Jedes Material erzählt eine Geschichte darüber, wie ein Gebäude altert, wie es genutzt wird und wie es sich in seinen Kontext einfügt. Ich setze auf Materialien, die nicht nur in ihrer Entstehung, sondern auch in ihrer Veränderung funktionieren:
+• Holz, das nicht beschichtet werden muss, um gut auszusehen.
+• Metalle, die mit Patina an Tiefe gewinnen, statt an Qualität zu verlieren.
+• Beton, der dort eingesetzt wird, wo er gebraucht wird, nicht als Geste.
+• Klinker, weil er Wetter und Zeit nicht nur standhält, sondern daran wächst.
+
+Architektur sollte nicht gegen die Zeit arbeiten, sondern mit ihr.
+
+Ein Gebäude ist nicht effizient, weil es viel kompensiert – sondern weil es wenig verbraucht
+
+Nachhaltigkeit ist keine Entscheidung über Technik, sondern über Architektur. Ein Gebäude, das von sich aus gut funktioniert, braucht keine nachträglichen Korrekturen.
+
+Das bedeutet:
+• Speicherfähige Wände, die Wärme aufnehmen, statt künstlich reguliert zu werden.
+• Raumproportionen, die Tageslicht nutzen, statt es zu kompensieren.
+• Strukturen, die sich wandeln können, statt ihre Funktion zu verlieren.
+
+Ein gut geplantes Gebäude spart keine Energie – es muss sie gar nicht erst verschwenden.
+
+Architektur ist nicht für wenige – sie ist für alle, die sie nutzen
+
+Jeder Mensch verdient Räume, die ihn nicht einengen, sondern ihm Möglichkeiten geben.
+Jede Stadt verdient Gebäude, die ihre Umgebung nicht entwerten, sondern sie prägen.
+Jedes Bauprojekt verdient eine Lösung, die nicht einfach nur gebaut wird – sondern sich bewährt.
+
+Ich entwerfe Architektur, die Zugang schafft, statt Grenzen zu ziehen.
+• Wohnraum, der sich an Menschen anpasst, nicht umgekehrt.
+• Öffentliche Räume, die Begegnung ermöglichen, statt sie zu verhindern.
+• Bauten, die nicht exklusiv sind, sondern nutzbar, wandelbar, offen.
+
+Architektur ist kein Privileg. Sie ist eine Verantwortung gegenüber der Gesellschaft, in der sie entsteht.
+
+Ich arbeite mit Menschen, die bereit sind, zu fragen, was wirklich zählt
+
+Gute Architektur entsteht nicht aus Routine. Sie entsteht aus der Bereitschaft, Fragen zu stellen, Widerspruch zuzulassen und jede Entscheidung bewusst zu treffen.
+
+Ich suche keine schnellen Lösungen. Ich suche keine Kompromisse. Ich suche das Richtige.
+
+Lassen Sie uns gemeinsam daran arbeiten.
+    </div>
+    <footer class="footer">
+        <div onclick="window.location.href='impressum.html'">impressum</div>
+        <div>© 2025 studio lumen</div>
+    </footer>
+</body>
+</html>
