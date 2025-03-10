@@ -107,13 +107,13 @@
     <div id="selected-option"></div>
     
     <div id="accordion" class="accordion-content">
-        <div onclick="selectLeistungsphasen(this, ['l0'])">Ich bin noch unsicher und brauche Orientierung.</div>
-        <div onclick="selectLeistungsphasen(this, ['l1', 'l2'])">Ich habe eine Wohnung oder ein Gebäude, aber keine Grundrisse.</div>
-        <div onclick="selectLeistungsphasen(this, ['l1', 'l2', 'l3'])">Ich möchte umbauen oder sanieren, weiß aber nicht, was möglich ist.</div>
-        <div onclick="selectLeistungsphasen(this, ['l1', 'l2', 'l3', 'l4', 'l5'])">Ich will ein Haus oder ein Gebäude neu bauen und habe erste Ideen.</div>
-        <div onclick="selectLeistungsphasen(this, ['l3', 'l4'])">Ich brauche eine detaillierte Planung und Genehmigungsunterlagen.</div>
-        <div onclick="selectLeistungsphasen(this, ['l5'])">Ich brauche Bauzeichnungen und eine detaillierte Planung für die Umsetzung.</div>
-        <div onclick="selectLeistungsphasen(this, ['l6', 'l7'])">Ich suche Unterstützung bei der Vergabe von Bauleistungen.</div>
+        <div onclick="selectLeistungsphasen(this, ['l0'])" data-option="Ich bin noch unsicher und brauche Orientierung.">Ich bin noch unsicher und brauche Orientierung.</div>
+        <div onclick="selectLeistungsphasen(this, ['l1', 'l2'])" data-option="Ich habe eine Wohnung oder ein Gebäude, aber keine Grundrisse.">Ich habe eine Wohnung oder ein Gebäude, aber keine Grundrisse.</div>
+        <div onclick="selectLeistungsphasen(this, ['l1', 'l2', 'l3'])" data-option="Ich möchte umbauen oder sanieren, weiß aber nicht, was möglich ist.">Ich möchte umbauen oder sanieren, weiß aber nicht, was möglich ist.</div>
+        <div onclick="selectLeistungsphasen(this, ['l1', 'l2', 'l3', 'l4', 'l5'])" data-option="Ich will ein Haus oder ein Gebäude neu bauen und habe erste Ideen.">Ich will ein Haus oder ein Gebäude neu bauen und habe erste Ideen.</div>
+        <div onclick="selectLeistungsphasen(this, ['l3', 'l4'])" data-option="Ich brauche eine detaillierte Planung und Genehmigungsunterlagen.">Ich brauche eine detaillierte Planung und Genehmigungsunterlagen.</div>
+        <div onclick="selectLeistungsphasen(this, ['l5'])" data-option="Ich brauche Bauzeichnungen und eine detaillierte Planung für die Umsetzung.">Ich brauche Bauzeichnungen und eine detaillierte Planung für die Umsetzung.</div>
+        <div onclick="selectLeistungsphasen(this, ['l6', 'l7'])" data-option="Ich suche Unterstützung bei der Vergabe von Bauleistungen.">Ich suche Unterstützung bei der Vergabe von Bauleistungen.</div>
     </div>
     
     <button id="anfrage-button" onclick="window.location.href='anfrage.html'">Anfrage senden</button>
@@ -126,6 +126,7 @@
 
         function selectLeistungsphasen(element, ids) {
             let selectedOption = document.getElementById("selected-option");
+            let selectedText = element.getAttribute("data-option");
             document.querySelectorAll('.accordion-content div').forEach(el => {
                 el.classList.remove('selected');
             });
@@ -142,9 +143,9 @@
                 }
             });
             
-            selectedOption.textContent = element.textContent;
+            selectedOption.textContent = selectedText;
             selectedOption.style.display = 'block';
-            localStorage.setItem("selectedOption", element.textContent);
+            localStorage.setItem("selectedOption", selectedText);
             localStorage.setItem("selectedIds", JSON.stringify(ids));
             document.getElementById("accordion").style.display = "none";
         }
