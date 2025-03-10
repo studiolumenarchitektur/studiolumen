@@ -152,15 +152,11 @@
             let storedIds = localStorage.getItem("selectedIds");
             if (storedOption && storedIds) {
                 let ids = JSON.parse(storedIds);
-                let selectedOption = document.getElementById("selected-option");
-                selectedOption.textContent = storedOption;
-                selectedOption.style.display = 'block';
-                ids.forEach(id => {
-                    let leistung = document.getElementById(`leistung-${id}`);
-                    if (leistung) {
-                        leistung.classList.add('active');
-                    }
-                });
+                let selectedElement = document.querySelector(`[data-option='${storedOption}']`);
+                if (selectedElement) {
+                    selectedElement.classList.add('selected');
+                    selectLeistungsphasen(selectedElement, ids);
+                }
             }
         });
     </script>
