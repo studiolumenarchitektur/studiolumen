@@ -90,13 +90,13 @@
     <div id="selected-option"></div>
     
     <div id="accordion" class="accordion-content">
-        <div onclick="toggleLeistungsphasen(this, ['l0'])">Ich bin noch unsicher und brauche Orientierung.</div>
-        <div onclick="toggleLeistungsphasen(this, ['l1', 'l2'])">Ich habe eine Wohnung oder ein Gebäude, aber keine Grundrisse.</div>
-        <div onclick="toggleLeistungsphasen(this, ['l1', 'l2', 'l3'])">Ich möchte umbauen oder sanieren, weiß aber nicht, was möglich ist.</div>
-        <div onclick="toggleLeistungsphasen(this, ['l1', 'l2', 'l3', 'l4', 'l5'])">Ich will ein Haus oder ein Gebäude neu bauen und habe erste Ideen.</div>
-        <div onclick="toggleLeistungsphasen(this, ['l3', 'l4'])">Ich brauche eine detaillierte Planung und Genehmigungsunterlagen.</div>
-        <div onclick="toggleLeistungsphasen(this, ['l5'])">Ich brauche Bauzeichnungen und eine detaillierte Planung für die Umsetzung.</div>
-        <div onclick="toggleLeistungsphasen(this, ['l6', 'l7'])">Ich suche Unterstützung bei der Vergabe von Bauleistungen.</div>
+        <div onclick="toggleLeistungsphasen(this, ['l0'])" data-ids='["l0"]'>Ich bin noch unsicher und brauche Orientierung.</div>
+        <div onclick="toggleLeistungsphasen(this, ['l1', 'l2'])" data-ids='["l1", "l2"]'>Ich habe eine Wohnung oder ein Gebäude, aber keine Grundrisse.</div>
+        <div onclick="toggleLeistungsphasen(this, ['l1', 'l2', 'l3'])" data-ids='["l1", "l2", "l3"]'>Ich möchte umbauen oder sanieren, weiß aber nicht, was möglich ist.</div>
+        <div onclick="toggleLeistungsphasen(this, ['l1', 'l2', 'l3', 'l4', 'l5'])" data-ids='["l1", "l2", "l3", "l4", "l5"]'>Ich will ein Haus oder ein Gebäude neu bauen und habe erste Ideen.</div>
+        <div onclick="toggleLeistungsphasen(this, ['l3', 'l4'])" data-ids='["l3", "l4"]'>Ich brauche eine detaillierte Planung und Genehmigungsunterlagen.</div>
+        <div onclick="toggleLeistungsphasen(this, ['l5'])" data-ids='["l5"]'>Ich brauche Bauzeichnungen und eine detaillierte Planung für die Umsetzung.</div>
+        <div onclick="toggleLeistungsphasen(this, ['l6', 'l7'])" data-ids='["l6", "l7"]'>Ich suche Unterstützung bei der Vergabe von Bauleistungen.</div>
     </div>
     
     <script>
@@ -133,7 +133,7 @@
             
             selectedOption.textContent = element.textContent;
             selectedOption.style.display = 'block';
-            localStorage.setItem("selectedOption", element.textContent);
+            localStorage.setItem("selectedOption", JSON.stringify({ text: element.textContent, ids: ids }));
             
             // Schließt das Akkordeon nach Auswahl
             document.getElementById("accordion").style.display = "none";
@@ -151,14 +151,15 @@
         document.addEventListener("DOMContentLoaded", function() {
             let storedOption = localStorage.getItem("selectedOption");
             if (storedOption) {
+                let data = JSON.parse(storedOption);
                 document.querySelectorAll('.accordion-content div').forEach(el => {
-                    if (el.textContent === storedOption) {
+                    if (el.textContent === data.text) {
                         el.classList.add('selected');
-                        toggleLeistungsphasen(el, JSON.parse(el.getAttribute('data-ids')));
+                        toggleLeistungsphasen(el, data.ids);
                     }
                 });
                 let selectedOption = document.getElementById("selected-option");
-                selectedOption.textContent = storedOption;
+                selectedOption.textContent = data.text;
                 selectedOption.style.display = 'block';
             }
         });
