@@ -109,13 +109,13 @@
     <div id="selected-option"></div>
     
     <div id="accordion" class="accordion-content">
-        <div onclick="selectLeistungsphasen(this, ['lph0'])" data-option="Ich bin noch unsicher und brauche Orientierung.">Ich bin noch unsicher und brauche Orientierung.</div>
-        <div onclick="selectLeistungsphasen(this, ['lph1', 'lph2'])" data-option="Ich habe eine Wohnung oder ein Gebäude, aber keine Grundrisse.">Ich habe eine Wohnung oder ein Gebäude, aber keine Grundrisse.</div>
-        <div onclick="selectLeistungsphasen(this, ['lph1', 'lph2', 'lph3'])" data-option="Ich möchte umbauen oder sanieren, weiß aber nicht, was möglich ist.">Ich möchte umbauen oder sanieren, weiß aber nicht, was möglich ist.</div>
-        <div onclick="selectLeistungsphasen(this, ['lph1', 'lph2', 'lph3', 'lph4'])" data-option="Ich will ein Haus oder ein Gebäude neu bauen und habe erste Ideen.">Ich will ein Haus oder ein Gebäude neu bauen und habe erste Ideen.</div>
-        <div onclick="selectLeistungsphasen(this, ['lph3', 'lph4'])" data-option="Ich brauche eine detaillierte Planung und Genehmigungsunterlagen.">Ich brauche eine detaillierte Planung und Genehmigungsunterlagen.</div>
-        <div onclick="selectLeistungsphasen(this, ['lph5'])" data-option="Ich brauche Bauzeichnungen und eine detaillierte Planung für die Umsetzung.">Ich brauche Bauzeichnungen und eine detaillierte Planung für die Umsetzung.</div>
-        <div onclick="selectLeistungsphasen(this, ['lph6', 'lph7'])" data-option="Ich suche Unterstützung bei der Vergabe von Bauleistungen.">Ich suche Unterstützung bei der Vergabe von Bauleistungen.</div>
+        <div onclick="selectLeistungsphasen(this, ['leistung-l0'])" data-option="Ich bin noch unsicher und brauche Orientierung.">Ich bin noch unsicher und brauche Orientierung.</div>
+        <div onclick="selectLeistungsphasen(this, ['leistung-l1', 'leistung-l2'])" data-option="Ich habe eine Wohnung oder ein Gebäude, aber keine Grundrisse.">Ich habe eine Wohnung oder ein Gebäude, aber keine Grundrisse.</div>
+        <div onclick="selectLeistungsphasen(this, ['leistung-l1', 'leistung-l2', 'leistung-l3'])" data-option="Ich möchte umbauen oder sanieren, weiß aber nicht, was möglich ist.">Ich möchte umbauen oder sanieren, weiß aber nicht, was möglich ist.</div>
+        <div onclick="selectLeistungsphasen(this, ['leistung-l1', 'leistung-l2', 'leistung-l3', 'leistung-l4'])" data-option="Ich will ein Haus oder ein Gebäude neu bauen und habe erste Ideen.">Ich will ein Haus oder ein Gebäude neu bauen und habe erste Ideen.</div>
+        <div onclick="selectLeistungsphasen(this, ['leistung-l3', 'leistung-l4'])" data-option="Ich brauche eine detaillierte Planung und Genehmigungsunterlagen.">Ich brauche eine detaillierte Planung und Genehmigungsunterlagen.</div>
+        <div onclick="selectLeistungsphasen(this, ['leistung-l5'])" data-option="Ich brauche Bauzeichnungen und eine detaillierte Planung für die Umsetzung.">Ich brauche Bauzeichnungen und eine detaillierte Planung für die Umsetzung.</div>
+        <div onclick="selectLeistungsphasen(this, ['leistung-l6', 'leistung-l7'])" data-option="Ich suche Unterstützung bei der Vergabe von Bauleistungen.">Ich suche Unterstützung bei der Vergabe von Bauleistungen.</div>
     </div>
     
     <button id="anfrage-button" onclick="window.location.href='anfrage.html'">Anfrage senden</button>
@@ -129,11 +129,14 @@
         function selectLeistungsphasen(element, ids) {
             let selectedOption = document.getElementById("selected-option");
             let selectedText = element.getAttribute("data-option");
+
             document.querySelectorAll('.accordion-content div').forEach(el => {
                 el.classList.remove('selected');
             });
+
             element.classList.add('selected');
             resetLeistungsphasen();
+
             ids.forEach(id => {
                 let leistung = document.getElementById(id);
                 if (leistung) {
@@ -141,12 +144,29 @@
                     leistung.style.display = 'block';
                 }
             });
+
             selectedOption.textContent = selectedText;
             selectedOption.style.display = 'block';
             localStorage.setItem("selectedOption", selectedText);
             localStorage.setItem("selectedIds", JSON.stringify(ids));
+
             document.getElementById("accordion").style.display = "none";
         }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            let storedOption = localStorage.getItem("selectedOption");
+            let storedIds = localStorage.getItem("selectedIds");
+
+            if (storedOption && storedIds) {
+                let ids = JSON.parse(storedIds);
+                let selectedElement = document.querySelector(`[data-option='${storedOption}']`);
+
+                if (selectedElement) {
+                    selectedElement.classList.add('selected');
+                    selectLeistungsphasen(selectedElement, ids);
+                }
+            }
+        });
     </script>
 
     <!-- Leistungsphasen -->
