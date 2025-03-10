@@ -39,10 +39,10 @@
             color: #800020;
             font-size: 16px;
             margin-top: 10px;
-            display: none;
             text-align: center;
             max-width: 300px;
             word-wrap: break-word;
+            display: none;
         }
         .accordion-content {
             display: none;
@@ -107,13 +107,13 @@
     <div id="selected-option"></div>
     
     <div id="accordion" class="accordion-content">
-        <div onclick="toggleSelection(this, ['l0'])">Ich bin noch unsicher und brauche Orientierung.</div>
-        <div onclick="toggleSelection(this, ['l1', 'l2'])">Ich habe eine Wohnung oder ein Gebäude, aber keine Grundrisse.</div>
-        <div onclick="toggleSelection(this, ['l1', 'l2', 'l3'])">Ich möchte umbauen oder sanieren, weiß aber nicht, was möglich ist.</div>
-        <div onclick="toggleSelection(this, ['l1', 'l2', 'l3', 'l4', 'l5'])">Ich will ein Haus oder ein Gebäude neu bauen und habe erste Ideen.</div>
-        <div onclick="toggleSelection(this, ['l3', 'l4'])">Ich brauche eine detaillierte Planung und Genehmigungsunterlagen.</div>
-        <div onclick="toggleSelection(this, ['l5'])">Ich brauche Bauzeichnungen und eine detaillierte Planung für die Umsetzung.</div>
-        <div onclick="toggleSelection(this, ['l6', 'l7'])">Ich suche Unterstützung bei der Vergabe von Bauleistungen.</div>
+        <div onclick="selectLeistungsphasen(this, ['l0'])">Ich bin noch unsicher und brauche Orientierung.</div>
+        <div onclick="selectLeistungsphasen(this, ['l1', 'l2'])">Ich habe eine Wohnung oder ein Gebäude, aber keine Grundrisse.</div>
+        <div onclick="selectLeistungsphasen(this, ['l1', 'l2', 'l3'])">Ich möchte umbauen oder sanieren, weiß aber nicht, was möglich ist.</div>
+        <div onclick="selectLeistungsphasen(this, ['l1', 'l2', 'l3', 'l4', 'l5'])">Ich will ein Haus oder ein Gebäude neu bauen und habe erste Ideen.</div>
+        <div onclick="selectLeistungsphasen(this, ['l3', 'l4'])">Ich brauche eine detaillierte Planung und Genehmigungsunterlagen.</div>
+        <div onclick="selectLeistungsphasen(this, ['l5'])">Ich brauche Bauzeichnungen und eine detaillierte Planung für die Umsetzung.</div>
+        <div onclick="selectLeistungsphasen(this, ['l6', 'l7'])">Ich suche Unterstützung bei der Vergabe von Bauleistungen.</div>
     </div>
     
     <button id="anfrage-button" onclick="window.location.href='anfrage.html'">Anfrage senden</button>
@@ -124,7 +124,8 @@
             acc.style.display = (acc.style.display === "flex") ? "none" : "flex";
         }
 
-        function toggleSelection(element, ids) {
+        function selectLeistungsphasen(element, ids) {
+            let selectedOption = document.getElementById("selected-option");
             document.querySelectorAll('.accordion-content div').forEach(el => {
                 el.classList.remove('selected');
             });
@@ -141,37 +142,20 @@
                 }
             });
             
-            let selectedOption = document.getElementById("selected-option");
             selectedOption.textContent = element.textContent;
             selectedOption.style.display = 'block';
             localStorage.setItem("selectedOption", element.textContent);
             localStorage.setItem("selectedIds", JSON.stringify(ids));
             document.getElementById("accordion").style.display = "none";
-            updateAnfrageButton();
-        }
-
-        function updateAnfrageButton() {
-            let selectedItems = document.querySelectorAll('.accordion-content div.selected');
-            let button = document.getElementById("anfrage-button");
-            button.style.display = selectedItems.length > 0 ? "block" : "none";
         }
 
         document.addEventListener("DOMContentLoaded", function() {
             let storedOption = localStorage.getItem("selectedOption");
-            let storedIds = localStorage.getItem("selectedIds");
-            if (storedOption && storedIds) {
-                let ids = JSON.parse(storedIds);
-                document.querySelectorAll('.accordion-content div').forEach(el => {
-                    if (el.textContent === storedOption) {
-                        el.classList.add('selected');
-                        toggleSelection(el, ids);
-                    }
-                });
+            if (storedOption) {
                 let selectedOption = document.getElementById("selected-option");
                 selectedOption.textContent = storedOption;
                 selectedOption.style.display = 'block';
             }
-            updateAnfrageButton();
         });
     </script>
 
