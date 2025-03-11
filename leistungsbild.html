@@ -48,7 +48,7 @@
             word-wrap: break-word;
             display: none;
             opacity: 0;
-            transition: opacity 1s ease;
+            transition: opacity 1.2s ease;
         }
         #accordion {
             display: none;
@@ -157,12 +157,6 @@
     </footer>
     
     <script>
-        document.getElementById("bedarf-button").addEventListener("click", function() {
-            var acc = document.getElementById("accordion");
-            acc.style.display = "flex";
-            acc.style.opacity = "1";
-        });
-
         function selectLeistungsphasen(element, ids) {
             let selectedOption = document.getElementById("selected-option");
             let selectedText = element.textContent;
@@ -170,10 +164,8 @@
             selectedOption.style.display = 'block';
             selectedOption.style.opacity = '1';
             localStorage.setItem("selectedOption", selectedText);
-            
             document.getElementById("accordion").style.opacity = "0";
             setTimeout(() => document.getElementById("accordion").style.display = "none", 1200);
-            
             document.querySelectorAll('.leistung').forEach(el => {
                 el.classList.remove('active');
                 el.style.opacity = '0';
@@ -185,6 +177,10 @@
                     leistung.classList.add('active');
                     leistung.style.opacity = '1';
                     leistung.style.transform = 'translateY(0)';
+                    let content = document.getElementById(id.replace('leistung-', 'l'));
+                    if (content) {
+                        content.classList.add('active');
+                    }
                 }
             });
         }
