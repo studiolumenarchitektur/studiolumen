@@ -237,12 +237,11 @@
             });
         });
 
-        window.onload = function () {
-            var savedAnswer = localStorage.getItem("selectedAnswer");
-            if (savedAnswer) {
-                document.getElementById("selected-answer").textContent = savedAnswer;
-            }
-        };
+        document.querySelectorAll(".leistung-content").forEach(item => {
+            item.addEventListener("click", function () {
+                this.classList.toggle("active");
+            });
+        });
     </script>
          
     <!-- Leistungsphasen -->
