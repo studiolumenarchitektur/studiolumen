@@ -50,7 +50,7 @@
             font-weight: bold;
         }
         .leistung {
-            display: none;
+            display: block;
             text-align: left;
             width: 300px;
             margin: 10px auto;
@@ -58,7 +58,6 @@
         }
         .leistung.active {
             color: #000;
-            display: block;
         }
         .leistung-content {
             display: none;
@@ -125,22 +124,18 @@
             acc.style.display = acc.style.display === "flex" ? "none" : "flex";
         });
 
-        function resetLeistungsphasen() {
+        function selectLeistungsphasen(element, ids) {
             document.querySelectorAll('.leistung').forEach(el => {
                 el.classList.remove('active');
-                el.style.display = 'none';
+                el.style.color = '#777';
             });
-        }
-
-        function selectLeistungsphasen(element, ids) {
-            resetLeistungsphasen();
             document.querySelectorAll('.accordion-content div').forEach(el => el.classList.remove('selected'));
             element.classList.add('selected');
             ids.forEach(id => {
                 let leistung = document.getElementById(id);
                 if (leistung) {
                     leistung.classList.add('active');
-                    leistung.style.display = 'block';
+                    leistung.style.color = '#000';
                 }
             });
             document.getElementById("anfrage-button").removeAttribute("disabled");
