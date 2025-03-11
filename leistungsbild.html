@@ -34,7 +34,7 @@
             cursor: pointer;
             margin-top: 10px;
             display: block;
-            transition: background-color 0.5s ease;
+            transition: background-color 0.6s ease;
         }
         #bedarf-button:hover {
             background-color: #a00030;
@@ -56,13 +56,13 @@
             margin-top: 10px;
             align-items: center;
             opacity: 0;
-            transition: opacity 1s ease;
+            transition: opacity 1.2s ease;
         }
         .accordion-content div {
             cursor: pointer;
             padding: 5px;
             text-align: center;
-            transition: color 0.5s ease;
+            transition: color 0.6s ease;
         }
         .accordion-content div.selected {
             color: #800020;
@@ -73,17 +73,17 @@
             text-align: left;
             width: 300px;
             margin: 10px auto;
-            color: #777;
+            color: #000;
             cursor: pointer;
             font-weight: normal;
             opacity: 0;
-            transition: opacity 1s ease, transform 1s ease;
-            transform: translateY(15px);
+            transition: opacity 1.2s ease, transform 1.2s ease;
+            transform: translateY(20px);
         }
         .leistung.active {
             display: block;
-            color: #800020;
-            font-weight: bold;
+            color: #000;
+            font-weight: normal;
             opacity: 1;
             transform: translateY(0);
         }
@@ -94,7 +94,7 @@
             text-align: left;
             color: #800020;
             opacity: 0;
-            transition: opacity 1s ease;
+            transition: opacity 1.2s ease;
         }
         .leistung-content.active {
             display: block;
@@ -172,12 +172,12 @@
             localStorage.setItem("selectedOption", selectedText);
             
             document.getElementById("accordion").style.opacity = "0";
-            setTimeout(() => document.getElementById("accordion").style.display = "none", 1000);
+            setTimeout(() => document.getElementById("accordion").style.display = "none", 1200);
             
             document.querySelectorAll('.leistung').forEach(el => {
                 el.classList.remove('active');
                 el.style.opacity = '0';
-                el.style.transform = 'translateY(15px)';
+                el.style.transform = 'translateY(20px)';
             });
             ids.forEach(id => {
                 let leistung = document.getElementById(id);
