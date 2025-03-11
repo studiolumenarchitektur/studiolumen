@@ -37,6 +37,12 @@
             display: block;
         }
 
+        #selected-answer {
+            font-size: 16px;
+            color: #800020;
+            margin-top: 10px;
+        }
+
         #accordion {
             display: none;
             flex-direction: column;
@@ -89,15 +95,12 @@
         }
 
         .footer {
-            position: fixed; 
-            bottom: 0; 
-            width: 100%; 
-            text-align: center; 
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
             padding: 10px;
-            display: flex; 
-            justify-content: center; 
-            gap: 20px; 
-            color: #777; 
+            color: #777;
             background: #fff;
         }
 
@@ -119,7 +122,8 @@
 <body>
     <header>leistungsbild</header>
     
-    <button id="bedarf-button">wie kann ich dir helfen?</button>
+    <button id="bedarf-button" onclick="toggleAccordion()">wie kann ich dir helfen?</button>
+    <div id="selected-answer"></div>
     
     <div id="accordion">
         <div class="accordion-item" data-ids="leistung-l0">lass uns eine idee entwickeln</div>
@@ -186,53 +190,37 @@
         <div class="leistung-content">• unterstützung bei der vergabeentscheidung</div>
     </div>
 
-  <button id="anfrage-button" onclick="window.location.href='anfrage.html'">anfrage starten</button>
+    <button id="anfrage-button" onclick="window.location.href='anfrage.html'">anfrage starten</button>
 
     <footer class="footer">
         <div>© 2025 studio lumen</div>
     </footer>
 
     <script>
-        function toggleSelection(element) {
-            element.classList.toggle('active');
+        function toggleAccordion() {
+            var acc = document.getElementById("accordion");
+            if (acc.style.display === "none" || acc.style.display === "") {
+                acc.style.display = "flex";
+                setTimeout(() => acc.style.opacity = "1", 10);
+            } else {
+                acc.style.opacity = "0";
+                setTimeout(() => acc.style.display = "none", 300);
+            }
         }
-    
-        document.addEventListener("DOMContentLoaded", function () {
-            const bedarfButton = document.getElementById("bedarf-button");
-            const accordion = document.getElementById("accordion");
-            const items = document.querySelectorAll(".accordion-item");
-            const leistungsphasen = document.querySelectorAll(".leistung");
-            const leistungContents = document.querySelectorAll(".leistung-content");
 
-            // funktion zum ein- und ausblenden des akkordeons
-            bedarfButton.addEventListener("click", function () {
-                if (accordion.style.display === "none" || accordion.style.display === "") {
-                    accordion.style.display = "flex";
-                    setTimeout(() => accordion.style.opacity = "1", 10);
-                } else {
-                    accordion.style.opacity = "0";
-                    setTimeout(() => accordion.style.display = "none", 300);
-                }
-            });
-
-            // funktion zur auswahl der leistungsphasen
-            items.forEach(item => {
-                item.addEventListener("click", function () {
-                    leistungsphasen.forEach(leistung => leistung.classList.remove("active"));
-                    leistungContents.forEach(content => content.classList.remove("active"));
-
-                    const ids = item.getAttribute("data-ids").split(",");
-                    ids.forEach(id => {
-                        const leistung = document.getElementById(id);
-                        leistung.classList.add("active");
-                        leistung.querySelectorAll(".leistung-content").forEach(content => content.classList.add("active"));
-                    });
-
-                    accordion.style.opacity = "0";
-                    setTimeout(() => accordion.style.display = "none", 300);
-                });
+        document.querySelectorAll(".accordion-item").forEach(item => {
+            item.addEventListener("click", function() {
+                localStorage.setItem("selectedAnswer", this.textContent);
+                document.getElementById("selected-answer").textContent = this.textContent;
             });
         });
+
+        window.onload = function() {
+            var savedAnswer = localStorage.getItem("selectedAnswer");
+            if (savedAnswer) {
+                document.getElementById("selected-answer").textContent = savedAnswer;
+            }
+        };
     </script>
          
     <!-- Leistungsphasen -->
