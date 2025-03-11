@@ -56,22 +56,22 @@
             margin: 10px auto;
             color: #777;
             cursor: pointer;
+            font-weight: normal;
         }
         .leistung.active {
-            color: #000;
+            color: #800020;
+            font-weight: bold;
         }
         .leistung-content {
             display: none;
             max-width: 300px;
             margin: 0 auto;
             text-align: left;
+            color: #800020;
         }
         .subleistung { 
             margin-left: 20px;
             cursor: pointer;
-        }
-        .subleistung.selected {
-            font-weight: bold;
             color: #800020;
         }
         .footer {
@@ -120,6 +120,7 @@
             document.querySelectorAll('.leistung').forEach(el => {
                 el.classList.remove('active');
                 el.style.color = '#777';
+                el.style.fontWeight = 'normal';
             });
             document.querySelectorAll('.leistung-content').forEach(el => {
                 el.style.display = 'none';
@@ -130,7 +131,8 @@
                 let leistung = document.getElementById(id);
                 if (leistung) {
                     leistung.classList.add('active');
-                    leistung.style.color = '#000';
+                    leistung.style.color = '#800020';
+                    leistung.style.fontWeight = 'bold';
                     let contentId = id.replace('leistung-', 'l');
                     document.getElementById(contentId).style.display = 'block';
                 }
