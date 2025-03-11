@@ -186,6 +186,30 @@
                 });
             }
         });
+
+    function loadSelectedLeistungsphasen() {
+        let savedData = localStorage.getItem("selectedLeistungsphasen");
+        if (savedData) {
+            let selectedList = JSON.parse(savedData);
+            let output = "<h2>Ihre Auswahl:</h2><ul>";
+
+            selectedList.forEach(item => {
+                output += `<li><strong>${item.phase}</strong><ul>`;
+                item.subItems.forEach(sub => {
+                    output += `<li>${sub}</li>`;
+                });
+                output += "</ul></li>";
+            });
+
+            output += "</ul>";
+            document.getElementById("leistungsphasen-list").innerHTML = output;
+        } else {
+            document.getElementById("leistungsphasen-list").innerHTML = "<p>Keine Auswahl getroffen.</p>";
+        }
+    }
+
+    // Lade die Daten, wenn die Seite geladen wird
+    window.onload = loadSelectedLeistungsphasen;
 </script>
 </body>
 </html>
