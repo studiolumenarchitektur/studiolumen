@@ -35,7 +35,6 @@
             cursor: pointer;
             margin-top: 10px;
             display: block;
-            position: relative;
         }
 
         #accordion {
@@ -77,21 +76,6 @@
             transform: translateY(0);
         }
 
-        .leistung-content {
-            display: none;
-            max-width: 300px;
-            margin: 0 auto;
-            text-align: left;
-            color: #800020;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-        }
-
-        .leistung-content.active {
-            display: block;
-            opacity: 1;
-        }
-
         .footer {
             position: fixed;
             bottom: 0;
@@ -127,6 +111,9 @@
         <div class="accordion-item" data-ids="leistung-l1,leistung-l2">ich habe keine grundrisse.</div>
         <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3">ich möchte umbauen.</div>
         <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3,leistung-l4">ich brauche eine detaillierte planung.</div>
+        <div class="accordion-item" data-ids="leistung-l5">ich brauche bauzeichnungen und detaillierte pläne.</div>
+        <div class="accordion-item" data-ids="leistung-l6">ich suche unterstützung bei der vergabe von bauleistungen.</div>
+        <div class="accordion-item" data-ids="leistung-l7">ich brauche unterstützung während der bauphase.</div>
     </div>
 
     <div class="leistung" id="leistung-l0">lph 0 - zielfindungsphase</div>
@@ -134,6 +121,9 @@
     <div class="leistung" id="leistung-l2">lph 2 - vorplanung</div>
     <div class="leistung" id="leistung-l3">lph 3 - entwurfsplanung</div>
     <div class="leistung" id="leistung-l4">lph 4 - genehmigungsplanung</div>
+    <div class="leistung" id="leistung-l5">lph 5 - ausführungsplanung</div>
+    <div class="leistung" id="leistung-l6">lph 6 - vergabevorbereitung</div>
+    <div class="leistung" id="leistung-l7">lph 7 - baubegleitung</div>
 
     <button id="anfrage-button" onclick="window.location.href='anfrage.html'">anfrage starten</button>
 
