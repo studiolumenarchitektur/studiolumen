@@ -76,6 +76,17 @@
             transform: translateY(0);
         }
 
+        .leistung-content {
+            display: none;
+            padding-left: 20px;
+            font-size: 14px;
+            color: #800020;
+        }
+
+        .leistung-content.active {
+            display: block;
+        }
+
         .footer {
             position: fixed;
             bottom: 0;
@@ -116,14 +127,39 @@
         <div class="accordion-item" data-ids="leistung-l7">ich brauche unterstützung während der bauphase.</div>
     </div>
 
-    <div class="leistung" id="leistung-l0">lph 0 - zielfindungsphase</div>
-    <div class="leistung" id="leistung-l1">lph 1 - grundlagenermittlung</div>
-    <div class="leistung" id="leistung-l2">lph 2 - vorplanung</div>
-    <div class="leistung" id="leistung-l3">lph 3 - entwurfsplanung</div>
-    <div class="leistung" id="leistung-l4">lph 4 - genehmigungsplanung</div>
-    <div class="leistung" id="leistung-l5">lph 5 - ausführungsplanung</div>
-    <div class="leistung" id="leistung-l6">lph 6 - vergabevorbereitung</div>
-    <div class="leistung" id="leistung-l7">lph 7 - baubegleitung</div>
+    <div class="leistung" id="leistung-l0">
+        lph 0 - zielfindungsphase
+        <div class="leistung-content">ermittlung der planungsziele</div>
+        <div class="leistung-content">erstellung einer planungsgrundlage</div>
+    </div>
+
+    <div class="leistung" id="leistung-l1">
+        lph 1 - grundlagenermittlung
+        <div class="leistung-content">sichtung vorhandener planunterlagen</div>
+        <div class="leistung-content">erfassung räumlicher und baulicher gegebenheiten</div>
+        <div class="leistung-content">beratung zu planungszielen</div>
+    </div>
+
+    <div class="leistung" id="leistung-l2">
+        lph 2 - vorplanung
+        <div class="leistung-content">ermittlung von flächen nach din277</div>
+        <div class="leistung-content">bewertung der bestandssituation</div>
+        <div class="leistung-content">erstellung erster zeichnungen</div>
+    </div>
+
+    <div class="leistung" id="leistung-l3">
+        lph 3 - entwurfsplanung
+        <div class="leistung-content">erstellung von schnitten und ansichten</div>
+        <div class="leistung-content">3d-visualisierung zur konzeptentwicklung</div>
+        <div class="leistung-content">überprüfung der flächennutzung</div>
+    </div>
+
+    <div class="leistung" id="leistung-l4">
+        lph 4 - genehmigungsplanung
+        <div class="leistung-content">erstellung genehmigungsfähiger pläne</div>
+        <div class="leistung-content">abstimmung mit behörden</div>
+        <div class="leistung-content">flächen- und maßkonzepte für den bauantrag</div>
+    </div>
 
     <button id="anfrage-button" onclick="window.location.href='anfrage.html'">anfrage starten</button>
 
@@ -137,6 +173,7 @@
             const accordion = document.getElementById("accordion");
             const items = document.querySelectorAll(".accordion-item");
             const leistungsphasen = document.querySelectorAll(".leistung");
+            const leistungContents = document.querySelectorAll(".leistung-content");
 
             // funktion zum ein- und ausblenden des akkordeons
             bedarfButton.addEventListener("click", function () {
@@ -152,26 +189,20 @@
             // funktion zur auswahl der leistungsphasen
             items.forEach(item => {
                 item.addEventListener("click", function () {
-                    // alle leistungsphasen ausblenden
-                    leistungsphasen.forEach(leistung => {
-                        leistung.classList.remove("active");
-                    });
+                    leistungsphasen.forEach(leistung => leistung.classList.remove("active"));
+                    leistungContents.forEach(content => content.classList.remove("active"));
 
-                    // markierte leistungsphasen aktivieren
                     const ids = item.getAttribute("data-ids").split(",");
                     ids.forEach(id => {
-                        document.getElementById(id).classList.add("active");
+                        const leistung = document.getElementById(id);
+                        leistung.classList.add("active");
+                        leistung.querySelectorAll(".leistung-content").forEach(content => content.classList.add("active"));
                     });
 
-                    // akkordeon ausblenden
                     accordion.style.opacity = "0";
                     setTimeout(() => accordion.style.display = "none", 300);
                 });
             });
-
-            // debugging: prüfe ob das akkordeon existiert
-            console.log("accordion gefunden:", accordion !== null);
-            console.log("button gefunden:", bedarfButton !== null);
         });
     </script>
          
