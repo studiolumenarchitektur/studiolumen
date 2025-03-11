@@ -1,215 +1,190 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anfrage</title>
+    <title>leistungsbild</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'poppins', sans-serif;
             background-color: #fff;
             color: #000;
             margin: 0;
-            padding-bottom: 120px;
+            padding-bottom: 80px;
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
-            text-transform: lowercase;
             font-size: 16px;
         }
+
         header {
             font-size: 2rem;
             font-weight: bold;
             margin-top: 20px;
         }
-        .back-arrow {
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            cursor: pointer;
-            font-size: 2rem;
+
+        #bedarf-button {
             color: #800020;
-            font-weight: 900;
-            z-index: 9999;
-        }
-        .dropdown-container {
-            margin-top: 20px;
-            text-align: center;
+            background: none;
+            font-weight: bold;
+            font-size: 18px;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+            display: block;
+            z-index: 1000;
             position: relative;
         }
-        .dropdown-button {
-            background: none;
-            color: #800020;
+
+        #selected-answer {
             font-size: 16px;
-            cursor: pointer;
-            border: none;
-            font-weight: bold;
+            color: #800020;
+            margin-top: 10px;
+            text-align: center;
         }
-        .dropdown-content {
+
+        #accordion {
             display: none;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 200px;
-            text-align: center;
-            background: #fff;
-            border: 1px solid #ddd;
-        }
-        .dropdown-option {
-            cursor: pointer;
-            padding: 5px;
-        }
-        .dropdown-option:hover {
-            background: #f0f0f0;
-        }
-        .selected-option-text {
-            color: #800020;
-            font-weight: normal;
+            flex-direction: column;
+            align-items: center;
             margin-top: 10px;
-            text-align: center;
-        }
-        .selected-services {
-            color: #000;
-            margin-top: 10px;
-            text-align: center;
-            list-style-type: disc;
-            padding-left: 20px;
-        }
-        .button-container {
-            position: fixed;
-            bottom: 60px;
             width: 100%;
-            text-align: center;
-            background: #fff;
-            z-index: 1000;
+            max-width: 350px;
+            padding: 10px;
+            transition: all 0.3s ease-in-out;
+            opacity: 0;
+            position: relative;
+            z-index: 999;
         }
-        #send-anfrage {
-            border: none;
-            background: none;
-            color: #800020;
-            font-size: 18px;
+
+        .accordion-item {
             cursor: pointer;
-            font-weight: bold;
-            opacity: 1;
-            pointer-events: auto;
+            padding: 10px;
+            text-align: center;
+            transition: color 0.3s ease-in-out;
         }
+
+        .accordion-item:hover {
+            color: #800020;
+        }
+
+        .leistung {
+            display: none;
+            text-align: left;
+            width: 300px;
+            margin: 10px auto;
+            font-weight: normal;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            transform: translateY(10px);
+        }
+
+        .leistung.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .leistung-content {
+            display: block;
+            padding-left: 20px;
+            font-size: 14px;
+            color: #800020;
+            cursor: pointer;
+        }
+
+        .leistung-content.active {
+            font-weight: bold;
+            background-color: rgba(128, 0, 32, 0.1);
+            padding: 5px;
+            border-radius: 5px;
+        }
+
         .footer {
             position: fixed;
             bottom: 0;
             width: 100%;
             text-align: center;
             padding: 10px;
-            z-index: 1000;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
             color: #777;
-            font-size: 16px;
             background: #fff;
+        }
+
+        #anfrage-button {
+            font-size: 16px;
+            font-weight: bold;
+            color: #800020;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            position: fixed;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
         }
     </style>
 </head>
 <body>
-    <div class="back-arrow" onclick="window.location.href='leistungsbild.html'">&larr;</div>
-    <header>Anfrage</header>
-    
-    <div class="dropdown-container">
-        <button class="dropdown-button" id="dropdown-btn" onclick="toggleDropdown()">wie viel fläche brauchst du?</button>
-        <div id="selected-option-text" class="selected-option-text"></div>
-        <div class="dropdown-content" id="dropdown-menu">
-            <div class="dropdown-option" onclick="selectOption('bis 50m²')">bis 50m²</div>
-            <div class="dropdown-option" onclick="selectOption('bis 100m²')">bis 100m²</div>
-            <div class="dropdown-option" onclick="selectOption('bis 150m²')">bis 150m²</div>
-            <div class="dropdown-option" onclick="selectOption('bis 200m²')">bis 200m²</div>
-            <div class="dropdown-option" onclick="selectOption('bis 250m²')">bis 250m²</div>
-            <div class="dropdown-option" onclick="selectOption('bis 300m²')">bis 300m²</div>
-            <div class="dropdown-option" onclick="selectOption('individuelle anfrage')">individuelle anfrage</div>
-        </div>
-    </div>
-    
-    <ul id="selected-services" class="selected-services"></ul>
-    
-    <div class="button-container">
-        <button id="send-anfrage" onclick="sendAnfrage()">
-            anfrage senden
-        </button>
-    </div>
-    
-    <footer class="footer">
-        <div onclick="window.location.href='impressum.html'">Impressum</div>
-        <div>© 2025 Studio Lumen</div>
-    </footer>
-    
-    <script>
-        function toggleDropdown() {
-            let menu = document.getElementById("dropdown-menu");
-            menu.style.display = (menu.style.display === "block") ? "none" : "block";
-        }
-        
-        function selectOption(value) {
-            localStorage.setItem("selectedWohnraum", value);
-            document.getElementById("dropdown-menu").style.display = "none";
-            document.getElementById("selected-option-text").textContent = value;
-        }
-        
-        function sendAnfrage() {
-            let email = "studiolumenarchitektur@gmail.com";
-            let subject = "anfrage an studio lumen";
-            
-            let wohnraum = localStorage.getItem("selectedWohnraum") || "Nicht angegeben";
-            let selectedServices = JSON.parse(localStorage.getItem("warenkorb")) || [];
+    <header>leistungsbild</header>
 
-            let body = "hi,\n\nkannst du mir folgende leistungsphasen anbieten?:\n\n";
-            selectedServices.forEach(service => {
-                body += "- " + service + "\n";
-            });
-            body += "\nWohnraumgröße: " + wohnraum + "\n\nliene grüße,\n[Ihr Name]";
-            
-            window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    <div id="leistungsphasen-list"></div>
+
+    <div id="leistungsphasen-list"></div>
+    
+    <button id="bedarf-button" onclick="toggleAccordion()">wie kann ich dir helfen?</button>
+    <div id="selected-answer"></div>
+    
+    <div id="accordion">
+        <div class="accordion-item" data-ids="leistung-l0">ich bin noch unsicher.</div>
+        <div class="accordion-item" data-ids="leistung-l1,leistung-l2">ich habe keine grundrisse.</div>
+        <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3">ich möchte umbauen.</div>
+        <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3,leistung-l4">ich brauche eine detaillierte planung.</div>
+        <div class="accordion-item" data-ids="leistung-l5">ich brauche bauzeichnungen und detaillierte pläne.</div>
+        <div class="accordion-item" data-ids="leistung-l6">ich suche unterstützung bei der vergabe von bauleistungen.</div>
+        <div class="accordion-item" data-ids="leistung-l7">ich brauche unterstützung während der bauphase.</div>
+    </div>
+
+    <button id="anfrage-button" onclick="window.location.href='anfrage'">anfrage starten</button>
+
+    <footer class="footer">
+        <div>© 2025 studio lumen</div>
+    </footer>
+
+    <script>
+        function toggleAccordion() {
+            var acc = document.getElementById("accordion");
+            if (acc.style.display === "none" || acc.style.display === "") {
+                acc.style.display = "flex";
+                setTimeout(() => acc.style.opacity = "1", 10);
+            } else {
+                acc.style.opacity = "0";
+                setTimeout(() => acc.style.display = "none", 300);
+            }
         }
-    document.addEventListener("DOMContentLoaded", function() {
-            let savedValue = localStorage.getItem("selectedWohnraum");
-            if (savedValue) {
-                document.getElementById("selected-option-text").textContent = savedValue;
-            }
-            
-            let selectedServices = JSON.parse(localStorage.getItem("warenkorb")) || [];
-            let servicesList = document.getElementById("selected-services");
-            
-            if (selectedServices.length > 0) {
-                selectedServices.forEach(service => {
-                    let listItem = document.createElement("li");
-                    listItem.textContent = service;
-                    servicesList.appendChild(listItem);
+
+        document.querySelectorAll(".accordion-item").forEach(item => {
+            item.addEventListener("click", function () {
+                let ids = this.getAttribute("data-ids").split(",");
+                document.querySelectorAll(".leistung").forEach(leistung => leistung.classList.remove("active"));
+                ids.forEach(id => {
+                    document.getElementById(id).classList.add("active");
                 });
-            }
+                
+                localStorage.setItem("selectedAnswer", this.textContent);
+                document.getElementById("selected-answer").textContent = this.textContent;
+            });
         });
 
-    function loadSelectedLeistungsphasen() {
-        let savedData = localStorage.getItem("selectedLeistungsphasen");
-        if (savedData) {
-            let selectedList = JSON.parse(savedData);
-            let output = "<h2>Ihre Auswahl:</h2><ul>";
-
-            selectedList.forEach(item => {
-                output += `<li><strong>${item.phase}</strong><ul>`;
-                item.subItems.forEach(sub => {
-                    output += `<li>${sub}</li>`;
-                });
-                output += "</ul></li>";
-            });
-
-            output += "</ul>";
-            document.getElementById("leistungsphasen-list").innerHTML = output;
-        } else {
-            document.getElementById("leistungsphasen-list").innerHTML = "<p>Keine Auswahl getroffen.</p>";
-        }
-    }
-
-    // Lade die Daten, wenn die Seite geladen wird
-    window.onload = loadSelectedLeistungsphasen;
-</script>
+        window.onload = function () {
+            var savedAnswer = localStorage.getItem("selectedAnswer");
+            if (savedAnswer) {
+                document.getElementById("selected-answer").textContent = savedAnswer;
+            }
+        };
+    </script>
 </body>
 </html>
