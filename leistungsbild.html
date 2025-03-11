@@ -11,7 +11,7 @@
             background-color: #fff;
             color: #000;
             margin: 0;
-            padding-bottom: 80px;
+            padding-bottom: 60px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -74,6 +74,18 @@
             font-weight: bold;
             color: #800020;
         }
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            color: #777;
+            background: #fff;
+        }
     </style>
 </head>
 <body>
@@ -101,6 +113,11 @@
     <div class="leistung" id="leistung-l7">LPH 7 - Mitwirkung bei der Vergabe</div>
     
     <button id="anfrage-button" disabled>Anfrage senden</button>
+    
+    <footer class="footer">
+        <div onclick="window.location.href='impressum.html'">Impressum</div>
+        <div>© 2025 Studio Lumen</div>
+    </footer>
     
     <script>
         document.getElementById("bedarf-button").addEventListener("click", function() {
