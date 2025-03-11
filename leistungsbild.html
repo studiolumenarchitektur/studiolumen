@@ -202,7 +202,7 @@
         <div class="leistung-content" onclick="toggleSelection(this)">• unterstützung bei der vergabeentscheidung</div>
     </div>
 
-    <button id="anfrage-button" onclick="window.location.href='anfrage.html'">anfrage starten</button>
+ <button id="anfrage-button" onclick="window.location.href='anfrage.html'">anfrage starten</button>
 
     <footer class="footer">
         <div>© 2025 studio lumen</div>
@@ -220,28 +220,29 @@
             }
         }
 
-        function saveSelection() {
-            let activeItems = [];
-            document.querySelectorAll(".leistung-content.active").forEach(item => {
-                activeItems.push(item.textContent.trim());
-            });
-            localStorage.setItem("selectedItems", JSON.stringify(activeItems));
-        }
-
-        function loadSelection() {
-            let savedItems = JSON.parse(localStorage.getItem("selectedItems"));
-            if (savedItems) {
-                document.querySelectorAll(".leistung-content").forEach(item => {
-                    if (savedItems.includes(item.textContent.trim())) {
-                        item.classList.add("active");
-                    }
+        document.querySelectorAll(".accordion-item").forEach(item => {
+            item.addEventListener("click", function () {
+                let ids = this.getAttribute("data-ids").split(",");
+                document.querySelectorAll(".leistung").forEach(leistung => leistung.classList.remove("active"));
+                ids.forEach(id => {
+                    document.getElementById(id).classList.add("active");
                 });
-            }
-        }
-
-        document.addEventListener("DOMContentLoaded", function () {
-            loadSelection();
+                
+                localStorage.setItem("selectedAnswer", this.textContent);
+                document.getElementById("selected-answer").textContent = this.textContent;
+                
+                var acc = document.getElementById("accordion");
+                acc.style.opacity = "0";
+                setTimeout(() => acc.style.display = "none", 300);
+            });
         });
+
+        window.onload = function () {
+            var savedAnswer = localStorage.getItem("selectedAnswer");
+            if (savedAnswer) {
+                document.getElementById("selected-answer").textContent = savedAnswer;
+            }
+        };
     </script>
          
     <!-- Leistungsphasen -->
