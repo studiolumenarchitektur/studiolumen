@@ -3,11 +3,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>leistungsbild</title>
+    <title>Leistungsbild</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'poppins', sans-serif;
+            font-family: 'Poppins', sans-serif;
             background-color: #fff;
             color: #000;
             margin: 0;
@@ -17,74 +17,69 @@
             align-items: center;
             min-height: 100vh;
             font-size: 16px;
-            text-transform: lowercase;
         }
+
         header {
             font-size: 2rem;
             font-weight: bold;
             margin-top: 20px;
         }
+
         #bedarf-button {
             color: #800020;
             background: none;
             font-weight: bold;
             font-size: 18px;
             padding: 10px;
-            border: none;
+            border: 2px solid #800020;
             cursor: pointer;
             margin-top: 10px;
             display: block;
-            z-index: 1000;
             position: relative;
         }
-        #selected-option {
-            color: #800020;
-            font-size: 16px;
-            margin-top: 10px;
-            text-align: center;
-            max-width: 300px;
-            word-wrap: break-word;
-            display: none;
-            opacity: 0;
-            transition: opacity 1.2s ease;
-        }
+
         #accordion {
             display: none;
             flex-direction: column;
-            margin-top: 10px;
             align-items: center;
-            opacity: 0;
-            transition: opacity 1.2s ease;
+            margin-top: 10px;
+            width: 100%;
+            max-width: 350px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
         }
-        .accordion-content div {
+
+        .accordion-item {
             cursor: pointer;
-            padding: 5px;
+            padding: 10px;
             text-align: center;
-            transition: color 0.6s ease;
+            transition: background 0.3s ease-in-out;
         }
-        .accordion-content div.selected {
-            color: #800020;
-            font-weight: bold;
+
+        .accordion-item:hover {
+            background: rgba(128, 0, 32, 0.1);
         }
+
         .leistung {
             display: none;
             text-align: left;
             width: 300px;
             margin: 10px auto;
-            color: #000;
-            cursor: pointer;
             font-weight: normal;
             opacity: 0;
-            transition: opacity 1.2s ease, transform 1.2s ease;
-            transform: translateY(20px);
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            transform: translateY(10px);
         }
+
         .leistung.active {
             display: block;
-            color: #000;
-            font-weight: normal;
             opacity: 1;
             transform: translateY(0);
         }
+
         .leistung-content {
             display: none;
             max-width: 300px;
@@ -92,109 +87,90 @@
             text-align: left;
             color: #800020;
             opacity: 0;
-            transition: opacity 1.2s ease;
+            transition: opacity 0.5s ease-in-out;
         }
+
         .leistung-content.active {
             display: block;
             opacity: 1;
         }
-        .subleistung { 
-            margin-left: 20px;
-            cursor: pointer;
-            color: #800020;
-        }
+
         .footer {
             position: fixed;
             bottom: 0;
             width: 100%;
             text-align: center;
             padding: 10px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
             color: #777;
             background: #fff;
-        }
-        #anfrage-button {
-            font-size: 16px;
-            font-weight: bold;
-            color: #800020;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 10px;
-            position: fixed;
-            bottom: 50px;
-            left: 50%;
-            transform: translateX(-50%);
         }
     </style>
 </head>
 <body>
-    <header>leistungsbild</header>
+    <header>Leistungsbild</header>
     
-    <button id="bedarf-button" onclick="toggleAccordion()">wie kann ich dir helfen?</button>
-    <div id="selected-option"></div>
+    <button id="bedarf-button">Wie kann ich dir helfen?</button>
     
-    <div id="accordion" class="accordion-content">
-        <div onclick="selectLeistungsphasen(this, ['leistung-l0'])">ich bin noch unsicher.</div>
-        <div onclick="selectLeistungsphasen(this, ['leistung-l1', 'leistung-l2'])">ich habe keine grundrisse.</div>
-        <div onclick="selectLeistungsphasen(this, ['leistung-l1', 'leistung-l2', 'leistung-l3'])">ich möchte umbauen.</div>
-        <div onclick="selectLeistungsphasen(this, ['leistung-l1', 'leistung-l2', 'leistung-l3'])">ich plane einen neubau.</div>
-        <div onclick="selectLeistungsphasen(this, ['leistung-l1', 'leistung-l2', 'leistung-l3', 'leistung-l4'])">ich brauche eine detaillierte planung und genehmigungsunterlagen.</div>
-        <div onclick="selectLeistungsphasen(this, ['leistung-l5'])">ich brauche bauzeichnungen und eine detaillierte planung für die umsetzung.</div>
-        <div onclick="selectLeistungsphasen(this, ['leistung-l6', 'leistung-l7'])">ich suche unterstützung bei der vergabe von bauleistungen.</div>
+    <div id="accordion">
+        <div class="accordion-item" data-ids="leistung-l0">Ich bin noch unsicher.</div>
+        <div class="accordion-item" data-ids="leistung-l1,leistung-l2">Ich habe keine Grundrisse.</div>
+        <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3">Ich möchte umbauen.</div>
+        <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3,leistung-l4">Ich brauche eine detaillierte Planung.</div>
     </div>
-    
-    <button id="anfrage-button" onclick="window.location.href='anfrage.html'">anfrage starten</button>
-    
+
+    <div class="leistung" id="leistung-l0">LPH 0 - Zielfindungsphase</div>
+    <div class="leistung" id="leistung-l1">LPH 1 - Grundlagenermittlung</div>
+    <div class="leistung" id="leistung-l2">LPH 2 - Vorplanung</div>
+    <div class="leistung" id="leistung-l3">LPH 3 - Entwurfsplanung</div>
+    <div class="leistung" id="leistung-l4">LPH 4 - Genehmigungsplanung</div>
+
     <footer class="footer">
-        <div onclick="window.location.href='impressum.html'">impressum</div>
-        <div>© 2025 studio lumen</div>
+        <div>© 2025 Studio Lumen</div>
     </footer>
-    
+
     <script>
-function toggleAccordion() {
-    var acc = document.getElementById("accordion");
+        document.addEventListener("DOMContentLoaded", function () {
+            const bedarfButton = document.getElementById("bedarf-button");
+            const accordion = document.getElementById("accordion");
+            const items = document.querySelectorAll(".accordion-item");
+            const leistungsphasen = document.querySelectorAll(".leistung");
 
-    if (acc.style.display === "none" || acc.style.display === "") {
-        acc.style.display = "flex"; // Akkordeon sichtbar machen
-        setTimeout(() => acc.style.opacity = "1", 10); // Leichte Verzögerung für Animation
-    } else {
-        acc.style.opacity = "0"; // Unsichtbar machen
-        setTimeout(() => acc.style.display = "none", 500); // Nach 500ms ausblenden
-    }
-}
+            // Funktion zum Ein- und Ausblenden des Akkordeons
+            bedarfButton.addEventListener("click", function () {
+                if (accordion.style.display === "none" || accordion.style.display === "") {
+                    accordion.style.display = "flex";
+                    setTimeout(() => accordion.style.opacity = "1", 10);
+                } else {
+                    accordion.style.opacity = "0";
+                    setTimeout(() => accordion.style.display = "none", 300);
+                }
+            });
 
-function selectLeistungsphasen(element, ids) {
-    document.getElementById("selected-option").textContent = element.textContent;
-    document.getElementById("selected-option").style.display = "block";
-    document.getElementById("selected-option").style.opacity = "1";
+            // Funktion zur Auswahl der Leistungsphasen
+            items.forEach(item => {
+                item.addEventListener("click", function () {
+                    // Alle Leistungsphasen ausblenden
+                    leistungsphasen.forEach(leistung => {
+                        leistung.classList.remove("active");
+                    });
 
-    document.querySelectorAll('.leistung').forEach(el => el.classList.remove('active'));
-    document.querySelectorAll('.leistung-content').forEach(el => {
-        el.classList.remove('active');
-        el.style.display = "none";
-    });
+                    // Markierte Leistungsphasen aktivieren
+                    const ids = item.getAttribute("data-ids").split(",");
+                    ids.forEach(id => {
+                        document.getElementById(id).classList.add("active");
+                    });
 
-    ids.forEach(id => {
-        let leistung = document.getElementById(id);
-        if (leistung) {
-            leistung.classList.add('active');
+                    // Akkordeon ausblenden
+                    accordion.style.opacity = "0";
+                    setTimeout(() => accordion.style.display = "none", 300);
+                });
+            });
 
-            let content = document.getElementById(id.replace('leistung-', 'l'));
-            if (content) {
-                content.classList.add('active');
-                content.style.display = "block";
-                content.style.opacity = "1";
-            }
-        }
-    });
-
-    document.getElementById("accordion").style.opacity = "0";
-    setTimeout(() => document.getElementById("accordion").style.display = "none", 600);
-}
-     <script>
+            // Debugging: Check ob das Akkordeon existiert
+            console.log("Accordion gefunden:", accordion !== null);
+            console.log("Button gefunden:", bedarfButton !== null);
+        });
+    </script>
          
     <!-- Leistungsphasen -->
     <div class="leistung" id="leistung-l0">LPH 0 - Zielfindungsphase</div>
