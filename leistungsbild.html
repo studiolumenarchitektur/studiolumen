@@ -46,45 +46,6 @@
             font-weight: 900;
             z-index: 9999;
         }
-        
-        #bedarf-button {
-            color: #800020;
-            background: none;
-            font-weight: bold;
-            font-size: 18px;
-            padding: 10px;
-            border: none;
-            cursor: pointer;
-            margin-top: 10px;
-            display: block;
-            z-index: 1000;
-            position: relative;
-        }
-
-        #accordion {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 10px;
-            width: 100%;
-            max-width: 350px;
-            padding: 10px;
-            transition: all 0.3s ease-in-out;
-            opacity: 0;
-            position: relative;
-            z-index: 999;
-        }
-
-        .accordion-item {
-            cursor: pointer;
-            padding: 10px;
-            text-align: center;
-            transition: color 0.3s ease-in-out;
-        }
-
-        .accordion-item:hover {
-            color: #800020;
-        }
 
         .leistung {
             display: none;
@@ -103,44 +64,17 @@
             transform: translateY(0);
         }
 
-        .leistung-content {
-            display: block;
-            padding-left: 20px;
-            font-size: 14px;
-            color: #80020;
-            cursor: pointer;
-        }
-
-        .leistung-content.active {
-            font-weight: bold;
-            background-color: #fff;
-        }
-
         .footer {
             position: fixed;
             bottom: 0;
             width: 100%;
             text-align: center;
             padding: 10px;
+            color: #777;
+            background: #fff;
             display: flex;
             justify-content: center;
             gap: 20px;
-            color: #777;
-            background: #fff;
-     }
-        
-        #anfrage-button {
-            font-size: 16px;
-            font-weight: bold;
-            color: #800020;
-            background: #ffffff;
-            border: none;
-            cursor: pointer;
-            padding: 10px;
-            position: fixed;
-            bottom: 50px;
-            left: 50%;
-            transform: translateX(-50%);
         }
     </style>
 </head>
@@ -222,7 +156,7 @@
         <div>© 2025 studio lumen</div>
     </footer>
 
-    <script>
+<script>
         function toggleAccordion() {
             var acc = document.getElementById("accordion");
             if (acc.style.display === "none" || acc.style.display === "") {
@@ -277,6 +211,6 @@
     </div>
 
     <footer class="footer">
-        <div onclick="window.location.href='impressum.html'">impressum</div>
+        <div onclick="window.location.href='impressum.html'">Impressum</div>
         <div>© 2025 studio lumen</div>
     </footer>
