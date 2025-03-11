@@ -37,6 +37,13 @@
             display: block;
         }
 
+        #selected-answer {
+            font-size: 16px;
+            color: #800020;
+            margin-top: 10px;
+            text-align: center;
+        }
+
         #accordion {
             display: none;
             flex-direction: column;
@@ -119,6 +126,7 @@
     <header>leistungsbild</header>
     
     <button id="bedarf-button">wie kann ich dir helfen?</button>
+    <div id="selected-answer"></div>
     
     <div id="accordion">
         <div class="accordion-item" data-ids="leistung-l0">lass uns eine idee entwickeln</div>
@@ -208,6 +216,14 @@
                 let ids = this.getAttribute("data-ids").split(",");
                 document.querySelectorAll(".leistung").forEach(leistung => leistung.classList.remove("active"));
                 ids.forEach(id => document.getElementById(id).classList.add("active"));
+                
+                // Akkordeon ausblenden
+                var acc = document.getElementById("accordion");
+                acc.style.opacity = "0";
+                setTimeout(() => acc.style.display = "none", 300);
+                
+                // Gewählte Antwort anzeigen
+                document.getElementById("selected-answer").textContent = this.textContent;
             });
         });
     </script>
