@@ -154,14 +154,15 @@
     </footer>
     
     <script>
-    function toggleAccordion() {
+function toggleAccordion() {
     var acc = document.getElementById("accordion");
+
     if (acc.style.display === "none" || acc.style.display === "") {
-        acc.style.display = "flex";
-        setTimeout(() => acc.style.opacity = "1", 10);
+        acc.style.display = "flex"; // Akkordeon sichtbar machen
+        setTimeout(() => acc.style.opacity = "1", 10); // Leichte Verzögerung für Animation
     } else {
-        acc.style.opacity = "0";
-        setTimeout(() => acc.style.display = "none", 600);
+        acc.style.opacity = "0"; // Unsichtbar machen
+        setTimeout(() => acc.style.display = "none", 500); // Nach 500ms ausblenden
     }
 }
 
