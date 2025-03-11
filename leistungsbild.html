@@ -11,7 +11,7 @@
             background-color: #fff;
             color: #000;
             margin: 0;
-            padding-bottom: 60px;
+            padding-bottom: 80px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -34,7 +34,7 @@
             cursor: pointer;
             margin-top: 10px;
             display: block;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.5s ease;
         }
         #bedarf-button:hover {
             background-color: #a00030;
@@ -48,7 +48,7 @@
             word-wrap: break-word;
             display: none;
             opacity: 0;
-            transition: opacity 0.5s ease;
+            transition: opacity 1s ease;
         }
         #accordion {
             display: none;
@@ -56,13 +56,13 @@
             margin-top: 10px;
             align-items: center;
             opacity: 0;
-            transition: opacity 0.5s ease;
+            transition: opacity 1s ease;
         }
         .accordion-content div {
             cursor: pointer;
             padding: 5px;
             text-align: center;
-            transition: color 0.3s ease;
+            transition: color 0.5s ease;
         }
         .accordion-content div.selected {
             color: #800020;
@@ -77,8 +77,8 @@
             cursor: pointer;
             font-weight: normal;
             opacity: 0;
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            transform: translateY(10px);
+            transition: opacity 1s ease, transform 1s ease;
+            transform: translateY(15px);
         }
         .leistung.active {
             display: block;
@@ -94,7 +94,7 @@
             text-align: left;
             color: #800020;
             opacity: 0;
-            transition: opacity 0.5s ease;
+            transition: opacity 1s ease;
         }
         .leistung-content.active {
             display: block;
@@ -118,6 +118,19 @@
             color: #777;
             background: #fff;
         }
+        #anfrage-button {
+            font-size: 16px;
+            font-weight: bold;
+            color: #800020;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            position: fixed;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
     </style>
 </head>
 <body>
@@ -135,6 +148,8 @@
         <div onclick="selectLeistungsphasen(this, ['leistung-l5'])">ich brauche bauzeichnungen und eine detaillierte planung für die umsetzung.</div>
         <div onclick="selectLeistungsphasen(this, ['leistung-l6', 'leistung-l7'])">ich suche unterstützung bei der vergabe von bauleistungen.</div>
     </div>
+    
+    <button id="anfrage-button" onclick="window.location.href='anfrage.html'">anfrage starten</button>
     
     <footer class="footer">
         <div onclick="window.location.href='impressum.html'">impressum</div>
@@ -157,29 +172,19 @@
             localStorage.setItem("selectedOption", selectedText);
             
             document.getElementById("accordion").style.opacity = "0";
-            setTimeout(() => document.getElementById("accordion").style.display = "none", 500);
+            setTimeout(() => document.getElementById("accordion").style.display = "none", 1000);
             
             document.querySelectorAll('.leistung').forEach(el => {
                 el.classList.remove('active');
                 el.style.opacity = '0';
-                el.style.transform = 'translateY(10px)';
+                el.style.transform = 'translateY(15px)';
             });
-            document.querySelectorAll('.leistung-content').forEach(el => {
-                el.classList.remove('active');
-            });
-            document.querySelectorAll('.accordion-content div').forEach(el => el.classList.remove('selected'));
-            element.classList.add('selected');
             ids.forEach(id => {
                 let leistung = document.getElementById(id);
                 if (leistung) {
                     leistung.classList.add('active');
                     leistung.style.opacity = '1';
                     leistung.style.transform = 'translateY(0)';
-                    let contentId = id.replace('leistung-', 'l');
-                    let contentElement = document.getElementById(contentId);
-                    if (contentElement) {
-                        contentElement.classList.add('active');
-                    }
                 }
             });
         }
