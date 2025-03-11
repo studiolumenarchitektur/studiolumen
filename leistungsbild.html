@@ -46,6 +46,7 @@
             max-width: 350px;
             padding: 10px;
             transition: all 0.3s ease-in-out;
+            opacity: 0;
         }
 
         .accordion-item {
@@ -117,7 +118,7 @@
 <body>
     <header>leistungsbild</header>
     
-    <button id="bedarf-button" onclick="toggleAccordion()">wie kann ich dir helfen?</button>
+    <button id="bedarf-button">wie kann ich dir helfen?</button>
     
     <div id="accordion">
         <div class="accordion-item" data-ids="leistung-l0">lass uns eine idee entwickeln</div>
@@ -191,7 +192,7 @@
     </footer>
 
     <script>
-        function toggleAccordion() {
+        document.getElementById("bedarf-button").addEventListener("click", function () {
             var acc = document.getElementById("accordion");
             if (acc.style.display === "none" || acc.style.display === "") {
                 acc.style.display = "flex";
@@ -200,11 +201,13 @@
                 acc.style.opacity = "0";
                 setTimeout(() => acc.style.display = "none", 300);
             }
-        }
+        });
 
-        document.querySelectorAll(".leistung-content").forEach(item => {
-            item.addEventListener("click", function() {
-                this.classList.toggle("active");
+        document.querySelectorAll(".accordion-item").forEach(item => {
+            item.addEventListener("click", function () {
+                let ids = this.getAttribute("data-ids").split(",");
+                document.querySelectorAll(".leistung").forEach(leistung => leistung.classList.remove("active"));
+                ids.forEach(id => document.getElementById(id).classList.add("active"));
             });
         });
     </script>
