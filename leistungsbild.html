@@ -81,6 +81,7 @@
             padding-left: 20px;
             font-size: 14px;
             color: #800020;
+            cursor: pointer;
         }
 
         .leistung-content.active {
@@ -181,7 +182,7 @@
         <div class="leistung-content">vergleich von leistungs- und kostenstrukturen</div>
         <div class="leistung-content">unterstützung bei der vergabeentscheidung</div>
     </div>
-    
+
     <button id="anfrage-button" onclick="window.location.href='anfrage.html'">anfrage starten</button>
 
     <footer class="footer">
@@ -189,6 +190,11 @@
     </footer>
 
     <script>
+        function toggleSelection(element) {
+            element.classList.toggle('active');
+        }
+    </script>
+    
         document.addEventListener("DOMContentLoaded", function () {
             const bedarfButton = document.getElementById("bedarf-button");
             const accordion = document.getElementById("accordion");
