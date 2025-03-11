@@ -35,6 +35,8 @@
             cursor: pointer;
             margin-top: 10px;
             display: block;
+            z-index: 1000;
+            position: relative;
         }
 
         #selected-answer {
@@ -54,6 +56,8 @@
             padding: 10px;
             transition: all 0.3s ease-in-out;
             opacity: 0;
+            position: relative;
+            z-index: 999;
         }
 
         .accordion-item {
@@ -88,13 +92,15 @@
             display: block;
             padding-left: 20px;
             font-size: 14px;
-            color: #000;
+            color: #800020;
             cursor: pointer;
         }
 
         .leistung-content.active {
             font-weight: bold;
-            background-color: #fff;
+            background-color: rgba(128, 0, 32, 0.1);
+            padding: 5px;
+            border-radius: 5px;
         }
 
         .footer {
@@ -128,7 +134,7 @@
 <body>
     <header>leistungsbild</header>
     
-    <button id="bedarf-button">wie kann ich dir helfen?</button>
+    <button id="bedarf-button" onclick="toggleAccordion()">wie kann ich dir helfen?</button>
     <div id="selected-answer"></div>
     
     <div id="accordion">
@@ -203,9 +209,15 @@
     </footer>
 
     <script>
-        function toggleSelection(element) {
-            element.classList.toggle("active");
-            saveSelection();
+        function toggleAccordion() {
+            var acc = document.getElementById("accordion");
+            if (acc.style.display === "none" || acc.style.display === "") {
+                acc.style.display = "flex";
+                setTimeout(() => acc.style.opacity = "1", 10);
+            } else {
+                acc.style.opacity = "0";
+                setTimeout(() => acc.style.display = "none", 300);
+            }
         }
 
         function saveSelection() {
