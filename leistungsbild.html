@@ -241,49 +241,8 @@
                 ids.forEach(id => {
                     document.getElementById(id).classList.add("active");
                 });
-                
-                localStorage.setItem("selectedAnswer", this.textContent);
-                document.getElementById("selected-answer").textContent = this.textContent;
-                
-                var acc = document.getElementById("accordion");
-                acc.style.opacity = "0";
-                setTimeout(() => acc.style.display = "none", 300);
             });
         });
-
-        window.onload = function () {
-            var savedAnswer = localStorage.getItem("selectedAnswer");
-            if (savedAnswer) {
-                document.getElementById("selected-answer").textContent = savedAnswer;
-            }
-        };
-
-            function saveSelectedLeistungsphasen() {
-        let selectedItems = [];
-
-        // Finde alle aktiven Leistungsphasen
-        document.querySelectorAll(".leistung.active").forEach(leistung => {
-            let phase = leistung.innerText.trim();
-            let subItems = [];
-
-            // Finde die aktivierten Unterpunkte innerhalb der Leistungsphase
-            leistung.querySelectorAll(".leistung-content.active").forEach(sub => {
-                subItems.push(sub.innerText.trim());
-            });
-
-            selectedItems.push({ phase: phase, subItems: subItems });
-        });
-
-        // Speichere die Auswahl in localStorage
-        localStorage.setItem("selectedLeistungsphasen", JSON.stringify(selectedItems));
-    }
-
-    // Rufe die Funktion auf, wenn zur "Anfrage"-Seite navigiert wird
-    document.getElementById("anfrage-button").addEventListener("click", function () {
-        saveSelectedLeistungsphasen();
-        window.location.href = "anfrage.html";
-    });
-        
     </script>
          
     <!-- Leistungsphasen -->
