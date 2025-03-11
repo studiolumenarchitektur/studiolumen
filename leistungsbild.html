@@ -50,7 +50,7 @@
             display: none;
             flex-direction: column;
             align-items: center;
-            margin-top: 10px;
+            margin-top: 20px;
             width: 100%;
             max-width: 350px;
             padding: 10px;
@@ -92,7 +92,7 @@
             display: block;
             padding-left: 20px;
             font-size: 14px;
-            color: #800020;
+            color: #000;
             cursor: pointer;
         }
 
@@ -200,7 +200,7 @@
         <div class="leistung-content" onclick="toggleSelection(this)">• unterstützung bei der vergabeentscheidung</div>
     </div>
 
- <button id="anfrage-button" onclick="window.location.href='anfrage.html'">anfrage starten</button>
+  <button id="anfrage-button" onclick="window.location.href='anfrage.html'">anfrage starten</button>
 
     <footer class="footer">
         <div>© 2025 studio lumen</div>
@@ -235,11 +235,12 @@
             });
         });
 
-        document.querySelectorAll(".leistung-content").forEach(item => {
-            item.addEventListener("click", function () {
-                this.classList.toggle("active");
-            });
-        });
+        window.onload = function () {
+            var savedAnswer = localStorage.getItem("selectedAnswer");
+            if (savedAnswer) {
+                document.getElementById("selected-answer").textContent = savedAnswer;
+            }
+        };
     </script>
          
     <!-- Leistungsphasen -->
