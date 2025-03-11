@@ -98,6 +98,12 @@
             color: #777;
             background: #fff;
         }
+        .button-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding-bottom: 10px;
+        }
         #anfrage-button {
             font-size: 16px;
             font-weight: bold;
@@ -125,8 +131,11 @@
         <div onclick="selectLeistungsphasen(this, ['leistung-l6', 'leistung-l7'])">ich suche unterstützung bei der vergabe von bauleistungen.</div>
     </div>
     
-    <footer class="footer">
+    <div class="button-container">
         <button id="anfrage-button" onclick="window.location.href='anfrage.html'">anfrage starten</button>
+    </div>
+    
+    <footer class="footer">
         <div onclick="window.location.href='impressum.html'">impressum</div>
         <div>© 2025 studio lumen</div>
     </footer>
