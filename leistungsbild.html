@@ -139,7 +139,6 @@
     
     <button id="bedarf-button" onclick="toggleAccordion()">wie kann ich dir helfen?</button>
     
-    
     <div id="accordion">
         <div class="accordion-item" data-ids="leistung-l0">lass uns eine idee entwickeln</div>
         <div class="accordion-item" data-ids="leistung-l1,leistung-l2">ich brauche unterstützung beim entwerfen</div>
@@ -205,7 +204,7 @@
         <div class="leistung-content" onclick="toggleSelection(this)">• unterstützung bei der vergabeentscheidung</div>
     </div>
 
-<button id="anfrage-button" onclick="window.location.href='anfrage.html'">anfrage starten</button>
+    <button id="anfrage-button" onclick="window.location.href='anfrage.html'">anfrage starten</button>
 
     <footer class="footer">
         <div onclick="window.location.href='impressum.html'">impressum</div>
@@ -226,8 +225,8 @@
 
         document.querySelectorAll(".accordion-item").forEach(item => {
             item.addEventListener("click", function () {
-                let ids = this.getAttribute("data-ids").split(",");
                 document.querySelectorAll(".leistung").forEach(leistung => leistung.classList.remove("active"));
+                let ids = this.getAttribute("data-ids").split(",");
                 ids.forEach(id => {
                     document.getElementById(id).classList.add("active");
                 });
