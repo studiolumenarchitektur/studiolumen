@@ -23,8 +23,19 @@
             font-size: 2rem;
             font-weight: bold;
             margin-top: 20px;
+            
         }
-
+        .back-arrow {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            cursor: pointer;
+            font-size: 2rem;
+            color: #800020;
+            font-weight: 900;
+            z-index: 9999;
+            
+        }
         .footer {
             position: fixed;
             bottom: 0;
@@ -37,6 +48,7 @@
     </style>
 </head>
 <body>
+    <div class="back-arrow" onclick="window.location.href='leistungsbild.html'">&larr;</div>
     <header>leistungsbild</header>
 
     <div id="leistungsphasen-list"></div>
