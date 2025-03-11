@@ -34,6 +34,15 @@
             margin-top: 10px;
             display: block;
         }
+        #selected-option {
+            color: #800020;
+            font-size: 16px;
+            margin-top: 10px;
+            text-align: center;
+            max-width: 300px;
+            word-wrap: break-word;
+            display: none;
+        }
         #accordion {
             display: none;
             flex-direction: column;
@@ -92,6 +101,7 @@
     <header>Leistungsbild</header>
     
     <button id="bedarf-button">Wie kann ich dir helfen?</button>
+    <div id="selected-option"></div>
     
     <div id="accordion" class="accordion-content">
         <div onclick="selectLeistungsphasen(this, ['leistung-l0'])">Ich bin noch unsicher.</div>
@@ -117,6 +127,12 @@
         });
 
         function selectLeistungsphasen(element, ids) {
+            let selectedOption = document.getElementById("selected-option");
+            let selectedText = element.textContent;
+            selectedOption.textContent = selectedText;
+            selectedOption.style.display = 'block';
+            localStorage.setItem("selectedOption", selectedText);
+            
             document.querySelectorAll('.leistung').forEach(el => {
                 el.classList.remove('active');
                 el.style.color = '#777';
@@ -142,7 +158,16 @@
             });
             document.getElementById("anfrage-button").removeAttribute("disabled");
         }
+        
+        window.onload = function() {
+            let storedOption = localStorage.getItem("selectedOption");
+            if (storedOption) {
+                document.getElementById("selected-option").textContent = storedOption;
+                document.getElementById("selected-option").style.display = 'block';
+            }
+        }
     </script>
+
     <!-- Leistungsphasen -->
     <div class="leistung" id="leistung-l0">LPH 0 - Zielfindungsphase</div>
     <div class="leistung-content" id="l0">
