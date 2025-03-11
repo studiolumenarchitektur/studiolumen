@@ -60,7 +60,7 @@
             font-weight: bold;
         }
         .leistung {
-            display: block;
+            display: none;
             text-align: left;
             width: 300px;
             margin: 10px auto;
@@ -69,6 +69,7 @@
             font-weight: normal;
         }
         .leistung.active {
+            display: block;
             color: #800020;
             font-weight: bold;
         }
@@ -136,8 +137,7 @@
             
             document.querySelectorAll('.leistung').forEach(el => {
                 el.classList.remove('active');
-                el.style.color = '#777';
-                el.style.fontWeight = 'normal';
+                el.style.display = 'none';
             });
             document.querySelectorAll('.leistung-content').forEach(el => {
                 el.style.display = 'none';
@@ -148,8 +148,7 @@
                 let leistung = document.getElementById(id);
                 if (leistung) {
                     leistung.classList.add('active');
-                    leistung.style.color = '#800020';
-                    leistung.style.fontWeight = 'bold';
+                    leistung.style.display = 'block';
                     let contentId = id.replace('leistung-', 'l');
                     let contentElement = document.getElementById(contentId);
                     if (contentElement) {
