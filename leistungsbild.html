@@ -133,6 +133,8 @@
             selectedOption.style.display = 'block';
             localStorage.setItem("selectedOption", selectedText);
             
+            document.getElementById("accordion").style.display = "none"; // Akkordeon einklappen
+            
             document.querySelectorAll('.leistung').forEach(el => {
                 el.classList.remove('active');
                 el.style.color = '#777';
