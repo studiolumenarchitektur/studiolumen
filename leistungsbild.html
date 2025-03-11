@@ -163,27 +163,42 @@
             }
         }
 
-        function selectLeistungsphasen(element, ids) {
-            document.getElementById("selected-option").textContent = element.textContent;
-            document.getElementById("selected-option").style.display = "block";
-            document.getElementById("selected-option").style.opacity = "1";
-            document.querySelectorAll('.leistung').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.leistung-content').forEach(el => el.classList.remove('active'));
-            ids.forEach(id => {
-                let leistung = document.getElementById(id);
-                if (leistung) {
-                    leistung.classList.add('active');
-                    let content = document.getElementById(id.replace('leistung-', 'leistung-content'));
-                    if (content) {
-                        content.classList.add('active');
-                        content.style.display = 'block';
-                    }
+    function selectLeistungsphasen(element, ids) {
+        // Anzeige der ausgewählten Antwort unterhalb des Buttons
+        let selectedOption = document.getElementById("selected-option");
+        selectedOption.textContent = element.textContent;
+        selectedOption.style.display = "block";
+        selectedOption.style.opacity = "1";
+
+        // Entferne vorherige Aktivierungen
+        document.querySelectorAll('.leistung').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.leistung-content').forEach(el => {
+            el.classList.remove('active');
+            el.style.display = "none"; // Unterpunkte verstecken
+        });
+
+        // Aktiviere die gewählten Leistungsphasen und deren Unterpunkte
+        ids.forEach(id => {
+            let leistung = document.getElementById(id);
+            if (leistung) {
+                leistung.classList.add('active');
+
+                // Zeige die Unterpunkte sofort an
+                let content = document.getElementById(id.replace('leistung-', 'l'));
+                if (content) {
+                    content.classList.add('active');
+                    content.style.display = "block"; // Sichtbar machen
+                    content.style.opacity = "1"; // Sanfte Anzeige
                 }
-            });
-            document.getElementById("accordion").style.opacity = "0";
-            setTimeout(() => document.getElementById("accordion").style.display = "none", 600);
-        }
-    </script>
+            }
+        });
+
+        // Akkordeon ausblenden
+        let acc = document.getElementById("accordion");
+        acc.style.opacity = "0";
+        setTimeout(() => acc.style.display = "none", 600);
+    }
+</script>
     
     <!-- Leistungsphasen -->
     <div class="leistung" id="leistung-l0">LPH 0 - Zielfindungsphase</div>
