@@ -116,6 +116,20 @@
             justify-content: center;
             gap: 20px;
         }
+
+        #anfrage-button {
+            color: #800020;
+            background: none;
+            border: none;
+            font-weight: normal;
+            font-size: 16px;
+            cursor: pointer;
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-transform: lowercase;
+        }
     </style>
 </head>
 <body>
@@ -124,6 +138,7 @@
     <header>leistungsbild</header>
     
     <button id="bedarf-button" onclick="toggleAccordion()">wie kann ich dir helfen?</button>
+    
     
     <div id="accordion">
         <div class="accordion-item" data-ids="leistung-l0">lass uns eine idee entwickeln</div>
@@ -192,7 +207,7 @@
 
 <button id="anfrage-button" onclick="window.location.href='anfrage.html'">anfrage starten</button>
 
- <footer class="footer">
+    <footer class="footer">
         <div onclick="window.location.href='impressum.html'">impressum</div>
         <div>© 2025 studio lumen</div>
     </footer>
