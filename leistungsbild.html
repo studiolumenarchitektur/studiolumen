@@ -34,10 +34,6 @@
             cursor: pointer;
             margin-top: 10px;
             display: block;
-}
-        }
-        #bedarf-button:hover {
-            background-color: #a00030;
         }
         #selected-option {
             color: #800020;
@@ -139,57 +135,55 @@
     <div id="selected-option"></div>
     
     <div id="accordion" class="accordion-content">
-        <div onclick="selectLeistungsphasen(this, ['leistung-l0'])">ich bin mir nicht sicher was ich will</div>
-        <div onclick="selectLeistungsphasen(this, ['leistung-l1', 'leistung-l2'])">zeichne mir bitte grundrisse</div>
-        <div onclick="selectLeistungsphasen(this, ['leistung-l1', 'leistung-l2', 'leistung-l3'])">lass uns einen umbau planen</div>
-        <div onclick="selectLeistungsphasen(this, ['leistung-l1', 'leistung-l2', 'leistung-l3'])">lass uns einen neubau planen</div>
-        <div onclick="selectLeistungsphasen(this, ['leistung-l1', 'leistung-l2', 'leistung-l3', 'leistung-l4'])">ich brauche eine planung und baugenehmigung</div>
-        <div onclick="selectLeistungsphasen(this, ['leistung-l1', 'leistung-l2', 'leistung-l3', 'leistung-l4', 'leistung-l5'])">lass uns ein projekt von a-z durchplanen und zur ausführung bringen</div>
-        <div onclick="selectLeistungsphasen(this, ['leistung-l6', 'leistung-l7'])">hilf mir bitte bei ausschreibung und vergabe</div>
+        <div onclick="selectLeistungsphasen(this, ['leistung-l0'])">ich bin noch unsicher.</div>
+        <div onclick="selectLeistungsphasen(this, ['leistung-l1', 'leistung-l2'])">ich habe keine grundrisse.</div>
+        <div onclick="selectLeistungsphasen(this, ['leistung-l1', 'leistung-l2', 'leistung-l3'])">ich möchte umbauen.</div>
+        <div onclick="selectLeistungsphasen(this, ['leistung-l1', 'leistung-l2', 'leistung-l3'])">ich plane einen neubau.</div>
+        <div onclick="selectLeistungsphasen(this, ['leistung-l1', 'leistung-l2', 'leistung-l3', 'leistung-l4'])">ich brauche eine detaillierte planung und genehmigungsunterlagen.</div>
+        <div onclick="selectLeistungsphasen(this, ['leistung-l5'])">ich brauche bauzeichnungen und eine detaillierte planung für die umsetzung.</div>
+        <div onclick="selectLeistungsphasen(this, ['leistung-l6', 'leistung-l7'])">ich suche unterstützung bei der vergabe von bauleistungen.</div>
     </div>
     
     <button id="anfrage-button" onclick="window.location.href='anfrage.html'">anfrage starten</button>
     
     <footer class="footer">
-    <div onclick="window.location.href='impressum.html'">impressum</div>
-    <div>© 2025 studio lumen</div>
-</footer>
+        <div onclick="window.location.href='impressum.html'">impressum</div>
+        <div>© 2025 studio lumen</div>
+    </footer>
     
-<script>
-    function selectLeistungsphasen(element, ids) {
-        // Anzeige der ausgewählten Antwort
-        document.getElementById("selected-option").textContent = element.textContent;
-        document.getElementById("selected-option").style.display = "block";
-        document.getElementById("selected-option").style.opacity = "1";
-
-        // Entferne vorherige Aktivierungen
-        document.querySelectorAll('.leistung').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.leistung-content').forEach(el => {
-            el.classList.remove('active');
-            el.style.display = "none";
-        });
-
-        // Aktiviere die gewählten Leistungsphasen und deren Unterpunkte
-        ids.forEach(id => {
-            let leistung = document.getElementById(id);
-            if (leistung) {
-                leistung.classList.add('active');
-
-                // Zeige die Unterpunkte sofort an
-                let content = document.getElementById(id.replace('leistung-', 'l'));
-                if (content) {
-                    content.classList.add('active');
-                    content.style.display = "block";
-                    content.style.opacity = "1";
-                }
+    <script>
+        function toggleAccordion() {
+            var acc = document.getElementById("accordion");
+            if (acc.style.display === "none" || acc.style.display === "") {
+                acc.style.display = "flex";
+                setTimeout(() => acc.style.opacity = "1", 10);
+            } else {
+                acc.style.opacity = "0";
+                setTimeout(() => acc.style.display = "none", 600);
             }
-        });
+        }
 
-        // Akkordeon ausblenden
-        document.getElementById("accordion").style.opacity = "0";
-        setTimeout(() => document.getElementById("accordion").style.display = "none", 600);
-    }
-</script>
+        function selectLeistungsphasen(element, ids) {
+            document.getElementById("selected-option").textContent = element.textContent;
+            document.getElementById("selected-option").style.display = "block";
+            document.getElementById("selected-option").style.opacity = "1";
+            document.querySelectorAll('.leistung').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.leistung-content').forEach(el => el.classList.remove('active'));
+            ids.forEach(id => {
+                let leistung = document.getElementById(id);
+                if (leistung) {
+                    leistung.classList.add('active');
+                    let content = document.getElementById(id.replace('leistung-', 'leistung-content'));
+                    if (content) {
+                        content.classList.add('active');
+                        content.style.display = 'block';
+                    }
+                }
+            });
+            document.getElementById("accordion").style.opacity = "0";
+            setTimeout(() => document.getElementById("accordion").style.display = "none", 600);
+        }
+    </script>
     
     <!-- Leistungsphasen -->
     <div class="leistung" id="leistung-l0">LPH 0 - Zielfindungsphase</div>
