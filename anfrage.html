@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>leistungsbild</title>
+    <title>anfrage</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         body {
@@ -25,84 +25,6 @@
             margin-top: 20px;
         }
 
-        #bedarf-button {
-            color: #800020;
-            background: none;
-            font-weight: bold;
-            font-size: 18px;
-            padding: 10px;
-            border: none;
-            cursor: pointer;
-            margin-top: 10px;
-            display: block;
-            z-index: 1000;
-            position: relative;
-        }
-
-        #selected-answer {
-            font-size: 16px;
-            color: #800020;
-            margin-top: 10px;
-            text-align: center;
-        }
-
-        #accordion {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 10px;
-            width: 100%;
-            max-width: 350px;
-            padding: 10px;
-            transition: all 0.3s ease-in-out;
-            opacity: 0;
-            position: relative;
-            z-index: 999;
-        }
-
-        .accordion-item {
-            cursor: pointer;
-            padding: 10px;
-            text-align: center;
-            transition: color 0.3s ease-in-out;
-        }
-
-        .accordion-item:hover {
-            color: #800020;
-        }
-
-        .leistung {
-            display: none;
-            text-align: left;
-            width: 300px;
-            margin: 10px auto;
-            font-weight: normal;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-            transform: translateY(10px);
-        }
-
-        .leistung.active {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .leistung-content {
-            display: block;
-            padding-left: 20px;
-            font-size: 14px;
-            color: #800020;
-            cursor: pointer;
-        }
-
-        .leistung-content.active {
-            font-weight: bold;
-            background-color: rgba(128, 0, 32, 0.1);
-            padding: 5px;
-            border-radius: 5px;
-        }
-
         .footer {
             position: fixed;
             bottom: 0;
@@ -111,20 +33,6 @@
             padding: 10px;
             color: #777;
             background: #fff;
-        }
-
-        #anfrage-button {
-            font-size: 16px;
-            font-weight: bold;
-            color: #800020;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 10px;
-            position: fixed;
-            bottom: 50px;
-            left: 50%;
-            transform: translateX(-50%);
         }
     </style>
 </head>
@@ -138,21 +46,6 @@
     <div id="leistungsphasen-list"></div>
 
     <div id="leistungsphasen-list"></div>
-    
-    <button id="bedarf-button" onclick="toggleAccordion()">wie kann ich dir helfen?</button>
-    <div id="selected-answer"></div>
-    
-    <div id="accordion">
-        <div class="accordion-item" data-ids="leistung-l0">lass uns eine idee entwickeln</div>
-        <div class="accordion-item" data-ids="leistung-l1,leistung-l2">ich brauche unterstützung beim entwerfen</div>
-        <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3">lass uns meinen wohnraum umgestalten</div>
-        <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3,leistung-l4">ich brauche eine planung und die baugenehmigung</div>
-        <div class="accordion-item" data-ids="leistung-l5">lass uns zusammen ein projekt von a-z planen</div>
-        <div class="accordion-item" data-ids="leistung-l6">kannst du mich bei der ausschreibung und vergabe unterstützen</div>
-        <div class="accordion-item" data-ids="leistung-l7">ich brauche unterstützung während der bauphase</div>
-    </div>
-
-    <button id="anfrage-button" onclick="window.location.href='anfrage'">anfrage starten</button>
 
     <footer class="footer">
         <div>© 2025 studio lumen</div>
