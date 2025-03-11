@@ -134,13 +134,15 @@
                     leistung.style.color = '#800020';
                     leistung.style.fontWeight = 'bold';
                     let contentId = id.replace('leistung-', 'l');
-                    document.getElementById(contentId).style.display = 'block';
+                    let contentElement = document.getElementById(contentId);
+                    if (contentElement) {
+                        contentElement.style.display = 'block';
+                    }
                 }
             });
             document.getElementById("anfrage-button").removeAttribute("disabled");
         }
     </script>
-
     <!-- Leistungsphasen -->
     <div class="leistung" id="leistung-l0">LPH 0 - Zielfindungsphase</div>
     <div class="leistung-content" id="l0">
