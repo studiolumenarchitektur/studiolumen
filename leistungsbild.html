@@ -55,6 +55,7 @@
             width: 300px;
             margin: 10px auto;
             color: #777;
+            cursor: pointer;
         }
         .leistung.active {
             color: #000;
@@ -93,13 +94,26 @@
     <button id="bedarf-button">Wie kann ich dir helfen?</button>
     
     <div id="accordion" class="accordion-content">
-        <div onclick="selectLeistungsphasen(this, ['leistung-l0'])">ich bin mir unsicher.</div>
-        <div onclick="selectLeistungsphasen(this, ['leistung-l1', 'leistung-l2'])">ich brauche grundrisse.</div>
-        <div onclick="selectLeistungsphasen(this, ['leistung-l3'])">ich möchte umbauen.</div>
-        <div onclick="selectLeistungsphasen(this, ['leistung-l4'])">ich möchte neubauen.</div>
-        <div onclick="selectLeistungsphasen(this, ['leistung-l3', 'leistung-l4'])">Ich brauche eine genehmigung.</div>
-        <div onclick="selectLeistungsphasen(this, ['leistung-l5'])">ich brauche detaillierte zeichnungen.</div>
-        <div onclick="selectLeistungsphasen(this, ['leistung-l6', 'leistung-l7'])">ich suche unterstützung bei der ausschreibung und vergabe.</div>
+        <div onclick="selectLeistungsphasen(this, ['leistung-l0'])">Ich bin noch unsicher.</div>
+        <div onclick="selectLeistungsphasen(this, ['leistung-l1', 'leistung-l2'])">Ich habe keine Grundrisse.</div>
+        <div onclick="selectLeistungsphasen(this, ['leistung-l3'])">Ich möchte umbauen.</div>
+        <div onclick="selectLeistungsphasen(this, ['leistung-l4'])">Ich plane einen Neubau.</div>
+        <div onclick="selectLeistungsphasen(this, ['leistung-l3', 'leistung-l4'])">Ich brauche eine detaillierte Planung und Genehmigungsunterlagen.</div>
+        <div onclick="selectLeistungsphasen(this, ['leistung-l5'])">Ich brauche Bauzeichnungen und eine detaillierte Planung für die Umsetzung.</div>
+        <div onclick="selectLeistungsphasen(this, ['leistung-l6', 'leistung-l7'])">Ich suche Unterstützung bei der Vergabe von Bauleistungen.</div>
+    </div>
+    
+    <div class="leistung" id="leistung-l0" onclick="toggleContent('l0')">LPH 0 - Zielfindungsphase</div>
+    <div class="leistung-content" id="l0">
+        <div class="subleistung">Ermittlung der Planungsziele</div>
+        <div class="subleistung">Erstellung einer Planungsgrundlage</div>
+    </div>
+    
+    <div class="leistung" id="leistung-l1" onclick="toggleContent('l1')">LPH 1 - Grundlagenermittlung</div>
+    <div class="leistung-content" id="l1">
+        <div class="subleistung">Sichtung vorhandener Planunterlagen</div>
+        <div class="subleistung">Erfassung räumlicher und baulicher Gegebenheiten</div>
+        <div class="subleistung">Beratung zu Planungszielen</div>
     </div>
     
     <button id="anfrage-button" disabled>Anfrage senden</button>
@@ -120,6 +134,9 @@
                 el.classList.remove('active');
                 el.style.color = '#777';
             });
+            document.querySelectorAll('.leistung-content').forEach(el => {
+                el.style.display = 'none';
+            });
             document.querySelectorAll('.accordion-content div').forEach(el => el.classList.remove('selected'));
             element.classList.add('selected');
             ids.forEach(id => {
@@ -127,9 +144,15 @@
                 if (leistung) {
                     leistung.classList.add('active');
                     leistung.style.color = '#000';
+                    document.getElementById(id.replace('leistung-', 'l')).style.display = 'block';
                 }
             });
             document.getElementById("anfrage-button").removeAttribute("disabled");
+        }
+
+        function toggleContent(id) {
+            var content = document.getElementById(id);
+            content.style.display = content.style.display === 'block' ? 'none' : 'block';
         }
     </script>
 
