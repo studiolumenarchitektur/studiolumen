@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leistungsbild</title>
+    <title>leistungsbild</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'poppins', sans-serif;
             background-color: #fff;
             color: #000;
             margin: 0;
@@ -17,13 +17,14 @@
             align-items: center;
             min-height: 100vh;
             font-size: 16px;
+            text-transform: lowercase;
         }
         header {
             font-size: 2rem;
             font-weight: bold;
             margin-top: 20px;
         }
-        #bedarf-button, #anfrage-button {
+        #bedarf-button {
             color: #fff;
             background-color: #800020;
             font-weight: bold;
@@ -98,26 +99,24 @@
     </style>
 </head>
 <body>
-    <header>Leistungsbild</header>
+    <header>leistungsbild</header>
     
-    <button id="bedarf-button">Wie kann ich dir helfen?</button>
+    <button id="bedarf-button">wie kann ich dir helfen?</button>
     <div id="selected-option"></div>
     
     <div id="accordion" class="accordion-content">
-        <div onclick="selectLeistungsphasen(this, ['leistung-l0'])">ich weiß nicht was ich will</div>
-        <div onclick="selectLeistungsphasen(this, ['leistung-l1', 'leistung-l2'])">zeichne mir bitte grundrisse.</div>
-        <div onclick="selectLeistungsphasen(this, ['leistung-l1', 'leistung-l2', 'leistung-l3'])">ich möchte mit dir etwas umbauen</div>
-        <div onclick="selectLeistungsphasen(this, ['leistung-l1', 'leistung-l2', 'leistung-l3'])">ich möchte mit dir neubauen</div>
-        <div onclick="selectLeistungsphasen(this, ['leistung-l1', 'leistung-l2', 'leistung-l3', 'leistung-l4'])">ich brauche eine baugenehmigung</div>
-        <div onclick="selectLeistungsphasen(this, ['leistung-l1', 'leistung-l2', 'leistung-l3', 'leistung-l4', 'leistung-l5'])">ich möchte das wir gemeinsam ein projekt umsetzen.</div>
-        <div onclick="selectLeistungsphasen(this, ['leistung-l6', 'leistung-l7'])">ich brauche unterstützung bei ausschreibung und vergabe</div>
+        <div onclick="selectLeistungsphasen(this, ['leistung-l0'])">ich bin noch unsicher.</div>
+        <div onclick="selectLeistungsphasen(this, ['leistung-l1', 'leistung-l2'])">ich habe keine grundrisse.</div>
+        <div onclick="selectLeistungsphasen(this, ['leistung-l1', 'leistung-l2', 'leistung-l3'])">ich möchte umbauen.</div>
+        <div onclick="selectLeistungsphasen(this, ['leistung-l1', 'leistung-l2', 'leistung-l3'])">ich plane einen neubau.</div>
+        <div onclick="selectLeistungsphasen(this, ['leistung-l1', 'leistung-l2', 'leistung-l3', 'leistung-l4'])">ich brauche eine detaillierte planung und genehmigungsunterlagen.</div>
+        <div onclick="selectLeistungsphasen(this, ['leistung-l5'])">ich brauche bauzeichnungen und eine detaillierte planung für die umsetzung.</div>
+        <div onclick="selectLeistungsphasen(this, ['leistung-l6', 'leistung-l7'])">ich suche unterstützung bei der vergabe von bauleistungen.</div>
     </div>
     
-    <button id="anfrage-button" disabled>Anfrage senden</button>
-    
     <footer class="footer">
-        <div onclick="window.location.href='impressum.html'">Impressum</div>
-        <div>© 2025 Studio Lumen</div>
+        <div onclick="window.location.href='impressum.html'">impressum</div>
+        <div>© 2025 studio lumen</div>
     </footer>
     
     <script>
@@ -133,7 +132,7 @@
             selectedOption.style.display = 'block';
             localStorage.setItem("selectedOption", selectedText);
             
-            document.getElementById("accordion").style.display = "none"; // Akkordeon einklappen
+            document.getElementById("accordion").style.display = "none"; 
             
             document.querySelectorAll('.leistung').forEach(el => {
                 el.classList.remove('active');
@@ -158,15 +157,6 @@
                     }
                 }
             });
-            document.getElementById("anfrage-button").removeAttribute("disabled");
-        }
-        
-        window.onload = function() {
-            let storedOption = localStorage.getItem("selectedOption");
-            if (storedOption) {
-                document.getElementById("selected-option").textContent = storedOption;
-                document.getElementById("selected-option").style.display = 'block';
-            }
         }
     </script>
 
