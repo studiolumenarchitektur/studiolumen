@@ -178,9 +178,10 @@
                 let leistung = document.getElementById(id);
                 if (leistung) {
                     leistung.classList.add('active');
-                    let content = document.getElementById(id.replace('leistung-', 'l'));
+                    let content = document.getElementById(id.replace('leistung-', 'leistung-content'));
                     if (content) {
                         content.classList.add('active');
+                        content.style.display = 'block';
                     }
                 }
             });
@@ -188,6 +189,7 @@
             setTimeout(() => document.getElementById("accordion").style.display = "none", 600);
         }
     </script>
+    
     <!-- Leistungsphasen -->
     <div class="leistung" id="leistung-l0">LPH 0 - Zielfindungsphase</div>
     <div class="leistung-content" id="l0">
