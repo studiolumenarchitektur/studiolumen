@@ -16,7 +16,6 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
-            text-transform: lowercase;
             font-size: 16px;
         }
         header {
@@ -24,52 +23,38 @@
             font-weight: bold;
             margin-top: 20px;
         }
-        #bedarf-button {
-            color: #800020;
+        #bedarf-button, #anfrage-button {
+            color: #fff;
+            background-color: #800020;
             font-weight: bold;
             font-size: 18px;
             padding: 10px;
             border: none;
             cursor: pointer;
-            background: none;
             margin-top: 10px;
             display: block;
         }
-        #selected-option {
-            color: #800020;
-            font-size: 16px;
-            margin-top: 10px;
-            text-align: center;
-            max-width: 300px;
-            word-wrap: break-word;
-            display: none;
-        }
-        .accordion-content {
+        #accordion {
             display: none;
             flex-direction: column;
             margin-top: 10px;
             align-items: center;
         }
         .accordion-content div {
-            color: #000;
-            font-weight: normal;
             cursor: pointer;
-            padding: 5px 0;
-            max-width: 300px;
+            padding: 5px;
             text-align: center;
-            word-wrap: break-word;
         }
         .accordion-content div.selected {
             color: #800020;
             font-weight: bold;
         }
         .leistung {
-            cursor: pointer;
+            display: none;
             text-align: left;
             width: 300px;
             margin: 10px auto;
             color: #777;
-            display: none;
         }
         .leistung.active {
             color: #000;
@@ -89,54 +74,39 @@
             font-weight: bold;
             color: #800020;
         }
-        #anfrage-button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #800020;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            display: none;
-        }
     </style>
 </head>
 <body>
     <header>Leistungsbild</header>
     
-    <button id="bedarf-button" onclick="toggleAccordion()">Wie kann ich dir helfen?</button>
-    
-    <div id="selected-option"></div>
+    <button id="bedarf-button">Wie kann ich dir helfen?</button>
     
     <div id="accordion" class="accordion-content">
-        <div onclick="selectLeistungsphasen(this, ['leistung-l0'])" data-option="Ich bin noch unsicher und brauche Orientierung.">Ich bin noch unsicher und brauche Orientierung.</div>
-        <div onclick="selectLeistungsphasen(this, ['leistung-l1', 'leistung-l2'])" data-option="Ich habe eine Wohnung oder ein Gebäude, aber keine Grundrisse.">Ich habe eine Wohnung oder ein Gebäude, aber keine Grundrisse.</div>
-        <div onclick="selectLeistungsphasen(this, ['leistung-l1', 'leistung-l2', 'leistung-l3'])" data-option="Ich möchte umbauen oder sanieren, weiß aber nicht, was möglich ist.">Ich möchte umbauen oder sanieren, weiß aber nicht, was möglich ist.</div>
-        <div onclick="selectLeistungsphasen(this, ['leistung-l1', 'leistung-l2', 'leistung-l3', 'leistung-l4'])" data-option="Ich will ein Haus oder ein Gebäude neu bauen und habe erste Ideen.">Ich will ein Haus oder ein Gebäude neu bauen und habe erste Ideen.</div>
-        <div onclick="selectLeistungsphasen(this, ['leistung-l3', 'leistung-l4'])" data-option="Ich brauche eine detaillierte Planung und Genehmigungsunterlagen.">Ich brauche eine detaillierte Planung und Genehmigungsunterlagen.</div>
-        <div onclick="selectLeistungsphasen(this, ['leistung-l5'])" data-option="Ich brauche Bauzeichnungen und eine detaillierte Planung für die Umsetzung.">Ich brauche Bauzeichnungen und eine detaillierte Planung für die Umsetzung.</div>
-        <div onclick="selectLeistungsphasen(this, ['leistung-l6', 'leistung-l7'])" data-option="Ich suche Unterstützung bei der Vergabe von Bauleistungen.">Ich suche Unterstützung bei der Vergabe von Bauleistungen.</div>
+        <div onclick="selectLeistungsphasen(this, ['leistung-l0'])">Ich bin noch unsicher.</div>
+        <div onclick="selectLeistungsphasen(this, ['leistung-l1', 'leistung-l2'])">Ich habe keine Grundrisse.</div>
+        <div onclick="selectLeistungsphasen(this, ['leistung-l3'])">Ich möchte umbauen.</div>
+        <div onclick="selectLeistungsphasen(this, ['leistung-l4'])">Ich plane einen Neubau.</div>
     </div>
     
-    <button id="anfrage-button" onclick="window.location.href='anfrage.html'">Anfrage senden</button>
+    <button id="anfrage-button" disabled>Anfrage senden</button>
     
     <script>
-        function toggleAccordion() {
+        document.getElementById("bedarf-button").addEventListener("click", function() {
             var acc = document.getElementById("accordion");
-            acc.style.display = (acc.style.display === "flex") ? "none" : "flex";
+            acc.style.display = acc.style.display === "flex" ? "none" : "flex";
+        });
+
+        function resetLeistungsphasen() {
+            document.querySelectorAll('.leistung').forEach(el => {
+                el.classList.remove('active');
+                el.style.display = 'none';
+            });
         }
 
         function selectLeistungsphasen(element, ids) {
-            let selectedOption = document.getElementById("selected-option");
-            let selectedText = element.getAttribute("data-option");
-
-            document.querySelectorAll('.accordion-content div').forEach(el => {
-                el.classList.remove('selected');
-            });
-
-            element.classList.add('selected');
             resetLeistungsphasen();
-
+            document.querySelectorAll('.accordion-content div').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
             ids.forEach(id => {
                 let leistung = document.getElementById(id);
                 if (leistung) {
@@ -144,29 +114,8 @@
                     leistung.style.display = 'block';
                 }
             });
-
-            selectedOption.textContent = selectedText;
-            selectedOption.style.display = 'block';
-            localStorage.setItem("selectedOption", selectedText);
-            localStorage.setItem("selectedIds", JSON.stringify(ids));
-
-            document.getElementById("accordion").style.display = "none";
+            document.getElementById("anfrage-button").removeAttribute("disabled");
         }
-
-        document.addEventListener("DOMContentLoaded", function() {
-            let storedOption = localStorage.getItem("selectedOption");
-            let storedIds = localStorage.getItem("selectedIds");
-
-            if (storedOption && storedIds) {
-                let ids = JSON.parse(storedIds);
-                let selectedElement = document.querySelector(`[data-option='${storedOption}']`);
-
-                if (selectedElement) {
-                    selectedElement.classList.add('selected');
-                    selectLeistungsphasen(selectedElement, ids);
-                }
-            }
-        });
     </script>
 
     <!-- Leistungsphasen -->
