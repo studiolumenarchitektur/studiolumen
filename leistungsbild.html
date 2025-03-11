@@ -23,6 +23,7 @@
             font-size: 2rem;
             font-weight: bold;
             margin-top: 20px;
+            text-transform: lowercase;
         }
 
         .back-arrow {
@@ -45,6 +46,45 @@
             color: #800020;
             font-weight: 900;
             z-index: 9999;
+        }
+
+        #bedarf-button {
+            color: #800020;
+            background: none;
+            font-weight: bold;
+            font-size: 18px;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+            display: block;
+            text-transform: lowercase;
+        }
+
+        #accordion {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10px;
+            width: 100%;
+            max-width: 350px;
+            padding: 10px;
+            transition: all 0.3s ease-in-out;
+            opacity: 0;
+            position: relative;
+            z-index: 999;
+        }
+
+        .accordion-item {
+            cursor: pointer;
+            padding: 10px;
+            text-align: center;
+            transition: color 0.3s ease-in-out;
+            text-transform: lowercase;
+        }
+
+        .accordion-item:hover {
+            color: #800020;
         }
 
         .leistung {
@@ -152,11 +192,12 @@
 
 <button id="anfrage-button" onclick="window.location.href='anfrage.html'">anfrage starten</button>
 
-    <footer class="footer">
+ <footer class="footer">
+        <div onclick="window.location.href='impressum.html'">impressum</div>
         <div>© 2025 studio lumen</div>
     </footer>
 
-<script>
+    <script>
         function toggleAccordion() {
             var acc = document.getElementById("accordion");
             if (acc.style.display === "none" || acc.style.display === "") {
@@ -175,6 +216,10 @@
                 ids.forEach(id => {
                     document.getElementById(id).classList.add("active");
                 });
+                
+                var acc = document.getElementById("accordion");
+                acc.style.opacity = "0";
+                setTimeout(() => acc.style.display = "none", 300);
             });
         });
     </script>
