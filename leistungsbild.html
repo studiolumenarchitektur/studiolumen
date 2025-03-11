@@ -88,13 +88,16 @@
             display: none;
             padding-left: 20px;
             font-size: 14px;
-            color: #000;
+            color: #800020;
             cursor: pointer;
         }
 
         .leistung-content.active {
             display: block;
-            font-weight: normal;
+            font-weight: bold;
+            background-color: rgba(128, 0, 32, 0.1);
+            padding: 5px;
+            border-radius: 5px;
         }
 
         .footer {
@@ -103,10 +106,13 @@
             width: 100%;
             text-align: center;
             padding: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
             color: #777;
             background: #fff;
-        }
-
+     }
+        
         #anfrage-button {
             font-size: 16px;
             font-weight: bold;
@@ -193,13 +199,17 @@
         <div class="leistung-content">• unterstützung bei der vergabeentscheidung</div>
     </div>
 
-    <button id="anfrage-button" onclick="window.location.href='anfrage.html'">anfrage starten</button>
+   <button id="anfrage-button" onclick="window.location.href='anfrage.html'">anfrage starten</button>
 
     <footer class="footer">
         <div>© 2025 studio lumen</div>
     </footer>
 
     <script>
+        function toggleSelection(element) {
+            element.classList.toggle("active");
+        }
+
         document.getElementById("bedarf-button").addEventListener("click", function () {
             var acc = document.getElementById("accordion");
             if (acc.style.display === "none" || acc.style.display === "") {
@@ -219,7 +229,6 @@
                 
                 ids.forEach(id => {
                     document.getElementById(id).classList.add("active");
-                    document.getElementById(id).querySelectorAll(".leistung-content").forEach(content => content.classList.add("active"));
                 });
                 
                 var acc = document.getElementById("accordion");
