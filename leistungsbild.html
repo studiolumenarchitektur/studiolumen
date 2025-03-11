@@ -39,7 +39,7 @@
 
         #selected-answer {
             font-size: 16px;
-            color: #000;
+            color: #800020;
             margin-top: 10px;
             text-align: center;
         }
@@ -196,7 +196,7 @@
         <div class="leistung-content" onclick="toggleSelection(this)">• unterstützung bei der vergabeentscheidung</div>
     </div>
 
-   <button id="anfrage-button" onclick="window.location.href='anfrage.html'">anfrage starten</button>
+    <button id="anfrage-button" onclick="window.location.href='anfrage.html'">anfrage starten</button>
 
     <footer class="footer">
         <div>© 2025 studio lumen</div>
@@ -205,35 +205,30 @@
     <script>
         function toggleSelection(element) {
             element.classList.toggle("active");
+            saveSelection();
         }
 
-        document.getElementById("bedarf-button").addEventListener("click", function () {
-            var acc = document.getElementById("accordion");
-            if (acc.style.display === "none" || acc.style.display === "") {
-                acc.style.display = "flex";
-                setTimeout(() => acc.style.opacity = "1", 10);
-            } else {
-                acc.style.opacity = "0";
-                setTimeout(() => acc.style.display = "none", 300);
-            }
-        });
-
-        document.querySelectorAll(".accordion-item").forEach(item => {
-            item.addEventListener("click", function () {
-                let ids = this.getAttribute("data-ids").split(",");
-                document.querySelectorAll(".leistung").forEach(leistung => leistung.classList.remove("active"));
-                document.querySelectorAll(".leistung-content").forEach(content => content.classList.remove("active"));
-                
-                ids.forEach(id => {
-                    document.getElementById(id).classList.add("active");
-                });
-                
-                var acc = document.getElementById("accordion");
-                acc.style.opacity = "0";
-                setTimeout(() => acc.style.display = "none", 300);
-                
-                document.getElementById("selected-answer").textContent = this.textContent;
+        function saveSelection() {
+            let activeItems = [];
+            document.querySelectorAll(".leistung-content.active").forEach(item => {
+                activeItems.push(item.textContent.trim());
             });
+            localStorage.setItem("selectedItems", JSON.stringify(activeItems));
+        }
+
+        function loadSelection() {
+            let savedItems = JSON.parse(localStorage.getItem("selectedItems"));
+            if (savedItems) {
+                document.querySelectorAll(".leistung-content").forEach(item => {
+                    if (savedItems.includes(item.textContent.trim())) {
+                        item.classList.add("active");
+                    }
+                });
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            loadSelection();
         });
     </script>
          
