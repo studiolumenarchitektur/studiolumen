@@ -157,17 +157,6 @@
     </footer>
     
     <script>
-        function toggleAccordion() {
-            var acc = document.getElementById("accordion");
-            if (acc.style.display === "flex") {
-                acc.style.opacity = "0";
-                setTimeout(() => acc.style.display = "none", 600);
-            } else {
-                acc.style.display = "flex";
-                acc.style.opacity = "1";
-            }
-        }
-
         function selectLeistungsphasen(element, ids) {
             document.querySelectorAll('.accordion-content div').forEach(el => el.classList.remove('selected'));
             element.classList.add('selected');
@@ -176,12 +165,17 @@
                 el.style.opacity = '0';
                 el.style.transform = 'translateY(20px)';
             });
+            document.querySelectorAll('.leistung-content').forEach(el => el.classList.remove('active'));
             ids.forEach(id => {
                 let leistung = document.getElementById(id);
                 if (leistung) {
                     leistung.classList.add('active');
                     leistung.style.opacity = '1';
                     leistung.style.transform = 'translateY(0)';
+                    let content = document.getElementById(id.replace('leistung-', 'l'));
+                    if (content) {
+                        content.classList.add('active');
+                    }
                 }
             });
             document.getElementById("accordion").style.opacity = "0";
