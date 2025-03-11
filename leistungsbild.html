@@ -215,14 +215,17 @@
             item.addEventListener("click", function () {
                 let ids = this.getAttribute("data-ids").split(",");
                 document.querySelectorAll(".leistung").forEach(leistung => leistung.classList.remove("active"));
-                ids.forEach(id => document.getElementById(id).classList.add("active"));
+                document.querySelectorAll(".leistung-content").forEach(content => content.classList.remove("active"));
                 
-                // Akkordeon ausblenden
+                ids.forEach(id => {
+                    document.getElementById(id).classList.add("active");
+                    document.getElementById(id).querySelectorAll(".leistung-content").forEach(content => content.classList.add("active"));
+                });
+                
                 var acc = document.getElementById("accordion");
                 acc.style.opacity = "0";
                 setTimeout(() => acc.style.display = "none", 300);
                 
-                // Gewählte Antwort anzeigen
                 document.getElementById("selected-answer").textContent = this.textContent;
             });
         });
