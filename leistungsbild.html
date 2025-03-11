@@ -212,6 +212,10 @@
     </footer>
 
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".leistung").forEach(leistung => leistung.classList.remove("active"));
+        });
+
         function toggleAccordion() {
             var acc = document.getElementById("accordion");
             if (acc.style.display === "none" || acc.style.display === "") {
