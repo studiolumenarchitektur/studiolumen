@@ -3,11 +3,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leistungsbild</title>
+    <title>leistungsbild</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'poppins', sans-serif;
             background-color: #fff;
             color: #000;
             margin: 0;
@@ -31,7 +31,7 @@
             font-weight: bold;
             font-size: 18px;
             padding: 10px;
-            border: 2px solid #800020;
+            border: none;
             cursor: pointer;
             margin-top: 10px;
             display: block;
@@ -45,10 +45,7 @@
             margin-top: 10px;
             width: 100%;
             max-width: 350px;
-            background: #f5f5f5;
-            border-radius: 8px;
             padding: 10px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease-in-out;
         }
 
@@ -56,11 +53,11 @@
             cursor: pointer;
             padding: 10px;
             text-align: center;
-            transition: background 0.3s ease-in-out;
+            transition: color 0.3s ease-in-out;
         }
 
         .accordion-item:hover {
-            background: rgba(128, 0, 32, 0.1);
+            color: #800020;
         }
 
         .leistung {
@@ -104,28 +101,44 @@
             color: #777;
             background: #fff;
         }
+
+        #anfrage-button {
+            font-size: 16px;
+            font-weight: bold;
+            color: #800020;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            position: fixed;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
     </style>
 </head>
 <body>
-    <header>Leistungsbild</header>
+    <header>leistungsbild</header>
     
-    <button id="bedarf-button">Wie kann ich dir helfen?</button>
+    <button id="bedarf-button">wie kann ich dir helfen?</button>
     
     <div id="accordion">
-        <div class="accordion-item" data-ids="leistung-l0">Ich bin noch unsicher.</div>
-        <div class="accordion-item" data-ids="leistung-l1,leistung-l2">Ich habe keine Grundrisse.</div>
-        <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3">Ich möchte umbauen.</div>
-        <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3,leistung-l4">Ich brauche eine detaillierte Planung.</div>
+        <div class="accordion-item" data-ids="leistung-l0">ich bin noch unsicher.</div>
+        <div class="accordion-item" data-ids="leistung-l1,leistung-l2">ich habe keine grundrisse.</div>
+        <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3">ich möchte umbauen.</div>
+        <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3,leistung-l4">ich brauche eine detaillierte planung.</div>
     </div>
 
-    <div class="leistung" id="leistung-l0">LPH 0 - Zielfindungsphase</div>
-    <div class="leistung" id="leistung-l1">LPH 1 - Grundlagenermittlung</div>
-    <div class="leistung" id="leistung-l2">LPH 2 - Vorplanung</div>
-    <div class="leistung" id="leistung-l3">LPH 3 - Entwurfsplanung</div>
-    <div class="leistung" id="leistung-l4">LPH 4 - Genehmigungsplanung</div>
+    <div class="leistung" id="leistung-l0">lph 0 - zielfindungsphase</div>
+    <div class="leistung" id="leistung-l1">lph 1 - grundlagenermittlung</div>
+    <div class="leistung" id="leistung-l2">lph 2 - vorplanung</div>
+    <div class="leistung" id="leistung-l3">lph 3 - entwurfsplanung</div>
+    <div class="leistung" id="leistung-l4">lph 4 - genehmigungsplanung</div>
+
+    <button id="anfrage-button" onclick="window.location.href='anfrage.html'">anfrage starten</button>
 
     <footer class="footer">
-        <div>© 2025 Studio Lumen</div>
+        <div>© 2025 studio lumen</div>
     </footer>
 
     <script>
@@ -135,7 +148,7 @@
             const items = document.querySelectorAll(".accordion-item");
             const leistungsphasen = document.querySelectorAll(".leistung");
 
-            // Funktion zum Ein- und Ausblenden des Akkordeons
+            // funktion zum ein- und ausblenden des akkordeons
             bedarfButton.addEventListener("click", function () {
                 if (accordion.style.display === "none" || accordion.style.display === "") {
                     accordion.style.display = "flex";
@@ -146,29 +159,29 @@
                 }
             });
 
-            // Funktion zur Auswahl der Leistungsphasen
+            // funktion zur auswahl der leistungsphasen
             items.forEach(item => {
                 item.addEventListener("click", function () {
-                    // Alle Leistungsphasen ausblenden
+                    // alle leistungsphasen ausblenden
                     leistungsphasen.forEach(leistung => {
                         leistung.classList.remove("active");
                     });
 
-                    // Markierte Leistungsphasen aktivieren
+                    // markierte leistungsphasen aktivieren
                     const ids = item.getAttribute("data-ids").split(",");
                     ids.forEach(id => {
                         document.getElementById(id).classList.add("active");
                     });
 
-                    // Akkordeon ausblenden
+                    // akkordeon ausblenden
                     accordion.style.opacity = "0";
                     setTimeout(() => accordion.style.display = "none", 300);
                 });
             });
 
-            // Debugging: Check ob das Akkordeon existiert
-            console.log("Accordion gefunden:", accordion !== null);
-            console.log("Button gefunden:", bedarfButton !== null);
+            // debugging: prüfe ob das akkordeon existiert
+            console.log("accordion gefunden:", accordion !== null);
+            console.log("button gefunden:", bedarfButton !== null);
         });
     </script>
          
