@@ -212,6 +212,7 @@
 
     <script>
         function toggleAccordion() {
+            document.querySelectorAll(".leistung").forEach(leistung => leistung.classList.remove("active"));
             var acc = document.getElementById("accordion");
             if (acc.style.display === "none" || acc.style.display === "") {
                 acc.style.display = "flex";
