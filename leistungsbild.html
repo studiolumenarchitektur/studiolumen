@@ -133,6 +133,29 @@
         }
     </style>
 </head>
+    <script>
+    function saveSelectedLeistungsphasen() {
+        let selectedItems = [];
+
+        document.querySelectorAll(".leistung.active").forEach(leistung => {
+            let phase = leistung.innerText.trim();
+            let subItems = [];
+
+            leistung.querySelectorAll(".leistung-content.active").forEach(sub => {
+                subItems.push(sub.innerText.trim());
+            });
+
+            selectedItems.push({ phase: phase, subItems: subItems });
+        });
+
+        localStorage.setItem("selectedLeistungsphasen", JSON.stringify(selectedItems));
+    }
+
+    document.getElementById("anfrage-button").addEventListener("click", function () {
+        saveSelectedLeistungsphasen();
+        window.location.href = "anfrage.html";
+    });
+</script>
 <body>
     <div class="back-arrow" onclick="window.location.href='index.html'">&larr;</div>
     <div class="back-arrow-right" id="back-arrow-right" onclick="window.location.href='anfrage.html'">&rarr;</div>
