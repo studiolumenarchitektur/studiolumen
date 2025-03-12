@@ -243,18 +243,20 @@ function sendEmail() {
 
     let subject = "Angebotsanfrage";
     let body = `Hallo,\n\nIch interessiere mich für folgendes:\n\n`;
-    
-body += `🔹 Auswahl: ${selectedText}\n\n`;
-body += `🔹 Zugehörige Leistungsphasen:\n`;
-document.querySelectorAll(".leistung.active").forEach(leistung => {
-    body += `  - ${leistung.textContent.trim()}\n`;
 
-    let unterpunkte = leistung.querySelectorAll(".leistung-content");
-    unterpunkte.forEach(punkt => {
-        body += `    • ${punkt.textContent.trim()}\n`;
+    body += `🔹 Auswahl: ${selectedText}\n\n`;
+    body += `🔹 Zugehörige Leistungsphasen:\n`;
+
+    document.querySelectorAll(".leistung.active").forEach(leistung => {
+        body += `  - ${leistung.textContent.trim()}\n`;
+
+        let unterpunkte = leistung.querySelectorAll(".leistung-content");
+        unterpunkte.forEach(punkt => {
+            body += `    • ${punkt.textContent.trim()}\n`;
+        });
     });
-});
-body += `\n🔹 Objektgröße: ${objektGroesse} m²\n\n`;
+
+    body += `\n🔹 Objektgröße: ${objektGroesse} m²\n\n`;
     body += `\nMit freundlichen Grüßen,\n[Ihr Name]`;
 
     window.location.href = `mailto:studiolumenarchitektur@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
@@ -263,13 +265,13 @@ function validateInput() {
     let inputField = document.getElementById("objekt-groesse");
     let anfrageButton = document.getElementById("anfrage-button");
 
-    if (inputField.value && parseInt(inputField.value) > 0 && selectedText) {
+    if (inputField.value && parseInt(inputField.value) > 0 && selectedText !== "") {
         anfrageButton.disabled = false;
-        anfrageButton.style.opacity = "1";
+        anfrageButton.style.opacity = "1";  // Button aktivieren
         anfrageButton.style.cursor = "pointer";
     } else {
         anfrageButton.disabled = true;
-        anfrageButton.style.opacity = "0.5";
+        anfrageButton.style.opacity = "0.5";  // Button deaktivieren
         anfrageButton.style.cursor = "not-allowed";
     }
 }
@@ -291,9 +293,7 @@ document.querySelectorAll(".accordion-item").forEach(item => {
         acc.style.opacity = "0";
         setTimeout(() => acc.style.display = "none", 300);
 
-        document.getElementById("anfrage-button").style.opacity = "1";
-        document.getElementById("anfrage-button").style.pointerEvents = "auto";
-        document.getElementById("anfrage-button").style.cursor = "pointer";
+        validateInput(); // Ruft validateInput auf, um den Button zu aktivieren
     });
 });
 
