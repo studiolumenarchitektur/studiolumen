@@ -123,21 +123,10 @@
 <script>
 
 let selectedText = ""; // Speichert die gewählte Antwort (inklusive Leistungsphasen)
-let selectedText = ""; // Speichert die gewählte Hauptauswahl (z. B. "lass uns eine idee entwickeln")
     
 document.querySelectorAll(".accordion-item").forEach(item => {
     item.addEventListener("click", function () {
         selectedText = this.textContent.trim(); // Speichert die Antwort als Klartext
-
-        var acc = document.getElementById("accordion");
-        acc.style.opacity = "0";
-        setTimeout(() => acc.style.display = "none", 300);
-
-        document.getElementById("anfrage-button").style.opacity = "1";
-        document.getElementById("anfrage-button").style.pointerEvents = "auto";
-        document.getElementById("anfrage-button").style.cursor = "pointer";
-    });
-});
 
         var acc = document.getElementById("accordion");
         acc.style.opacity = "0";
@@ -253,12 +242,11 @@ function sendEmail() {
         return;
     }
 
-    let subject = "angebotsanfrage";
+    let subject = "Angebotsanfrage";
     let body = `Hallo,\n\nIch interessiere mich für folgendes:\n\n`;
     
     body += `🔹 Auswahl: ${selectedText}\n`; // Fügt die Hauptauswahl ein
     body += `🔹 Objektgröße: ${objektGroesse} m²\n\n`;
-
     body += `\nMit freundlichen Grüßen,\n[Ihr Name]`;
 
     window.location.href = `mailto:studiolumenarchitektur@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
@@ -268,11 +256,11 @@ function sendEmail() {
 
     window.location.href = `mailto:studiolumenarchitektur@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
-       function validateInput() {
+      function validateInput() {
     let inputField = document.getElementById("objekt-groesse");
     let anfrageButton = document.getElementById("anfrage-button");
 
-    if (inputField.value && parseInt(inputField.value) > 0) {
+    if (inputField.value && parseInt(inputField.value) > 0 && selectedText) {
         anfrageButton.disabled = false;
         anfrageButton.style.opacity = "1";  // Button sichtbar machen
         anfrageButton.style.cursor = "pointer";
@@ -281,6 +269,7 @@ function sendEmail() {
         anfrageButton.style.opacity = "0.5";  // Button wieder deaktivieren
         anfrageButton.style.cursor = "not-allowed";
     }
+}
 } document.querySelectorAll(".accordion-item").forEach(item => {
             item.addEventListener("click", function () {
                 document.querySelectorAll(".leistung").forEach(leistung => leistung.classList.remove("active"));
