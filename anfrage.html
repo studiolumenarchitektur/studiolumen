@@ -7,6 +7,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         body {
+            <ul id="auswahl-liste"></ul>
+          }
             font-family: 'poppins', sans-serif;
             background-color: #fff;
             color: #000;
@@ -77,7 +79,15 @@
     </footer>
 
 <script>
-    function updateLeistungsphasen() {
+    document.addEventListener("DOMContentLoaded", function() {
+    let selectedAnswer = localStorage.getItem("selectedAnswer");
+    if (selectedAnswer) {
+        let listContainer = document.getElementById("auswahl-liste");
+        let listItem = document.createElement("li");
+        listItem.textContent = selectedAnswer;
+        listContainer.appendChild(listItem);
+    }
+});function updateLeistungsphasen() {
         let storedAnswer = localStorage.getItem("selectedAnswer");
 
         let listContainer = document.getElementById("leistungsphasen-list");
