@@ -93,18 +93,28 @@
         }
 
         #anfrage-button {
-            position: fixed;
-            bottom: 50px;
-            color: #fff;
-            background: #fff;
+            color: #800020;
+            background: none;
             font-weight: bold;
             font-size: 16px;
             padding: 10px 20px;
-            border: none;
-            cursor: pointer;
+            border: 2px solid #800020;
+            cursor: not-allowed;
             text-transform: lowercase;
             margin-top: 20px;
             display: block;
+            opacity: 0.5;
+            pointer-events: none;
+            position: fixed;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        #anfrage-button.active {
+            opacity: 1;
+            cursor: pointer;
+            pointer-events: auto;
         }
     </style>
 </head>
@@ -144,7 +154,7 @@
         <div class="leistung-content">• erstellung erster zeichnungen</div>
     </div>
 
-    <button id="anfrage-button" onclick="window.location.href='anfrage.html'">angebot anfragen</button>
+    <button id="anfrage-button" disabled onclick="window.location.href='anfrage.html'">angebot anfragen</button>
 
     <footer class="footer">
         <div onclick="window.location.href='impressum.html'">impressum</div>
@@ -184,6 +194,10 @@
                         leistungElement.classList.add("active");
                     }
                 });
+
+                // Aktiviert den "Angebot anfragen"-Button
+                document.getElementById("anfrage-button").classList.add("active");
+                document.getElementById("anfrage-button").disabled = false;
             });
         });
     </script>
