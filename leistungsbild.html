@@ -61,6 +61,23 @@
         .accordion-item:hover {
             color: #800020;
         }
+
+        .leistung {
+            display: none;
+            text-align: left;
+            width: 300px;
+            margin: 10px auto;
+            font-weight: normal;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            transform: translateY(10px);
+        }
+
+        .leistung.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body>
@@ -69,20 +86,40 @@
     <button id="bedarf-button" onclick="toggleAccordion()">wie kann ich dir helfen?</button>
 
     <div id="accordion">
-        <div class="accordion-item">lass uns eine idee entwickeln</div>
-        <div class="accordion-item">ich brauche unterstützung beim entwerfen</div>
-        <div class="accordion-item">lass uns meinen wohnraum umgestalten</div>
-        <div class="accordion-item">ich brauche eine planung und die baugenehmigung</div>
-        <div class="accordion-item">lass uns zusammen ein projekt von a-z planen</div>
-        <div class="accordion-item">kannst du mich bei der ausschreibung und vergabe unterstützen?</div>
-        <div class="accordion-item">ich brauche unterstützung während der bauphase.</div>
+        <div class="accordion-item" data-ids="leistung-l0">lass uns eine idee entwickeln</div>
+        <div class="accordion-item" data-ids="leistung-l1,leistung-l2">ich brauche unterstützung beim entwerfen</div>
+        <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3">lass uns meinen wohnraum umgestalten</div>
+        <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3,leistung-l4">ich brauche eine planung und die baugenehmigung</div>
+        <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3,leistung-l4,leistung-l5">lass uns zusammen ein projekt von a-z planen</div>
+        <div class="accordion-item" data-ids="leistung-l6">kannst du mich bei der ausschreibung und vergabe unterstützen?</div>
+        <div class="accordion-item" data-ids="leistung-l7">ich brauche unterstützung während der bauphase.</div>
     </div>
 
+    <!-- Leistungsphasen -->
+    <div class="leistung" id="leistung-l0">
+        <strong>lph 0 - zielfindungsphase</strong>
+        <div class="leistung-content">• ermittlung der planungsziele</div>
+        <div class="leistung-content">• erstellung einer planungsgrundlage</div>
+    </div>
+
+    <div class="leistung" id="leistung-l1">
+        <strong>lph 1 - grundlagenermittlung</strong>
+        <div class="leistung-content">• sichtung vorhandener planunterlagen</div>
+        <div class="leistung-content">• erfassung räumlicher und baulicher gegebenheiten</div>
+        <div class="leistung-content">• beratung zu planungszielen</div>
+    </div>
+
+    <div class="leistung" id="leistung-l2">
+        <strong>lph 2 - vorplanung</strong>
+        <div class="leistung-content">• ermittlung von flächen nach din277</div>
+        <div class="leistung-content">• bewertung der bestandssituation</div>
+        <div class="leistung-content">• erstellung erster zeichnungen</div>
+    </div>
 
     <script>
         function toggleAccordion() {
             let acc = document.getElementById("accordion");
-            
+
             if (acc.style.display === "none" || acc.style.display === "") {
                 acc.style.display = "flex";  
                 setTimeout(() => acc.style.opacity = "1", 10);
@@ -91,6 +128,20 @@
                 setTimeout(() => acc.style.display = "none", 300);
             }
         }
+
+        document.querySelectorAll(".accordion-item").forEach(item => {
+            item.addEventListener("click", function () {
+                document.querySelectorAll(".leistung").forEach(leistung => leistung.classList.remove("active"));
+
+                let ids = this.getAttribute("data-ids").split(",");
+                ids.forEach(id => {
+                    let leistungElement = document.getElementById(id);
+                    if (leistungElement) {
+                        leistungElement.classList.add("active");
+                    }
+                });
+            });
+        });
     </script>
 </body>
 </html>
