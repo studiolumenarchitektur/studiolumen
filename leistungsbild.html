@@ -230,9 +230,10 @@ document.querySelectorAll(".accordion-item").forEach(item => {
     <script>
 function toggleAccordion() {
     let acc = document.getElementById("accordion");
+
     if (acc.style.display === "none" || acc.style.display === "") {
         acc.style.display = "flex";
-        acc.style.opacity = "1";
+        setTimeout(() => acc.style.opacity = "1", 10);
     } else {
         acc.style.opacity = "0";
         setTimeout(() => acc.style.display = "none", 300);
@@ -284,9 +285,10 @@ function validateInput() {
 document.querySelectorAll(".accordion-item").forEach(item => {
     item.addEventListener("click", function () {
         selectedText = this.textContent.trim(); // Speichert die Auswahl
-
+        
+        // Leistungsphasen aktualisieren
         document.querySelectorAll(".leistung").forEach(leistung => leistung.classList.remove("active"));
-
+        
         let ids = this.getAttribute("data-ids").split(",");
         ids.forEach(id => {
             let leistungElement = document.getElementById(id);
@@ -295,18 +297,7 @@ document.querySelectorAll(".accordion-item").forEach(item => {
             }
         });
 
-        let acc = document.getElementById("accordion");
-        acc.style.opacity = "0";
-        setTimeout(() => acc.style.display = "none", 300);
-
-        validateInput(); // Ruft validateInput auf, um den Button zu aktivieren
-    });
-});
-
-        let acc = document.getElementById("accordion");
-        acc.style.opacity = "0";
-        setTimeout(() => acc.style.display = "none", 300);
-
+        // Menü NICHT direkt schließen
         validateInput(); // Ruft validateInput auf, um den Button zu aktivieren
     });
 });
