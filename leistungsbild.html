@@ -98,7 +98,7 @@
             font-weight: bold;
             font-size: 16px;
             padding: 10px 20px;
-            border: 2px solid #800020;
+            border: none; /* Rahmen entfernt */
             cursor: not-allowed;
             text-transform: lowercase;
             margin-top: 20px;
@@ -154,7 +154,7 @@
         <div class="leistung-content">• erstellung erster zeichnungen</div>
     </div>
 
-    <button id="anfrage-button" disabled onclick="window.location.href='anfrage.html'">angebot anfragen</button>
+    <button id="anfrage-button" disabled onclick="sendEmail()">angebot anfragen</button>
 
     <footer class="footer">
         <div onclick="window.location.href='impressum.html'">impressum</div>
@@ -196,10 +196,18 @@
                 });
 
                 // Aktiviert den "Angebot anfragen"-Button
-                document.getElementById("anfrage-button").classList.add("active");
-                document.getElementById("anfrage-button").disabled = false;
+                let anfrageButton = document.getElementById("anfrage-button");
+                anfrageButton.classList.add("active");
+                anfrageButton.disabled = false;
             });
         });
+
+        function sendEmail() {
+            let email = "studiolumenarchitektur@gmail.com";
+            let subject = "Angebotsanfrage";
+            let body = "Hallo,\n\nIch interessiere mich für folgende Leistung:\n\n" + selectedText + "\n\nMit freundlichen Grüßen,\n[Ihr Name]";
+            window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        }
     </script>
 </body>
 </html>
