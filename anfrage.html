@@ -77,47 +77,35 @@
     <div class="back-arrow" onclick="window.location.href='leistungsbild.html'">&larr;</div>
     <header>anfrage</header>
 
-    <div id="leistungsphasen-list"></div>
-
-    <div id="leistungsphasen-list"></div>
-
-    <div id="leistungsphasen-list"></div>
-
-    <div id="leistungsphasen-list"></div>
+    <div id="leistungsphasen-list"></div> <!-- Nur eine Liste -->
 
     <footer class="footer">
         <div>© 2025 studio lumen</div>
     </footer>
 
     <script>
-        function toggleAccordion() {
-            var acc = document.getElementById("accordion");
-            if (acc.style.display === "none" || acc.style.display === "") {
-                acc.style.display = "flex";
-                setTimeout(() => acc.style.opacity = "1", 10);
-            } else {
-                acc.style.opacity = "0";
-                setTimeout(() => acc.style.display = "none", 300);
-            }
-        }
-
-        document.querySelectorAll(".accordion-item").forEach(item => {
-            item.addEventListener("click", function () {
-                let ids = this.getAttribute("data-ids").split(",");
-                document.querySelectorAll(".leistung").forEach(leistung => leistung.classList.remove("active"));
-                ids.forEach(id => {
-                    document.getElementById(id).classList.add("active");
-                });
-                
-                localStorage.setItem("selectedAnswer", this.textContent);
-                document.getElementById("selected-answer").textContent = this.textContent;
-            });
-        });
-
         window.onload = function () {
-            var savedAnswer = localStorage.getItem("selectedAnswer");
-            if (savedAnswer) {
-                document.getElementById("selected-answer").textContent = savedAnswer;
+            let storedPhases = localStorage.getItem("selectedLeistungsphasen");
+
+            if (storedPhases) {
+                let selectedItems = JSON.parse(storedPhases);
+                let listContainer = document.getElementById("leistungsphasen-list");
+                listContainer.innerHTML = ""; // Entfernt vorherige Inhalte
+
+                selectedItems.forEach(item => {
+                    let phaseDiv = document.createElement("div");
+                    phaseDiv.innerHTML = `<h3>${item.phase}</h3>`;
+
+                    let subList = document.createElement("ul");
+                    item.subItems.forEach(sub => {
+                        let subItem = document.createElement("li");
+                        subItem.textContent = sub;
+                        subList.appendChild(subItem);
+                    });
+
+                    phaseDiv.appendChild(subList);
+                    listContainer.appendChild(phaseDiv);
+                });
             }
         };
     </script>
