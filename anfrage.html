@@ -98,11 +98,13 @@
 
             if (phaseMappings.hasOwnProperty(storedAnswer)) {
                 let phaseList = document.createElement("ul");
+
                 phaseMappings[storedAnswer].forEach(phase => {
                     let listItem = document.createElement("li");
                     listItem.textContent = phase;
                     phaseList.appendChild(listItem);
                 });
+
                 listContainer.appendChild(phaseList);
             } else {
                 listContainer.innerHTML += "<p>Keine passende Leistungsphase gefunden.</p>";
@@ -112,14 +114,18 @@
         }
     }
 
-    function forceReload() {
-        setTimeout(() => {
-            updateLeistungsphasen();
-        }, 100);
-    }
+    window.onload = function () {
+        console.log("Lade anfrage.html...");
+        console.log("Gespeicherte Antwort:", localStorage.getItem("selectedAnswer"));
+        updateLeistungsphasen();
+    };
 
-    window.onload = forceReload;
-    window.addEventListener("storage", forceReload);
+    window.addEventListener("storage", function (event) {
+        if (event.key === "selectedAnswer") {
+            console.log("Antwort geändert:", event.newValue);
+            updateLeistungsphasen(); // Aktualisiert die Liste, wenn sich die Antwort ändert
+        }
+    });
 </script>
 </body>
 </html>
