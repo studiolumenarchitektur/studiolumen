@@ -16,7 +16,6 @@
             min-height: 100vh; text-transform: lowercase; font-size: 16px;
         }
         header { font-size: 2rem; font-weight: bold; margin-top: 20px; }
-        }
         .project-container {
             max-width: 300px;
             width: 100%;
@@ -30,7 +29,7 @@
             transition: all 0.3s ease;
         }
         .project-content { display: none; max-width: 300px; margin: 0 auto; }
-        img { max-width: 100%; height: auto; }
+        img { max-width: 100%; height: auto; display: block; margin-bottom: 10px; }
         .footer {
             position: fixed; bottom: 0; width: 100%; text-align: center; padding: 10px;
             display: flex; justify-content: center; gap: 20px; color: #777;
@@ -51,35 +50,46 @@
 
     <header>projekte</header>
 
-    <div class="project" onclick="toggle(1, this)">bürozentrum überseehafen rostock</div>
-    <div class="project-content" id="p1"><img src="WhatsApp Image 2025-02-26 at 15.18.25.jpeg"><p>beschreibung projekt 1.</p></div>
-    
+    <div class="project" onclick="toggle(1, this)">bürozentrum überseehafen</div>
+    <div class="project-content" id="p1">
+        <img src="bz 1.jpg" alt="bürozentrum überseehafen 1">
+        <img src="bz 2.jpg" alt="bürozentrum überseehafen 2">
+    </div>
+
     <div class="project" onclick="toggle(2, this)">behördenzentrum blücherstraße</div>
-    <div class="project-content" id="p2"><img src="WhatsApp Image 2025-02-26 at 15.18.25.jpeg"><p>beschreibung projekt 2.</p></div>
-    
-    <div class="project" onclick="toggle(3, this)">kita warnemünde</div>
-    <div class="project-content" id="p3"><img src="WhatsApp Image 2025-02-26 at 15.18.25.jpeg"><p>beschreibung projekt 3.</p></div>
-    
-    <div class="project" onclick="toggle(4, this)">wohnheim nienhagen</div>
-    <div class="project-content" id="p4"><img src="WhatsApp Image 2025-02-26 at 15.18.25.jpeg"><p>beschreibung projekt 4.</p></div>
-    
+    <div class="project-content" id="p2">
+        <img src="bhz 1.jpg" alt="behördenzentrum blücherstraße 1">
+        <img src="bhz 2.jpg" alt="behördenzentrum blücherstraße 2">
+    </div>
+
     <div class="project" onclick="toggle(5, this)">bestandsanbau sanitz</div>
-    <div class="project-content" id="p5"><img src="WhatsApp Image 2025-02-26 at 15.18.25.jpeg"><p>beschreibung projekt 5.</p></div>
-    
+    <div class="project-content" id="p5">
+        <img src="anbau 1.jpg" alt="bestandsanbau sanitz">
+    </div>
+
     <div class="project" onclick="toggle(6, this)">erweiterungsanbau ribnitz-damgarten</div>
-    <div class="project-content" id="p6"><img src="WhatsApp Image 2025-02-26 at 15.18.25.jpeg"><p>beschreibung projekt 6.</p></div>
-    
-    <div class="project" onclick="toggle(7, this)">temporärer sakralbau studienarbeit</div>
-    <div class="project-content" id="p7"><img src="WhatsApp Image 2025-02-26 at 15.18.25.jpeg"><p>beschreibung projekt 7.</p></div>
-    
+    <div class="project-content" id="p6">
+        <img src="reet 1.jpg" alt="erweiterungsanbau ribnitz-damgarten 1">
+        <img src="reet 2.jpg" alt="erweiterungsanbau ribnitz-damgarten 2">
+    </div>
+
     <div class="project" onclick="toggle(8, this)">hochhaus am ICC studienarbeit</div>
-    <div class="project-content" id="p8"><img src="WhatsApp Image 2025-02-26 at 15.18.25.jpeg"><p>beschreibung projekt 8.</p></div>
+    <div class="project-content" id="p8">
+        <img src="icc 1.jpg" alt="hochhaus am ICC 1">
+        <img src="icc 2.jpg" alt="hochhaus am ICC 2">
+    </div>
     
     <div class="project" onclick="toggle(9, this)">masterthesis lübeck</div>
-    <div class="project-content" id="p9"><img src="WhatsApp Image 2025-02-26 at 15.18.25.jpeg"><p>beschreibung projekt 9.</p></div>
-    
+    <div class="project-content" id="p9">
+        <img src="thesis 1.jpg" alt="masterthesis lübeck 1">
+        <img src="thesis 2.jpg" alt="masterthesis lübeck 2">
+    </div>
+
     <div class="project" onclick="toggle(10, this)">machbarkeitsstudie leipzig oratorium</div>
-    <div class="project-content" id="p10"><img src="WhatsApp Image 2025-02-26 at 15.18.25.jpeg"><p>beschreibung projekt 10.</p></div>
+    <div class="project-content" id="p10">
+        <img src="oratorium 1.jpg" alt="machbarkeitsstudie leipzig oratorium 1">
+        <img src="oratorium 2.jpg" alt="machbarkeitsstudie leipzig oratorium 2">
+    </div>
 
     <footer class="footer">
         <div onclick="window.location.href='impressum.html'">impressum</div>
