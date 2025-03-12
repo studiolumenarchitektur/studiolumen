@@ -76,38 +76,39 @@
         <div>© 2025 studio lumen</div>
     </footer>
 
-    <script>
-        window.onload = function () {
-            let storedPhases = localStorage.getItem("selectedLeistungsphasen");
+   <script>
+    window.onload = function () {
+        let storedAnswer = localStorage.getItem("selectedAnswer");
 
-            if (storedPhases) {
-                let selectedItems = JSON.parse(storedPhases);
-                let listContainer = document.getElementById("leistungsphasen-list");
-                listContainer.innerHTML = ""; // Entfernt vorherige Inhalte
+        if (storedAnswer) {
+            let listContainer = document.getElementById("leistungsphasen-list");
+            listContainer.innerHTML = `<p><strong>Ausgewählte Antwort:</strong> ${storedAnswer}</p>`;
 
-                if (selectedItems.length === 0) {
-                    listContainer.innerHTML = "<p>keine leistungsphase ausgewählt.</p>";
-                } else {
-                    selectedItems.forEach(item => {
-                        let phaseDiv = document.createElement("div");
-                        phaseDiv.classList.add("phase-title");
-                        phaseDiv.innerHTML = `<h3>${item.phase}</h3>`;
+            let phaseMappings = {
+                "lass uns eine idee entwickeln": ["LPH 0 - Zielfindungsphase"],
+                "ich brauche unterstützung beim entwerfen": ["LPH 1 - Grundlagenermittlung", "LPH 2 - Vorplanung"],
+                "lass uns meinen wohnraum umgestalten": ["LPH 1 - Grundlagenermittlung", "LPH 2 - Vorplanung", "LPH 3 - Entwurfsplanung"],
+                "ich brauche eine planung und die baugenehmigung": ["LPH 1 - Grundlagenermittlung", "LPH 2 - Vorplanung", "LPH 3 - Entwurfsplanung", "LPH 4 - Genehmigungsplanung"],
+                "lass uns zusammen ein projekt von a-z planen": ["LPH 1 - Grundlagenermittlung", "LPH 2 - Vorplanung", "LPH 3 - Entwurfsplanung", "LPH 4 - Genehmigungsplanung", "LPH 5 - Ausführungsplanung"],
+                "kannst du mich bei der ausschreibung und vergabe unterstützen?": ["LPH 6 - Vorbereitung der Vergabe"],
+                "ich brauche unterstützung während der bauphase.": ["LPH 7 - Mitwirkung bei der Vergabe"]
+            };
 
-                        let subList = document.createElement("ul");
-                        subList.classList.add("phase-list");
-
-                        item.subItems.forEach(sub => {
-                            let subItem = document.createElement("li");
-                            subItem.textContent = sub;
-                            subList.appendChild(subItem);
-                        });
-
-                        phaseDiv.appendChild(subList);
-                        listContainer.appendChild(phaseDiv);
-                    });
-                }
+            if (storedAnswer in phaseMappings) {
+                let phaseList = document.createElement("ul");
+                phaseMappings[storedAnswer].forEach(phase => {
+                    let listItem = document.createElement("li");
+                    listItem.textContent = phase;
+                    phaseList.appendChild(listItem);
+                });
+                listContainer.appendChild(phaseList);
+            } else {
+                listContainer.innerHTML += "<p>Keine passende Leistungsphase gefunden.</p>";
             }
-        };
-    </script>
+        } else {
+            document.getElementById("leistungsphasen-list").innerHTML = "<p>keine antwort ausgewählt.</p>";
+        }
+    };
+</script>
 </body>
 </html>
