@@ -48,6 +48,72 @@
             z-index: 9999;
         }
 
+        #bedarf-button {
+            color: #800020;
+            background: none;
+            font-weight: bold;
+            font-size: 18px;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+            text-transform: lowercase;
+        }
+
+        #accordion {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10px;
+            width: 100%;
+            max-width: 350px;
+            padding: 10px;
+            transition: all 0.3s ease-in-out;
+            opacity: 0;
+        }
+
+        .accordion-item {
+            cursor: pointer;
+            padding: 10px;
+            text-align: center;
+            transition: color 0.3s ease-in-out;
+            text-transform: lowercase;
+        }
+
+        .accordion-item:hover {
+            color: #800020;
+        }
+
+        .leistung {
+            display: none;
+            text-align: left;
+            width: 300px;
+            margin: 10px auto;
+            font-weight: normal;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            transform: translateY(10px);
+        }
+
+        .leistung.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            color: #777;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
         #anfrage-button {
             color: #800020;
             background: none;
@@ -137,7 +203,7 @@
         <div class="leistung-content" onclick="toggleSelection(this)">• unterstützung bei der vergabeentscheidung</div>
     </div>
 
-   <button id="anfrage-button" onclick="window.location.href='anfrage.html'">anfrage starten</button>
+ <button id="anfrage-button" onclick="window.location.href='anfrage.html'">anfrage starten</button>
 
     <footer class="footer">
         <div onclick="window.location.href='impressum.html'">impressum</div>
@@ -145,10 +211,6 @@
     </footer>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            document.querySelectorAll(".leistung").forEach(leistung => leistung.classList.remove("active"));
-        });
-
         function toggleAccordion() {
             var acc = document.getElementById("accordion");
             if (acc.style.display === "none" || acc.style.display === "") {
