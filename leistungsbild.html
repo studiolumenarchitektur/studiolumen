@@ -136,23 +136,24 @@
 <script>
     function saveSelectedAnswer(selectedText) {
         if (selectedText) {
-            console.log("Speichere Antwort:", selectedText); // Debugging
+            console.log("✅ Speichere Antwort:", selectedText); // Debugging
             localStorage.setItem("selectedAnswer", selectedText);
+            console.log("📌 localStorage nach Speicherung:", localStorage.getItem("selectedAnswer")); // Überprüfung
         } else {
-            console.log("Fehler: Keine Antwort zum Speichern.");
+            console.log("❌ Fehler: Keine Antwort zum Speichern.");
         }
     }
 
     document.querySelectorAll(".accordion-item").forEach(item => {
         item.addEventListener("click", function () {
             let selectedText = this.textContent.trim();
-            console.log("Ausgewählte Antwort:", selectedText);
+            console.log("🔍 Ausgewählte Antwort:", selectedText);
 
             let selectedAnswerElement = document.getElementById("selected-answer");
             if (selectedAnswerElement) {
                 selectedAnswerElement.textContent = selectedText;
             } else {
-                console.log("Fehler: Element 'selected-answer' nicht gefunden!");
+                console.log("⚠️ Fehler: Element 'selected-answer' nicht gefunden!");
             }
 
             saveSelectedAnswer(selectedText); // Speichert die neue Antwort
@@ -168,10 +169,11 @@
     });
 
     document.getElementById("anfrage-button").addEventListener("click", function () {
-        console.log("Weiterleitung zu anfrage.html...");
-        console.log("Gespeicherte Antwort beim Weiterleiten:", localStorage.getItem("selectedAnswer"));
+        console.log("➡️ Weiterleitung zu anfrage.html...");
+        console.log("📌 Gespeicherte Antwort beim Weiterleiten:", localStorage.getItem("selectedAnswer"));
         window.location.href = "anfrage.html";
     });
+
 </script>
 <body>
     <div class="back-arrow" onclick="window.location.href='index.html'">&larr;</div>
