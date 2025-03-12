@@ -134,16 +134,20 @@
     </style>
 </head>
 <script>
-    function saveSelectedAnswer(selectedText) {
-        if (selectedText) {
-            console.log("✅ Speichere Antwort:", selectedText); // Debugging
-            localStorage.setItem("selectedAnswer", selectedText);
-            console.log("📌 localStorage nach Speicherung:", localStorage.getItem("selectedAnswer")); // Überprüfung
-        } else {
-            console.log("❌ Fehler: Keine Antwort zum Speichern.");
-        }
+function saveSelectedAnswer(selectedText) {
+    if (selectedText) {
+        localStorage.setItem("selectedAnswer", selectedText);
     }
-
+}
+document.querySelectorAll(".accordion-item").forEach(item => {
+    item.addEventListener("click", function () {
+        let selectedText = this.textContent.trim();
+        saveSelectedAnswer(selectedText);
+        document.getElementById("anfrage-button").style.opacity = "1";
+        document.getElementById("anfrage-button").style.pointerEvents = "auto";
+        document.getElementById("anfrage-button").style.cursor = "pointer";
+    });
+});
     document.querySelectorAll(".accordion-item").forEach(item => {
         item.addEventListener("click", function () {
             let selectedText = this.textContent.trim();
@@ -168,11 +172,9 @@
         });
     });
 
-    document.getElementById("anfrage-button").addEventListener("click", function () {
-        console.log("➡️ Weiterleitung zu anfrage.html...");
-        console.log("📌 Gespeicherte Antwort beim Weiterleiten:", localStorage.getItem("selectedAnswer"));
-        window.location.href = "anfrage.html";
-    });
+document.getElementById("anfrage-button").addEventListener("click", function () {
+    window.location.href = "anfrage.html";
+});
 
 </script>
 <body>
