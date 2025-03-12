@@ -76,40 +76,49 @@
         <div>© 2025 studio lumen</div>
     </footer>
 
-    <script>
-        window.onload = function () {
-            let storedAnswer = localStorage.getItem("selectedAnswer");
+ <script>
+    function updateLeistungsphasen() {
+        let storedAnswer = localStorage.getItem("selectedAnswer");
 
-            if (storedAnswer) {
-                let listContainer = document.getElementById("leistungsphasen-list");
-                listContainer.innerHTML = `<p><strong>Ausgewählte Antwort:</strong> ${storedAnswer}</p>`;
+        let listContainer = document.getElementById("leistungsphasen-list");
+        listContainer.innerHTML = ""; // Alte Inhalte entfernen
 
-                let phaseMappings = {
-                    "lass uns eine idee entwickeln": ["LPH 0 - Zielfindungsphase"],
-                    "ich brauche unterstützung beim entwerfen": ["LPH 1 - Grundlagenermittlung", "LPH 2 - Vorplanung"],
-                    "lass uns meinen wohnraum umgestalten": ["LPH 1 - Grundlagenermittlung", "LPH 2 - Vorplanung", "LPH 3 - Entwurfsplanung"],
-                    "ich brauche eine planung und die baugenehmigung": ["LPH 1 - Grundlagenermittlung", "LPH 2 - Vorplanung", "LPH 3 - Entwurfsplanung", "LPH 4 - Genehmigungsplanung"],
-                    "lass uns zusammen ein projekt von a-z planen": ["LPH 1 - Grundlagenermittlung", "LPH 2 - Vorplanung", "LPH 3 - Entwurfsplanung", "LPH 4 - Genehmigungsplanung", "LPH 5 - Ausführungsplanung"],
-                    "kannst du mich bei der ausschreibung und vergabe unterstützen?": ["LPH 6 - Vorbereitung der Vergabe"],
-                    "ich brauche unterstützung während der bauphase.": ["LPH 7 - Mitwirkung bei der Vergabe"]
-                };
+        if (storedAnswer) {
+            listContainer.innerHTML = `<p><strong>Ausgewählte Antwort:</strong> ${storedAnswer}</p>`;
 
-                // Sicherheitscheck, ob die Antwort in der Liste existiert
-                if (phaseMappings.hasOwnProperty(storedAnswer)) {
-                    let phaseList = document.createElement("ul");
-                    phaseMappings[storedAnswer].forEach(phase => {
-                        let listItem = document.createElement("li");
-                        listItem.textContent = phase;
-                        phaseList.appendChild(listItem);
-                    });
-                    listContainer.appendChild(phaseList);
-                } else {
-                    listContainer.innerHTML += "<p>Keine passende Leistungsphase gefunden.</p>";
-                }
+            let phaseMappings = {
+                "lass uns eine idee entwickeln": ["LPH 0 - Zielfindungsphase"],
+                "ich brauche unterstützung beim entwerfen": ["LPH 1 - Grundlagenermittlung", "LPH 2 - Vorplanung"],
+                "lass uns meinen wohnraum umgestalten": ["LPH 1 - Grundlagenermittlung", "LPH 2 - Vorplanung", "LPH 3 - Entwurfsplanung"],
+                "ich brauche eine planung und die baugenehmigung": ["LPH 1 - Grundlagenermittlung", "LPH 2 - Vorplanung", "LPH 3 - Entwurfsplanung", "LPH 4 - Genehmigungsplanung"],
+                "lass uns zusammen ein projekt von a-z planen": ["LPH 1 - Grundlagenermittlung", "LPH 2 - Vorplanung", "LPH 3 - Entwurfsplanung", "LPH 4 - Genehmigungsplanung", "LPH 5 - Ausführungsplanung"],
+                "kannst du mich bei der ausschreibung und vergabe unterstützen?": ["LPH 6 - Vorbereitung der Vergabe"],
+                "ich brauche unterstützung während der bauphase.": ["LPH 7 - Mitwirkung bei der Vergabe"]
+            };
+
+            if (phaseMappings.hasOwnProperty(storedAnswer)) {
+                let phaseList = document.createElement("ul");
+                phaseMappings[storedAnswer].forEach(phase => {
+                    let listItem = document.createElement("li");
+                    listItem.textContent = phase;
+                    phaseList.appendChild(listItem);
+                });
+                listContainer.appendChild(phaseList);
             } else {
-                document.getElementById("leistungsphasen-list").innerHTML = "<p>keine antwort ausgewählt.</p>";
+                listContainer.innerHTML += "<p>Keine passende Leistungsphase gefunden.</p>";
             }
-        };
-    </script>
+        } else {
+            listContainer.innerHTML = "<p>keine antwort ausgewählt.</p>";
+        }
+    }
+
+    window.onload = updateLeistungsphasen;
+
+    window.addEventListener("storage", function (event) {
+        if (event.key === "selectedAnswer") {
+            updateLeistungsphasen(); // Aktualisiert die Liste, wenn sich die Antwort ändert
+        }
+    });
+</script>
 </body>
 </html>
