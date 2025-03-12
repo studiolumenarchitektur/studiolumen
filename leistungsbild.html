@@ -46,6 +46,8 @@
             color: #800020;
             font-weight: 900;
             z-index: 9999;
+            opacity: 0.5;
+            pointer-events: none;
         }
 
         #bedarf-button {
@@ -122,7 +124,7 @@
             font-size: 16px;
             cursor: not-allowed;
             position: fixed;
-            bottom: 50px;
+            bottom: 40px;
             left: 50%;
             transform: translateX(-50%);
             text-transform: lowercase;
@@ -133,7 +135,7 @@
 </head>
 <body>
     <div class="back-arrow" onclick="window.location.href='index.html'">&larr;</div>
-    <div class="back-arrow-right" onclick="window.location.href='anfrage.html'">&rarr;</div>
+    <div class="back-arrow-right" id="back-arrow-right" onclick="window.location.href='anfrage.html'">&rarr;</div>
     <header>leistungsbild</header>
     
     <button id="bedarf-button" onclick="toggleAccordion()">wie kann ich dir helfen?</button>
@@ -203,7 +205,7 @@
         <div class="leistung-content" onclick="toggleSelection(this)">• unterstützung bei der vergabeentscheidung</div>
     </div>
 
- <button id="anfrage-button" onclick="window.location.href='anfrage.html'">anfrage starten</button>
+<button id="anfrage-button" onclick="window.location.href='anfrage.html'">anfrage starten</button>
 
     <footer class="footer">
         <div onclick="window.location.href='impressum.html'">impressum</div>
@@ -240,6 +242,12 @@
                 document.getElementById("anfrage-button").style.cursor = "pointer";
             });
         });
+
+        if (document.referrer.includes("anfrage.html")) {
+            let backArrowRight = document.getElementById("back-arrow-right");
+            backArrowRight.style.opacity = "1";
+            backArrowRight.style.pointerEvents = "auto";
+        }
     </script>
          
     <!-- Leistungsphasen -->
