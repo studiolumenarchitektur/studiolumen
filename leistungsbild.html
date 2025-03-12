@@ -50,7 +50,7 @@
         }
 
 #accordion {
-    display: none;
+    display: none; /* Damit das Menü am Anfang nicht sichtbar ist */
     flex-direction: column;
     align-items: center;
     margin-top: 10px;
@@ -147,7 +147,7 @@ document.querySelectorAll(".accordion-item").forEach(item => {
     <div class="back-arrow" onclick="window.location.href='index.html'">&larr;</div>
     <header>leistungsbild</header>
     
-<button id="bedarf-button" onclick="toggleAccordion(); console.log('Button wurde geklickt!');">wie kann ich dir helfen?</button>
+<button id="bedarf-button" onclick="toggleAccordion()">wie kann ich dir helfen?</button>
     
     <div id="accordion">
         <div class="accordion-item" data-ids="leistung-l0">lass uns eine idee entwickeln</div>
@@ -236,18 +236,16 @@ function toggleAccordion() {
     let acc = document.getElementById("accordion");
 
     if (!acc) {
-        console.error("Akkordeon-Element wurde nicht gefunden!");
+        console.error("Akkordeon-Element nicht gefunden!");
         return;
     }
 
-    if (window.getComputedStyle(acc).display === "none") {
-        acc.style.display = "flex";  // Akkordeon sichtbar machen
+    if (acc.style.display === "none" || acc.style.display === "") {
+        acc.style.display = "block";  // Akkordeon sichtbar machen
         acc.style.opacity = "1";
-        console.log("Akkordeon GEÖFFNET");
     } else {
         acc.style.opacity = "0";
         setTimeout(() => acc.style.display = "none", 300);
-        console.log("Akkordeon GESCHLOSSEN");
     }
 }
 function sendEmail() {
