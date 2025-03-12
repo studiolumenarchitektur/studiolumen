@@ -128,22 +128,12 @@ document.querySelectorAll(".accordion-item").forEach(item => {
     item.addEventListener("click", function () {
         selectedText = this.textContent.trim(); // Speichert die Antwort als Klartext
 
-        var acc = document.getElementById("accordion");
-        acc.style.opacity = "0";
-        setTimeout(() => acc.style.display = "none", 300);
-
-        document.getElementById("anfrage-button").style.opacity = "1";
-        document.getElementById("anfrage-button").style.pointerEvents = "auto";
-        document.getElementById("anfrage-button").style.cursor = "pointer";
-    });
-});
-
 </script>
 <body>
     <div class="back-arrow" onclick="window.location.href='index.html'">&larr;</div>
     <header>leistungsbild</header>
     
-    <button id="bedarf-button" onclick="toggleAccordion()">wie kann ich dir helfen?</button>
+<button id="bedarf-button" onclick="toggleAccordion()">wie kann ich dir helfen?</button>
     
     <div id="accordion">
         <div class="accordion-item" data-ids="leistung-l0">lass uns eine idee entwickeln</div>
@@ -223,17 +213,17 @@ document.querySelectorAll(".accordion-item").forEach(item => {
     </footer>
 
     <script>
-        function toggleAccordion() {
-            document.querySelectorAll(".leistung").forEach(leistung => leistung.classList.remove("active"));
-            var acc = document.getElementById("accordion");
-            if (acc.style.display === "none" || acc.style.display === "") {
-                acc.style.display = "flex";
-                setTimeout(() => acc.style.opacity = "1", 10);
-            } else {
-                acc.style.opacity = "0";
-                setTimeout(() => acc.style.display = "none", 300);
-            }
-        }
+function toggleAccordion() {
+    let acc = document.getElementById("accordion");
+
+    if (acc.style.display === "none" || acc.style.display === "") {
+        acc.style.display = "flex";
+        setTimeout(() => acc.style.opacity = "1", 10);
+    } else {
+        acc.style.opacity = "0";
+        setTimeout(() => acc.style.display = "none", 300);
+    }
+}
 function sendEmail() {
     let objektGroesse = document.getElementById("objekt-groesse").value;
     
@@ -251,12 +241,7 @@ function sendEmail() {
 
     window.location.href = `mailto:studiolumenarchitektur@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
-
-    body += `\nmit freundlichem gruß,\n[Ihr Name]`;
-
-    window.location.href = `mailto:studiolumenarchitektur@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-}
-      function validateInput() {
+   function validateInput() {
     let inputField = document.getElementById("objekt-groesse");
     let anfrageButton = document.getElementById("anfrage-button");
 
