@@ -254,48 +254,43 @@
         <div>© 2025 studio lumen</div>
     </footer>
 
-   <script>
-    function saveSelectedAnswer(selectedText) {
-        if (selectedText) {
-            console.log("✅ Speichere Antwort:", selectedText); // Debugging
-            localStorage.setItem("selectedAnswer", selectedText);
-            console.log("📌 localStorage nach Speicherung:", localStorage.getItem("selectedAnswer")); // Überprüfung
-        } else {
-            console.log("❌ Fehler: Keine Antwort zum Speichern.");
-        }
-    }
-
-    document.querySelectorAll(".accordion-item").forEach(item => {
-        item.addEventListener("click", function () {
-            let selectedText = this.textContent.trim();
-            console.log("🔍 Ausgewählte Antwort:", selectedText);
-
-            let selectedAnswerElement = document.getElementById("selected-answer");
-            if (selectedAnswerElement) {
-                selectedAnswerElement.textContent = selectedText;
-            } else {
-                console.log("⚠️ Fehler: Element 'selected-answer' nicht gefunden!");
-            }
-
-            saveSelectedAnswer(selectedText); // Speichert die neue Antwort
-
+    <script>
+        function toggleAccordion() {
+            document.querySelectorAll(".leistung").forEach(leistung => leistung.classList.remove("active"));
             var acc = document.getElementById("accordion");
-            acc.style.opacity = "0";
-            setTimeout(() => acc.style.display = "none", 300);
+            if (acc.style.display === "none" || acc.style.display === "") {
+                acc.style.display = "flex";
+                setTimeout(() => acc.style.opacity = "1", 10);
+            } else {
+                acc.style.opacity = "0";
+                setTimeout(() => acc.style.display = "none", 300);
+            }
+        }
 
-            document.getElementById("anfrage-button").style.opacity = "1";
-            document.getElementById("anfrage-button").style.pointerEvents = "auto";
-            document.getElementById("anfrage-button").style.cursor = "pointer";
+        document.querySelectorAll(".accordion-item").forEach(item => {
+            item.addEventListener("click", function () {
+                document.querySelectorAll(".leistung").forEach(leistung => leistung.classList.remove("active"));
+                let ids = this.getAttribute("data-ids").split(",");
+                ids.forEach(id => {
+                    document.getElementById(id).classList.add("active");
+                });
+                
+                var acc = document.getElementById("accordion");
+                acc.style.opacity = "0";
+                setTimeout(() => acc.style.display = "none", 300);
+                
+                document.getElementById("anfrage-button").style.opacity = "1";
+                document.getElementById("anfrage-button").style.pointerEvents = "auto";
+                document.getElementById("anfrage-button").style.cursor = "pointer";
+            });
         });
-    });
 
-    document.getElementById("anfrage-button").addEventListener("click", function () {
-        console.log("➡️ Weiterleitung zu anfrage.html...");
-        console.log("📌 Gespeicherte Antwort beim Weiterleiten:", localStorage.getItem("selectedAnswer"));
-        window.location.href = "anfrage.html";
-    });
-
-</script>
+        if (document.referrer.includes("anfrage.html")) {
+            let backArrowRight = document.getElementById("back-arrow-right");
+            backArrowRight.style.opacity = "1";
+            backArrowRight.style.pointerEvents = "auto";
+        }
+    </script>
          
     <!-- Leistungsphasen -->
     <div class="leistung" id="leistung-l0">LPH 0 - Zielfindungsphase</div>
