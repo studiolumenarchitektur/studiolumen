@@ -211,7 +211,12 @@ document.querySelectorAll(".accordion-item").forEach(item => {
         <div class="leistung-content" onclick="toggleSelection(this)">• unterstützung bei der vergabeentscheidung</div>
     </div>
 
-<button id="anfrage-button" onclick="sendEmail()">angebot anfragen</button>
+<!-- Eingabefeld für die Objektgröße -->
+<label for="objekt-groesse">wie groß ist dein vorhaben ca.?:</label>
+<input type="number" id="objekt-groesse" placeholder="z.B. 100" min="1" oninput="validateInput()">
+
+<!-- Anfrage-Button -->
+<button id="anfrage-button" onclick="sendEmail()" disabled>angebot anfragen</button>
 
     <footer class="footer">
         <div onclick="window.location.href='impressum.html'">impressum</div>
@@ -235,7 +240,20 @@ function sendEmail() {
     let body = "Hallo,\n\nhi, bitte sende mir ein angebot über die folgenden leistungsphasen: ...\n\nMit freundlichen Grüßen,\n[Ihr Name]";
     window.location.href = `mailto:studiolumenarchitektur@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
-        document.querySelectorAll(".accordion-item").forEach(item => {
+       function validateInput() {
+    let inputField = document.getElementById("objekt-groesse");
+    let anfrageButton = document.getElementById("anfrage-button");
+
+    if (inputField.value && parseInt(inputField.value) > 0) {
+        anfrageButton.disabled = false;
+        anfrageButton.style.opacity = "1";  // Button sichtbar machen
+        anfrageButton.style.cursor = "pointer";
+    } else {
+        anfrageButton.disabled = true;
+        anfrageButton.style.opacity = "0.5";  // Button wieder deaktivieren
+        anfrageButton.style.cursor = "not-allowed";
+    }
+} document.querySelectorAll(".accordion-item").forEach(item => {
             item.addEventListener("click", function () {
                 document.querySelectorAll(".leistung").forEach(leistung => leistung.classList.remove("active"));
                 let ids = this.getAttribute("data-ids").split(",");
