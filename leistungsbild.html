@@ -236,8 +236,8 @@ function toggleAccordion() {
     let acc = document.getElementById("accordion");
 
     if (acc.style.display === "none" || acc.style.display === "") {
-        acc.style.display = "flex";  // Menü sichtbar machen
-        setTimeout(() => acc.style.opacity = "1", 10);
+        acc.style.display = "flex";  // Setzt das Menü sichtbar
+        acc.style.opacity = "1";
     } else {
         acc.style.opacity = "0";
         setTimeout(() => acc.style.display = "none", 300);
