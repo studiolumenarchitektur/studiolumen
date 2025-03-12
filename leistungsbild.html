@@ -133,27 +133,31 @@
         }
     </style>
 </head>
-    <script>
-    function saveSelectedLeistungsphasen() {
-        let selectedItems = [];
-
-        document.querySelectorAll(".leistung.active").forEach(leistung => {
-            let phase = leistung.innerText.trim();
-            let subItems = [];
-
-            leistung.querySelectorAll(".leistung-content.active").forEach(sub => {
-                subItems.push(sub.innerText.trim());
-            });
-
-            selectedItems.push({ phase: phase, subItems: subItems });
-        });
-
-        localStorage.setItem("selectedLeistungsphasen", JSON.stringify(selectedItems));
+ <script>
+    function saveSelectedAnswer() {
+        let selectedAnswer = document.getElementById("selected-answer").textContent.trim();
+        localStorage.setItem("selectedAnswer", selectedAnswer);
     }
 
     document.getElementById("anfrage-button").addEventListener("click", function () {
-        saveSelectedLeistungsphasen();
+        saveSelectedAnswer();
         window.location.href = "anfrage.html";
+    });
+
+    document.querySelectorAll(".accordion-item").forEach(item => {
+        item.addEventListener("click", function () {
+            let selectedText = this.textContent.trim();
+            document.getElementById("selected-answer").textContent = selectedText;
+            localStorage.setItem("selectedAnswer", selectedText);
+            
+            var acc = document.getElementById("accordion");
+            acc.style.opacity = "0";
+            setTimeout(() => acc.style.display = "none", 300);
+
+            document.getElementById("anfrage-button").style.opacity = "1";
+            document.getElementById("anfrage-button").style.pointerEvents = "auto";
+            document.getElementById("anfrage-button").style.cursor = "pointer";
+        });
     });
 </script>
 <body>
