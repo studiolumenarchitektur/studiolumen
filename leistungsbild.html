@@ -18,23 +18,12 @@
             min-height: 100vh;
             font-size: 16px;
         }
-        
+
         header {
             font-size: 2rem;
             font-weight: bold;
             margin-top: 20px;
             text-transform: lowercase;
-        }
-
-        .back-arrow {
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            cursor: pointer;
-            font-size: 2rem;
-            color: #800020;
-            font-weight: 900;
-            z-index: 9999;
         }
 
         #bedarf-button {
@@ -49,17 +38,17 @@
             text-transform: lowercase;
         }
 
-#accordion {
-    display: none; /* Damit das Menü am Anfang nicht sichtbar ist */
-    flex-direction: column;
-    align-items: center;
-    margin-top: 10px;
-    width: 100%;
-    max-width: 350px;
-    padding: 10px;
-    transition: all 0.3s ease-in-out;
-    opacity: 0;
-}
+        #accordion {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10px;
+            width: 100%;
+            max-width: 350px;
+            padding: 10px;
+            transition: all 0.3s ease-in-out;
+            opacity: 0;
+        }
 
         .accordion-item {
             cursor: pointer;
@@ -72,278 +61,36 @@
         .accordion-item:hover {
             color: #800020;
         }
-
-        .leistung {
-            display: none;
-            text-align: left;
-            width: 300px;
-            margin: 10px auto;
-            font-weight: normal;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-            transform: translateY(10px);
-        }
-
-        .leistung.active {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            text-align: center;
-            padding: 10px;
-            color: #777;
-            background: #fff;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        #anfrage-button {
-            color: #800020;
-            background: none;
-            border: none;
-            font-weight: normal;
-            font-size: 16px;
-            cursor: not-allowed;
-            position: fixed;
-            bottom: 50px;
-            left: 50%;
-            transform: translateX(-50%);
-            text-transform: lowercase;
-            opacity: 0.5;
-            pointer-events: none;
-        }
     </style>
 </head>
-<script>
-
-let selectedText = ""; // Speichert die gewählte Antwort
-
-document.querySelectorAll(".accordion-item").forEach(item => {
-    item.addEventListener("click", function () {
-        selectedText = this.textContent.trim(); // Speichert die Auswahl
-        
-        document.querySelectorAll(".leistung").forEach(leistung => leistung.classList.remove("active"));
-        
-        let ids = this.getAttribute("data-ids").split(",");
-        ids.forEach(id => {
-            let leistungElement = document.getElementById(id);
-            if (leistungElement) {
-                leistungElement.classList.add("active"); // Markiert die zugehörigen Leistungsphasen
-            }
-        });
-
-        validateInput(); // Ruft validateInput auf, um den Button zu aktivieren
-    });
-});
-
-</script>
 <body>
-    <div class="back-arrow" onclick="window.location.href='index.html'">&larr;</div>
     <header>leistungsbild</header>
-    
-<button id="bedarf-button" onclick="toggleAccordion()">wie kann ich dir helfen?</button>
-    
+
+    <button id="bedarf-button" onclick="toggleAccordion()">wie kann ich dir helfen?</button>
+
     <div id="accordion">
-        <div class="accordion-item" data-ids="leistung-l0">lass uns eine idee entwickeln</div>
-        <div class="accordion-item" data-ids="leistung-l1,leistung-l2">ich brauche unterstützung beim entwerfen</div>
-        <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3">lass uns meinen wohnraum umgestalten</div>
-        <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3,leistung-l4">ich brauche eine planung und die baugenehmigung</div>
-        <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3,leistung-l4,leistung-l5">lass uns zusammen ein projekt von a-z planen</div>
-        <div class="accordion-item" data-ids="leistung-l6">kannst du mich bei der ausschreibung und vergabe unterstützen?</div>
-        <div class="accordion-item" data-ids="leistung-l7">ich brauche unterstützung während der bauphase.</div>
+        <div class="accordion-item">lass uns eine idee entwickeln</div>
+        <div class="accordion-item">ich brauche unterstützung beim entwerfen</div>
+        <div class="accordion-item">lass uns meinen wohnraum umgestalten</div>
+        <div class="accordion-item">ich brauche eine planung und die baugenehmigung</div>
+        <div class="accordion-item">lass uns zusammen ein projekt von a-z planen</div>
+        <div class="accordion-item">kannst du mich bei der ausschreibung und vergabe unterstützen?</div>
+        <div class="accordion-item">ich brauche unterstützung während der bauphase.</div>
     </div>
 
-   <div class="leistung" id="leistung-l0">
-        lph 0 - zielfindungsphase
-        <div class="leistung-content" onclick="toggleSelection(this)">• ermittlung der planungsziele</div>
-        <div class="leistung-content" onclick="toggleSelection(this)">• erstellung einer planungsgrundlage</div>
-    </div>
-
-    <div class="leistung" id="leistung-l1">
-        lph 1 - grundlagenermittlung
-        <div class="leistung-content" onclick="toggleSelection(this)">• sichtung vorhandener planunterlagen</div>
-        <div class="leistung-content" onclick="toggleSelection(this)">• erfassung räumlicher und baulicher gegebenheiten</div>
-        <div class="leistung-content" onclick="toggleSelection(this)">• beratung zu planungszielen</div>
-    </div>
-
-    <div class="leistung" id="leistung-l2">
-        lph 2 - vorplanung
-        <div class="leistung-content" onclick="toggleSelection(this)">• ermittlung von flächen nach din277</div>
-        <div class="leistung-content" onclick="toggleSelection(this)">• bewertung der bestandssituation</div>
-        <div class="leistung-content" onclick="toggleSelection(this)">• erstellung erster zeichnungen</div>
-    </div>
-
-    <div class="leistung" id="leistung-l3">
-        lph 3 - entwurfsplanung
-        <div class="leistung-content" onclick="toggleSelection(this)">• erstellung von schnitten und ansichten</div>
-        <div class="leistung-content" onclick="toggleSelection(this)">• 3d-visualisierung zur konzeptentwicklung</div>
-        <div class="leistung-content" onclick="toggleSelection(this)">• überprüfung der flächennutzung</div>
-    </div>
-
-    <div class="leistung" id="leistung-l4">
-        lph 4 - genehmigungsplanung
-        <div class="leistung-content" onclick="toggleSelection(this)">• erstellung genehmigungsfähiger pläne</div>
-        <div class="leistung-content" onclick="toggleSelection(this)">• abstimmung mit behörden</div>
-        <div class="leistung-content" onclick="toggleSelection(this)">• flächen- und maßkonzepte für den bauantrag</div>
-    </div>
-
-    <div class="leistung" id="leistung-l5">
-        lph 5 - ausführungsplanung
-        <div class="leistung-content" onclick="toggleSelection(this)">• erstellung detaillierter bauzeichnungen</div>
-        <div class="leistung-content" onclick="toggleSelection(this)">• integration technischer und gestalterischer anforderungen</div>
-        <div class="leistung-content" onclick="toggleSelection(this)">• anpassung der pläne an bauliche gegebenheiten</div>
-    </div>
-
-        <div class="leistung" id="leistung-l6">
-        lph 6 - vorbereitung der vergabe
-        <div class="leistung-content" onclick="toggleSelection(this)">• erstellung von leistungsbeschreibungen</div>
-        <div class="leistung-content" onclick="toggleSelection(this)">• ermittlung von kostenrahmen und vergabestrategien</div>
-        <div class="leistung-content" onclick="toggleSelection(this)">• vorbereitung der ausschreibung</div>
-    </div>
-
-    <div class="leistung" id="leistung-l7">
-        lph 7 - mitwirkung bei der vergabe
-        <div class="leistung-content" onclick="toggleSelection(this)">• prüfung und auswertung von angeboten</div>
-        <div class="leistung-content" onclick="toggleSelection(this)">• vergleich von leistungs- und kostenstrukturen</div>
-        <div class="leistung-content" onclick="toggleSelection(this)">• unterstützung bei der vergabeentscheidung</div>
-    </div>
-
-<label for="objekt-groesse">wie groß ist dein vorhaben ca.?:</label>
-<select id="objekt-groesse" onchange="validateInput()">
-    <option value="">Bitte wählen...</option>
-    <option value="bis 50m²">bis 50m²</option>
-    <option value="bis 100m²">bis 100m²</option>
-    <option value="bis 150m²">bis 150m²</option>
-    <option value="bis 200m²">bis 200m²</option>
-    <option value="bis 250m²">bis 250m²</option>
-    <option value="bis 300m²">bis 300m²</option>
-    <option value="individuell">individuell</option>
-</select>
-    <button id="anfrage-button" onclick="sendEmail()" disabled>angebot anfragen</button>
-    <footer class="footer">
-        <div onclick="window.location.href='impressum.html'">impressum</div>
-        <div>© 2025 studio lumen</div>
-    </footer>
 
     <script>
-function toggleAccordion() {
-    let acc = document.getElementById("accordion");
-
-    if (!acc) {
-        console.error("Akkordeon-Element nicht gefunden!");
-        return;
-    }
-
-    if (acc.style.display === "none" || acc.style.display === "") {
-        acc.style.display = "block";  // Akkordeon sichtbar machen
-        acc.style.opacity = "1";
-    } else {
-        acc.style.opacity = "0";
-        setTimeout(() => acc.style.display = "none", 300);
-    }
-}
-function sendEmail() {
-    let objektGroesse = document.getElementById("objekt-groesse").value;
-
-    if (!selectedText) {
-        alert("Bitte wähle eine Antwort aus!");
-        return;
-    }
-
-    let subject = "Angebotsanfrage";
-    let body = `Hallo,\n\nIch interessiere mich für folgendes:\n\n`;
-
-    body += `🔹 Auswahl: ${selectedText}\n\n`;
-    body += `🔹 Zugehörige Leistungsphasen:\n`;
-
-    document.querySelectorAll(".leistung.active").forEach(leistung => {
-        body += `  - ${leistung.textContent.trim()}\n`;
-
-        let unterpunkte = leistung.querySelectorAll(".leistung-content");
-        unterpunkte.forEach(punkt => {
-            body += `    • ${punkt.textContent.trim()}\n`;
-        });
-    });
-
-let objektGroesse = document.getElementById("objekt-groesse").value;
-body += `🔹 Objektgröße: ${objektGroesse}\n\n`;
-    body += `\nMit freundlichen Grüßen,\n[Ihr Name]`;
-
-    window.location.href = `mailto:studiolumenarchitektur@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-}
-function validateInput() {
-    let selectField = document.getElementById("objekt-groesse");
-    let anfrageButton = document.getElementById("anfrage-button");
-
-    if (selectField.value !== "" && selectedText.trim() !== "") {
-        anfrageButton.disabled = false;
-        anfrageButton.style.opacity = "1";  // Button aktivieren
-        anfrageButton.style.cursor = "pointer";
-    } else {
-        anfrageButton.disabled = true;
-        anfrageButton.style.opacity = "0.5";  // Button deaktivieren
-        anfrageButton.style.cursor = "not-allowed";
-    }
-}
-document.querySelectorAll(".accordion-item").forEach(item => {
-    item.addEventListener("click", function () {
-        selectedText = this.textContent.trim(); // Speichert die Auswahl
-        
-        // Leistungsphasen aktualisieren
-        document.querySelectorAll(".leistung").forEach(leistung => leistung.classList.remove("active"));
-        
-        let ids = this.getAttribute("data-ids").split(",");
-        ids.forEach(id => {
-            let leistungElement = document.getElementById(id);
-            if (leistungElement) {
-                leistungElement.classList.add("active"); // Markiert die zugehörigen Leistungsphasen
+        function toggleAccordion() {
+            let acc = document.getElementById("accordion");
+            
+            if (acc.style.display === "none" || acc.style.display === "") {
+                acc.style.display = "flex";  
+                setTimeout(() => acc.style.opacity = "1", 10);
+            } else {
+                acc.style.opacity = "0";
+                setTimeout(() => acc.style.display = "none", 300);
             }
-        });
-
-        // Menü NICHT direkt schließen
-        validateInput(); // Ruft validateInput auf, um den Button zu aktivieren
-    });
-});
-
-        if (document.referrer.includes("anfrage.html")) {
-            let backArrowRight = document.getElementById("back-arrow-right");
-            backArrowRight.style.opacity = "1";
-            backArrowRight.style.pointerEvents = "auto";
         }
     </script>
-         
-    <!-- Leistungsphasen -->
-    <div class="leistung" id="leistung-l0">LPH 0 - Zielfindungsphase</div>
-    </div>
-    
-    <div class="leistung" id="leistung-l1">LPH 1 - Grundlagenermittlung</div>
-    </div>
-    
-    <div class="leistung" id="leistung-l2">LPH 2 - Vorplanung</div>
-    </div>
-    
-    <div class="leistung" id="leistung-l3">LPH 3 - Entwurfsplanung</div>
-    </div>
-    
-    <div class="leistung" onclick="toggle('l4')" id="leistung-l4">LPH 4 - Genehmigungsplanung</div>
-    </div>
-    
-    <div class="leistung" onclick="toggle('l5')" id="leistung-l5">LPH 5 - Ausführungsplanung</div>
-    </div>
-
-    <div class="leistung" onclick="toggle('l6')" id="leistung-l6">LPH 6 - Vorbereitung der Vergabe</div>
-    </div>
-        
-    <div class="leistung" onclick="toggle('l7')" id="leistung-l7">LPH 7 - Mitwirkung bei der Vergabe</div>
-    </div>
-
-    <footer class="footer">
-        <div onclick="window.location.href='impressum.html'">Impressum</div>
-        <div>© 2025 studio lumen</div>
-    </footer>
+</body>
+</html>
