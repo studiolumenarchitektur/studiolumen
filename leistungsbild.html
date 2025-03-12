@@ -160,18 +160,6 @@ document.querySelectorAll(".accordion-item").forEach(item => {
         document.getElementById("anfrage-button").style.cursor = "pointer";
     });
 });
-document.querySelectorAll(".accordion-item").forEach(item => {
-    item.addEventListener("click", function () {
-        let selectedText = this.textContent.trim();
-        let phaseIds = this.getAttribute("data-ids").split(",");
-
-        saveSelectedAnswer(selectedText, phaseIds);
-
-        document.getElementById("anfrage-button").style.opacity = "1";
-        document.getElementById("anfrage-button").style.pointerEvents = "auto";
-        document.getElementById("anfrage-button").style.cursor = "pointer";
-    });
-});
     document.querySelectorAll(".accordion-item").forEach(item => {
         item.addEventListener("click", function () {
             let selectedText = this.textContent.trim();
