@@ -236,8 +236,13 @@ document.querySelectorAll(".accordion-item").forEach(item => {
             }
         }
 function sendEmail() {
-    let subject = "Anfrage zu meinem Projekt";
-    let body = "Hallo,\n\nhi, bitte sende mir ein angebot über die folgenden leistungsphasen: ...\n\nMit freundlichen Grüßen,\n[Ihr Name]";
+    let objektGroesse = document.getElementById("objekt-groesse").value;
+    
+    let subject = "angebotsanfrage";
+    let body = `hallo,\n\nkannst du mir ein angebot über die folgenden leistungen erstellen?: ...\n\n` +
+               `objektgröße: ${objektGroesse} m²\n\n` +
+               `mit freundlichen grüßen,\n[Ihr Name]`;
+
     window.location.href = `mailto:studiolumenarchitektur@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
        function validateInput() {
