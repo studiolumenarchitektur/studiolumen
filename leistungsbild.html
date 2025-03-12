@@ -37,19 +37,6 @@
             z-index: 9999;
         }
 
-        .back-arrow-right {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            cursor: pointer;
-            font-size: 2rem;
-            color: #800020;
-            font-weight: 900;
-            z-index: 9999;
-            opacity: 0.15;
-            pointer-events: none;
-        }
-
         #bedarf-button {
             color: #800020;
             background: none;
@@ -191,7 +178,6 @@ document.getElementById("anfrage-button").addEventListener("click", function () 
 </script>
 <body>
     <div class="back-arrow" onclick="window.location.href='index.html'">&larr;</div>
-    <div class="back-arrow-right" id="back-arrow-right" onclick="window.location.href='anfrage.html'">&rarr;</div>
     <header>leistungsbild</header>
     
     <button id="bedarf-button" onclick="toggleAccordion()">wie kann ich dir helfen?</button>
