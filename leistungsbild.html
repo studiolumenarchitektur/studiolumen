@@ -250,7 +250,7 @@ function sendEmail() {
 
     window.location.href = `mailto:studiolumenarchitektur@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
-  function validateInput() {
+function validateInput() {
     let inputField = document.getElementById("objekt-groesse");
     let anfrageButton = document.getElementById("anfrage-button");
 
@@ -264,23 +264,19 @@ function sendEmail() {
         anfrageButton.style.cursor = "not-allowed";
     }
 }
-} document.querySelectorAll(".accordion-item").forEach(item => {
-            item.addEventListener("click", function () {
-                document.querySelectorAll(".leistung").forEach(leistung => leistung.classList.remove("active"));
-                let ids = this.getAttribute("data-ids").split(",");
-                ids.forEach(id => {
-                    document.getElementById(id).classList.add("active");
-                });
-                
-                var acc = document.getElementById("accordion");
-                acc.style.opacity = "0";
-                setTimeout(() => acc.style.display = "none", 300);
-                
-                document.getElementById("anfrage-button").style.opacity = "1";
-                document.getElementById("anfrage-button").style.pointerEvents = "auto";
-                document.getElementById("anfrage-button").style.cursor = "pointer";
-            });
-        });
+document.querySelectorAll(".accordion-item").forEach(item => {
+    item.addEventListener("click", function () {
+        selectedText = this.textContent.trim(); // Speichert die Auswahl
+        
+        let acc = document.getElementById("accordion");
+        acc.style.opacity = "0";
+        setTimeout(() => acc.style.display = "none", 300);
+
+        document.getElementById("anfrage-button").style.opacity = "1";
+        document.getElementById("anfrage-button").style.pointerEvents = "auto";
+        document.getElementById("anfrage-button").style.cursor = "pointer";
+    });
+});
 
         if (document.referrer.includes("anfrage.html")) {
             let backArrowRight = document.getElementById("back-arrow-right");
