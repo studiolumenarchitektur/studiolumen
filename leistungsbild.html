@@ -122,11 +122,17 @@
 </head>
 <script>
 
-let selectedText = ""; // Speichert die gewählte Antwort (inklusive Leistungsphasen)
-    
+let selectedText = ""; // Speichert die gewählte Antwort
+
 document.querySelectorAll(".accordion-item").forEach(item => {
     item.addEventListener("click", function () {
-        selectedText = this.textContent.trim(); // Speichert die Antwort als Klartext
+        selectedText = this.textContent.trim(); // Speichert die Auswahl
+
+        document.getElementById("anfrage-button").style.opacity = "1";
+        document.getElementById("anfrage-button").style.pointerEvents = "auto";
+        document.getElementById("anfrage-button").style.cursor = "pointer";
+    });
+});
 
 </script>
 <body>
@@ -226,7 +232,7 @@ function toggleAccordion() {
 }
 function sendEmail() {
     let objektGroesse = document.getElementById("objekt-groesse").value;
-    
+
     if (!selectedText) {
         alert("Bitte wähle eine Antwort aus!");
         return;
@@ -235,13 +241,13 @@ function sendEmail() {
     let subject = "Angebotsanfrage";
     let body = `Hallo,\n\nIch interessiere mich für folgendes:\n\n`;
     
-    body += `🔹 Auswahl: ${selectedText}\n`; // Fügt die Hauptauswahl ein
+    body += `🔹 Auswahl: ${selectedText}\n`; // Fügt die gewählte Auswahl ein
     body += `🔹 Objektgröße: ${objektGroesse} m²\n\n`;
     body += `\nMit freundlichen Grüßen,\n[Ihr Name]`;
 
     window.location.href = `mailto:studiolumenarchitektur@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
-   function validateInput() {
+  function validateInput() {
     let inputField = document.getElementById("objekt-groesse");
     let anfrageButton = document.getElementById("anfrage-button");
 
