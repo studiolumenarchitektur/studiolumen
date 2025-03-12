@@ -122,13 +122,16 @@
 </head>
 <script>
 
-let selectedLeistungen = [];
-
+let selectedLeistungen = []; // Globale Variable für die Auswahl der Leistungen
+let selectedText = ""; // Speichert die gewählte Hauptauswahl (z. B. "lass uns eine idee entwickeln")
+    
 document.querySelectorAll(".accordion-item").forEach(item => {
     item.addEventListener("click", function () {
         document.querySelectorAll(".leistung").forEach(leistung => leistung.classList.remove("active"));
+
         let ids = this.getAttribute("data-ids").split(",");
-        selectedLeistungen = []; // Leere die Auswahl, damit nur die aktuelle gespeichert wird.
+        selectedLeistungen = []; // Löscht die alte Auswahl
+        selectedText = this.textContent.trim(); // Speichert die Hauptauswahl
 
         ids.forEach(id => {
             let leistungElement = document.getElementById(id);
@@ -246,23 +249,29 @@ document.querySelectorAll(".accordion-item").forEach(item => {
         }
 function sendEmail() {
     let objektGroesse = document.getElementById("objekt-groesse").value;
-    
+
+    if (!selectedText) {
+        alert("Bitte wähle eine Antwort aus!");
+        return;
+    }
+
     if (selectedLeistungen.length === 0) {
         alert("Bitte wähle mindestens eine Leistung aus!");
         return;
     }
 
     let subject = "Angebotsanfrage";
-    let body = `Hallo,\n\nkannst du mir ein Angebot über die folgenden Leistungen erstellen?:\n\n`;
-
+    let body = `hallo,\n\nkannst du mir ein angebot über die folgenden leistungen machen?:\n\n`;
+    
+    body += `🔹 Auswahl: ${selectedText}\n`; // Fügt die Hauptauswahl ein
     body += `🔹 Objektgröße: ${objektGroesse} m²\n\n`;
-    body += `🔹 Gewählte Leistungen:\n`;
+    body += `🔹 Gewählte Leistungsphasen:\n`;
 
     selectedLeistungen.forEach(leistung => {
         body += `  - ${leistung}\n`;
     });
 
-    body += `\nMit freundlichen Grüßen,\n[Ihr Name]`;
+    body += `\nmit freundlichem gruß,\n[Ihr Name]`;
 
     window.location.href = `mailto:studiolumenarchitektur@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
