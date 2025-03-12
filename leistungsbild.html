@@ -127,6 +127,10 @@ let selectedText = ""; // Speichert die gewählte Antwort
 document.querySelectorAll(".accordion-item").forEach(item => {
     item.addEventListener("click", function () {
         selectedText = this.textContent.trim(); // Speichert die Auswahl
+        
+        let acc = document.getElementById("accordion");
+        acc.style.opacity = "0";
+        setTimeout(() => acc.style.display = "none", 300);
 
         document.getElementById("anfrage-button").style.opacity = "1";
         document.getElementById("anfrage-button").style.pointerEvents = "auto";
@@ -221,10 +225,9 @@ document.querySelectorAll(".accordion-item").forEach(item => {
     <script>
 function toggleAccordion() {
     let acc = document.getElementById("accordion");
-
     if (acc.style.display === "none" || acc.style.display === "") {
         acc.style.display = "flex";
-        setTimeout(() => acc.style.opacity = "1", 10);
+        acc.style.opacity = "1";
     } else {
         acc.style.opacity = "0";
         setTimeout(() => acc.style.display = "none", 300);
@@ -241,7 +244,7 @@ function sendEmail() {
     let subject = "Angebotsanfrage";
     let body = `Hallo,\n\nIch interessiere mich für folgendes:\n\n`;
     
-    body += `🔹 Auswahl: ${selectedText}\n`; // Fügt die gewählte Auswahl ein
+    body += `🔹 Auswahl: ${selectedText}\n`; // Fügt die Hauptauswahl ein
     body += `🔹 Objektgröße: ${objektGroesse} m²\n\n`;
     body += `\nMit freundlichen Grüßen,\n[Ihr Name]`;
 
@@ -253,11 +256,11 @@ function sendEmail() {
 
     if (inputField.value && parseInt(inputField.value) > 0 && selectedText) {
         anfrageButton.disabled = false;
-        anfrageButton.style.opacity = "1";  // Button sichtbar machen
+        anfrageButton.style.opacity = "1";
         anfrageButton.style.cursor = "pointer";
     } else {
         anfrageButton.disabled = true;
-        anfrageButton.style.opacity = "0.5";  // Button wieder deaktivieren
+        anfrageButton.style.opacity = "0.5";
         anfrageButton.style.cursor = "not-allowed";
     }
 }
