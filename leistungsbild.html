@@ -234,9 +234,13 @@ document.querySelectorAll(".accordion-item").forEach(item => {
     <script>
 function toggleAccordion() {
     let acc = document.getElementById("accordion");
-    console.log("Aktueller Status:", acc.style.display); // Debugging
 
-    if (acc.style.display === "none" || acc.style.display === "") {
+    if (!acc) {
+        console.error("Akkordeon-Element wurde nicht gefunden!");
+        return;
+    }
+
+    if (window.getComputedStyle(acc).display === "none") {
         acc.style.display = "flex";  // Akkordeon sichtbar machen
         acc.style.opacity = "1";
         console.log("Akkordeon GEÖFFNET");
