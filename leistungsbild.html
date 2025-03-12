@@ -210,10 +210,6 @@ document.querySelectorAll(".accordion-item").forEach(item => {
         <div class="leistung-content" onclick="toggleSelection(this)">• unterstützung bei der vergabeentscheidung</div>
     </div>
 
-<!-- Eingabefeld für die Objektgröße -->
-<label for="objekt-groesse">wie groß ist dein vorhaben ca.?:</label>
-<input type="number" id="objekt-groesse" placeholder="z.B. 100" min="1" oninput="validateInput()">
-
 <label for="objekt-groesse">wie groß ist dein vorhaben ca.?:</label>
 <select id="objekt-groesse" onchange="validateInput()">
     <option value="">Bitte wählen...</option>
@@ -274,7 +270,7 @@ function validateInput() {
     let selectField = document.getElementById("objekt-groesse");
     let anfrageButton = document.getElementById("anfrage-button");
 
-    if (selectField.value !== "" && selectedText) {
+    if (selectField.value !== "" && selectedText.trim() !== "") {
         anfrageButton.disabled = false;
         anfrageButton.style.opacity = "1";  // Button aktivieren
         anfrageButton.style.cursor = "pointer";
@@ -297,6 +293,14 @@ document.querySelectorAll(".accordion-item").forEach(item => {
                 leistungElement.classList.add("active"); // Markiert die zugehörigen Leistungsphasen
             }
         });
+
+        let acc = document.getElementById("accordion");
+        acc.style.opacity = "0";
+        setTimeout(() => acc.style.display = "none", 300);
+
+        validateInput(); // Ruft validateInput auf, um den Button zu aktivieren
+    });
+});
 
         let acc = document.getElementById("accordion");
         acc.style.opacity = "0";
