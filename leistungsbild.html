@@ -122,24 +122,22 @@
 </head>
 <script>
 
-let selectedLeistungen = []; // Globale Variable für die Auswahl der Leistungen
+let selectedText = ""; // Speichert die gewählte Antwort (inklusive Leistungsphasen)
 let selectedText = ""; // Speichert die gewählte Hauptauswahl (z. B. "lass uns eine idee entwickeln")
     
 document.querySelectorAll(".accordion-item").forEach(item => {
     item.addEventListener("click", function () {
-        document.querySelectorAll(".leistung").forEach(leistung => leistung.classList.remove("active"));
+        selectedText = this.textContent.trim(); // Speichert die Antwort als Klartext
 
-        let ids = this.getAttribute("data-ids").split(",");
-        selectedLeistungen = []; // Löscht die alte Auswahl
-        selectedText = this.textContent.trim(); // Speichert die Hauptauswahl
+        var acc = document.getElementById("accordion");
+        acc.style.opacity = "0";
+        setTimeout(() => acc.style.display = "none", 300);
 
-        ids.forEach(id => {
-            let leistungElement = document.getElementById(id);
-            if (leistungElement) {
-                leistungElement.classList.add("active");
-                selectedLeistungen.push(leistungElement.textContent.trim()); // Speichert die Auswahl
-            }
-        });
+        document.getElementById("anfrage-button").style.opacity = "1";
+        document.getElementById("anfrage-button").style.pointerEvents = "auto";
+        document.getElementById("anfrage-button").style.cursor = "pointer";
+    });
+});
 
         var acc = document.getElementById("accordion");
         acc.style.opacity = "0";
@@ -249,27 +247,22 @@ document.querySelectorAll(".accordion-item").forEach(item => {
         }
 function sendEmail() {
     let objektGroesse = document.getElementById("objekt-groesse").value;
-
+    
     if (!selectedText) {
         alert("Bitte wähle eine Antwort aus!");
         return;
     }
 
-    if (selectedLeistungen.length === 0) {
-        alert("Bitte wähle mindestens eine Leistung aus!");
-        return;
-    }
-
-    let subject = "Angebotsanfrage";
-    let body = `hallo,\n\nkannst du mir ein angebot über die folgenden leistungen machen?:\n\n`;
+    let subject = "angebotsanfrage";
+    let body = `Hallo,\n\nIch interessiere mich für folgendes:\n\n`;
     
     body += `🔹 Auswahl: ${selectedText}\n`; // Fügt die Hauptauswahl ein
     body += `🔹 Objektgröße: ${objektGroesse} m²\n\n`;
-    body += `🔹 Gewählte Leistungsphasen:\n`;
 
-    selectedLeistungen.forEach(leistung => {
-        body += `  - ${leistung}\n`;
-    });
+    body += `\nMit freundlichen Grüßen,\n[Ihr Name]`;
+
+    window.location.href = `mailto:studiolumenarchitektur@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
 
     body += `\nmit freundlichem gruß,\n[Ihr Name]`;
 
