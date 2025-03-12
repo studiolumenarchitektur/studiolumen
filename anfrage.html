@@ -77,48 +77,45 @@
     </footer>
 
  <script>
-    function updateLeistungsphasen() {
-        let storedAnswer = localStorage.getItem("selectedAnswer");
+function updateLeistungsphasen() {
+    let storedData = localStorage.getItem("selectedAnswer");
 
-        let listContainer = document.getElementById("leistungsphasen-list");
-        listContainer.innerHTML = ""; // Alte Inhalte entfernen
+    let listContainer = document.getElementById("leistungsphasen-list");
+    listContainer.innerHTML = ""; // Alte Inhalte entfernen
 
-        if (storedAnswer) {
-            listContainer.innerHTML = `<p><strong>Ausgewählte Antwort:</strong> ${storedAnswer}</p>`;
+    if (storedData) {
+        let parsedData = JSON.parse(storedData);
+        let selectedText = parsedData.answer;
+        let selectedPhases = parsedData.phases;
 
-            let phaseMappings = {
-                "lass uns eine idee entwickeln": ["LPH 0 - Zielfindungsphase"],
-                "ich brauche unterstützung beim entwerfen": ["LPH 1 - Grundlagenermittlung", "LPH 2 - Vorplanung"],
-                "lass uns meinen wohnraum umgestalten": ["LPH 1 - Grundlagenermittlung", "LPH 2 - Vorplanung", "LPH 3 - Entwurfsplanung"],
-                "ich brauche eine planung und die baugenehmigung": ["LPH 1 - Grundlagenermittlung", "LPH 2 - Vorplanung", "LPH 3 - Entwurfsplanung", "LPH 4 - Genehmigungsplanung"],
-                "lass uns zusammen ein projekt von a-z planen": ["LPH 1 - Grundlagenermittlung", "LPH 2 - Vorplanung", "LPH 3 - Entwurfsplanung", "LPH 4 - Genehmigungsplanung", "LPH 5 - Ausführungsplanung"],
-                "kannst du mich bei der ausschreibung und vergabe unterstützen?": ["LPH 6 - Vorbereitung der Vergabe"],
-                "ich brauche unterstützung während der bauphase.": ["LPH 7 - Mitwirkung bei der Vergabe"]
-            };
+        listContainer.innerHTML = `<p><strong>Ausgewählte Antwort:</strong> ${selectedText}</p>`;
 
-            if (phaseMappings.hasOwnProperty(storedAnswer)) {
-                let phaseList = document.createElement("ul");
-                phaseMappings[storedAnswer].forEach(phase => {
+        if (selectedPhases.length > 0) {
+            let phaseList = document.createElement("ul");
+            selectedPhases.forEach(phaseId => {
+                let phaseElement = document.getElementById(phaseId);
+                if (phaseElement) {
                     let listItem = document.createElement("li");
-                    listItem.textContent = phase;
+                    listItem.textContent = phaseElement.textContent.trim();
                     phaseList.appendChild(listItem);
-                });
-                listContainer.appendChild(phaseList);
-            } else {
-                listContainer.innerHTML += "<p>Keine passende Leistungsphase gefunden.</p>";
-            }
+                }
+            });
+            listContainer.appendChild(phaseList);
         } else {
-            listContainer.innerHTML = "<p>keine antwort ausgewählt.</p>";
+            listContainer.innerHTML += "<p>Keine passende Leistungsphase gefunden.</p>";
         }
+    } else {
+        listContainer.innerHTML = "<p>keine antwort ausgewählt.</p>";
     }
+}
 
-    window.onload = updateLeistungsphasen;
+window.onload = updateLeistungsphasen;
 
-    window.addEventListener("storage", function (event) {
-        if (event.key === "selectedAnswer") {
-            updateLeistungsphasen(); // Aktualisiert die Liste, wenn sich die Antwort ändert
-        }
-    });
+window.addEventListener("storage", function (event) {
+    if (event.key === "selectedAnswer") {
+        updateLeistungsphasen(); // Aktualisiert die Liste, wenn sich die Antwort ändert
+    }
+});
 </script>
 </body>
 </html>
