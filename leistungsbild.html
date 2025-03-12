@@ -121,15 +121,6 @@
     </style>
 </head>
 <script>
-function saveSelectedAnswer(selectedText, phaseTexts) {
-    if (selectedText) {
-        let selectedData = {
-            answer: selectedText,
-            phases: phaseTexts // Speichert die Leistungsphasen als Klartext
-        };
-        localStorage.setItem("selectedAnswer", JSON.stringify(selectedData));
-    }
-}
 
 document.querySelectorAll(".accordion-item").forEach(item => {
     item.addEventListener("click", function () {
@@ -146,33 +137,6 @@ document.querySelectorAll(".accordion-item").forEach(item => {
         document.getElementById("anfrage-button").style.pointerEvents = "auto";
         document.getElementById("anfrage-button").style.cursor = "pointer";
     });
-});
-    document.querySelectorAll(".accordion-item").forEach(item => {
-        item.addEventListener("click", function () {
-            let selectedText = this.textContent.trim();
-            console.log("🔍 Ausgewählte Antwort:", selectedText);
-
-            let selectedAnswerElement = document.getElementById("selected-answer");
-            if (selectedAnswerElement) {
-                selectedAnswerElement.textContent = selectedText;
-            } else {
-                console.log("⚠️ Fehler: Element 'selected-answer' nicht gefunden!");
-            }
-
-            saveSelectedAnswer(selectedText); // Speichert die neue Antwort
-
-            var acc = document.getElementById("accordion");
-            acc.style.opacity = "0";
-            setTimeout(() => acc.style.display = "none", 300);
-
-            document.getElementById("anfrage-button").style.opacity = "1";
-            document.getElementById("anfrage-button").style.pointerEvents = "auto";
-            document.getElementById("anfrage-button").style.cursor = "pointer";
-        });
-    });
-
-document.getElementById("anfrage-button").addEventListener("click", function () {
-    window.location.href = "anfrage.html";
 });
 
 </script>
@@ -247,7 +211,7 @@ document.getElementById("anfrage-button").addEventListener("click", function () 
         <div class="leistung-content" onclick="toggleSelection(this)">• unterstützung bei der vergabeentscheidung</div>
     </div>
 
-<button id="anfrage-button" onclick="window.location.href='anfrage.html'">anfrage starten</button>
+<button id="anfrage-button" onclick="sendEmail()">anfrage per e-mail senden</button>
 
     <footer class="footer">
         <div onclick="window.location.href='impressum.html'">impressum</div>
@@ -266,7 +230,11 @@ document.getElementById("anfrage-button").addEventListener("click", function () 
                 setTimeout(() => acc.style.display = "none", 300);
             }
         }
-
+function sendEmail() {
+    let subject = "Anfrage zu meinem Projekt";
+    let body = "Hallo,\n\nhi, bitte sende mir ein angebot über die folgenden leistungsphasen: ...\n\nMit freundlichen Grüßen,\n[Ihr Name]";
+    window.location.href = `mailto:studiolumenarchitektur@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
         document.querySelectorAll(".accordion-item").forEach(item => {
             item.addEventListener("click", function () {
                 document.querySelectorAll(".leistung").forEach(leistung => leistung.classList.remove("active"));
