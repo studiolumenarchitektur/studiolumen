@@ -131,8 +131,23 @@
 
         document.querySelectorAll(".accordion-item").forEach(item => {
             item.addEventListener("click", function () {
+                // Verstecke das Akkordeon-Menü nach der Auswahl
+                let acc = document.getElementById("accordion");
+                acc.style.opacity = "0";
+                setTimeout(() => acc.style.display = "none", 300);
+
+                // Verstecke alle anderen Antwortmöglichkeiten
+                document.querySelectorAll(".accordion-item").forEach(answer => {
+                    answer.style.display = "none";
+                });
+
+                // Zeige nur die gewählte Antwort
+                this.style.display = "block";
+
+                // Verstecke alle Leistungsphasen
                 document.querySelectorAll(".leistung").forEach(leistung => leistung.classList.remove("active"));
 
+                // Zeige nur die gewählte Leistungsphase
                 let ids = this.getAttribute("data-ids").split(",");
                 ids.forEach(id => {
                     let leistungElement = document.getElementById(id);
