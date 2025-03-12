@@ -134,15 +134,22 @@
     </style>
 </head>
 <script>
-function saveSelectedAnswer(selectedText) {
+function saveSelectedAnswer(selectedText, phaseIds) {
     if (selectedText) {
-        localStorage.setItem("selectedAnswer", selectedText);
+        let selectedData = {
+            answer: selectedText,
+            phases: phaseIds // Speichert auch die Leistungsphasen
+        };
+        localStorage.setItem("selectedAnswer", JSON.stringify(selectedData));
     }
 }
 document.querySelectorAll(".accordion-item").forEach(item => {
     item.addEventListener("click", function () {
         let selectedText = this.textContent.trim();
-        saveSelectedAnswer(selectedText);
+        let phaseIds = this.getAttribute("data-ids").split(",");
+
+        saveSelectedAnswer(selectedText, phaseIds);
+
         document.getElementById("anfrage-button").style.opacity = "1";
         document.getElementById("anfrage-button").style.pointerEvents = "auto";
         document.getElementById("anfrage-button").style.cursor = "pointer";
