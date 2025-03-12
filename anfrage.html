@@ -76,7 +76,7 @@
         <div>© 2025 studio lumen</div>
     </footer>
 
- <script>
+<script>
     function updateLeistungsphasen() {
         let storedAnswer = localStorage.getItem("selectedAnswer");
 
@@ -112,13 +112,14 @@
         }
     }
 
-    window.onload = updateLeistungsphasen;
+    function forceReload() {
+        setTimeout(() => {
+            updateLeistungsphasen();
+        }, 100);
+    }
 
-    window.addEventListener("storage", function (event) {
-        if (event.key === "selectedAnswer") {
-            updateLeistungsphasen(); // Aktualisiert die Liste, wenn sich die Antwort ändert
-        }
-    });
+    window.onload = forceReload;
+    window.addEventListener("storage", forceReload);
 </script>
 </body>
 </html>
