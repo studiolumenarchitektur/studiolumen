@@ -47,31 +47,6 @@
         }
     </style>
 </head>
-    <script>
-    window.onload = function () {
-        let storedPhases = localStorage.getItem("selectedLeistungsphasen");
-
-        if (storedPhases) {
-            let selectedItems = JSON.parse(storedPhases);
-            let listContainer = document.getElementById("leistungsphasen-list");
-            listContainer.innerHTML = ""; // Entfernt vorherige Inhalte
-
-            selectedItems.forEach(item => {
-                let phaseDiv = document.createElement("div");
-                phaseDiv.innerHTML = `<h3>${item.phase}</h3>`;
-
-                let subList = document.createElement("ul");
-                item.subItems.forEach(sub => {
-                    let subItem = document.createElement("li");
-                    subItem.textContent = sub;
-                    subList.appendChild(subItem);
-                });
-
-                phaseDiv.appendChild(subList);
-                listContainer.appendChild(phaseDiv);
-            });
-        }
-    };
 </script>
 <body>
     <div class="back-arrow" onclick="window.location.href='leistungsbild.html'">&larr;</div>
