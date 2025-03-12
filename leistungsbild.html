@@ -231,26 +231,6 @@
                 let ids = this.getAttribute("data-ids").split(",");
                 ids.forEach(id => {
                     document.getElementById(id).classList.add("active");
-            function saveSelectedLeistungsphasen() {
-        let selectedItems = [];
-
-        document.querySelectorAll(".leistung.active").forEach(leistung => {
-            let phase = leistung.innerText.trim();
-            let subItems = [];
-
-            leistung.querySelectorAll(".leistung-content.active").forEach(sub => {
-                subItems.push(sub.innerText.trim());
-            });
-
-            selectedItems.push({ phase: phase, subItems: subItems });
-        });
-
-        localStorage.setItem("selectedLeistungsphasen", JSON.stringify(selectedItems));
-    }
-
-    document.getElementById("anfrage-button").addEventListener("click", function () {
-        saveSelectedLeistungsphasen();
-        window.location.href = "anfrage.html";
                 });
                 
                 var acc = document.getElementById("accordion");
