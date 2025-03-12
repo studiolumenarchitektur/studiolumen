@@ -94,7 +94,7 @@ function updateLeistungsphasen() {
             let phaseList = document.createElement("ul");
             selectedPhases.forEach(phaseText => {
                 let listItem = document.createElement("li");
-                listItem.textContent = phaseText;
+                listItem.textContent = phaseText; // Direkt den Text ausgeben!
                 phaseList.appendChild(listItem);
             });
             listContainer.appendChild(phaseList);
