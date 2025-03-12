@@ -128,13 +128,17 @@ document.querySelectorAll(".accordion-item").forEach(item => {
     item.addEventListener("click", function () {
         selectedText = this.textContent.trim(); // Speichert die Auswahl
         
-        let acc = document.getElementById("accordion");
-        acc.style.opacity = "0";
-        setTimeout(() => acc.style.display = "none", 300);
+        document.querySelectorAll(".leistung").forEach(leistung => leistung.classList.remove("active"));
+        
+        let ids = this.getAttribute("data-ids").split(",");
+        ids.forEach(id => {
+            let leistungElement = document.getElementById(id);
+            if (leistungElement) {
+                leistungElement.classList.add("active"); // Markiert die zugehörigen Leistungsphasen
+            }
+        });
 
-        document.getElementById("anfrage-button").style.opacity = "1";
-        document.getElementById("anfrage-button").style.pointerEvents = "auto";
-        document.getElementById("anfrage-button").style.cursor = "pointer";
+        validateInput(); // Ruft validateInput auf, um den Button zu aktivieren
     });
 });
 
