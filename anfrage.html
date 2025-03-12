@@ -92,13 +92,10 @@ function updateLeistungsphasen() {
 
         if (selectedPhases.length > 0) {
             let phaseList = document.createElement("ul");
-            selectedPhases.forEach(phaseId => {
-                let phaseElement = document.getElementById(phaseId);
-                if (phaseElement) {
-                    let listItem = document.createElement("li");
-                    listItem.textContent = phaseElement.textContent.trim();
-                    phaseList.appendChild(listItem);
-                }
+            selectedPhases.forEach(phaseText => {
+                let listItem = document.createElement("li");
+                listItem.textContent = phaseText;
+                phaseList.appendChild(listItem);
             });
             listContainer.appendChild(phaseList);
         } else {
