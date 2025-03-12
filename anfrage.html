@@ -23,8 +23,9 @@
             font-size: 2rem;
             font-weight: bold;
             margin-top: 20px;
-            
+            text-transform: lowercase;
         }
+
         .back-arrow {
             position: fixed;
             top: 10px;
@@ -34,8 +35,8 @@
             color: #800020;
             font-weight: 900;
             z-index: 9999;
-            
         }
+
         .footer {
             position: fixed;
             bottom: 0;
@@ -45,14 +46,31 @@
             color: #777;
             background: #fff;
         }
+
+        #leistungsphasen-list {
+            margin-top: 20px;
+            width: 80%;
+            max-width: 600px;
+            text-align: left;
+        }
+
+        .phase-title {
+            font-weight: bold;
+            color: #800020;
+            margin-top: 15px;
+            text-transform: lowercase;
+        }
+
+        .phase-list {
+            padding-left: 20px;
+        }
     </style>
 </head>
-</script>
 <body>
     <div class="back-arrow" onclick="window.location.href='leistungsbild.html'">&larr;</div>
     <header>anfrage</header>
 
-    <div id="leistungsphasen-list"></div> <!-- Nur eine Liste -->
+    <div id="leistungsphasen-list"></div>
 
     <footer class="footer">
         <div>© 2025 studio lumen</div>
@@ -67,20 +85,27 @@
                 let listContainer = document.getElementById("leistungsphasen-list");
                 listContainer.innerHTML = ""; // Entfernt vorherige Inhalte
 
-                selectedItems.forEach(item => {
-                    let phaseDiv = document.createElement("div");
-                    phaseDiv.innerHTML = `<h3>${item.phase}</h3>`;
+                if (selectedItems.length === 0) {
+                    listContainer.innerHTML = "<p>keine leistungsphase ausgewählt.</p>";
+                } else {
+                    selectedItems.forEach(item => {
+                        let phaseDiv = document.createElement("div");
+                        phaseDiv.classList.add("phase-title");
+                        phaseDiv.innerHTML = `<h3>${item.phase}</h3>`;
 
-                    let subList = document.createElement("ul");
-                    item.subItems.forEach(sub => {
-                        let subItem = document.createElement("li");
-                        subItem.textContent = sub;
-                        subList.appendChild(subItem);
+                        let subList = document.createElement("ul");
+                        subList.classList.add("phase-list");
+
+                        item.subItems.forEach(sub => {
+                            let subItem = document.createElement("li");
+                            subItem.textContent = sub;
+                            subList.appendChild(subItem);
+                        });
+
+                        phaseDiv.appendChild(subList);
+                        listContainer.appendChild(phaseDiv);
                     });
-
-                    phaseDiv.appendChild(subList);
-                    listContainer.appendChild(phaseDiv);
-                });
+                }
             }
         };
     </script>
