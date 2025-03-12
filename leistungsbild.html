@@ -135,19 +135,28 @@
 </head>
 <script>
     function saveSelectedAnswer(selectedText) {
-        localStorage.setItem("selectedAnswer", selectedText);
+        if (selectedText) {
+            console.log("Speichere Antwort:", selectedText); // Debugging
+            localStorage.setItem("selectedAnswer", selectedText);
+        } else {
+            console.log("Fehler: Keine Antwort zum Speichern.");
+        }
     }
-
-    document.getElementById("anfrage-button").addEventListener("click", function () {
-        window.location.href = "anfrage.html"; // Geht zur Anfrage-Seite
-    });
 
     document.querySelectorAll(".accordion-item").forEach(item => {
         item.addEventListener("click", function () {
             let selectedText = this.textContent.trim();
-            document.getElementById("selected-answer").textContent = selectedText;
+            console.log("Ausgewählte Antwort:", selectedText);
+
+            let selectedAnswerElement = document.getElementById("selected-answer");
+            if (selectedAnswerElement) {
+                selectedAnswerElement.textContent = selectedText;
+            } else {
+                console.log("Fehler: Element 'selected-answer' nicht gefunden!");
+            }
+
             saveSelectedAnswer(selectedText); // Speichert die neue Antwort
-            
+
             var acc = document.getElementById("accordion");
             acc.style.opacity = "0";
             setTimeout(() => acc.style.display = "none", 300);
@@ -156,6 +165,12 @@
             document.getElementById("anfrage-button").style.pointerEvents = "auto";
             document.getElementById("anfrage-button").style.cursor = "pointer";
         });
+    });
+
+    document.getElementById("anfrage-button").addEventListener("click", function () {
+        console.log("Weiterleitung zu anfrage.html...");
+        console.log("Gespeicherte Antwort beim Weiterleiten:", localStorage.getItem("selectedAnswer"));
+        window.location.href = "anfrage.html";
     });
 </script>
 <body>
