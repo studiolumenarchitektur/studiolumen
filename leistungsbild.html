@@ -133,22 +133,20 @@
         }
     </style>
 </head>
- <script>
-    function saveSelectedAnswer() {
-        let selectedAnswer = document.getElementById("selected-answer").textContent.trim();
-        localStorage.setItem("selectedAnswer", selectedAnswer);
+<script>
+    function saveSelectedAnswer(selectedText) {
+        localStorage.setItem("selectedAnswer", selectedText);
     }
 
     document.getElementById("anfrage-button").addEventListener("click", function () {
-        saveSelectedAnswer();
-        window.location.href = "anfrage.html";
+        window.location.href = "anfrage.html"; // Geht zur Anfrage-Seite
     });
 
     document.querySelectorAll(".accordion-item").forEach(item => {
         item.addEventListener("click", function () {
             let selectedText = this.textContent.trim();
             document.getElementById("selected-answer").textContent = selectedText;
-            localStorage.setItem("selectedAnswer", selectedText);
+            saveSelectedAnswer(selectedText); // Speichert die neue Antwort
             
             var acc = document.getElementById("accordion");
             acc.style.opacity = "0";
