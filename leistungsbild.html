@@ -244,8 +244,17 @@ function sendEmail() {
     let subject = "Angebotsanfrage";
     let body = `Hallo,\n\nIch interessiere mich für folgendes:\n\n`;
     
-    body += `🔹 Auswahl: ${selectedText}\n`; // Fügt die Hauptauswahl ein
-    body += `🔹 Objektgröße: ${objektGroesse} m²\n\n`;
+body += `🔹 Auswahl: ${selectedText}\n\n`;
+body += `🔹 Zugehörige Leistungsphasen:\n`;
+document.querySelectorAll(".leistung.active").forEach(leistung => {
+    body += `  - ${leistung.textContent.trim()}\n`;
+
+    let unterpunkte = leistung.querySelectorAll(".leistung-content");
+    unterpunkte.forEach(punkt => {
+        body += `    • ${punkt.textContent.trim()}\n`;
+    });
+});
+body += `\n🔹 Objektgröße: ${objektGroesse} m²\n\n`;
     body += `\nMit freundlichen Grüßen,\n[Ihr Name]`;
 
     window.location.href = `mailto:studiolumenarchitektur@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
@@ -267,7 +276,17 @@ function validateInput() {
 document.querySelectorAll(".accordion-item").forEach(item => {
     item.addEventListener("click", function () {
         selectedText = this.textContent.trim(); // Speichert die Auswahl
-        
+
+        document.querySelectorAll(".leistung").forEach(leistung => leistung.classList.remove("active"));
+
+        let ids = this.getAttribute("data-ids").split(",");
+        ids.forEach(id => {
+            let leistungElement = document.getElementById(id);
+            if (leistungElement) {
+                leistungElement.classList.add("active"); // Markiert die zugehörigen Leistungsphasen
+            }
+        });
+
         let acc = document.getElementById("accordion");
         acc.style.opacity = "0";
         setTimeout(() => acc.style.display = "none", 300);
