@@ -128,7 +128,7 @@
 }
 
 #anfrage-button {
-    display: none; /* Button bleibt unsichtbar, bis er aktiv wird */
+    display: none;
     color: #800020;
     background: none;
     font-weight: bold;
@@ -147,6 +147,7 @@
     display: block;
     cursor: pointer;
 }
+        
 .dropdown-menu {
     display: none;
     position: absolute;
@@ -355,8 +356,11 @@
         document.getElementById("size-button").textContent = size;
         document.getElementById("size-dropdown").style.display = "none";
 
-        // Entferne den Größen-Button und aktiviere den Anfrage-Button
-        document.getElementById("size-dropdown-container").style.display = "none";
+        // Setzt den Größen-Button wieder auf 0.5 opacity nach Auswahl
+        let sizeButton = document.getElementById("size-button");
+        sizeButton.style.opacity = "0.5";
+
+        // Aktiviert den Anfrage-Button
         let anfrageButton = document.getElementById("anfrage-button");
         anfrageButton.classList.add("active");
         anfrageButton.disabled = false;
