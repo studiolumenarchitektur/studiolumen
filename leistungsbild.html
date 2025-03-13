@@ -96,6 +96,9 @@
     bottom: 60px;
     left: 50%;
     transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 #size-button {
@@ -105,14 +108,18 @@
     font-size: 16px;
     padding: 10px 20px;
     border: none;
-    cursor: pointer;
+    cursor: not-allowed;
     text-transform: lowercase;
+}
+
+#size-button.active {
+    cursor: pointer;
 }
 
 .dropdown-menu {
     display: none;
     position: absolute;
-    top: -160px;
+    bottom: 40px; /* Dropdown klappt nach oben auf */
     left: 50%;
     transform: translateX(-50%);
     background: #fff;
@@ -172,9 +179,9 @@
         <div class="accordion-item" data-ids="leistung-l6,leistung-l7">kannst du mich bei der ausschreibung und vergabe unterstützen?</div>
     </div>
     
-<!-- Button für die Objektgrößen-Auswahl (fixiert an der gleichen Position wie "Anfrage starten") -->
+<!-- Fixierter Button für die Objektgrößen-Auswahl (in einer Zeile) -->
 <div id="size-dropdown-container">
-    <button id="size-button" onclick="toggleSizeDropdown()">bitte wähle die objektgröße</button>
+    <button id="size-button" onclick="toggleSizeDropdown()" disabled>wie groß soll es werden?</button>
     <div id="size-dropdown" class="dropdown-menu">
         <div class="dropdown-item" onclick="selectSize('bis 50m²')">bis 50m²</div>
         <div class="dropdown-item" onclick="selectSize('bis 100m²')">bis 100m²</div>
@@ -249,7 +256,7 @@
         <div>© 2025 studio lumen</div>
     </footer>
 
-  <script>
+ <script>
     let selectedText = "";
     let selectedSize = "";
 
@@ -284,7 +291,10 @@
             // Akkordeon schließen
             toggleAccordion();
 
-            validateInput();
+            // Aktiviert den Größen-Button
+            let sizeButton = document.getElementById("size-button");
+            sizeButton.classList.add("active");
+            sizeButton.disabled = false;
         });
     });
 
@@ -299,16 +309,9 @@
         document.getElementById("anfrage-button").disabled = false;
     }
 
-    function validateInput() {
-        let anfrageButton = document.getElementById("anfrage-button");
-
-        if (selectedText !== "" && selectedSize !== "") {
-            anfrageButton.classList.add("active");
-            anfrageButton.disabled = false;
-        } else {
-            anfrageButton.classList.remove("active");
-            anfrageButton.disabled = true;
-        }
+    function toggleSizeDropdown() {
+        let dropdown = document.getElementById("size-dropdown");
+        dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
     }
 
     function sendEmail() {
@@ -324,11 +327,6 @@
 
         let mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
         window.location.href = mailtoLink;
-    }
-
-    function toggleSizeDropdown() {
-        let dropdown = document.getElementById("size-dropdown");
-        dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
     }
 
     document.addEventListener("click", function(event) {
