@@ -345,15 +345,14 @@
             // Akkordeon schließen
             toggleAccordion();
 
-            // Aktiviert den Größen-Button
+            // Aktiviert den Größen-Button & Hover-Effekt auf Bedarf-Button
             let sizeButton = document.getElementById("size-button");
+            let bedarfButton = document.getElementById("bedarf-button");
+
             sizeButton.classList.add("active");
             sizeButton.disabled = false;
-            sizeButton.style.opacity = "1"; // Button wird sichtbar
-
-            // Setzt "wie kann ich dir helfen?" auf 0.5 opacity
-            let bedarfButton = document.getElementById("bedarf-button");
-            bedarfButton.style.opacity = "0.5";
+            sizeButton.style.opacity = "1";
+            bedarfButton.classList.add("enabled");
         });
     });
 
@@ -366,11 +365,13 @@
         let sizeButton = document.getElementById("size-button");
         sizeButton.style.opacity = "0.5";
 
-        // Aktiviert den Anfrage-Button
+        // Aktiviert den Anfrage-Button & Hover-Effekt auf Größen-Button
         let anfrageButton = document.getElementById("anfrage-button");
         anfrageButton.classList.add("active");
         anfrageButton.disabled = false;
         anfrageButton.style.display = "block"; // Button wird sichtbar
+
+        sizeButton.classList.add("enabled");
     }
 
     function toggleSizeDropdown() {
