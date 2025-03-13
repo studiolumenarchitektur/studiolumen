@@ -208,33 +208,30 @@
             }
         }
 
-        document.querySelectorAll(".accordion-item").forEach(item => {
-            item.addEventListener("click", function () {
-                // Verstecke alle Leistungsphasen
-                document.querySelectorAll(".leistung").forEach(leistung => {
-                    leistung.classList.remove("active");
-                });
-
-                // Akkordeon ausblenden
-                let acc = document.getElementById("accordion");
-                acc.style.opacity = "0";
-                setTimeout(() => acc.style.display = "none", 300);
-
-                // Zeige nur die gewählte Leistungsphase an
-                let ids = this.getAttribute("data-ids").split(",");
-                ids.forEach(id => {
-                    let leistungElement = document.getElementById(id);
-                    if (leistungElement) {
-                        leistungElement.classList.add("active");
-                    }
-                });
-
-                // Aktiviert den "Angebot anfragen"-Button
-                let anfrageButton = document.getElementById("anfrage-button");
-                anfrageButton.classList.add("active");
-                anfrageButton.disabled = false;
-            });
+document.querySelectorAll(".accordion-item").forEach(item => {
+    item.addEventListener("click", function () {
+        selectedText = this.textContent.trim(); // Speichert die Auswahl
+        
+        // Verstecke alle Leistungsphasen
+        document.querySelectorAll(".leistung").forEach(leistung => {
+            leistung.classList.remove("active");
         });
+
+        // Zeige nur die gewählte Leistungsphase an
+        let ids = this.getAttribute("data-ids").split(",");
+        ids.forEach(id => {
+            let leistungElement = document.getElementById(id);
+            if (leistungElement) {
+                leistungElement.classList.add("active");
+            }
+        });
+
+        // Aktiviert den "Angebot anfragen"-Button
+        let anfrageButton = document.getElementById("anfrage-button");
+        anfrageButton.classList.add("active");
+        anfrageButton.disabled = false;
+    });
+});
 
 function sendEmail() {
     let email = "studiolumenarchitektur@gmail.com";
