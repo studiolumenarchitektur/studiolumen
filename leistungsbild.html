@@ -91,7 +91,45 @@
             justify-content: center;
             gap: 20px;
         }
+#size-dropdown-container {
+    position: relative;
+    margin-top: 20px;
+}
 
+#size-button {
+    color: #800020;
+    background: none;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    text-transform: lowercase;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    border: 1px solid #800020;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    width: 200px;
+    text-align: center;
+}
+
+.dropdown-item {
+    padding: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.dropdown-item:hover {
+    background: #800020;
+    color: #fff;
+}
         #anfrage-button {
             color: #800020;
             background: none;
@@ -131,7 +169,21 @@
         <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3,leistung-l4,leistung-l5">lass uns zusammen ein projekt von a-z planen</div>
         <div class="accordion-item" data-ids="leistung-l6,leistung-l7">kannst du mich bei der ausschreibung und vergabe unterstützen?</div>
     </div>
-
+    
+<!-- Button für die Objektgrößen-Auswahl -->
+<div id="size-dropdown-container">
+    <button id="size-button" onclick="toggleSizeDropdown()">bitte wähle die objektgröße</button>
+    <div id="size-dropdown" class="dropdown-menu">
+        <div class="dropdown-item" onclick="selectSize('bis 50m²')">bis 50m²</div>
+        <div class="dropdown-item" onclick="selectSize('bis 100m²')">bis 100m²</div>
+        <div class="dropdown-item" onclick="selectSize('bis 150m²')">bis 150m²</div>
+        <div class="dropdown-item" onclick="selectSize('bis 200m²')">bis 200m²</div>
+        <div class="dropdown-item" onclick="selectSize('bis 250m²')">bis 250m²</div>
+        <div class="dropdown-item" onclick="selectSize('bis 300m²')">bis 300m²</div>
+        <div class="dropdown-item" onclick="selectSize('noch größer')">noch größer</div>
+    </div>
+</div>
+    
     <!-- Leistungsphasen -->
     <div class="leistung" id="leistung-l0">
         <strong>lph 0 - zielfindungsphase</strong>
@@ -197,6 +249,7 @@
 
   <script>
     let selectedText = "";
+    let selectedSize = "";
 
     function toggleAccordion() {
         let acc = document.getElementById("accordion");
@@ -229,26 +282,60 @@
             // Akkordeon schließen
             toggleAccordion();
 
-            let anfrageButton = document.getElementById("anfrage-button");
-            anfrageButton.classList.add("active");
-            anfrageButton.disabled = false;
+            validateInput();
         });
     });
+
+    function selectSize(size) {
+        selectedSize = size;
+        document.getElementById("size-button").textContent = size;
+        validateInput();
+    }
+
+    function validateInput() {
+        let anfrageButton = document.getElementById("anfrage-button");
+
+        if (selectedText !== "" && selectedSize !== "") {
+            anfrageButton.classList.add("active");
+            anfrageButton.disabled = false;
+        } else {
+            anfrageButton.classList.remove("active");
+            anfrageButton.disabled = true;
+        }
+    }
 
     function sendEmail() {
         let email = "studiolumenarchitektur@gmail.com";
         let subject = "Angebotsanfrage";
         
-        if (!selectedText) {
-            alert("Bitte wähle eine Antwort aus!");
+        if (!selectedText || !selectedSize) {
+            alert("Bitte wähle eine Antwort und eine Objektgröße aus!");
             return;
         }
 
-        let body = `Hallo,\n\nIch interessiere mich für folgende Leistung:\n\n${selectedText}\n\nMit freundlichen Grüßen,\n[Ihr Name]`;
+        let body = `Hallo,\n\nIch interessiere mich für folgende Leistung:\n\n${selectedText}\n\n🔹 Objektgröße: ${selectedSize}\n\nMit freundlichen Grüßen,\n[Ihr Name]`;
 
         let mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
         window.location.href = mailtoLink;
     }
+      function toggleSizeDropdown() {
+    let dropdown = document.getElementById("size-dropdown");
+    if (dropdown.style.display === "block") {
+        dropdown.style.display = "none";
+    } else {
+        dropdown.style.display = "block";
+    }
+}
+
+// Schließt das Dropdown, wenn außerhalb geklickt wird
+document.addEventListener("click", function(event) {
+    let dropdown = document.getElementById("size-dropdown");
+    let button = document.getElementById("size-button");
+
+    if (!dropdown.contains(event.target) && event.target !== button) {
+        dropdown.style.display = "none";
+    }
+});
 </script>
 </body>
 </html>
