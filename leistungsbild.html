@@ -207,46 +207,34 @@
                 setTimeout(() => acc.style.display = "none", 300);
             }
         }
-function validateInput() {
-    let selectField = document.getElementById("objekt-groesse");
-    let anfrageButton = document.getElementById("anfrage-button");
 
-    if (selectField.value !== "" && selectedText.trim() !== "") {
-        anfrageButton.classList.add("active");
-        anfrageButton.disabled = false;
-        anfrageButton.style.opacity = "1";
-        anfrageButton.style.cursor = "pointer";
-    } else {
-        anfrageButton.classList.remove("active");
-        anfrageButton.disabled = true;
-        anfrageButton.style.opacity = "0.5";
-        anfrageButton.style.cursor = "not-allowed";
-    }
-}
-document.querySelectorAll(".accordion-item").forEach(item => {
-    item.addEventListener("click", function () {
-        selectedText = this.textContent.trim(); // Speichert die Auswahl
-        
-        // Verstecke alle Leistungsphasen
-        document.querySelectorAll(".leistung").forEach(leistung => {
-            leistung.classList.remove("active");
+        document.querySelectorAll(".accordion-item").forEach(item => {
+            item.addEventListener("click", function () {
+                // Verstecke alle Leistungsphasen
+                document.querySelectorAll(".leistung").forEach(leistung => {
+                    leistung.classList.remove("active");
+                });
+
+                // Akkordeon ausblenden
+                let acc = document.getElementById("accordion");
+                acc.style.opacity = "0";
+                setTimeout(() => acc.style.display = "none", 300);
+
+                // Zeige nur die gewählte Leistungsphase an
+                let ids = this.getAttribute("data-ids").split(",");
+                ids.forEach(id => {
+                    let leistungElement = document.getElementById(id);
+                    if (leistungElement) {
+                        leistungElement.classList.add("active");
+                    }
+                });
+
+                // Aktiviert den "Angebot anfragen"-Button
+                let anfrageButton = document.getElementById("anfrage-button");
+                anfrageButton.classList.add("active");
+                anfrageButton.disabled = false;
+            });
         });
-
-        // Zeige nur die gewählte Leistungsphase an
-        let ids = this.getAttribute("data-ids").split(",");
-        ids.forEach(id => {
-            let leistungElement = document.getElementById(id);
-            if (leistungElement) {
-                leistungElement.classList.add("active");
-            }
-        });
-
-        // Aktiviert den "Angebot anfragen"-Button
-        let anfrageButton = document.getElementById("anfrage-button");
-        anfrageButton.classList.add("active");
-        anfrageButton.disabled = false;
-    });
-});
 
 function sendEmail() {
     let email = "studiolumenarchitektur@gmail.com";
@@ -255,12 +243,6 @@ function sendEmail() {
     // Prüfen, ob eine Auswahl getroffen wurde
     if (!selectedText) {
         alert("Bitte wähle eine Antwort aus!");
-        return;
-    }
-
-    let objektGroesse = document.getElementById("objekt-groesse").value;
-    if (!objektGroesse) {
-        alert("Bitte wähle eine Objektgröße aus!");
         return;
     }
 
@@ -278,6 +260,7 @@ function sendEmail() {
         });
     });
 
+    let objektGroesse = document.getElementById("objekt-groesse").value;
     body += `\n🔹 objektgröße: ${objektGroesse}\n\n`;
     body += "liebe grüße,\n[Ihr Name]";
 
