@@ -236,12 +236,40 @@
             });
         });
 
-        function sendEmail() {
-            let email = "studiolumenarchitektur@gmail.com";
-            let subject = "Angebotsanfrage";
-            let body = "Hallo,\n\nIch interessiere mich für folgende Leistung:\n\n" + selectedText + "\n\nMit freundlichen Grüßen,\n[Ihr Name]";
-            window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-        }
+function sendEmail() {
+    let email = "studiolumenarchitektur@gmail.com";
+    let subject = "Angebotsanfrage";
+    
+    // Prüfen, ob eine Auswahl getroffen wurde
+    if (!selectedText) {
+        alert("Bitte wähle eine Antwort aus!");
+        return;
+    }
+
+    // Leistungsphasen und Unterpunkte sammeln
+    let body = "hallo,\n\nkannst du mir bitte ein angebot über die folgenden leistungen machen?:\n\n";
+    body += `🔹 auswahl: ${selectedText}\n\n`;
+    body += "🔹 leistungsphasen:\n";
+
+    document.querySelectorAll(".leistung.active").forEach(leistung => {
+        body += `  - ${leistung.querySelector("strong").textContent.trim()}\n`;
+
+        let unterpunkte = leistung.querySelectorAll(".leistung-content");
+        unterpunkte.forEach(punkt => {
+            body += `    • ${punkt.textContent.trim()}\n`;
+        });
+    });
+
+    let objektGroesse = document.getElementById("objekt-groesse").value;
+    body += `\n🔹 objektgröße: ${objektGroesse}\n\n`;
+    body += "liebe grüße,\n[Ihr Name]";
+
+    // Mailto-Link generieren
+    let mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    
+    // E-Mail-Client öffnen
+    window.location.href = mailtoLink;
+}
     </script>
 </body>
 </html>
