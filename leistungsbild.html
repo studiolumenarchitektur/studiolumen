@@ -103,18 +103,20 @@
 
 #size-button {
     color: #800020;
-    background: #fff; /* Weißer Hintergrund */
+    background: #fff;
     font-weight: bold;
     font-size: 16px;
     padding: 10px 20px;
     border: none;
     cursor: not-allowed;
     text-transform: lowercase;
-    white-space: nowrap; /* Text bleibt in einer Zeile */
+    white-space: nowrap;
+    opacity: 0.5;
 }
 
 #size-button.active {
     cursor: pointer;
+    opacity: 1;
 }
 
 .dropdown-menu {
@@ -193,6 +195,9 @@
         <div class="dropdown-item" onclick="selectSize('noch größer')">noch größer</div>
     </div>
 </div>
+
+<!-- Anfrage starten Button (anfangs versteckt) -->
+<button id="anfrage-button" style="display: none;" disabled onclick="sendEmail()">anfrage starten</button>
     
     <!-- Leistungsphasen -->
     <div class="leistung" id="leistung-l0">
@@ -296,6 +301,7 @@
             let sizeButton = document.getElementById("size-button");
             sizeButton.classList.add("active");
             sizeButton.disabled = false;
+            sizeButton.style.opacity = "1"; // Button wird sichtbar
         });
     });
 
@@ -308,6 +314,7 @@
         document.getElementById("size-dropdown-container").style.display = "none";
         document.getElementById("anfrage-button").classList.add("active");
         document.getElementById("anfrage-button").disabled = false;
+        document.getElementById("anfrage-button").style.display = "block"; // Button sichtbar machen
     }
 
     function toggleSizeDropdown() {
