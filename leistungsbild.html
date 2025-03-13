@@ -287,6 +287,13 @@
     let selectedText = "";
     let selectedSize = "";
 
+    document.addEventListener("DOMContentLoaded", function() {
+        // Stelle sicher, dass die Buttons beim Laden deaktiviert und ausgeblendet sind
+        document.getElementById("size-button").disabled = true;
+        document.getElementById("size-button").style.opacity = "0.5";
+        document.getElementById("anfrage-button").style.display = "none";
+    });
+
     function toggleAccordion() {
         let acc = document.getElementById("accordion");
 
