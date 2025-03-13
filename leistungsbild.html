@@ -119,6 +119,27 @@
     opacity: 1;
 }
 
+#anfrage-button {
+    display: none; /* Button bleibt unsichtbar, bis er aktiv wird */
+    color: #800020;
+    background: none;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 10px 20px;
+    border: none;
+    cursor: not-allowed;
+    text-transform: lowercase;
+    position: fixed;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#anfrage-button.active {
+    display: block; /* Button wird sichtbar */
+    cursor: pointer;
+}
+
 .dropdown-menu {
     display: none;
     position: absolute;
@@ -196,7 +217,7 @@
     </div>
 </div>
 
-<!-- Anfrage starten Button (anfangs versteckt) -->
+<!-- Anfrage starten Button (anfangs unsichtbar) -->
 <button id="anfrage-button" style="display: none;" disabled onclick="sendEmail()">anfrage starten</button>
     
     <!-- Leistungsphasen -->
@@ -262,7 +283,7 @@
         <div>© 2025 studio lumen</div>
     </footer>
 
- <script>
+<script>
     let selectedText = "";
     let selectedSize = "";
 
@@ -312,9 +333,10 @@
 
         // Entferne den Größen-Button und aktiviere den Anfrage-Button
         document.getElementById("size-dropdown-container").style.display = "none";
-        document.getElementById("anfrage-button").classList.add("active");
-        document.getElementById("anfrage-button").disabled = false;
-        document.getElementById("anfrage-button").style.display = "block"; // Button sichtbar machen
+        let anfrageButton = document.getElementById("anfrage-button");
+        anfrageButton.classList.add("active");
+        anfrageButton.disabled = false;
+        anfrageButton.style.display = "block"; // Button sichtbar machen
     }
 
     function toggleSizeDropdown() {
