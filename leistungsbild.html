@@ -195,57 +195,60 @@
         <div>© 2025 studio lumen</div>
     </footer>
 
-    <script>
-        let selectedText = "";
+  <script>
+    let selectedText = "";
 
-        function toggleAccordion() {
-            let acc = document.getElementById("accordion");
+    function toggleAccordion() {
+        let acc = document.getElementById("accordion");
 
-            if (acc.style.display === "none" || acc.style.display === "") {
-                acc.style.display = "flex";  
-                setTimeout(() => acc.style.opacity = "1", 10);
-            } else {
-                acc.style.opacity = "0";
-                setTimeout(() => acc.style.display = "none", 300);
-            }
+        if (acc.style.display === "none" || acc.style.display === "") {
+            acc.style.display = "flex";  
+            setTimeout(() => acc.style.opacity = "1", 10);
+        } else {
+            acc.style.opacity = "0";
+            setTimeout(() => acc.style.display = "none", 300);
         }
+    }
 
-        document.querySelectorAll(".accordion-item").forEach(item => {
-            item.addEventListener("click", function () {
-                selectedText = this.textContent.trim();
+    document.querySelectorAll(".accordion-item").forEach(item => {
+        item.addEventListener("click", function () {
+            selectedText = this.textContent.trim();
 
-                document.querySelectorAll(".leistung").forEach(leistung => {
-                    leistung.classList.remove("active");
-                });
-
-                let ids = this.getAttribute("data-ids").split(",");
-                ids.forEach(id => {
-                    let leistungElement = document.getElementById(id);
-                    if (leistungElement) {
-                        leistungElement.classList.add("active");
-                    }
-                });
-
-                let anfrageButton = document.getElementById("anfrage-button");
-                anfrageButton.classList.add("active");
-                anfrageButton.disabled = false;
+            document.querySelectorAll(".leistung").forEach(leistung => {
+                leistung.classList.remove("active");
             });
+
+            let ids = this.getAttribute("data-ids").split(",");
+            ids.forEach(id => {
+                let leistungElement = document.getElementById(id);
+                if (leistungElement) {
+                    leistungElement.classList.add("active");
+                }
+            });
+
+            // Akkordeon schließen
+            toggleAccordion();
+
+            let anfrageButton = document.getElementById("anfrage-button");
+            anfrageButton.classList.add("active");
+            anfrageButton.disabled = false;
         });
+    });
 
-        function sendEmail() {
-            let email = "studiolumenarchitektur@gmail.com";
-            let subject = "Angebotsanfrage";
-            
-            if (!selectedText) {
-                alert("Bitte wähle eine Antwort aus!");
-                return;
-            }
-
-            let body = `Hallo,\n\nIch interessiere mich für folgende Leistung:\n\n${selectedText}\n\nMit freundlichen Grüßen,\n[Ihr Name]`;
-
-            let mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            window.location.href = mailtoLink;
+    function sendEmail() {
+        let email = "studiolumenarchitektur@gmail.com";
+        let subject = "Angebotsanfrage";
+        
+        if (!selectedText) {
+            alert("Bitte wähle eine Antwort aus!");
+            return;
         }
-    </script>
+
+        let body = `Hallo,\n\nIch interessiere mich für folgende Leistung:\n\n${selectedText}\n\nMit freundlichen Grüßen,\n[Ihr Name]`;
+
+        let mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        window.location.href = mailtoLink;
+    }
+</script>
 </body>
 </html>
