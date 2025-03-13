@@ -140,6 +140,11 @@
     cursor: pointer;
 }
 
+#anfrage-button.active {
+    display: block; /* Button wird sichtbar */
+    cursor: pointer;
+}
+
 .dropdown-menu {
     display: none;
     position: absolute;
@@ -288,10 +293,13 @@
     let selectedSize = "";
 
     document.addEventListener("DOMContentLoaded", function() {
-        // Stelle sicher, dass die Buttons beim Laden deaktiviert und ausgeblendet sind
-        document.getElementById("size-button").disabled = true;
-        document.getElementById("size-button").style.opacity = "0.5";
-        document.getElementById("anfrage-button").style.display = "none";
+        // Stelle sicher, dass die Buttons beim Laden deaktiviert & ausgeblendet sind
+        let sizeButton = document.getElementById("size-button");
+        let anfrageButton = document.getElementById("anfrage-button");
+
+        sizeButton.disabled = true;
+        sizeButton.style.opacity = "0.5"; // Button ist anfangs transparent
+        anfrageButton.style.display = "none"; // Button ist anfangs nicht sichtbar
     });
 
     function toggleAccordion() {
@@ -343,7 +351,7 @@
         let anfrageButton = document.getElementById("anfrage-button");
         anfrageButton.classList.add("active");
         anfrageButton.disabled = false;
-        anfrageButton.style.display = "block"; // Button sichtbar machen
+        anfrageButton.style.display = "block"; // Button wird sichtbar
     }
 
     function toggleSizeDropdown() {
