@@ -92,13 +92,7 @@
             gap: 20px;
         }
 #size-dropdown-container {
-    position: fixed;
-    bottom: 60px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    margin-top: 10px; /* Der Button rutscht mit dem Akkordeon */
 }
 
 #size-button {
@@ -112,7 +106,6 @@
     text-transform: lowercase;
     white-space: nowrap;
     opacity: 0.5;
-    width: 100%;
 }
 
 #size-button.active {
@@ -202,8 +195,8 @@
         <div class="accordion-item" data-ids="leistung-l6,leistung-l7">kannst du mich bei der ausschreibung und vergabe unterstützen?</div>
     </div>
     
-<!-- Fixierter Button für die Objektgrößen-Auswahl (wird unterhalb der letzten Leistungsphase platziert) -->
-<div id="size-dropdown-container" style="display: none;">
+<!-- Fixierter Button für die Objektgrößen-Auswahl -->
+<div id="size-dropdown-container">
     <button id="size-button" onclick="toggleSizeDropdown()" disabled>wie groß soll es werden?</button>
     <div id="size-dropdown" class="dropdown-menu">
         <div class="dropdown-item" onclick="selectSize('bis 50m²')">bis 50m²</div>
@@ -297,13 +290,18 @@
 
     function toggleAccordion() {
         let acc = document.getElementById("accordion");
+        let sizeDropdownContainer = document.getElementById("size-dropdown-container");
 
         if (acc.style.display === "none" || acc.style.display === "") {
             acc.style.display = "flex";  
             setTimeout(() => acc.style.opacity = "1", 10);
+            sizeDropdownContainer.style.marginTop = "10px"; // Button rutscht mit
         } else {
             acc.style.opacity = "0";
-            setTimeout(() => acc.style.display = "none", 300);
+            setTimeout(() => {
+                acc.style.display = "none";
+                sizeDropdownContainer.style.marginTop = "0px"; // Button bleibt fixiert
+            }, 300);
         }
     }
 
@@ -316,27 +314,21 @@
             });
 
             let ids = this.getAttribute("data-ids").split(",");
-            let lastElement = null;
-
             ids.forEach(id => {
                 let leistungElement = document.getElementById(id);
                 if (leistungElement) {
                     leistungElement.classList.add("active");
-                    lastElement = leistungElement; // Speichert die letzte Leistungsphase
                 }
             });
 
-            // Setzt den Größen-Button direkt unter die letzte aktive Leistungsphase
-            if (lastElement) {
-                lastElement.appendChild(document.getElementById("size-dropdown-container"));
-                document.getElementById("size-dropdown-container").style.display = "block";
-            }
+            // Akkordeon schließen
+            toggleAccordion();
 
             // Aktiviert den Größen-Button
             let sizeButton = document.getElementById("size-button");
             sizeButton.classList.add("active");
             sizeButton.disabled = false;
-            sizeButton.style.opacity = "1";
+            sizeButton.style.opacity = "1"; // Button wird sichtbar
         });
     });
 
@@ -350,7 +342,7 @@
         let anfrageButton = document.getElementById("anfrage-button");
         anfrageButton.classList.add("active");
         anfrageButton.disabled = false;
-        anfrageButton.style.display = "block";
+        anfrageButton.style.display = "block"; // Button wird sichtbar
     }
 
     function toggleSizeDropdown() {
