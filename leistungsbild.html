@@ -151,7 +151,7 @@
     top: 100%;
     left: 50%;
     transform: translateX(-50%);
-    background: #fff;
+    background: #ffffff;
     width: 200px;
     text-align: center;
     z-index: 1000; /* Liegt über anderen Elementen */
@@ -378,7 +378,19 @@
             return;
         }
 
-        let body = `Hallo,\n\nIch interessiere mich für folgende Leistung:\n\n${selectedText}\n\n🔹 Objektgröße: ${selectedSize}\n\nMit freundlichen Grüßen,\n[Ihr Name]`;
+        let body = `Hallo,\n\nIch interessiere mich für folgende Leistung:\n\n${selectedText}\n\n🔹 Objektgröße: ${selectedSize}\n\n`;
+        body += "🔹 Zugehörige Leistungsphasen:\n";
+
+        document.querySelectorAll(".leistung.active").forEach(leistung => {
+            body += `  - ${leistung.querySelector("strong").textContent.trim()}\n`;
+
+            let unterpunkte = leistung.querySelectorAll(".leistung-content");
+            unterpunkte.forEach(punkt => {
+                body += `    • ${punkt.textContent.trim()}\n`;
+            });
+        });
+
+        body += "\nMit freundlichen Grüßen,\n[Ihr Name]";
 
         let mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
         window.location.href = mailtoLink;
