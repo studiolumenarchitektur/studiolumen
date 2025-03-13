@@ -371,15 +371,15 @@
 
     function sendEmail() {
         let email = "studiolumenarchitektur@gmail.com";
-        let subject = "Angebotsanfrage";
+        let subject = "angebotsanfrage";
         
         if (!selectedText || !selectedSize) {
             alert("Bitte wähle eine Antwort und eine Objektgröße aus!");
             return;
         }
 
-        let body = `Hallo,\n\nIch interessiere mich für folgende Leistung:\n\n${selectedText}\n\n🔹 Objektgröße: ${selectedSize}\n\n`;
-        body += "🔹 Zugehörige Leistungsphasen:\n";
+        let body = `hi,\n\nkannst du mir ein angebot über die folgenden leistungen machen?:\n\n${selectedText}\n\nobjektgröße: ${selectedSize}\n\n`;
+        body += "das brauche ich:\n";
 
         document.querySelectorAll(".leistung.active").forEach(leistung => {
             body += `  - ${leistung.querySelector("strong").textContent.trim()}\n`;
@@ -390,7 +390,7 @@
             });
         });
 
-        body += "\nMit freundlichen Grüßen,\n[Ihr Name]";
+        body += "\nliebe grüße,\n[Ihr Name]";
 
         let mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
         window.location.href = mailtoLink;
