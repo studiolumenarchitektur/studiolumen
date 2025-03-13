@@ -207,7 +207,22 @@
                 setTimeout(() => acc.style.display = "none", 300);
             }
         }
+function validateInput() {
+    let selectField = document.getElementById("objekt-groesse");
+    let anfrageButton = document.getElementById("anfrage-button");
 
+    if (selectField.value !== "" && selectedText.trim() !== "") {
+        anfrageButton.classList.add("active");
+        anfrageButton.disabled = false;
+        anfrageButton.style.opacity = "1";
+        anfrageButton.style.cursor = "pointer";
+    } else {
+        anfrageButton.classList.remove("active");
+        anfrageButton.disabled = true;
+        anfrageButton.style.opacity = "0.5";
+        anfrageButton.style.cursor = "not-allowed";
+    }
+}
 document.querySelectorAll(".accordion-item").forEach(item => {
     item.addEventListener("click", function () {
         selectedText = this.textContent.trim(); // Speichert die Auswahl
