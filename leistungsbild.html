@@ -103,13 +103,14 @@
 
 #size-button {
     color: #800020;
-    background: none;
+    background: #fff; /* Weißer Hintergrund */
     font-weight: bold;
     font-size: 16px;
     padding: 10px 20px;
     border: none;
     cursor: not-allowed;
     text-transform: lowercase;
+    white-space: nowrap; /* Text bleibt in einer Zeile */
 }
 
 #size-button.active {
@@ -179,7 +180,7 @@
         <div class="accordion-item" data-ids="leistung-l6,leistung-l7">kannst du mich bei der ausschreibung und vergabe unterstützen?</div>
     </div>
     
-<!-- Fixierter Button für die Objektgrößen-Auswahl (in einer Zeile) -->
+<!-- Fixierter Button für die Objektgrößen-Auswahl -->
 <div id="size-dropdown-container">
     <button id="size-button" onclick="toggleSizeDropdown()" disabled>wie groß soll es werden?</button>
     <div id="size-dropdown" class="dropdown-menu">
