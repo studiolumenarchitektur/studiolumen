@@ -98,7 +98,7 @@
             font-weight: bold;
             font-size: 16px;
             padding: 10px 20px;
-            border: none; /* Rahmen entfernt */
+            border: none;
             cursor: not-allowed;
             text-transform: lowercase;
             margin-top: 20px;
@@ -188,7 +188,7 @@
         <div class="leistung-content">• unterstützung bei der vergabeentscheidung</div>
     </div>
         
-    <button id="anfrage-button" disabled onclick="sendEmail()">angebot anfragen</button>
+   <button id="anfrage-button" disabled onclick="sendEmail()">angebot anfragen</button>
 
     <footer class="footer">
         <div onclick="window.location.href='impressum.html'">impressum</div>
@@ -196,6 +196,8 @@
     </footer>
 
     <script>
+        let selectedText = "";
+
         function toggleAccordion() {
             let acc = document.getElementById("accordion");
 
@@ -210,17 +212,12 @@
 
         document.querySelectorAll(".accordion-item").forEach(item => {
             item.addEventListener("click", function () {
-                // Verstecke alle Leistungsphasen
+                selectedText = this.textContent.trim();
+
                 document.querySelectorAll(".leistung").forEach(leistung => {
                     leistung.classList.remove("active");
                 });
 
-                // Akkordeon ausblenden
-                let acc = document.getElementById("accordion");
-                acc.style.opacity = "0";
-                setTimeout(() => acc.style.display = "none", 300);
-
-                // Zeige nur die gewählte Leistungsphase an
                 let ids = this.getAttribute("data-ids").split(",");
                 ids.forEach(id => {
                     let leistungElement = document.getElementById(id);
@@ -229,47 +226,26 @@
                     }
                 });
 
-                // Aktiviert den "Angebot anfragen"-Button
                 let anfrageButton = document.getElementById("anfrage-button");
                 anfrageButton.classList.add("active");
                 anfrageButton.disabled = false;
             });
         });
 
-function sendEmail() {
-    let email = "studiolumenarchitektur@gmail.com";
-    let subject = "Angebotsanfrage";
-    
-    // Prüfen, ob eine Auswahl getroffen wurde
-    if (!selectedText) {
-        alert("Bitte wähle eine Antwort aus!");
-        return;
-    }
+        function sendEmail() {
+            let email = "studiolumenarchitektur@gmail.com";
+            let subject = "Angebotsanfrage";
+            
+            if (!selectedText) {
+                alert("Bitte wähle eine Antwort aus!");
+                return;
+            }
 
-    // Leistungsphasen und Unterpunkte sammeln
-    let body = "hallo,\n\nkannst du mir bitte ein angebot über die folgenden leistungen machen?:\n\n";
-    body += `🔹 auswahl: ${selectedText}\n\n`;
-    body += "🔹 leistungsphasen:\n";
+            let body = `Hallo,\n\nIch interessiere mich für folgende Leistung:\n\n${selectedText}\n\nMit freundlichen Grüßen,\n[Ihr Name]`;
 
-    document.querySelectorAll(".leistung.active").forEach(leistung => {
-        body += `  - ${leistung.querySelector("strong").textContent.trim()}\n`;
-
-        let unterpunkte = leistung.querySelectorAll(".leistung-content");
-        unterpunkte.forEach(punkt => {
-            body += `    • ${punkt.textContent.trim()}\n`;
-        });
-    });
-
-    let objektGroesse = document.getElementById("objekt-groesse").value;
-    body += `\n🔹 objektgröße: ${objektGroesse}\n\n`;
-    body += "liebe grüße,\n[Ihr Name]";
-
-    // Mailto-Link generieren
-    let mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    
-    // E-Mail-Client öffnen
-    window.location.href = mailtoLink;
-}
+            let mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            window.location.href = mailtoLink;
+        }
     </script>
 </body>
 </html>
