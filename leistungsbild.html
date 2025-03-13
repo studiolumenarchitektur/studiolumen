@@ -92,8 +92,10 @@
             gap: 20px;
         }
 #size-dropdown-container {
-    position: relative;
-    margin-top: 20px;
+    position: fixed;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 #size-button {
@@ -110,7 +112,7 @@
 .dropdown-menu {
     display: none;
     position: absolute;
-    top: 40px;
+    top: -160px;
     left: 50%;
     transform: translateX(-50%);
     background: #fff;
@@ -170,7 +172,7 @@
         <div class="accordion-item" data-ids="leistung-l6,leistung-l7">kannst du mich bei der ausschreibung und vergabe unterstützen?</div>
     </div>
     
-<!-- Button für die Objektgrößen-Auswahl -->
+<!-- Button für die Objektgrößen-Auswahl (fixiert an der gleichen Position wie "Anfrage starten") -->
 <div id="size-dropdown-container">
     <button id="size-button" onclick="toggleSizeDropdown()">bitte wähle die objektgröße</button>
     <div id="size-dropdown" class="dropdown-menu">
@@ -289,7 +291,12 @@
     function selectSize(size) {
         selectedSize = size;
         document.getElementById("size-button").textContent = size;
-        validateInput();
+        document.getElementById("size-dropdown").style.display = "none";
+
+        // Entferne den Größen-Button und aktiviere den Anfrage-Button
+        document.getElementById("size-dropdown-container").style.display = "none";
+        document.getElementById("anfrage-button").classList.add("active");
+        document.getElementById("anfrage-button").disabled = false;
     }
 
     function validateInput() {
@@ -318,24 +325,20 @@
         let mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
         window.location.href = mailtoLink;
     }
-      function toggleSizeDropdown() {
-    let dropdown = document.getElementById("size-dropdown");
-    if (dropdown.style.display === "block") {
-        dropdown.style.display = "none";
-    } else {
-        dropdown.style.display = "block";
-    }
-}
 
-// Schließt das Dropdown, wenn außerhalb geklickt wird
-document.addEventListener("click", function(event) {
-    let dropdown = document.getElementById("size-dropdown");
-    let button = document.getElementById("size-button");
-
-    if (!dropdown.contains(event.target) && event.target !== button) {
-        dropdown.style.display = "none";
+    function toggleSizeDropdown() {
+        let dropdown = document.getElementById("size-dropdown");
+        dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
     }
-});
+
+    document.addEventListener("click", function(event) {
+        let dropdown = document.getElementById("size-dropdown");
+        let button = document.getElementById("size-button");
+
+        if (!dropdown.contains(event.target) && event.target !== button) {
+            dropdown.style.display = "none";
+        }
+    });
 </script>
 </body>
 </html>
