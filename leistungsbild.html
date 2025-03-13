@@ -40,7 +40,15 @@
     transition: opacity 0.3s ease-in-out;
 }
 
-#bedarf-button:hover {
+/* Hover-Effekt ist standardmäßig deaktiviert */
+#bedarf-button:hover,
+#size-button:hover {
+    opacity: 1;
+}
+
+/* Hover funktioniert erst, wenn eine Auswahl getroffen wurde */
+#bedarf-button.enabled:hover,
+#size-button.enabled:hover {
     opacity: 1;
 }
         #accordion {
@@ -115,6 +123,7 @@
     transition: opacity 0.3s ease-in-out;
 }
 
+/* Aktivierter Zustand für Hover-Effekt */
 #size-button.active {
     cursor: pointer;
     opacity: 1;
