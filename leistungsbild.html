@@ -243,6 +243,12 @@ function sendEmail() {
         return;
     }
 
+    let objektGroesse = document.getElementById("objekt-groesse").value;
+    if (!objektGroesse) {
+        alert("Bitte wähle eine Objektgröße aus!");
+        return;
+    }
+
     // Leistungsphasen und Unterpunkte sammeln
     let body = "hallo,\n\nkannst du mir bitte ein angebot über die folgenden leistungen machen?:\n\n";
     body += `🔹 auswahl: ${selectedText}\n\n`;
@@ -257,7 +263,6 @@ function sendEmail() {
         });
     });
 
-    let objektGroesse = document.getElementById("objekt-groesse").value;
     body += `\n🔹 objektgröße: ${objektGroesse}\n\n`;
     body += "liebe grüße,\n[Ihr Name]";
 
