@@ -168,24 +168,22 @@
     background: #800020;
     color: #fff;
 }
-        #anfrage-button {
-            color: #800020;
-            background: none;
-            font-weight: bold;
-            font-size: 16px;
-            padding: 10px 20px;
-            border: none;
-            cursor: not-allowed;
-            text-transform: lowercase;
-            margin-top: 20px;
-            display: block;
-            opacity: 0.5;
-            pointer-events: none;
-            position: fixed;
-            bottom: 60px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
+        
+#anfrage-button {
+    display: none; /* Button bleibt unsichtbar, bis er aktiv wird */
+    color: #800020;
+    background: none;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 10px 20px;
+    border: none;
+    cursor: not-allowed;
+    text-transform: lowercase;
+    position: fixed;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+}
 
         #anfrage-button.active {
             opacity: 1;
@@ -292,15 +290,14 @@
     let selectedText = "";
     let selectedSize = "";
 
-    document.addEventListener("DOMContentLoaded", function() {
-        // Stelle sicher, dass die Buttons beim Laden deaktiviert & ausgeblendet sind
-        let sizeButton = document.getElementById("size-button");
-        let anfrageButton = document.getElementById("anfrage-button");
+document.addEventListener("DOMContentLoaded", function() {
+    let sizeButton = document.getElementById("size-button");
+    let anfrageButton = document.getElementById("anfrage-button");
 
-        sizeButton.disabled = true;
-        sizeButton.style.opacity = "0.5"; // Button ist anfangs transparent
-        anfrageButton.style.display = "none"; // Button ist anfangs nicht sichtbar
-    });
+    sizeButton.disabled = true;
+    sizeButton.style.opacity = "0.5"; // Button ist anfangs transparent
+    anfrageButton.style.display = "none"; // Button ist anfangs nicht sichtbar
+});
 
     function toggleAccordion() {
         let acc = document.getElementById("accordion");
@@ -342,17 +339,18 @@
     });
 
     function selectSize(size) {
-        selectedSize = size;
-        document.getElementById("size-button").textContent = size;
-        document.getElementById("size-dropdown").style.display = "none";
+    selectedSize = size;
+    document.getElementById("size-button").textContent = size;
+    document.getElementById("size-dropdown").style.display = "none";
 
-        // Entferne den Größen-Button und aktiviere den Anfrage-Button
-        document.getElementById("size-dropdown-container").style.display = "none";
-        let anfrageButton = document.getElementById("anfrage-button");
-        anfrageButton.classList.add("active");
-        anfrageButton.disabled = false;
-        anfrageButton.style.display = "block"; // Button wird sichtbar
-    }
+    // Entferne den Größen-Button und aktiviere den Anfrage-Button
+    document.getElementById("size-dropdown-container").style.display = "none";
+    document.getElementById("size-button").style.display = "none"; // Button wird ausgeblendet
+    let anfrageButton = document.getElementById("anfrage-button");
+    anfrageButton.classList.add("active");
+    anfrageButton.disabled = false;
+    anfrageButton.style.display = "block"; // Button wird sichtbar
+}
 
     function toggleSizeDropdown() {
         let dropdown = document.getElementById("size-dropdown");
