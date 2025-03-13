@@ -92,7 +92,8 @@
             gap: 20px;
         }
 #size-dropdown-container {
-    margin-top: 10px; /* Der Button rutscht mit dem Akkordeon */
+    position: relative;
+    margin-top: 10px;
 }
 
 #size-button {
@@ -127,7 +128,7 @@
 }
 
 #anfrage-button {
-    display: none;
+    display: none; /* Button bleibt unsichtbar, bis er aktiv wird */
     color: #800020;
     background: none;
     font-weight: bold;
@@ -149,7 +150,7 @@
 .dropdown-menu {
     display: none;
     position: absolute;
-    bottom: 40px; /* Dropdown klappt nach oben auf */
+    top: 100%;
     left: 50%;
     transform: translateX(-50%);
     background: #fff;
