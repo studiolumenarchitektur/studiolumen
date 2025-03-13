@@ -26,18 +26,18 @@
             text-transform: lowercase;
         }
 
-        #bedarf-button {
-            color: #800020;
-            background: none;
-            font-weight: bold;
-            font-size: 18px;
-            padding: 10px;
-            border: none;
-            cursor: pointer;
-            margin-top: 10px;
-            text-transform: lowercase;
-        }
-
+      #bedarf-button {
+    color: #800020;
+    background: none;
+    font-weight: bold;
+    font-size: 18px;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+    text-transform: lowercase;
+    opacity: 1; /* Standard */
+}
         #accordion {
             display: none;
             flex-direction: column;
@@ -108,13 +108,26 @@
     opacity: 0.5;
 }
 
+#size-button {
+    color: #800020;
+    background: #fff;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 10px 20px;
+    border: none;
+    cursor: not-allowed;
+    text-transform: lowercase;
+    white-space: nowrap;
+    opacity: 0.5;
+}
+
 #size-button.active {
     cursor: pointer;
     opacity: 1;
 }
 
 #anfrage-button {
-    display: none; /* Button bleibt unsichtbar, bis er aktiv wird */
+    display: none;
     color: #800020;
     background: none;
     font-weight: bold;
@@ -130,10 +143,9 @@
 }
 
 #anfrage-button.active {
-    display: block; /* Button wird sichtbar */
+    display: block;
     cursor: pointer;
 }
-
 .dropdown-menu {
     display: none;
     position: absolute;
@@ -282,10 +294,12 @@
     document.addEventListener("DOMContentLoaded", function() {
         let sizeButton = document.getElementById("size-button");
         let anfrageButton = document.getElementById("anfrage-button");
+        let bedarfButton = document.getElementById("bedarf-button");
 
         sizeButton.disabled = true;
         sizeButton.style.opacity = "0.5"; // Button ist anfangs transparent
         anfrageButton.style.display = "none"; // Button ist anfangs nicht sichtbar
+        bedarfButton.style.opacity = "1"; // Standard-Button vollständig sichtbar
     });
 
     function toggleAccordion() {
@@ -329,6 +343,10 @@
             sizeButton.classList.add("active");
             sizeButton.disabled = false;
             sizeButton.style.opacity = "1"; // Button wird sichtbar
+
+            // Setzt "wie kann ich dir helfen?" auf 0.5 opacity
+            let bedarfButton = document.getElementById("bedarf-button");
+            bedarfButton.style.opacity = "0.5";
         });
     });
 
