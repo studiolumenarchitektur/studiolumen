@@ -112,6 +112,7 @@
     text-transform: lowercase;
     white-space: nowrap;
     opacity: 0.5;
+    width: 100%;
 }
 
 #size-button.active {
@@ -133,11 +134,6 @@
     bottom: 60px;
     left: 50%;
     transform: translateX(-50%);
-}
-
-#anfrage-button.active {
-    display: block; /* Button wird sichtbar */
-    cursor: pointer;
 }
 
 #anfrage-button.active {
@@ -206,8 +202,8 @@
         <div class="accordion-item" data-ids="leistung-l6,leistung-l7">kannst du mich bei der ausschreibung und vergabe unterstützen?</div>
     </div>
     
-<!-- Fixierter Button für die Objektgrößen-Auswahl -->
-<div id="size-dropdown-container">
+<!-- Fixierter Button für die Objektgrößen-Auswahl (wird unterhalb der letzten Leistungsphase platziert) -->
+<div id="size-dropdown-container" style="display: none;">
     <button id="size-button" onclick="toggleSizeDropdown()" disabled>wie groß soll es werden?</button>
     <div id="size-dropdown" class="dropdown-menu">
         <div class="dropdown-item" onclick="selectSize('bis 50m²')">bis 50m²</div>
@@ -290,14 +286,14 @@
     let selectedText = "";
     let selectedSize = "";
 
-document.addEventListener("DOMContentLoaded", function() {
-    let sizeButton = document.getElementById("size-button");
-    let anfrageButton = document.getElementById("anfrage-button");
+    document.addEventListener("DOMContentLoaded", function() {
+        let sizeButton = document.getElementById("size-button");
+        let anfrageButton = document.getElementById("anfrage-button");
 
-    sizeButton.disabled = true;
-    sizeButton.style.opacity = "0.5"; // Button ist anfangs transparent
-    anfrageButton.style.display = "none"; // Button ist anfangs nicht sichtbar
-});
+        sizeButton.disabled = true;
+        sizeButton.style.opacity = "0.5"; // Button ist anfangs transparent
+        anfrageButton.style.display = "none"; // Button ist anfangs nicht sichtbar
+    });
 
     function toggleAccordion() {
         let acc = document.getElementById("accordion");
@@ -320,37 +316,42 @@ document.addEventListener("DOMContentLoaded", function() {
             });
 
             let ids = this.getAttribute("data-ids").split(",");
+            let lastElement = null;
+
             ids.forEach(id => {
                 let leistungElement = document.getElementById(id);
                 if (leistungElement) {
                     leistungElement.classList.add("active");
+                    lastElement = leistungElement; // Speichert die letzte Leistungsphase
                 }
             });
 
-            // Akkordeon schließen
-            toggleAccordion();
+            // Setzt den Größen-Button direkt unter die letzte aktive Leistungsphase
+            if (lastElement) {
+                lastElement.appendChild(document.getElementById("size-dropdown-container"));
+                document.getElementById("size-dropdown-container").style.display = "block";
+            }
 
             // Aktiviert den Größen-Button
             let sizeButton = document.getElementById("size-button");
             sizeButton.classList.add("active");
             sizeButton.disabled = false;
-            sizeButton.style.opacity = "1"; // Button wird sichtbar
+            sizeButton.style.opacity = "1";
         });
     });
 
     function selectSize(size) {
-    selectedSize = size;
-    document.getElementById("size-button").textContent = size;
-    document.getElementById("size-dropdown").style.display = "none";
+        selectedSize = size;
+        document.getElementById("size-button").textContent = size;
+        document.getElementById("size-dropdown").style.display = "none";
 
-    // Entferne den Größen-Button und aktiviere den Anfrage-Button
-    document.getElementById("size-dropdown-container").style.display = "none";
-    document.getElementById("size-button").style.display = "none"; // Button wird ausgeblendet
-    let anfrageButton = document.getElementById("anfrage-button");
-    anfrageButton.classList.add("active");
-    anfrageButton.disabled = false;
-    anfrageButton.style.display = "block"; // Button wird sichtbar
-}
+        // Entferne den Größen-Button und aktiviere den Anfrage-Button
+        document.getElementById("size-dropdown-container").style.display = "none";
+        let anfrageButton = document.getElementById("anfrage-button");
+        anfrageButton.classList.add("active");
+        anfrageButton.disabled = false;
+        anfrageButton.style.display = "block";
+    }
 
     function toggleSizeDropdown() {
         let dropdown = document.getElementById("size-dropdown");
