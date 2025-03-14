@@ -326,13 +326,11 @@
 document.addEventListener("DOMContentLoaded", function () {
     let accordion = document.getElementById("accordion");
     
-    // Das Akkordeon beim Laden der Seite einblenden
-    accordion.style.display = "flex";
-    accordion.style.opacity = "1";  // Akkordeon sichtbar machen
-    
-    // Wenn das Akkordeon geöffnet werden soll, sicherstellen, dass es vollständig sichtbar ist.
-    setTimeout(() => accordion.style.opacity = "1", 10);
+    // Akkordeon sofort beim Laden der Seite einblenden
+    accordion.style.display = "flex";  // Setze das Akkordeon auf flex, um es sichtbar zu machen
+    accordion.style.opacity = "1";     // Setze die Opazität auf 1, damit es sichtbar wird
 });
+    
 document.addEventListener("DOMContentLoaded", function () {
     let bedarfButton = document.getElementById("bedarf-button");
     let accordion = document.getElementById("accordion");
