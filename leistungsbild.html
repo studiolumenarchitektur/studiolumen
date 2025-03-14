@@ -302,12 +302,12 @@
         bedarfButton.style.opacity = "1"; // Standard-Button vollständig sichtbar
     });
 
-function toggleAccordion() {
+  function toggleAccordion() {
     let acc = document.getElementById("accordion");
 
     if (acc.style.display === "none" || acc.style.display === "") {
         acc.style.display = "flex";  
-        acc.style.opacity = "1";
+        setTimeout(() => acc.style.opacity = "1", 10);
     } else {
         acc.style.opacity = "0";
         setTimeout(() => acc.style.display = "none", 300);
@@ -323,7 +323,7 @@ document.querySelectorAll(".accordion-item").forEach(item => {
     item.addEventListener("click", function() {
         let accordion = document.getElementById("accordion");
 
-        // Akkordeon korrekt schließen
+        // Schließt das Akkordeon sicher
         accordion.style.opacity = "0";
         setTimeout(() => {
             accordion.style.display = "none";
@@ -331,20 +331,15 @@ document.querySelectorAll(".accordion-item").forEach(item => {
 
         // Aktiviert den Größen-Button
         let sizeButton = document.getElementById("size-button");
-        sizeButton.classList.add("active");
-        sizeButton.disabled = false;
-        sizeButton.style.opacity = "1";
+        if (sizeButton) {
+            sizeButton.classList.add("active");
+            sizeButton.disabled = false;
+            sizeButton.style.opacity = "1"; 
+        }
 
         // Setzt "wie kann ich dir helfen?" auf 0.5 opacity
         let bedarfButton = document.getElementById("bedarf-button");
         bedarfButton.style.opacity = "0.5";
-    });
-
-// Aktiviert den Größen-Button
-let sizeButton = document.getElementById("size-button");
-sizeButton.classList.add("active");
-sizeButton.disabled = false;
-sizeButton.style.opacity = "1";
     });
 });
 
@@ -353,16 +348,16 @@ sizeButton.style.opacity = "1";
         document.getElementById("size-button").textContent = size;
         document.getElementById("size-dropdown").style.display = "none";
 
-       // Bedarfs-Button halbtransparent machen
-document.getElementById("bedarf-button").style.opacity = "0.5";
+        // Setzt den Größen-Button wieder auf 0.5 opacity nach Auswahl
+        let sizeButton = document.getElementById("size-button");
+        sizeButton.style.opacity = "0.5";
 
-// Button "wie groß soll es werden?" aktivieren
-let sizeButton = document.getElementById("size-button");
-if (sizeButton) {
-    sizeButton.classList.add("active");
-    sizeButton.disabled = false;
-    sizeButton.style.opacity = "1";
-}
+        // Aktiviert den Anfrage-Button
+        let anfrageButton = document.getElementById("anfrage-button");
+        anfrageButton.classList.add("active");
+        anfrageButton.disabled = false;
+        anfrageButton.style.display = "block"; // Button wird sichtbar
+    }
 
     function toggleSizeDropdown() {
         let dropdown = document.getElementById("size-dropdown");
