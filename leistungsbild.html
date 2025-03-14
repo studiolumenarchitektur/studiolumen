@@ -323,14 +323,11 @@
     }
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    let accordion = document.getElementById("accordion");
-    
-    // Akkordeon sofort beim Laden der Seite einblenden
-    accordion.style.display = "flex";  // Setze das Akkordeon auf flex, um es sichtbar zu machen
-    accordion.style.opacity = "1";     // Setze die Opazität auf 1, damit es sichtbar wird
-});
-    
+        document.addEventListener("DOMContentLoaded", function() {
+            let accordion = document.getElementById("accordion");
+            accordion.style.display = "flex";
+            accordion.style.opacity = "1";
+        });
 document.addEventListener("DOMContentLoaded", function () {
     let bedarfButton = document.getElementById("bedarf-button");
     let accordion = document.getElementById("accordion");
