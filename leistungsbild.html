@@ -198,20 +198,7 @@
 <!-- Container für die Objektgrößen-Auswahl (verschoben oberhalb der Leistungsphasen) -->
 <div id="size-dropdown-container" style="margin-top: 0px;"></div>
 
-<!-- Container für die Leistungsanzeige -->
-<div id="leistung-container" style="width: 100%; max-width: 300px; margin-top: 0px; text-align: left;"></div>
-
-    
-    <div id="accordion">
-        <div class="accordion-item" data-ids="leistung-l0">• Eine Idee</div>
-        <div class="accordion-item" data-ids="leistung-l1,leistung-l2">• Unterstützung beim Entwurf</div>
-        <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3">• Umgestaltung</div>
-        <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3,leistung-l4">• Planung und Baugenehmigung</div>
-        <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3,leistung-l4,leistung-l5">• Ein Projekt von A-Z</div>
-        <div class="accordion-item" data-ids="leistung-l6,leistung-l7">• Hilfe bei Ausschreibung und Vergabe</div>
-    </div>
-    
-<!-- Fixierter Button für die Objektgrößen-Auswahl -->
+    <!-- Fixierter Button für die Objektgrößen-Auswahl -->
 <div id="size-dropdown-container">
     <button id="size-button" onclick="toggleSizeDropdown()" disabled>Wie groß denkst du?</button>
     <div id="size-dropdown" class="dropdown-menu">
@@ -222,6 +209,18 @@
         <div class="dropdown-item" onclick="selectSize('Bis 250m²')">Bis 250m²</div>
         <div class="dropdown-item" onclick="selectSize('Bis 300m²')">Bis 300m²</div>
         <div class="dropdown-item" onclick="selectSize('Sehr groß')">Sehr groß</div>
+    </div>
+    
+<!-- Container für die Leistungsanzeige -->
+<div id="leistung-container" style="width: 100%; max-width: 300px; margin-top: 0px; text-align: left;"></div>
+
+        <div id="accordion">
+        <div class="accordion-item" data-ids="leistung-l0">• Eine Idee</div>
+        <div class="accordion-item" data-ids="leistung-l1,leistung-l2">• Unterstützung beim Entwurf</div>
+        <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3">• Umgestaltung</div>
+        <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3,leistung-l4">• Planung und Baugenehmigung</div>
+        <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3,leistung-l4,leistung-l5">• Ein Projekt von A-Z</div>
+        <div class="accordion-item" data-ids="leistung-l6,leistung-l7">• Hilfe bei Ausschreibung und Vergabe</div>
     </div>
 </div>
 
@@ -329,8 +328,9 @@
         let leistungContainer = document.getElementById("leistung-container");
         let selectedAnswer = document.getElementById("selected-answer");
         let sizeButton = document.getElementById("size-button");
+        let sizeDropdown = document.getElementById("size-dropdown");
         let sizeDropdownContainer = document.getElementById("size-dropdown-container");
-        let isAccordionOpen = false; // Status des Akkordeons
+        let isAccordionOpen = false;
 
         // Akkordeon-Button toggelt zwischen Anzeigen und Verstecken
         bedarfButton.addEventListener("click", function () {
@@ -370,14 +370,31 @@
                     }
                 });
 
-                // Aktiviert den Größen-Button
+                // Aktiviert den Größen-Button und stellt sicher, dass das Dropdown direkt darunter bleibt
                 sizeButton.classList.add("active");
                 sizeButton.disabled = false;
                 sizeButton.style.opacity = "1";
+                sizeDropdownContainer.style.display = "block";
 
-                // Verschiebt den Größen-Button oberhalb der Leistungsphasen
-                leistungContainer.parentNode.insertBefore(sizeDropdownContainer, leistungContainer);
+                // Platziert den Button mit dem Dropdown direkt unter der Antwort
+                selectedAnswer.insertAdjacentElement("afterend", sizeDropdownContainer);
             });
+        });
+
+        // Dropdown-Menü sichtbar machen und korrekt platzieren
+        sizeButton.addEventListener("click", function () {
+            if (sizeDropdown.style.display === "block") {
+                sizeDropdown.style.display = "none";
+            } else {
+                sizeDropdown.style.display = "block";
+            }
+        });
+
+        // Klick außerhalb des Dropdowns schließt es
+        document.addEventListener("click", function (event) {
+            if (!sizeDropdownContainer.contains(event.target) && event.target !== sizeButton) {
+                sizeDropdown.style.display = "none";
+            }
         });
     });
             document.getElementById("bedarf-button").addEventListener("click", function() {
