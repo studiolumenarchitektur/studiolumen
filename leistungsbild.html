@@ -215,13 +215,13 @@
 <div id="size-dropdown-container">
     <button id="size-button" onclick="toggleSizeDropdown()" disabled>Wie groß denkst du?</button>
     <div id="size-dropdown" class="dropdown-menu">
-        <div class="dropdown-item" onclick="selectSize('Bis 50m²')">Bis 50m²</div>
-        <div class="dropdown-item" onclick="selectSize('Bis 100m²')">Bis 100m²</div>
-        <div class="dropdown-item" onclick="selectSize('Bis 150m²')">Bis 150m²</div>
-        <div class="dropdown-item" onclick="selectSize('Bis 200m²')">Bis 200m²</div>
-        <div class="dropdown-item" onclick="selectSize('Bis 250m²')">Bis 250m²</div>
-        <div class="dropdown-item" onclick="selectSize('Bis 300m²')">Bis 300m²</div>
-        <div class="dropdown-item" onclick="selectSize('Sehr groß')">Sehr groß</div>
+        <div class="dropdown-item" onclick="selectSize('Bis 50m²')">• Bis 50m²</div>
+        <div class="dropdown-item" onclick="selectSize('Bis 100m²')">• Bis 100m²</div>
+        <div class="dropdown-item" onclick="selectSize('Bis 150m²')">• Bis 150m²</div>
+        <div class="dropdown-item" onclick="selectSize('Bis 200m²')">• Bis 200m²</div>
+        <div class="dropdown-item" onclick="selectSize('Bis 250m²')">• Bis 250m²</div>
+        <div class="dropdown-item" onclick="selectSize('Bis 300m²')">• Bis 300m²</div>
+        <div class="dropdown-item" onclick="selectSize('Sehr groß')">• Sehr groß</div>
     </div>
 </div>
 
@@ -394,7 +394,7 @@
     // Anzeige der gewählten Größe unter dem Button
     let selectedSizeText = document.createElement("div");
     selectedSizeText.textContent = size;
-    selectedSizeText.style.color = "#800020";  // Setzt die Textfarbe
+    selectedSizeText.style.color = "#000";  // Setzt die Textfarbe
     selectedSizeText.style.marginTop = "10px";
     
     // Den Text unter dem Button anzeigen
