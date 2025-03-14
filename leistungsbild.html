@@ -152,7 +152,7 @@
     transform: translateX(-50%);
     background: #ffffff;
     width: 300px;
-    text-align: center;
+    text-align: left;
     z-index: 1000; /* Liegt über anderen Elementen */
 }
 
@@ -199,13 +199,12 @@
 <button id="bedarf-button">wie kann ich dir helfen?</button>
 
 <!-- Neuer Container für die gewählte Antwort -->
-<div id="selected-answer" style="width: 100%; max-width: 350px; margin-top: 0px; text-align: center; font-weight: normal; color:#800020; display: none;"></div>
+<div id="selected-answer" style="width: 100%; max-width: 300px; margin-top: 0px; text-align: left; font-weight: normal; color: #80020; display: none;"></div>
 
 <!-- Container für die Leistungsanzeige -->
-<div id="leistung-container" style="width: 100%; max-width: 350px; margin-top: 10px; text-align: left;"></div>
+<div id="leistung-container" style="width: 100%; max-width: 300px; margin-top: 10px; text-align: left;"></div>
 
-
-    <div id="leistung-container" style="width: 100%; max-width: 350px; margin-top: 20px; text-align: left;"></div>
+    <div id="leistung-container" style="width: 100%; max-width: 350px; margin-top: 0px; text-align: left;"></div>
     
     <div id="accordion">
         <div class="accordion-item" data-ids="leistung-l0">lass uns eine idee entwickeln</div>
@@ -328,23 +327,20 @@
             accordion.style.display = "flex";
             accordion.style.opacity = "1";
         });
-   document.addEventListener("DOMContentLoaded", function () {
+ document.addEventListener("DOMContentLoaded", function () {
         let bedarfButton = document.getElementById("bedarf-button");
         let accordion = document.getElementById("accordion");
         let leistungContainer = document.getElementById("leistung-container");
         let selectedAnswer = document.getElementById("selected-answer");
         let sizeButton = document.getElementById("size-button");
+        let isAccordionOpen = false; // Status des Akkordeons
 
         // Akkordeon-Button toggelt zwischen Anzeigen und Verstecken
         bedarfButton.addEventListener("click", function () {
-            if (accordion.style.display === "none" || accordion.style.display === "") {
+            if (!isAccordionOpen) {
                 accordion.style.display = "flex";
                 setTimeout(() => accordion.style.opacity = "1", 10);
-            } else {
-                accordion.style.opacity = "0";
-                setTimeout(() => {
-                    accordion.style.display = "none";
-                }, 300);
+                isAccordionOpen = true;
             }
         });
 
@@ -355,6 +351,7 @@
                 accordion.style.opacity = "0";
                 setTimeout(() => {
                     accordion.style.display = "none";
+                    isAccordionOpen = false;
                 }, 300);
 
                 // Die gewählte Antwort unter dem Button anzeigen
