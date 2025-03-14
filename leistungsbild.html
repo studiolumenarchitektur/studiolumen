@@ -58,7 +58,7 @@
         .accordion-item {
             cursor: pointer;
             padding: 10px;
-            text-align: center;
+            text-align: left;
             transition: color 0.3s ease-in-out;
             text-transform: lowercase;
         }
@@ -196,7 +196,7 @@
 </div>
     <header>leistungsbild</header>
 
-<button id="bedarf-button">wie kann ich dir helfen?</button>
+<button id="bedarf-button">Was brauchst du?</button>
 
 <!-- Neuer Container für die gewählte Antwort -->
 <div id="selected-answer" style="width: 100%; max-width: 300px; margin-top: 0px; text-align: center; font-weight: normal; color: #80020; display: none;"></div>
@@ -207,25 +207,25 @@
     <div id="leistung-container" style="width: 100%; max-width: 350px; margin-top: 0px; text-align: left;"></div>
     
     <div id="accordion">
-        <div class="accordion-item" data-ids="leistung-l0">• lass uns eine idee entwickeln</div>
-        <div class="accordion-item" data-ids="leistung-l1,leistung-l2">• ich brauche unterstützung beim entwerfen</div>
-        <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3">• lass uns meinen wohnraum umgestalten</div>
-        <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3,leistung-l4">• ich brauche eine planung und die baugenehmigung</div>
-        <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3,leistung-l4,leistung-l5">• lass uns zusammen ein projekt von a-z planen</div>
-        <div class="accordion-item" data-ids="leistung-l6,leistung-l7">• kannst du mich bei der ausschreibung und vergabe unterstützen?</div>
+        <div class="accordion-item" data-ids="leistung-l0">• Eine Idee</div>
+        <div class="accordion-item" data-ids="leistung-l1,leistung-l2">• Unterstützung beim Entwurf</div>
+        <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3">• Umgestaltung</div>
+        <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3,leistung-l4">• Planung und Baugenehmigung</div>
+        <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3,leistung-l4,leistung-l5">• Ein Projekt von A-Z</div>
+        <div class="accordion-item" data-ids="leistung-l6,leistung-l7">• Hilfe bei Ausschreibung und Vergabe</div>
     </div>
     
 <!-- Fixierter Button für die Objektgrößen-Auswahl -->
 <div id="size-dropdown-container">
-    <button id="size-button" onclick="toggleSizeDropdown()" disabled>wie groß soll es werden?</button>
+    <button id="size-button" onclick="toggleSizeDropdown()" disabled>Wie groß denkst du?</button>
     <div id="size-dropdown" class="dropdown-menu">
-        <div class="dropdown-item" onclick="selectSize('es wird ein projekt bis 50m²')">es wird ein projekt bis 50m²</div>
-        <div class="dropdown-item" onclick="selectSize('es wird ein projekt bis 100m²')">es wird ein projekt bis 100m²</div>
-        <div class="dropdown-item" onclick="selectSize('es wird ein projekt bis 150m²')">es wird ein projekt bis 150m²</div>
-        <div class="dropdown-item" onclick="selectSize('es wird ein projekt bis 200m²')">es wird ein projekt bis 200m²</div>
-        <div class="dropdown-item" onclick="selectSize('es wird ein projekt bis 250m²')">es wird ein projekt bis 250m²</div>
-        <div class="dropdown-item" onclick="selectSize('es wird ein projekt bis 300m²')">es wird ein projekt bis 300m²</div>
-        <div class="dropdown-item" onclick="selectSize('es wird ein großes projekt')">es wird ein großes projekt</div>
+        <div class="dropdown-item" onclick="selectSize('Bis 50m²')">Bis 50m²</div>
+        <div class="dropdown-item" onclick="selectSize('Bis 100m²')">Bis 100m²</div>
+        <div class="dropdown-item" onclick="selectSize('Bis 150m²')">Bis 150m²</div>
+        <div class="dropdown-item" onclick="selectSize('Bis 200m²')">Bis 200m²</div>
+        <div class="dropdown-item" onclick="selectSize('Bis 250m²')">Bis 250m²</div>
+        <div class="dropdown-item" onclick="selectSize('Bis 300m²')">Bis 300m²</div>
+        <div class="dropdown-item" onclick="selectSize('Sehr groß')">Sehr groß</div>
     </div>
 </div>
 
