@@ -200,22 +200,16 @@
 <!-- Container für die Leistungsanzeige -->
 <div id="leistung-container" style="width: 100%; max-width: 300px; margin-top: 10px; text-align: left;"></div>
 
-<!-- Fixierter Button für die Objektgrößen-Auswahl unter dem "Was brauchst du?" Button -->
-<div id="size-dropdown-container" style="display: none; margin-top: 10px;">
-    <button id="size-button" onclick="toggleSizeDropdown()" disabled>Wie groß denkst du?</button>
-    <div id="size-dropdown" class="dropdown-menu">
-        <div class="dropdown-item" onclick="selectSize('• Bis 50m²')">• Bis 50m²</div>
-        <div class="dropdown-item" onclick="selectSize('• Bis 100m²')">• Bis 100m²</div>
-        <div class="dropdown-item" onclick="selectSize('• Bis 150m²')">• Bis 150m²</div>
-        <div class="dropdown-item" onclick="selectSize('• Bis 200m²')">• Bis 200m²</div>
-        <div class="dropdown-item" onclick="selectSize('• Bis 250m²')">• Bis 250m²</div>
-        <div class="dropdown-item" onclick="selectSize('• Bis 300m²')">• Bis 300m²</div>
-        <div class="dropdown-item" onclick="selectSize('• Sehr groß')">• Sehr groß</div>
+    <div id="leistung-container" style="width: 100%; max-width: 350px; margin-top: 0px; text-align: left;"></div>
+    
+    <div id="accordion">
+        <div class="accordion-item" data-ids="leistung-l0">• Eine Idee</div>
+        <div class="accordion-item" data-ids="leistung-l1,leistung-l2">• Unterstützung beim Entwurf</div>
+        <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3">• Umgestaltung</div>
+        <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3,leistung-l4">• Planung und Baugenehmigung</div>
+        <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3,leistung-l4,leistung-l5">• Ein Projekt von A-Z</div>
+        <div class="accordion-item" data-ids="leistung-l6,leistung-l7">• Hilfe bei Ausschreibung und Vergabe</div>
     </div>
-</div>
-
-<!-- Anfrage starten Button -->
-<button id="anfrage-button" disabled onclick="sendEmail()">Anfrage Starten</button>
     
 <!-- Fixierter Button für die Objektgrößen-Auswahl -->
 <div id="size-dropdown-container" style="display: none;">
@@ -334,7 +328,6 @@ document.addEventListener("DOMContentLoaded", function () {
     let leistungContainer = document.getElementById("leistung-container");
     let selectedAnswer = document.getElementById("selected-answer");
     let sizeButton = document.getElementById("size-button");
-    let sizeDropdownContainer = document.getElementById("size-dropdown-container");
     let isAccordionOpen = false;
 
     // Akkordeon-Button toggelt zwischen Anzeigen und Verstecken
@@ -375,11 +368,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
 
-            // Den Button "Wie groß denkst du?" unter der Antwort des "Was brauchst du?" Buttons anzeigen
-            sizeDropdownContainer.style.display = "block"; // Button sichtbar machen
+            // Dynamisch den Button „Wie groß denkst du?“ unterhalb der Leistungsphasen einfügen
+            let sizeDropdownContainer = document.getElementById("size-dropdown-container");
+            sizeDropdownContainer.style.marginTop = "10px"; // Falls erforderlich
+            sizeDropdownContainer.style.display = "block"; // Button wird angezeigt
         });
     });
-});
+});;
             document.getElementById("bedarf-button").addEventListener("click", function() {
         let accordion = document.getElementById("accordion");
         if (accordion.style.display === "none" || accordion.style.display === "") {
