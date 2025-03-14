@@ -198,6 +198,8 @@
 
     <button id="bedarf-button">wie kann ich dir helfen?</button>
 
+    <div id="leistung-container" style="width: 100%; max-width: 350px; margin-top: 20px; text-align: left;"></div>
+    
     <div id="accordion">
         <div class="accordion-item" data-ids="leistung-l0">lass uns eine idee entwickeln</div>
         <div class="accordion-item" data-ids="leistung-l1,leistung-l2">ich brauche unterstützung beim entwerfen</div>
@@ -319,30 +321,39 @@
             accordion.style.display = "flex";
             accordion.style.opacity = "1";
         });
-document.querySelectorAll(".accordion-item").forEach(item => {
-    item.addEventListener("click", function() {
-        let accordion = document.getElementById("accordion");
+    document.querySelectorAll(".accordion-item").forEach(item => {
+        item.addEventListener("click", function() {
+            let accordion = document.getElementById("accordion");
+            accordion.style.opacity = "0";
+            setTimeout(() => {
+                accordion.style.display = "none";
+            }, 300);
 
-        // Schließt das Akkordeon sicher
-        accordion.style.opacity = "0";
-        setTimeout(() => {
-            accordion.style.display = "none";
-        }, 300);
+            let sizeButton = document.getElementById("size-button");
+            if (sizeButton) {
+                sizeButton.classList.add("active");
+                sizeButton.disabled = false;
+                sizeButton.style.opacity = "1"; 
+            }
 
-        // Aktiviert den Größen-Button
-        let sizeButton = document.getElementById("size-button");
-        if (sizeButton) {
-            sizeButton.classList.add("active");
-            sizeButton.disabled = false;
-            sizeButton.style.opacity = "1"; 
-        }
+            let bedarfButton = document.getElementById("bedarf-button");
+            bedarfButton.style.opacity = "0.5";
 
-        // Setzt "wie kann ich dir helfen?" auf 0.5 opacity
-        let bedarfButton = document.getElementById("bedarf-button");
-        bedarfButton.style.opacity = "0.5";
+            let selectedIds = this.getAttribute("data-ids").split(",");
+            let leistungContainer = document.getElementById("leistung-container");
+            leistungContainer.innerHTML = "";
+
+            selectedIds.forEach(id => {
+                let leistungElement = document.getElementById(id);
+                if (leistungElement) {
+                    let clone = leistungElement.cloneNode(true);
+                    clone.classList.add("active");
+                    clone.style.display = "block";
+                    leistungContainer.appendChild(clone);
+                }
+            });
+        });
     });
-});
-
     function selectSize(size) {
         selectedSize = size;
         document.getElementById("size-button").textContent = size;
