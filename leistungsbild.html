@@ -302,7 +302,7 @@
         bedarfButton.style.opacity = "1"; // Standard-Button vollständig sichtbar
     });
 
-function toggleAccordion() {
+  function toggleAccordion() {
     let acc = document.getElementById("accordion");
 
     if (acc.style.display === "none" || acc.style.display === "") {
@@ -310,9 +310,7 @@ function toggleAccordion() {
         setTimeout(() => acc.style.opacity = "1", 10);
     } else {
         acc.style.opacity = "0";
-        setTimeout(() => {
-            acc.style.display = "none";
-        }, 300);
+        setTimeout(() => acc.style.display = "none", 300);
     }
 }
 
@@ -339,15 +337,9 @@ document.querySelectorAll(".accordion-item").forEach(item => {
             sizeButton.style.opacity = "1"; 
         }
 
-      // Setzt "wie kann ich dir helfen?" auf 0.5 opacity
-let bedarfButton = document.getElementById("bedarf-button");
-bedarfButton.style.opacity = "0.5";
-
-// Aktiviert den Größen-Button
-let sizeButton = document.getElementById("size-button");
-sizeButton.classList.add("active");
-sizeButton.disabled = false;
-sizeButton.style.opacity = "1";
+        // Setzt "wie kann ich dir helfen?" auf 0.5 opacity
+        let bedarfButton = document.getElementById("bedarf-button");
+        bedarfButton.style.opacity = "0.5";
     });
 });
 
