@@ -83,7 +83,6 @@
             opacity: 1;
             transform: translateY(0);
         }
-
         .footer {
             position: fixed;
             bottom: 0;
@@ -197,7 +196,7 @@
 </div>
     <header>leistungsbild</header>
 
-    <button id="bedarf-button" onclick="toggleAccordion()">wie kann ich dir helfen?</button>
+    <button id="bedarf-button">wie kann ich dir helfen?</button>
 
     <div id="accordion">
         <div class="accordion-item" data-ids="leistung-l0">lass uns eine idee entwickeln</div>
@@ -343,12 +342,15 @@
             // Akkordeon schließen
             toggleAccordion();
 
-            // Aktiviert den Größen-Button
-            let sizeButton = document.getElementById("size-button");
-            sizeButton.classList.add("active");
-            sizeButton.disabled = false;
-            sizeButton.style.opacity = "1"; // Button wird sichtbar
-
+                // Aktiviert den Größen-Button
+                let sizeButton = document.getElementById("size-button");
+                if (sizeButton) {
+                    sizeButton.classList.add("active");
+                    sizeButton.disabled = false;
+                    sizeButton.style.opacity = "1"; 
+                }
+            });
+    
             // Setzt "wie kann ich dir helfen?" auf 0.5 opacity
             let bedarfButton = document.getElementById("bedarf-button");
             bedarfButton.style.opacity = "0.5";
