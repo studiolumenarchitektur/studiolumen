@@ -212,7 +212,7 @@
     </div>
     
 <!-- Fixierter Button für die Objektgrößen-Auswahl -->
-<div id="size-dropdown-container">
+<div id="size-dropdown-container" style="display: none;">
     <button id="size-button" onclick="toggleSizeDropdown()" disabled>Wie groß denkst du?</button>
     <div id="size-dropdown" class="dropdown-menu">
         <div class="dropdown-item" onclick="selectSize('• Bis 50m²')">• Bis 50m²</div>
@@ -224,7 +224,6 @@
         <div class="dropdown-item" onclick="selectSize('• Sehr groß')">• Sehr groß</div>
     </div>
 </div>
-
 <!-- Anfrage starten Button (anfangs unsichtbar) -->
 <button id="anfrage-button" style="display: none;" disabled onclick="sendEmail()">Anfrage Starten</button>
     
@@ -323,59 +322,59 @@
             accordion.style.display = "flex";
             accordion.style.opacity = "1";
         });
- document.addEventListener("DOMContentLoaded", function () {
-        let bedarfButton = document.getElementById("bedarf-button");
-        let accordion = document.getElementById("accordion");
-        let leistungContainer = document.getElementById("leistung-container");
-        let selectedAnswer = document.getElementById("selected-answer");
-        let sizeButton = document.getElementById("size-button");
-        let isAccordionOpen = false; // Status des Akkordeons
+document.addEventListener("DOMContentLoaded", function () {
+    let bedarfButton = document.getElementById("bedarf-button");
+    let accordion = document.getElementById("accordion");
+    let leistungContainer = document.getElementById("leistung-container");
+    let selectedAnswer = document.getElementById("selected-answer");
+    let sizeButton = document.getElementById("size-button");
+    let isAccordionOpen = false;
 
-        // Akkordeon-Button toggelt zwischen Anzeigen und Verstecken
-        bedarfButton.addEventListener("click", function () {
-            if (!isAccordionOpen) {
-                accordion.style.display = "flex";
-                setTimeout(() => accordion.style.opacity = "1", 10);
-                isAccordionOpen = true;
-            }
-        });
+    // Akkordeon-Button toggelt zwischen Anzeigen und Verstecken
+    bedarfButton.addEventListener("click", function () {
+        if (!isAccordionOpen) {
+            accordion.style.display = "flex";
+            setTimeout(() => accordion.style.opacity = "1", 10);
+            isAccordionOpen = true;
+        }
+    });
 
-        // Antwort-Auswahl Logik
-        document.querySelectorAll(".accordion-item").forEach(item => {
-            item.addEventListener("click", function () {
-                // Akkordeon ausblenden
-                accordion.style.opacity = "0";
-                setTimeout(() => {
-                    accordion.style.display = "none";
-                    isAccordionOpen = false;
-                }, 300);
+    // Antwort-Auswahl Logik
+    document.querySelectorAll(".accordion-item").forEach(item => {
+        item.addEventListener("click", function () {
+            // Akkordeon ausblenden
+            accordion.style.opacity = "0";
+            setTimeout(() => {
+                accordion.style.display = "none";
+                isAccordionOpen = false;
+            }, 300);
 
-                // Die gewählte Antwort unter dem Button anzeigen
-                let selectedText = this.textContent;
-                selectedAnswer.textContent = selectedText;
-                selectedAnswer.style.display = "block";
+            // Die gewählte Antwort unter dem Button anzeigen
+            let selectedText = this.textContent;
+            selectedAnswer.textContent = selectedText;
+            selectedAnswer.style.display = "block";
 
-                // Leistungsphasen anzeigen
-                let selectedIds = this.getAttribute("data-ids").split(",");
-                leistungContainer.innerHTML = "";
+            // Leistungsphasen anzeigen
+            let selectedIds = this.getAttribute("data-ids").split(",");
+            leistungContainer.innerHTML = "";
 
-                selectedIds.forEach(id => {
-                    let leistungElement = document.getElementById(id);
-                    if (leistungElement) {
-                        let clone = leistungElement.cloneNode(true);
-                        clone.classList.add("active");
-                        clone.style.display = "block";
-                        leistungContainer.appendChild(clone);
-                    }
-                });
-
-                // Aktiviert den Größen-Button
-                sizeButton.classList.add("active");
-                sizeButton.disabled = false;
-                sizeButton.style.opacity = "1";
+            selectedIds.forEach(id => {
+                let leistungElement = document.getElementById(id);
+                if (leistungElement) {
+                    let clone = leistungElement.cloneNode(true);
+                    clone.classList.add("active");
+                    clone.style.display = "block";
+                    leistungContainer.appendChild(clone);
+                }
             });
+
+            // Dynamisch den Button „Wie groß denkst du?“ unterhalb der Leistungsphasen einfügen
+            let sizeDropdownContainer = document.getElementById("size-dropdown-container");
+            sizeDropdownContainer.style.marginTop = "10px"; // Falls erforderlich
+            sizeDropdownContainer.style.display = "block"; // Button wird angezeigt
         });
     });
+});;
             document.getElementById("bedarf-button").addEventListener("click", function() {
         let accordion = document.getElementById("accordion");
         if (accordion.style.display === "none" || accordion.style.display === "") {
