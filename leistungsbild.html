@@ -197,7 +197,7 @@
 <button id="bedarf-button">Was brauchst du?</button>
 
 <!-- Neuer Container für die gewählte Antwort -->
-<div id="selected-answer" style="width: 100%; max-width: 300px; margin-top: 10px; color:#800020; text-align: center; font-weight: normal; display: none; opacity: 0;"></div>
+<div id="selected-answer" style="width: 100%; max-width: 300px; margin-top: 10px; color:#800020; text-align: center; font-weight: normal; display: none; opacity: 1;"></div>
 
 <!-- Container für die Objektgrößen-Auswahl (zentriert) -->
 <div id="size-dropdown-container" style="width: 100%; max-width: 300px; margin-top: 10px; display: none; justify-content: center; align-items: center; flex-direction: column; text-align: center;">
@@ -324,7 +324,7 @@
             accordion.style.display = "flex";
             accordion.style.opacity = "1";
         });
-    document.addEventListener("DOMContentLoaded", function () {
+     document.addEventListener("DOMContentLoaded", function () {
         let bedarfButton = document.getElementById("bedarf-button");
         let accordion = document.getElementById("accordion");
         let leistungContainer = document.getElementById("leistung-container");
@@ -334,11 +334,11 @@
         let sizeDropdownContainer = document.getElementById("size-dropdown-container");
         let isAccordionOpen = true; // Akkordeon ist standardmäßig offen
 
-        // Stellt sicher, dass das Akkordeon beim Laden sichtbar ist
+ // Sicherstellen, dass das Akkordeon beim Laden sichtbar ist
         accordion.style.display = "flex";
         accordion.style.opacity = "1";
 
-        // Akkordeon-Button toggelt zwischen Anzeigen und Verstecken
+         // Akkordeon-Button toggelt zwischen Anzeigen und Verstecken
         bedarfButton.addEventListener("click", function () {
             if (isAccordionOpen) {
                 accordion.style.opacity = "0";
@@ -353,7 +353,7 @@
             }
         });
 
-        // Antwort-Auswahl Logik (Klick auf eine Antwort funktioniert wieder)
+  // Antwort-Auswahl Logik (Klick auf eine Antwort funktioniert wieder)
         document.querySelectorAll(".accordion-item").forEach(item => {
             item.addEventListener("click", function () {
                 // Akkordeon ausblenden
@@ -363,7 +363,7 @@
                     isAccordionOpen = false;
                 }, 300);
 
-                // Die gewählte Antwort unter dem Button anzeigen
+               // Die gewählte Antwort unter dem Button anzeigen
                 let selectedText = this.textContent.trim();
                 selectedAnswer.textContent = selectedText;
                 selectedAnswer.style.display = "block";
@@ -373,7 +373,7 @@
                 let selectedIds = this.getAttribute("data-ids").split(",");
                 leistungContainer.innerHTML = "";
 
-                selectedIds.forEach(id => {
+  selectedIds.forEach(id => {
                     let leistungElement = document.getElementById(id);
                     if (leistungElement) {
                         let clone = leistungElement.cloneNode(true);
@@ -383,7 +383,7 @@
                     }
                 });
 
-                // Aktiviert den Größen-Button und stellt sicher, dass das Dropdown direkt darunter bleibt
+         // Aktiviert den Größen-Button und stellt sicher, dass das Dropdown direkt darunter bleibt
                 sizeButton.classList.add("active");
                 sizeButton.disabled = false;
                 sizeButton.style.opacity = "1";
