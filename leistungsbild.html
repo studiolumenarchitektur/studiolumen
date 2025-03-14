@@ -197,15 +197,15 @@
 <button id="bedarf-button">Was brauchst du?</button>
 
 <!-- Neuer Container für die gewählte Antwort -->
-<div id="selected-answer" style="width: 100%; max-width: 300px; margin-top: 0px; text-align: left; font-weight: normal; color:#800020; display: none;"></div>
+<div id="selected-answer" style="width: 100%; max-width: 300px; margin-top: 0px; color:#800020; text-align: center; font-weight: normal; display: none;"></div>
 
 <!-- Container für die Objektgrößen-Auswahl (verschoben oberhalb der Leistungsphasen) -->
 <div id="size-dropdown-container" style="margin-top: 0px;"></div>
 
-    <!-- Fixierter Button für die Objektgrößen-Auswahl -->
-<div id="size-dropdown-container">
-    <button id="size-button" onclick="toggleSizeDropdown()" disabled>Wie groß denkst du?</button>
-    <div id="size-dropdown" class="dropdown-menu">
+<!-- Container für die Objektgrößen-Auswahl (zentriert) -->
+<div id="size-dropdown-container" style="width: 100%; max-width: 300px; margin-top: 10px; display: none; justify-content: center; align-items: center; flex-direction: column; text-align: center;">
+    <button id="size-button" style="width: 80%; font-weight: bold; padding: 10px; text-align: center;">Wie groß soll es werden?</button>
+    <div id="size-dropdown" class="dropdown-menu" style="display: none; width: 80%; text-align: center;">
         <div class="dropdown-item" onclick="selectSize('Bis 50m²')">Bis 50m²</div>
         <div class="dropdown-item" onclick="selectSize('Bis 100m²')">Bis 100m²</div>
         <div class="dropdown-item" onclick="selectSize('Bis 150m²')">Bis 150m²</div>
@@ -216,7 +216,7 @@
     </div>
     
 <!-- Container für die Leistungsanzeige -->
-<div id="leistung-container" style="width: 100%; max-width: 300px; margin-top: 0px; text-align: left;"></div>
+<div id="leistung-container" style="width: 100%; max-width: 350px; margin-top: 10px; text-align: left;"></div>
 
         <div id="accordion">
         <div class="accordion-item" data-ids="leistung-l0">• Eine Idee</div>
@@ -326,7 +326,7 @@
             accordion.style.display = "flex";
             accordion.style.opacity = "1";
         });
- document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
         let bedarfButton = document.getElementById("bedarf-button");
         let accordion = document.getElementById("accordion");
         let leistungContainer = document.getElementById("leistung-container");
@@ -378,15 +378,15 @@
                 sizeButton.classList.add("active");
                 sizeButton.disabled = false;
                 sizeButton.style.opacity = "1";
-                sizeDropdownContainer.style.display = "block";
-
-                // Platziert den Button mit dem Dropdown direkt unter der Antwort
-                selectedAnswer.insertAdjacentElement("afterend", sizeDropdownContainer);
+                sizeButton.style.pointerEvents = "auto";
+                sizeDropdownContainer.style.display = "flex";
+                sizeDropdownContainer.style.justifyContent = "center";
             });
         });
 
-        // Dropdown-Menü sichtbar machen und korrekt platzieren
-        sizeButton.addEventListener("click", function () {
+        // Funktion zum Umschalten des Dropdown-Menüs
+        sizeButton.addEventListener("click", function (event) {
+            event.stopPropagation(); // Verhindert das Schließen des Dropdowns beim Klicken
             if (sizeDropdown.style.display === "block") {
                 sizeDropdown.style.display = "none";
             } else {
