@@ -83,7 +83,6 @@
             opacity: 1;
             transform: translateY(0);
         }
-
         .footer {
             position: fixed;
             bottom: 0;
@@ -197,7 +196,7 @@
 </div>
     <header>leistungsbild</header>
 
-    <button id="bedarf-button" onclick="toggleAccordion()">wie kann ich dir helfen?</button>
+    <button id="bedarf-button">wie kann ich dir helfen?</button>
 
     <div id="accordion">
         <div class="accordion-item" data-ids="leistung-l0">lass uns eine idee entwickeln</div>
@@ -303,55 +302,50 @@
         bedarfButton.style.opacity = "1"; // Standard-Button vollständig sichtbar
     });
 
-    function toggleAccordion() {
-        let acc = document.getElementById("accordion");
-        let sizeDropdownContainer = document.getElementById("size-dropdown-container");
+  function toggleAccordion() {
+    let acc = document.getElementById("accordion");
 
-        if (acc.style.display === "none" || acc.style.display === "") {
-            acc.style.display = "flex";  
-            setTimeout(() => acc.style.opacity = "1", 10);
-            sizeDropdownContainer.style.marginTop = "10px"; // Button rutscht mit
-        } else {
-            acc.style.opacity = "0";
-            setTimeout(() => {
-                acc.style.display = "none";
-                sizeDropdownContainer.style.marginTop = "0px"; // Button bleibt fixiert
-            }, 300);
-        }
+    if (acc.style.display === "none" || acc.style.display === "") {
+        acc.style.display = "flex";  
+        setTimeout(() => acc.style.opacity = "1", 10);
+    } else {
+        acc.style.opacity = "0";
+        setTimeout(() => acc.style.display = "none", 300);
     }
+}
 
         document.addEventListener("DOMContentLoaded", function() {
             let accordion = document.getElementById("accordion");
             accordion.style.display = "flex";
             accordion.style.opacity = "1";
         });
-        document.querySelectorAll(".accordion-item").forEach(item => {
-            item.addEventListener("click", function() {
-                let accordion = document.getElementById("accordion");
-                accordion.style.opacity = "0";
-                setTimeout(() => accordion.style.display = "none", 300);
-            });
+      document.querySelectorAll(".accordion-item").forEach(item => {
+    item.addEventListener("click", function() {
+        let accordion = document.getElementById("accordion");
+        accordion.style.opacity = "0";
+        setTimeout(() => {
+            accordion.style.display = "none"; // Akkordeon verstecken
+        }, 300);
 
-            let ids = this.getAttribute("data-ids").split(",");
-            ids.forEach(id => {
-                let leistungElement = document.getElementById(id);
-                if (leistungElement) {
-                    leistungElement.classList.add("active");
-                }
-            });
-
-            // Akkordeon schließen
-            toggleAccordion();
-
-            // Aktiviert den Größen-Button
-            let sizeButton = document.getElementById("size-button");
+        // Aktiviert den Größen-Button
+        let sizeButton = document.getElementById("size-button");
+        if (sizeButton) {
             sizeButton.classList.add("active");
             sizeButton.disabled = false;
-            sizeButton.style.opacity = "1"; // Button wird sichtbar
+            sizeButton.style.opacity = "1"; 
+        }
+    });
+});
+    
+// Setzt "wie kann ich dir helfen?" auf 0.5 opacity
+let bedarfButton = document.getElementById("bedarf-button");
+bedarfButton.style.opacity = "0.5";
 
-            // Setzt "wie kann ich dir helfen?" auf 0.5 opacity
-            let bedarfButton = document.getElementById("bedarf-button");
-            bedarfButton.style.opacity = "0.5";
+// Aktiviert den Größen-Button
+let sizeButton = document.getElementById("size-button");
+sizeButton.classList.add("active");
+sizeButton.disabled = false;
+sizeButton.style.opacity = "1";
         });
     });
 
