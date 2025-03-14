@@ -35,6 +35,7 @@
             border: none;
             cursor: pointer;
             margin-top: 10px;
+            text-transform: lowercase;
             opacity: 1;
             transition: opacity 0.3s ease-in-out;
         }
@@ -46,7 +47,7 @@
         #accordion {
             display: flex;
             flex-direction: column;
-            align-items: left;
+            align-items: center;
             margin-top: 10px;
             width: 100%;
             max-width: 350px;
@@ -57,8 +58,9 @@
         .accordion-item {
             cursor: pointer;
             padding: 10px;
-            text-align: left;
+            text-align: center;
             transition: color 0.3s ease-in-out;
+            text-transform: lowercase;
         }
 
         .accordion-item:hover {
@@ -81,6 +83,7 @@
             opacity: 1;
             transform: translateY(0);
         }
+
         .footer {
             position: fixed;
             bottom: 0;
@@ -100,17 +103,15 @@
 
 #size-button {
     color: #800020;
-    text-align: center;
-    margin: 0 auto; /* Sorgt für zentrierte Position */
     background: #fff;
     font-weight: bold;
     font-size: 16px;
     padding: 10px 20px;
     border: none;
     cursor: not-allowed;
+    text-transform: lowercase;
     white-space: nowrap;
-    opacity: 0;
-    pointer-events: none; /* Deaktiviert Klicks, solange der Button unsichtbar ist */
+    opacity: 0.5;
     transition: opacity 0.3s ease-in-out;
 }
 
@@ -132,6 +133,7 @@
     padding: 10px 20px;
     border: none;
     cursor: not-allowed;
+    text-transform: lowercase;
     position: fixed;
     bottom: 60px;
     left: 50%;
@@ -151,7 +153,7 @@
     transform: translateX(-50%);
     background: #ffffff;
     width: 300px;
-    text-align: left;
+    text-align: center;
     z-index: 1000; /* Liegt über anderen Elementen */
 }
 
@@ -175,6 +177,7 @@
     padding: 10px 20px;
     border: none;
     cursor: not-allowed;
+    text-transform: lowercase;
     position: fixed;
     bottom: 60px;
     left: 50%;
@@ -194,101 +197,94 @@
 </div>
     <header>leistungsbild</header>
 
-<button id="bedarf-button">Was brauchst du?</button>
+    <button id="bedarf-button" onclick="toggleAccordion()">wie kann ich dir helfen?</button>
 
-<!-- Neuer Container für die gewählte Antwort -->
-<div id="selected-answer" style="width: 100%; max-width: 300px; margin-top: 10px; color:#800020; text-align: center; font-weight: normal; display: none; opacity: 1;"></div>
-
-<!-- Container für die Objektgrößen-Auswahl (zentriert) -->
-<div id="size-dropdown-container" style="width: 100%; max-width: 300px; margin-top: 10px; display: none; justify-content: center; align-items: center; flex-direction: column; text-align: center;">
-    <button id="size-button" style="width: 80%; font-weight: bold; padding: 10px; text-align: center;">Wie groß soll es werden?</button>
-    <div id="size-dropdown" class="dropdown-menu" style="display: none; width: 80%; text-align: center;">
-        <div class="dropdown-item" onclick="selectSize('Bis 50m²')">Bis 50m²</div>
-        <div class="dropdown-item" onclick="selectSize('Bis 100m²')">Bis 100m²</div>
-        <div class="dropdown-item" onclick="selectSize('Bis 150m²')">Bis 150m²</div>
-        <div class="dropdown-item" onclick="selectSize('Bis 200m²')">Bis 200m²</div>
-        <div class="dropdown-item" onclick="selectSize('Bis 250m²')">Bis 250m²</div>
-        <div class="dropdown-item" onclick="selectSize('Bis 300m²')">Bis 300m²</div>
-        <div class="dropdown-item" onclick="selectSize('Sehr groß')">Sehr groß</div>
+    <div id="accordion">
+        <div class="accordion-item" data-ids="leistung-l0">lass uns eine idee entwickeln</div>
+        <div class="accordion-item" data-ids="leistung-l1,leistung-l2">ich brauche unterstützung beim entwerfen</div>
+        <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3">lass uns meinen wohnraum umgestalten</div>
+        <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3,leistung-l4">ich brauche eine planung und die baugenehmigung</div>
+        <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3,leistung-l4,leistung-l5">lass uns zusammen ein projekt von a-z planen</div>
+        <div class="accordion-item" data-ids="leistung-l6,leistung-l7">kannst du mich bei der ausschreibung und vergabe unterstützen?</div>
     </div>
-</div>
-
-<!-- Container für die Leistungsanzeige -->
-<div id="leistung-container" style="width: 100%; max-width: 350px; margin-top: 10px; text-align: left;"></div>
-
-        <div id="accordion">
-        <div class="accordion-item" data-ids="leistung-l0">• Eine Idee</div>
-        <div class="accordion-item" data-ids="leistung-l1,leistung-l2">• Unterstützung beim Entwurf</div>
-        <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3">• Umgestaltung</div>
-        <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3,leistung-l4">• Planung und Baugenehmigung</div>
-        <div class="accordion-item" data-ids="leistung-l1,leistung-l2,leistung-l3,leistung-l4,leistung-l5">• Ein Projekt von A-Z</div>
-        <div class="accordion-item" data-ids="leistung-l6,leistung-l7">• Hilfe bei Ausschreibung und Vergabe</div>
+    
+<!-- Fixierter Button für die Objektgrößen-Auswahl -->
+<div id="size-dropdown-container">
+    <button id="size-button" onclick="toggleSizeDropdown()" disabled>wie groß soll es werden?</button>
+    <div id="size-dropdown" class="dropdown-menu">
+        <div class="dropdown-item" onclick="selectSize('es wird ein projekt bis 50m²')">es wird ein projekt bis 50m²</div>
+        <div class="dropdown-item" onclick="selectSize('es wird ein projekt bis 100m²')">es wird ein projekt bis 100m²</div>
+        <div class="dropdown-item" onclick="selectSize('es wird ein projekt bis 150m²')">es wird ein projekt bis 150m²</div>
+        <div class="dropdown-item" onclick="selectSize('es wird ein projekt bis 200m²')">es wird ein projekt bis 200m²</div>
+        <div class="dropdown-item" onclick="selectSize('es wird ein projekt bis 250m²')">es wird ein projekt bis 250m²</div>
+        <div class="dropdown-item" onclick="selectSize('es wird ein projekt bis 300m²')">es wird ein projekt bis 300m²</div>
+        <div class="dropdown-item" onclick="selectSize('es wird ein großes projekt')">es wird ein großes projekt</div>
     </div>
 </div>
 
 <!-- Anfrage starten Button (anfangs unsichtbar) -->
-<button id="anfrage-button" style="display: none;" disabled onclick="sendEmail()">Anfrage starten</button>
+<button id="anfrage-button" style="display: none;" disabled onclick="sendEmail()">anfrage starten</button>
     
     <!-- Leistungsphasen -->
     <div class="leistung" id="leistung-l0">
-        <strong>LPH 0 - Zielfindungsphase</strong>
-        <div class="leistung-content">• Ermittlung der Planungsziele</div>
-        <div class="leistung-content">• Rrstellung einer Planungsgrundlage</div>
+        <strong>lph 0 - zielfindungsphase</strong>
+        <div class="leistung-content">• ermittlung der planungsziele</div>
+        <div class="leistung-content">• erstellung einer planungsgrundlage</div>
     </div>
 
     <div class="leistung" id="leistung-l1">
-        <strong>LPH 1 - Grundlagenermittlung</strong>
-        <div class="leistung-content">• Sichtung vorhandener Planunterlagen</div>
-        <div class="leistung-content">• Erfassung räumlicher und baulicher Gegebenheiten</div>
-        <div class="leistung-content">• Beratung zu Planungszielen</div>
+        <strong>lph 1 - grundlagenermittlung</strong>
+        <div class="leistung-content">• sichtung vorhandener planunterlagen</div>
+        <div class="leistung-content">• erfassung räumlicher und baulicher gegebenheiten</div>
+        <div class="leistung-content">• beratung zu planungszielen</div>
     </div>
 
     <div class="leistung" id="leistung-l2">
-        <strong>LPH 2 - Vorplanung</strong>
-        <div class="leistung-content">• Ermittlung von Flächen</div>
-        <div class="leistung-content">• Bewertung der Bestandssituation</div>
-        <div class="leistung-content">• Erstellung erster Zeichnungen</div>
+        <strong>lph 2 - vorplanung</strong>
+        <div class="leistung-content">• ermittlung von flächen nach din277</div>
+        <div class="leistung-content">• bewertung der bestandssituation</div>
+        <div class="leistung-content">• erstellung erster zeichnungen</div>
     </div>
 
         <div class="leistung" id="leistung-l3">
-        <strong>LPH 3 - Entwurfsplanung</strong>
-        <div class="leistung-content">• Erstellung von Schnitten und Ansichten</div>
-        <div class="leistung-content">• 3D-Visualisierung zur Konzeptentwicklung</div>
-        <div class="leistung-content">• Überprüfung der Flächennutzung</div>
+        <strong>lph 3 - entwurfsplanung</strong>
+        <div class="leistung-content">• erstellung von schnitten und ansichten</div>
+        <div class="leistung-content">• 3D-visualisierung zur konzeptentwicklung</div>
+        <div class="leistung-content">• überprüfung der flächennutzung</div>
     </div>
 
         <div class="leistung" id="leistung-l4">
-        <strong>LPH 4 - Genehmigungsplanung</strong>
-        <div class="leistung-content">• Erstellung genehmigungsfähiger Pläne</div>
-        <div class="leistung-content">• Abstimmung mit Behörden</div>
-        <div class="leistung-content">• Flächen- und Maßkonzepte für den Bauantrag</div>
+        <strong>lph 4 - genehmigungsplanung</strong>
+        <div class="leistung-content">• erstellung genehmigungsfähiger pläne</div>
+        <div class="leistung-content">• abstimmung mit behörden</div>
+        <div class="leistung-content">• flächen- und maßkonzepte für den bauantrag</div>
     </div>
 
         <div class="leistung" id="leistung-l5">
-        <strong>LPH 5 - Ausführungsplanung</strong>
-        <div class="leistung-content">• Erstellung detaillierter Bauzeichnungen</div>
-        <div class="leistung-content">• Integration technischer und gestalterischer Anforderungen</div>
-        <div class="leistung-content">• Anpassung der Pläne an bauliche Gegebenheiten</div>
+        <strong>lph 5 - ausführungsplanung</strong>
+        <div class="leistung-content">• erstellung detaillierter bauzeichnungen</div>
+        <div class="leistung-content">• integration technischer und gestalterischer anforderungen</div>
+        <div class="leistung-content">• anpassung der pläne an bauliche gegebenheiten</div>
     </div>
 
         <div class="leistung" id="leistung-l6">
-        <strong>LPH 6 - Vorbereitung der Vergabe</strong>
-        <div class="leistung-content">• Erstellung von Leistungsbeschreibungen</div>
-        <div class="leistung-content">• Ermittlung von Kostenrahmen und Vergabestrategien</div>
-        <div class="leistung-content">• Vorbereitung der Ausschreibung</div>
+        <strong>lph 6 - vorbereitung der vergabe</strong>
+        <div class="leistung-content">• erstellung von leistungsbeschreibungen</div>
+        <div class="leistung-content">• ermittlung von kostenrahmen und vergabestrategien</div>
+        <div class="leistung-content">• vorbereitung der ausschreibung</div>
     </div>
 
         <div class="leistung" id="leistung-l7">
-        <strong>LPH 7 - Mitwirkung bei der Vergabe</strong>
-        <div class="leistung-content">• Prüfung und Auswertung von Angeboten</div>
-        <div class="leistung-content">• Vergleich von Leistungs- und Kostenstrukturen</div>
-        <div class="leistung-content">• Unterstützung bei der Vergabeentscheidung</div>
+        <strong>lph 7 - mitwirkung bei der vergabe</strong>
+        <div class="leistung-content">• prüfung und auswertung von angeboten</div>
+        <div class="leistung-content">• vergleich von leistungs- und kostenstrukturen</div>
+        <div class="leistung-content">• unterstützung bei der vergabeentscheidung</div>
     </div>
         
-   <button id="anfrage-button" disabled onclick="sendEmail()">Angebot anfragen</button>
+   <button id="anfrage-button" disabled onclick="sendEmail()">angebot anfragen</button>
 
     <footer class="footer">
-        <div onclick="window.location.href='impressum.html'">Impressum</div>
+        <div onclick="window.location.href='impressum.html'">impressum</div>
         <div>© 2025 studio lumen</div>
     </footer>
 
@@ -302,126 +298,63 @@
         let bedarfButton = document.getElementById("bedarf-button");
 
         sizeButton.disabled = true;
-        sizeButton.style.opacity = "0.0"; // Button ist anfangs transparent
+        sizeButton.style.opacity = "0.5"; // Button ist anfangs transparent
         anfrageButton.style.display = "none"; // Button ist anfangs nicht sichtbar
         bedarfButton.style.opacity = "1"; // Standard-Button vollständig sichtbar
     });
 
-  function toggleAccordion() {
-    let acc = document.getElementById("accordion");
+    function toggleAccordion() {
+        let acc = document.getElementById("accordion");
+        let sizeDropdownContainer = document.getElementById("size-dropdown-container");
 
-    if (acc.style.display === "none" || acc.style.display === "") {
-        acc.style.display = "flex";  
-        setTimeout(() => acc.style.opacity = "1", 10);
-    } else {
-        acc.style.opacity = "0";
-        setTimeout(() => acc.style.display = "none", 300);
+        if (acc.style.display === "none" || acc.style.display === "") {
+            acc.style.display = "flex";  
+            setTimeout(() => acc.style.opacity = "1", 10);
+            sizeDropdownContainer.style.marginTop = "10px"; // Button rutscht mit
+        } else {
+            acc.style.opacity = "0";
+            setTimeout(() => {
+                acc.style.display = "none";
+                sizeDropdownContainer.style.marginTop = "0px"; // Button bleibt fixiert
+            }, 300);
+        }
     }
-}
 
         document.addEventListener("DOMContentLoaded", function() {
             let accordion = document.getElementById("accordion");
             accordion.style.display = "flex";
             accordion.style.opacity = "1";
         });
-     document.addEventListener("DOMContentLoaded", function () {
-        let bedarfButton = document.getElementById("bedarf-button");
-        let accordion = document.getElementById("accordion");
-        let leistungContainer = document.getElementById("leistung-container");
-        let selectedAnswer = document.getElementById("selected-answer");
-        let sizeButton = document.getElementById("size-button");
-        let sizeDropdown = document.getElementById("size-dropdown");
-        let sizeDropdownContainer = document.getElementById("size-dropdown-container");
-        let isAccordionOpen = true; // Akkordeon ist standardmäßig offen
-
- // Sicherstellen, dass das Akkordeon beim Laden sichtbar ist
-        accordion.style.display = "flex";
-        accordion.style.opacity = "1";
-
-         // Akkordeon-Button toggelt zwischen Anzeigen und Verstecken
-        bedarfButton.addEventListener("click", function () {
-            if (isAccordionOpen) {
-                accordion.style.opacity = "0";
-                setTimeout(() => {
-                    accordion.style.display = "none";
-                    isAccordionOpen = false;
-                }, 300);
-            } else {
-                accordion.style.display = "flex";
-                setTimeout(() => accordion.style.opacity = "1", 10);
-                isAccordionOpen = true;
-            }
-        });
-
-  // Antwort-Auswahl Logik (Klick auf eine Antwort funktioniert wieder)
         document.querySelectorAll(".accordion-item").forEach(item => {
-            item.addEventListener("click", function () {
-                // Akkordeon ausblenden
+            item.addEventListener("click", function() {
+                let accordion = document.getElementById("accordion");
                 accordion.style.opacity = "0";
-                setTimeout(() => {
-                    accordion.style.display = "none";
-                    isAccordionOpen = false;
-                }, 300);
-
-               // Die gewählte Antwort unter dem Button anzeigen
-                let selectedText = this.textContent.trim();
-                selectedAnswer.textContent = selectedText;
-                selectedAnswer.style.display = "block";
-                selectedAnswer.style.opacity = "1";
-
-                // Leistungsphasen anzeigen
-                let selectedIds = this.getAttribute("data-ids").split(",");
-                leistungContainer.innerHTML = "";
-
-  selectedIds.forEach(id => {
-                    let leistungElement = document.getElementById(id);
-                    if (leistungElement) {
-                        let clone = leistungElement.cloneNode(true);
-                        clone.classList.add("active");
-                        clone.style.display = "block";
-                        leistungContainer.appendChild(clone);
-                    }
-                });
-
-         // Aktiviert den Größen-Button und stellt sicher, dass das Dropdown direkt darunter bleibt
-                sizeButton.classList.add("active");
-                sizeButton.disabled = false;
-                sizeButton.style.opacity = "1";
-                sizeButton.style.pointerEvents = "auto";
-                sizeDropdownContainer.style.display = "flex";
-                sizeDropdownContainer.style.justifyContent = "center";
+                setTimeout(() => accordion.style.display = "none", 300);
             });
-        });
-    });
-        // Funktion zum Umschalten des Dropdown-Menüs
-        sizeButton.addEventListener("click", function (event) {
-            event.stopPropagation(); // Verhindert das Schließen des Dropdowns beim Klicken
-            if (sizeDropdown.style.display === "block") {
-                sizeDropdown.style.display = "none";
-            } else {
-                sizeDropdown.style.display = "block";
-            }
-        });
 
-        // Klick außerhalb des Dropdowns schließt es
-        document.addEventListener("click", function (event) {
-            if (!sizeDropdownContainer.contains(event.target) && event.target !== sizeButton) {
-                sizeDropdown.style.display = "none";
-            }
+            let ids = this.getAttribute("data-ids").split(",");
+            ids.forEach(id => {
+                let leistungElement = document.getElementById(id);
+                if (leistungElement) {
+                    leistungElement.classList.add("active");
+                }
+            });
+
+            // Akkordeon schließen
+            toggleAccordion();
+
+            // Aktiviert den Größen-Button
+            let sizeButton = document.getElementById("size-button");
+            sizeButton.classList.add("active");
+            sizeButton.disabled = false;
+            sizeButton.style.opacity = "1"; // Button wird sichtbar
+
+            // Setzt "wie kann ich dir helfen?" auf 0.5 opacity
+            let bedarfButton = document.getElementById("bedarf-button");
+            bedarfButton.style.opacity = "0.5";
         });
     });
-            document.getElementById("bedarf-button").addEventListener("click", function() {
-        let accordion = document.getElementById("accordion");
-        if (accordion.style.display === "none" || accordion.style.display === "") {
-            accordion.style.display = "flex";
-            setTimeout(() => accordion.style.opacity = "1", 10);
-        } else {
-            accordion.style.opacity = "0";
-            setTimeout(() => {
-                accordion.style.display = "none";
-            }, 300);
-        }
-    });
+
     function selectSize(size) {
         selectedSize = size;
         document.getElementById("size-button").textContent = size;
