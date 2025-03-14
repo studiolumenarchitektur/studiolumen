@@ -319,12 +319,14 @@
             accordion.style.display = "flex";
             accordion.style.opacity = "1";
         });
-      document.querySelectorAll(".accordion-item").forEach(item => {
+document.querySelectorAll(".accordion-item").forEach(item => {
     item.addEventListener("click", function() {
         let accordion = document.getElementById("accordion");
+
+        // Schließt das Akkordeon sicher
         accordion.style.opacity = "0";
         setTimeout(() => {
-            accordion.style.display = "none"; // Akkordeon verstecken
+            accordion.style.display = "none";
         }, 300);
 
         // Aktiviert den Größen-Button
@@ -334,20 +336,12 @@
             sizeButton.disabled = false;
             sizeButton.style.opacity = "1"; 
         }
+
+        // Setzt "wie kann ich dir helfen?" auf 0.5 opacity
+        let bedarfButton = document.getElementById("bedarf-button");
+        bedarfButton.style.opacity = "0.5";
     });
 });
-    
-// Setzt "wie kann ich dir helfen?" auf 0.5 opacity
-let bedarfButton = document.getElementById("bedarf-button");
-bedarfButton.style.opacity = "0.5";
-
-// Aktiviert den Größen-Button
-let sizeButton = document.getElementById("size-button");
-sizeButton.classList.add("active");
-sizeButton.disabled = false;
-sizeButton.style.opacity = "1";
-        });
-    });
 
     function selectSize(size) {
         selectedSize = size;
