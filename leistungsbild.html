@@ -26,33 +26,33 @@
             text-transform: lowercase;
         }
 
-#bedarf-button {
-    color: #800020;
-    background: none;
-    font-weight: bold;
-    font-size: 18px;
-    padding: 10px;
-    border: none;
-    cursor: pointer;
-    margin-top: 10px;
-    text-transform: lowercase;
-    opacity: 1;
-    transition: opacity 0.3s ease-in-out;
-}
+        #bedarf-button {
+            color: #800020;
+            background: none;
+            font-weight: bold;
+            font-size: 18px;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+            text-transform: lowercase;
+            opacity: 1;
+            transition: opacity 0.3s ease-in-out;
+        }
 
-#bedarf-button:hover {
-    opacity: 1;
-}
+        #bedarf-button:hover {
+            opacity: 1;
+        }
+
         #accordion {
-            display: none;
+            display: flex;
             flex-direction: column;
             align-items: center;
             margin-top: 10px;
             width: 100%;
             max-width: 350px;
             padding: 10px;
-            transition: all 0.3s ease-in-out;
-            opacity: 0;
+            opacity: 1;
         }
 
         .accordion-item {
@@ -320,12 +320,16 @@
         }
     }
 
-    document.querySelectorAll(".accordion-item").forEach(item => {
-        item.addEventListener("click", function () {
-            selectedText = this.textContent.trim();
-
-            document.querySelectorAll(".leistung").forEach(leistung => {
-                leistung.classList.remove("active");
+        document.addEventListener("DOMContentLoaded", function() {
+            let accordion = document.getElementById("accordion");
+            accordion.style.display = "flex";
+            accordion.style.opacity = "1";
+        });
+        document.querySelectorAll(".accordion-item").forEach(item => {
+            item.addEventListener("click", function() {
+                let accordion = document.getElementById("accordion");
+                accordion.style.opacity = "0";
+                setTimeout(() => accordion.style.display = "none", 300);
             });
 
             let ids = this.getAttribute("data-ids").split(",");
