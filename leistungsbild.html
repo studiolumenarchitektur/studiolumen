@@ -388,22 +388,36 @@
             }, 300);
         }
     });
-    function selectSize(size) {
-        selectedSize = size;
-        document.getElementById("size-button").textContent = size;
-        document.getElementById("size-dropdown").style.display = "none";
-
-        // Setzt den Größen-Button wieder auf 0.5 opacity nach Auswahl
-        let sizeButton = document.getElementById("size-button");
-        sizeButton.style.opacity = "0.5";
-
-        // Aktiviert den Anfrage-Button
-        let anfrageButton = document.getElementById("anfrage-button");
-        anfrageButton.classList.add("active");
-        anfrageButton.disabled = false;
-        anfrageButton.style.display = "block"; // Button wird sichtbar
+   function selectSize(size) {
+    selectedSize = size;
+    
+    // Anzeige der gewählten Größe unter dem Button
+    let selectedSizeText = document.createElement("div");
+    selectedSizeText.textContent = size;
+    selectedSizeText.style.color = "#800020";  // Setzt die Textfarbe
+    selectedSizeText.style.marginTop = "10px";
+    
+    // Den Text unter dem Button anzeigen
+    let sizeContainer = document.getElementById("size-dropdown-container");
+    if (!document.getElementById("selected-size")) {
+        selectedSizeText.id = "selected-size";  // ID für spätere Identifikation
+        sizeContainer.appendChild(selectedSizeText);
     }
+    
+    // Dropdown-Menü schließen
+    document.getElementById("size-dropdown").style.display = "none";
 
+    // Button sichtbar und ohne Opazität (setze Opazität auf 1)
+    let sizeButton = document.getElementById("size-button");
+    sizeButton.style.opacity = "1";
+    sizeButton.classList.add("active");
+
+    // Aktivieren des Anfrage-Buttons
+    let anfrageButton = document.getElementById("anfrage-button");
+    anfrageButton.classList.add("active");
+    anfrageButton.disabled = false;
+    anfrageButton.style.display = "block"; // Button wird sichtbar
+}
     function toggleSizeDropdown() {
         let dropdown = document.getElementById("size-dropdown");
         dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
