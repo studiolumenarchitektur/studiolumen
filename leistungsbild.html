@@ -198,10 +198,8 @@
 
 <button id="bedarf-button">wie kann ich dir helfen?</button>
 
-<!-- Hier wird die ausgewählte Antwort angezeigt -->
-<div id="selected-answer" style="width: 100%; max-width: 350px; margin-top: 10px; text-align: center; font-weight: bold; display: none;"></div>
-
-<!-- Hier erscheinen die Leistungsphasen nach Auswahl -->
+<!-- Neuer Container für die gewählte Antwort und Leistungsanzeige -->
+<div id="selected-answer" style="width: 100%; max-width: 350px; margin-top: 10px; text-align: center; color:#800020; font-weight: normal; display: none;"></div>
 <div id="leistung-container" style="width: 100%; max-width: 350px; margin-top: 10px; text-align: left;"></div>
 
     <div id="leistung-container" style="width: 100%; max-width: 350px; margin-top: 20px; text-align: left;"></div>
@@ -327,30 +325,45 @@
             accordion.style.display = "flex";
             accordion.style.opacity = "1";
         });
+document.addEventListener("DOMContentLoaded", function () {
+    let bedarfButton = document.getElementById("bedarf-button");
+    let accordion = document.getElementById("accordion");
+    let leistungContainer = document.getElementById("leistung-container");
+    let selectedAnswer = document.getElementById("selected-answer");
+
+    // Initiale Anzeige des Akkordeons
+    accordion.style.display = "flex";
+    accordion.style.opacity = "1";
+
+    // Akkordeon-Button toggelt zwischen Anzeigen und Verstecken
+    bedarfButton.addEventListener("click", function () {
+        if (accordion.style.display === "none" || accordion.style.display === "") {
+            accordion.style.display = "flex";
+            setTimeout(() => accordion.style.opacity = "1", 10);
+        } else {
+            accordion.style.opacity = "0";
+            setTimeout(() => {
+                accordion.style.display = "none";
+            }, 300);
+        }
+    });
+
+    // Antwort-Auswahl Logik
     document.querySelectorAll(".accordion-item").forEach(item => {
-        item.addEventListener("click", function() {
-            let accordion = document.getElementById("accordion");
+        item.addEventListener("click", function () {
+            // Akkordeon ausblenden
             accordion.style.opacity = "0";
             setTimeout(() => {
                 accordion.style.display = "none";
             }, 300);
 
-            let sizeButton = document.getElementById("size-button");
-            if (sizeButton) {
-                sizeButton.classList.add("active");
-                sizeButton.disabled = false;
-                sizeButton.style.opacity = "1"; 
-            }
-
-            let bedarfButton = document.getElementById("bedarf-button");
-            bedarfButton.style.opacity = "0.5";
-
+            // Die gewählte Antwort unter dem Button anzeigen
             let selectedText = this.textContent;
-            document.getElementById("selected-answer").textContent = selectedText;
-            document.getElementById("selected-answer").style.display = "block";
+            selectedAnswer.textContent = selectedText;
+            selectedAnswer.style.display = "block";
 
+            // Leistungsphasen anzeigen
             let selectedIds = this.getAttribute("data-ids").split(",");
-            let leistungContainer = document.getElementById("leistung-container");
             leistungContainer.innerHTML = "";
 
             selectedIds.forEach(id => {
@@ -363,6 +376,8 @@
                 }
             });
         });
+    });
+});
             document.getElementById("bedarf-button").addEventListener("click", function() {
         let accordion = document.getElementById("accordion");
         if (accordion.style.display === "none" || accordion.style.display === "") {
