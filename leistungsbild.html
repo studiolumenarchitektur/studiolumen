@@ -43,16 +43,16 @@
             opacity: 1;
         }
 
-  #accordion {
-    display: flex !important;  /* Setzt das Akkordeon auf flex, um es sichtbar zu machen */
-    opacity: 1 !important;     /* Sicherstellen, dass die Opazität 1 ist und das Akkordeon sichtbar bleibt */
-    flex-direction: column;
-    align-items: left;
-    margin-top: 10px;
-    width: 100%;
-    max-width: 350px;
-    padding: 10px;
-}
+        #accordion {
+            display: flex;
+            flex-direction: column;
+            align-items: left;
+            margin-top: 10px;
+            width: 100%;
+            max-width: 350px;
+            padding: 10px;
+            opacity: 1;
+        }
 
         .accordion-item {
             cursor: pointer;
@@ -325,10 +325,10 @@
 
 document.addEventListener("DOMContentLoaded", function () {
     let accordion = document.getElementById("accordion");
-
-    // Sicherstellen, dass das Akkordeon sichtbar ist
-    accordion.style.display = "flex";  // Akkordeon sichtbar machen
-    accordion.style.opacity = "1";     // Setzt die Opazität auf 1
+    
+    // Akkordeon sofort beim Laden der Seite einblenden
+    accordion.style.display = "flex";  // Setze das Akkordeon auf flex, um es sichtbar zu machen
+    accordion.style.opacity = "1";     // Setze die Opazität auf 1, damit es sichtbar wird
 });
     
 document.addEventListener("DOMContentLoaded", function () {
