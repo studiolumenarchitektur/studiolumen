@@ -197,7 +197,7 @@
 <button id="bedarf-button">Was brauchst du?</button>
 
 <!-- Neuer Container für die gewählte Antwort -->
-<div id="selected-answer" style="width: 100%; max-width: 300px; margin-top: 0px; color:#800020; text-align: center; font-weight: normal; display: none; opacity: 0;"></div>
+<div id="selected-answer" style="width: 100%; max-width: 300px; margin-top: 10px; color:#800020; text-align: center; font-weight: normal; display: none; opacity: 0;"></div>
 
 <!-- Container für die Objektgrößen-Auswahl (zentriert) -->
 <div id="size-dropdown-container" style="width: 100%; max-width: 300px; margin-top: 10px; display: none; justify-content: center; align-items: center; flex-direction: column; text-align: center;">
@@ -324,7 +324,7 @@
             accordion.style.display = "flex";
             accordion.style.opacity = "1";
         });
- document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function () {
         let bedarfButton = document.getElementById("bedarf-button");
         let accordion = document.getElementById("accordion");
         let leistungContainer = document.getElementById("leistung-container");
@@ -364,7 +364,7 @@
                 }, 300);
 
                 // Die gewählte Antwort unter dem Button anzeigen
-                let selectedText = this.textContent;
+                let selectedText = this.textContent.trim();
                 selectedAnswer.textContent = selectedText;
                 selectedAnswer.style.display = "block";
                 selectedAnswer.style.opacity = "1";
