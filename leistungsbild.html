@@ -302,7 +302,7 @@
         bedarfButton.style.opacity = "1"; // Standard-Button vollständig sichtbar
     });
 
-  function toggleAccordion() {
+function toggleAccordion() {
     let acc = document.getElementById("accordion");
 
     if (acc.style.display === "none" || acc.style.display === "") {
@@ -310,7 +310,9 @@
         setTimeout(() => acc.style.opacity = "1", 10);
     } else {
         acc.style.opacity = "0";
-        setTimeout(() => acc.style.display = "none", 300);
+        setTimeout(() => {
+            acc.style.display = "none";
+        }, 300);
     }
 }
 
@@ -319,12 +321,14 @@
             accordion.style.display = "flex";
             accordion.style.opacity = "1";
         });
-      document.querySelectorAll(".accordion-item").forEach(item => {
+document.querySelectorAll(".accordion-item").forEach(item => {
     item.addEventListener("click", function() {
         let accordion = document.getElementById("accordion");
+
+        // Schließt das Akkordeon sicher
         accordion.style.opacity = "0";
         setTimeout(() => {
-            accordion.style.display = "none"; // Akkordeon verstecken
+            accordion.style.display = "none";
         }, 300);
 
         // Aktiviert den Größen-Button
@@ -334,10 +338,8 @@
             sizeButton.disabled = false;
             sizeButton.style.opacity = "1"; 
         }
-    });
-});
-    
-// Setzt "wie kann ich dir helfen?" auf 0.5 opacity
+
+      // Setzt "wie kann ich dir helfen?" auf 0.5 opacity
 let bedarfButton = document.getElementById("bedarf-button");
 bedarfButton.style.opacity = "0.5";
 
@@ -346,8 +348,8 @@ let sizeButton = document.getElementById("size-button");
 sizeButton.classList.add("active");
 sizeButton.disabled = false;
 sizeButton.style.opacity = "1";
-        });
     });
+});
 
     function selectSize(size) {
         selectedSize = size;
