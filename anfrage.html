@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architekten-Angebotsrechner</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>📑 Architekten-Angebotsrechner</h1>
+
+    <form id="angebot-form">
+        <!-- Gebäudetyp -->
+        <label for="gebaeude">Gebäudetyp:</label>
+        <select id="gebaeude" required>
+            <option value="efh">🏠 Einfamilienhaus</option>
+            <option value="mfh">🏢 Mehrfamilienhaus</option>
+            <option value="buero">🏣 Bürogebäude / Gewerbebau</option>
+            <option value="krankenhaus">🏥 Krankenhaus / Pflegeheim</option>
+            <option value="schule">🎓 Schule / Kita</option>
+            <option value="kultur">🏛️ Spezialgebäude (Theater, Museum, Denkmal, Industrie)</option>
+        </select>
+
+        <!-- Nutzung -->
+        <label for="nutzung">Gebäudenutzung:</label>
+        <select id="nutzung" required>
+            <option value="wohnen">🏠 Wohnen</option>
+            <option value="gewerbe">🏢 Gewerbe / Büro</option>
+            <option value="industrie">🏭 Produktion / Industrie</option>
+            <option value="handel">🏪 Einzelhandel</option>
+            <option value="bildung">🎓 Bildungseinrichtung</option>
+            <option value="kultur">🏛️ Kultur / Veranstaltung</option>
+        </select>
+
+        <!-- Besondere Anforderungen -->
+        <label for="anforderungen">Besondere Anforderungen:</label>
+        <select id="anforderungen">
+            <option value="standard">🛠️ Standard</option>
+            <option value="altbau">🏗️ Altbau / Sanierung</option>
+            <option value="brandschutz">🔥 Erhöhter Brandschutz</option>
+            <option value="smart">🏡 Nachhaltiges Bauen / Smart Home</option>
+            <option value="technik">⚡ Komplexe Haustechnik</option>
+        </select>
+
+        <!-- Quadratmeter-Eingabe -->
+        <label for="qm">Gebäudegröße (m² BGF):</label>
+        <input type="number" id="qm" min="50" max="3000" step="10" required>
+
+        <!-- Leistungsphase Auswahl -->
+        <label for="lph">Leistungsphase(n):</label>
+        <select id="lph" required>
+            <option value="lph0">📌 Lph 0 – Beratung</option>
+            <option value="lph1-2">📌 Lph 1–2 – Grundlagenermittlung & Vorplanung</option>
+            <option value="lph1-3">📌 Lph 1–3 – Mit Entwurfsplanung</option>
+            <option value="lph1-4">📌 Lph 1–4 – Mit Genehmigungsplanung</option>
+            <option value="lph1-5">📌 Lph 1–5 – Mit Ausführungsplanung</option>
+            <option value="lph6-7">📌 Lph 6–7 – Mit Ausschreibung & Vergabe</option>
+        </select>
+
+        <button type="submit">📊 Angebot berechnen</button>
+    </form>
+
+    <h3 id="ergebnis"></h3>
+
+    <script src="angebot.js"></script>
+</body>
+</html>
