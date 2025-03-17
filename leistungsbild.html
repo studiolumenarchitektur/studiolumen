@@ -236,10 +236,14 @@ function selectOption(choice, optionsId, answerId, button) {
         answer.style.display = "none";
     };
 
-    // Zeige den nächsten Button
-    if (optionsId === "options1") document.getElementById("button2").style.display = "block";
-    else if (optionsId === "options2") document.getElementById("button3").style.display = "block";
-    else if (optionsId === "options3") document.getElementById("button4").style.display = "block";
+    // Zeige den nächsten Button oder "Anfrage senden"
+    if (optionsId === "options1") {
+        document.getElementById("button2").style.display = "block";
+    } else if (optionsId === "options2") {
+        document.getElementById("button3").style.display = "block";
+    } else if (optionsId === "options3") {
+        document.getElementById("button4").style.display = "block"; // Button "Anfrage senden" wird eingeblendet
+    }
 }
         function sendEmail() {
             alert("Anfrage wird gesendet...");
