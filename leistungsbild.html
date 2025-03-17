@@ -280,9 +280,11 @@ function showOptions(optionsId, answerId, button) {
         options.style.display = "flex";
         options.style.flexDirection = "column";
 
-        // Falls Button 3 gerade geöffnet wurde, verschiebe ihn nach oben
+        // Falls Button 3 geöffnet wird, bleibt er mit den Fragen sichtbar
         if (optionsId === "options3") {
-            document.getElementById("button3").style.bottom = "80px"; // Rutscht hoch, bleibt aber sichtbar
+            let button3 = document.getElementById("button3");
+            button3.style.position = "relative"; // Bewegt sich mit den Fragen
+            button3.style.marginBottom = "10px";
         }
     }
 }
