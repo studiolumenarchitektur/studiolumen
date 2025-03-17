@@ -38,29 +38,42 @@
             display: block;
         }
         
-        #options1 button, #options2 button, #options3 button {
-            color: #000;                 /* Standardfarbe */
-            text-align: left;            /* Links ausrichten */
-            background: none;
-            font-weight: normal;         /* Nicht fett */
-            font-size: 16px;
-            padding: 10px;
-            border: none;                /* Keine Ränder */
-            cursor: pointer;
-            width: 100%;                 /* Volle Breite für saubere Links-Ausrichtung */
-            display: block;
-        }
+#options1 button, #options2 button, #options3 button {
+    color: #000;
+    text-align: left;
+    background: none;
+    font-weight: normal;
+    font-size: 16px;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    display: block;
+}
 
-        #options1 button:hover, 
-        #options2 button:hover, 
-        #options3 button:hover {
-            color: #800020;              /* Hover-Farbe */
-        }
-        select {
-            margin: 5px;
-            padding: 5px;
-            font-size: 16px;
-        }
+#options1 button:hover, #options2 button:hover, #options3 button:hover {
+    color: #800020;
+}
+
+/* Nach Auswahl: Button wird transparent */
+.button-selected {
+    opacity: 0.5;
+}
+
+/* Button bekommt Hover-Effekt */
+.button-selected:hover {
+    opacity: 1;
+    font-weight: bold;
+    color: #800020;
+}
+
+/* Stil für die gewählte Antwort */
+.selected-answer {
+    color: #800020;
+    font-size: 16px;
+    margin-top: 5px;
+    text-align: left;
+}
 
 function showOptions1() {
     let options1 = document.getElementById("options1");
@@ -81,7 +94,7 @@ function showOptions1() {
     <header>leistungsbild</header>
 
     <button id="button1" onclick="showOptions1()">Was brauchst du?</button>
-
+    <div id="selected-answer1"></div>
     <div id="options1">
         <button onclick="selectOption1(1)">Ich habe bereits Pläne und brauche eine Prüfung oder Berechnung</button>
         <button onclick="selectOption1(2)">Ich brauche eine neue Planung oder eine Anpassung meiner Pläne</button>
@@ -149,8 +162,30 @@ function showOptions1() {
 }
 
 function selectOption1(choice) {
+    let button1 = document.getElementById("button1");
+    let options1 = document.getElementById("options1");
+
+    // Hole den gewählten Text
+    let selectedText = options1.children[choice - 1].innerText;
+
+    // Setze den Text unter den Button
+    let answerContainer = document.getElementById("selected-answer1");
+    if (!answerContainer) {
+        answerContainer = document.createElement("div");
+        answerContainer.id = "selected-answer1";
+        answerContainer.className = "selected-answer";
+        button1.after(answerContainer);
+    }
+    answerContainer.innerText = selectedText;
+
+    // Verstecke alle Auswahlmöglichkeiten
+    options1.style.display = "none";
+
+    // Button wird transparent
+    button1.classList.add("button-selected");
+
+    // Zeige den nächsten Button
     document.getElementById("button2").style.display = "block";
-    document.getElementById("options1").style.display = "none"; // Auswahl schließen
 }
 
         function showOptions2() {
