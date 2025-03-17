@@ -26,6 +26,16 @@
             text-transform: lowercase;
         }
 
+        .back-arrow {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            cursor: pointer;
+            font-size: 2rem;
+            color: #800020;
+            font-weight: bold;
+        }
+
         button {
             color: #800020;
             background: none;
@@ -36,202 +46,143 @@
             cursor: pointer;
             margin: 10px;
             display: block;
+            width: 90%;
+            max-width: 400px;
         }
-        
-#options1 button {
-    color: #000;                 /* Standardfarbe */
-    text-align: left;            /* Links ausrichten */
-    background: none;
-    font-weight: normal;         /* Nicht fett */
-    font-size: 16px;
-    padding: 10px;
-    border: none;                /* Keine Ränder */
-    cursor: pointer;
-    width: 100%;                 /* Volle Breite für saubere Links-Ausrichtung */
-    display: block;
-}
 
-#options1 button:hover {
-    color: #800020;
-    height: auto;
-}
+        button:hover {
+            color: #fff;
+            background: #800020;
+        }
 
-/* Nach Auswahl: Button wird transparent */
-.button-selected {
-    opacity: 0.5;
-}
+        .button-selected {
+            opacity: 0.5;
+        }
 
-/* Button bekommt Hover-Effekt */
-.button-selected:hover {
-    opacity: 1;
-    font-weight: bold;
-    color: #800020;
-}
+        .button-selected:hover {
+            opacity: 1;
+            font-weight: bold;
+            color: #800020;
+        }
 
-/* Stil für die gewählte Antwort */
-.selected-answer {
-    color: #800020;
-    font-size: 16px;
-    margin-top: 5px;
-    text-align: left;
-    display: none; /* Anfangs versteckt */
-}
-        
-function showOptions1() {
-    let options1 = document.getElementById("options1");
-    if (options1.style.display === "none" || options1.style.display === "") {
-        options1.style.display = "flex";
-        options1.style.flexDirection = "column";  // Falls nötig
-    } else {
-        options1.style.display = "none";
-    }
-}
+        .options {
+            display: none;
+            flex-direction: column;
+            width: 90%;
+            max-width: 400px;
+        }
 
-#button2, #button3, #button4 {
-    display: none;
-}
+        .selected-answer {
+            color: #800020;
+            font-size: 16px;
+            margin-top: 5px;
+            text-align: left;
+            display: none;
+        }
+
+        select {
+            width: 100%;
+            padding: 5px;
+            font-size: 16px;
+            margin-top: 5px;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            color: #777;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
     </style>
 </head>
 <body>
+
+    <div class="back-arrow" onclick="window.history.back()">←</div>
     <header>leistungsbild</header>
 
-    <button id="button1" onclick="showOptions1()">Was brauchst du?</button>
-<div id="selected-answer1" class="selected-answer"></div>
-    
-    <div id="options1">
-        <button onclick="selectOption1(1)">Ich habe bereits Pläne und brauche eine Prüfung oder Berechnung</button>
-        <button onclick="selectOption1(2)">Ich brauche eine neue Planung oder eine Anpassung meiner Pläne</button>
-        <button onclick="selectOption1(3)">Ich brauche eine vollständige Bauplanung oder Ausschreibung</button>
+    <button id="button1" onclick="showOptions('options1', 'selected-answer1', this)">Was brauchst du?</button>
+    <div id="selected-answer1" class="selected-answer"></div>
+    <div id="options1" class="options">
+        <button onclick="selectOption(1, 'options1', 'selected-answer1', this)">Ich habe bereits Pläne und brauche eine Prüfung oder Berechnung</button>
+        <button onclick="selectOption(2, 'options1', 'selected-answer1', this)">Ich brauche eine neue Planung oder eine Anpassung meiner Pläne</button>
+        <button onclick="selectOption(3, 'options1', 'selected-answer1', this)">Ich brauche eine vollständige Bauplanung oder Ausschreibung</button>
     </div>
 
-    <button id="button2" onclick="showOptions2()">Was genau?</button>
-
-    <div id="options2">
-        <button onclick="selectOption2(1)">Ich brauche eine Wohnflächenberechnung & Flächennachweis</button>
-        <button onclick="selectOption2(2)">Ich brauche eine Bestätigung meiner Pläne mit Architektenstempel</button>
-        <button onclick="selectOption2(3)">Ich brauche eine Planprüfung für meine Baufinanzierung</button>
-        <button onclick="selectOption2(4)">Ich brauche eine Vorplanung für mein Projekt</button>
-        <button onclick="selectOption2(5)">Ich brauche eine Entwurfsplanung & Konzeptentwicklung</button>
-        <button onclick="selectOption2(6)">Ich brauche eine Genehmigungsplanung & Bauantragsunterlagen</button>
-        <button onclick="selectOption2(7)">Ich brauche eine detaillierte Bauplanung mit technischen Anforderungen</button>
-        <button onclick="selectOption2(8)">Ich brauche eine Ausschreibung & Vergabeunterstützung</button>
+    <button id="button2" onclick="showOptions('options2', 'selected-answer2', this)" style="display: none;">Was genau?</button>
+    <div id="selected-answer2" class="selected-answer"></div>
+    <div id="options2" class="options">
+        <button onclick="selectOption(1, 'options2', 'selected-answer2', this)">Ich brauche eine Wohnflächenberechnung & Flächennachweis</button>
+        <button onclick="selectOption(2, 'options2', 'selected-answer2', this)">Ich brauche eine Bestätigung meiner Pläne mit Architektenstempel</button>
+        <button onclick="selectOption(3, 'options2', 'selected-answer2', this)">Ich brauche eine Planprüfung für meine Baufinanzierung</button>
     </div>
 
-    <button id="button3" onclick="showOptions3()">Ein paar Details noch</button>
-
-    <div id="options3">
+    <button id="button3" onclick="showOptions('options3', 'selected-answer3', this)" style="display: none;">Ein paar Details noch</button>
+    <div id="options3" class="options">
         <label>Wie groß ist das Gebäude?</label>
         <select id="size-dropdown">
-            <option value="bis 50m²">Bis 50m²</option>
-            <option value="bis 100m²">Bis 100m²</option>
-            <option value="bis 150m²">Bis 150m²</option>
-            <option value="bis 200m²">Bis 200m²</option>
-            <option value="bis 250m²">Bis 250m²</option>
-            <option value="bis 300m²">Bis 300m²</option>
-            <option value="sehr groß">Sehr groß</option>
+            <option>Bis 50m²</option>
+            <option>Bis 100m²</option>
+            <option>Bis 150m²</option>
+            <option>Bis 200m²</option>
+            <option>Bis 250m²</option>
+            <option>Bis 300m²</option>
+            <option>Sehr groß</option>
         </select>
 
         <label>Gibt es schon Pläne?</label>
         <select id="plans-dropdown">
-            <option value="ja">Ja</option>
-            <option value="nein">Nein</option>
+            <option>Ja</option>
+            <option>Nein</option>
         </select>
 
         <label>Brauchst du eine Berechnung?</label>
         <select id="calculation-dropdown">
-            <option value="ja">Ja</option>
-            <option value="nein">Nein</option>
-        </select>
-
-        <label>Gibt es einen Bebauungsplan?</label>
-        <select id="zoning-dropdown">
-            <option value="ja">Ja</option>
-            <option value="nein">Nein</option>
-            <option value="unbekannt">Unbekannt</option>
+            <option>Ja</option>
+            <option>Nein</option>
         </select>
     </div>
 
-    <button id="button4" onclick="sendEmail()">Anfrage senden</button>
+    <button id="button4" onclick="sendEmail()" style="display: none;">Anfrage senden</button>
+
+    <footer class="footer">
+        <div onclick="window.location.href='impressum.html'">Impressum</div>
+        <div>© 2025 studio lumen</div>
+    </footer>
 
     <script>
-function showOptions1() {
-    let options1 = document.getElementById("options1");
-    if (options1.style.display === "none" || options1.style.display === "") {
-        options1.style.display = "flex";
-        options1.style.flexDirection = "column";  // Falls nötig
-    } else {
-        options1.style.display = "none";
-    }
-}
-
-function selectOption1(choice) {
-    let button1 = document.getElementById("button1");
-    let options1 = document.getElementById("options1");
-
-    // Hole den gewählten Text der Option
-    let selectedText = options1.children[choice - 1].innerText;
-
-    // Setze den Text unter den Button
-    let answerContainer = document.getElementById("selected-answer1");
-    answerContainer.innerText = selectedText;
-    answerContainer.style.display = "block"; // Zeige den Text an
-
-    // Verstecke alle anderen Optionen außer der gewählten
-    let buttons = options1.getElementsByTagName("button");
-    for (let i = 0; i < buttons.length; i++) {
-        if (i !== choice - 1) {
-            buttons[i].style.display = "none";
-        }
-    }
-
-    // Button 1 wird transparent und verliert seine Klick-Funktion
-    button1.classList.add("button-selected");
-    button1.onclick = null;
-
-    // Zeige den nächsten Button
-    document.getElementById("button2").style.display = "block";
-}
-        function showOptions2() {
-            document.getElementById("options2").style.display = "block";
+        function showOptions(optionsId, answerId, button) {
+            document.getElementById(optionsId).style.display = "flex";
         }
 
-        function selectOption2(choice) {
-            document.getElementById("button3").style.display = "block";
-        }
+        function selectOption(choice, optionsId, answerId, button) {
+            let options = document.getElementById(optionsId);
+            let answer = document.getElementById(answerId);
+            answer.innerText = button.innerText;
+            answer.style.display = "block";
+            
+            let buttons = options.getElementsByTagName("button");
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].style.display = "none";
+            }
+            button.style.display = "block";
 
-        function showOptions3() {
-            document.getElementById("options3").style.display = "block";
-            document.getElementById("button4").style.display = "block";
+            button.classList.add("button-selected");
+
+            if (optionsId === "options1") document.getElementById("button2").style.display = "block";
+            else if (optionsId === "options2") document.getElementById("button3").style.display = "block";
+            else if (optionsId === "options3") document.getElementById("button4").style.display = "block";
         }
 
         function sendEmail() {
-            let email = "studiolumenarchitektur@gmail.com";
-            let subject = "Angebotsanfrage";
-
-            let size = document.getElementById("size-dropdown").value;
-            let plans = document.getElementById("plans-dropdown").value;
-            let calculation = document.getElementById("calculation-dropdown").value;
-            let zoning = document.getElementById("zoning-dropdown").value;
-
-            let body = `Hallo,
-
-Hier sind meine Anforderungen:
-`;
-            body += `- Gebäudengröße: ${size}
-`;
-            body += `- Gibt es schon Pläne? ${plans}
-`;
-            body += `- Brauche ich eine Berechnung? ${calculation}
-`;
-            body += `- Gibt es einen Bebauungsplan? ${zoning}
-
-`;
-            body += "Liebe Grüße,
-[Ihr Name]";
-
-            let mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            window.location.href = mailtoLink;
+            alert("Anfrage wird gesendet...");
         }
     </script>
+
 </body>
 </html>
