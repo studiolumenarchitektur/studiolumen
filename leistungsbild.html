@@ -42,7 +42,7 @@
             font-weight: bold;
             font-size: 16px;
             padding: 10px;
-            border: 2px solid #800020;
+            border: none;
             cursor: pointer;
             margin: 10px;
             display: block;
@@ -51,8 +51,7 @@
         }
 
         button:hover {
-            color: #fff;
-            background: #800020;
+            text-decoration: underline;
         }
 
         .button-selected {
@@ -61,8 +60,7 @@
 
         .button-selected:hover {
             opacity: 1;
-            font-weight: bold;
-            color: #800020;
+            text-decoration: underline;
         }
 
         .options {
@@ -80,7 +78,9 @@
             display: none;
         }
 
-        select {
+        select, label {
+            color: #000;
+            font-weight: normal;
             width: 100%;
             padding: 5px;
             font-size: 16px;
