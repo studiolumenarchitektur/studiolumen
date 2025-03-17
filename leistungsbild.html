@@ -56,8 +56,8 @@ button {
     bottom: 20px; /* Startet unten auf der Seite */
     left: 50%;
     transform: translateX(-50%);
-    background: #ffffff;
-    color: #80020;
+    background: #800020;
+    color: #ffffff;
     font-weight: bold;
     font-size: 16px;
     padding: 12px 24px;
@@ -286,15 +286,16 @@ function showOptions(optionsId, answerId, button) {
         options.style.display = "flex";
         options.style.flexDirection = "column";
 
-        // Falls Button 3 geöffnet wird, verschiebe ihn nach oben
+        // Falls Button 3 geöffnet wird, verschiebe ihn nach oben & mittig
         if (optionsId === "options3") {
             let button3 = document.getElementById("button3");
             let answer2 = document.getElementById("selected-answer2");
 
-            // Verschiebt Button 3 direkt unter die Antworten von Button 2
             button3.style.position = "relative";
             button3.style.bottom = "auto";
             button3.style.marginTop = "10px";
+            button3.style.left = "50%";
+            button3.style.transform = "translateX(-50%)"; // Zentriert ihn genau unter Antwort 2
 
             // Falls Antworten aus Button 2 vorhanden sind, setze Button 3 darunter
             if (answer2.innerHTML !== "") {
