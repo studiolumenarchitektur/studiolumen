@@ -256,16 +256,7 @@ function showOptions(optionsId, answerId, button) {
 
         // Zeige nur die aktuelle Optionsgruppe an
         options.style.display = "flex";
-    }
-}
-    });
-
-    // Zeige nur die Optionsgruppe, die gerade geöffnet wird
-    document.getElementById(optionsId).style.display = "flex";
-
-    // Falls Button 3 angeklickt wurde, zeige den "Anfrage senden"-Button
-    if (optionsId === "options3") {
-        document.getElementById("button4").style.display = "block";
+        options.style.flexDirection = "column";  // Sicherstellen, dass es korrekt dargestellt wird
     }
 }
 
