@@ -73,6 +73,7 @@
     font-size: 16px;
     margin-top: 5px;
     text-align: left;
+    display: none; /* Standardmäßig verstecken */
 }
 
 function showOptions1() {
@@ -94,7 +95,7 @@ function showOptions1() {
     <header>leistungsbild</header>
 
     <button id="button1" onclick="showOptions1()">Was brauchst du?</button>
-<div id="selected-answer1" class="selected-answer" style="display: none;"></div>
+<div id="selected-answer1" class="selected-answer"></div>
     
     <div id="options1">
         <button onclick="selectOption1(1)">Ich habe bereits Pläne und brauche eine Prüfung oder Berechnung</button>
@@ -166,7 +167,7 @@ function selectOption1(choice) {
     let button1 = document.getElementById("button1");
     let options1 = document.getElementById("options1");
 
-    // Hole den gewählten Text
+    // Hole den gewählten Text aus den Buttons
     let selectedText = options1.children[choice - 1].innerText;
 
     // Setze den Text unter den Button
@@ -182,6 +183,7 @@ function selectOption1(choice) {
 
     // Zeige den nächsten Button
     document.getElementById("button2").style.display = "block";
+}
 
         function showOptions2() {
             document.getElementById("options2").style.display = "block";
