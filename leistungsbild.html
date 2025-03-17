@@ -94,7 +94,8 @@ function showOptions1() {
     <header>leistungsbild</header>
 
     <button id="button1" onclick="showOptions1()">Was brauchst du?</button>
-    <div id="selected-answer1"></div>
+<div id="selected-answer1" class="selected-answer" style="display: none;"></div>
+    
     <div id="options1">
         <button onclick="selectOption1(1)">Ich habe bereits Pläne und brauche eine Prüfung oder Berechnung</button>
         <button onclick="selectOption1(2)">Ich brauche eine neue Planung oder eine Anpassung meiner Pläne</button>
@@ -170,13 +171,8 @@ function selectOption1(choice) {
 
     // Setze den Text unter den Button
     let answerContainer = document.getElementById("selected-answer1");
-    if (!answerContainer) {
-        answerContainer = document.createElement("div");
-        answerContainer.id = "selected-answer1";
-        answerContainer.className = "selected-answer";
-        button1.after(answerContainer);
-    }
     answerContainer.innerText = selectedText;
+    answerContainer.style.display = "block"; // Falls versteckt
 
     // Verstecke alle Auswahlmöglichkeiten
     options1.style.display = "none";
@@ -186,7 +182,6 @@ function selectOption1(choice) {
 
     // Zeige den nächsten Button
     document.getElementById("button2").style.display = "block";
-}
 
         function showOptions2() {
             document.getElementById("options2").style.display = "block";
