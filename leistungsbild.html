@@ -283,17 +283,17 @@ function showOptions(optionsId, answerId, button) {
         options.style.display = "flex";
         options.style.flexDirection = "column";
 
-        // Falls Button 3 geöffnet wird, verschiebe ihn nach oben & mittig
+        // Falls Button 3 geöffnet wird, zentriere ihn exakt unter den Antworten
         if (optionsId === "options3") {
             let button3 = document.getElementById("button3");
             let answer2 = document.getElementById("selected-answer2");
 
-            button3.style.position = "relative";
-            button3.style.bottom = "auto";
+            button3.style.position = "absolute"; // Verhindert Fixierung am Bildschirmrand
+            button3.style.bottom = "auto"; 
             button3.style.marginTop = "10px";
             button3.style.left = "50%";
-            button3.style.transform = "translateX(-50%)"; // Zentriert ihn genau unter Antwort 2
-
+            button3.style.transform = "translateX(-50%)"; // Sicherstellt, dass er immer mittig bleibt
+            
             // Falls Antworten aus Button 2 vorhanden sind, setze Button 3 darunter
             if (answer2.innerHTML !== "") {
                 answer2.parentNode.insertBefore(button3, answer2.nextSibling);
