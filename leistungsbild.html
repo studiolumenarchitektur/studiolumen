@@ -44,9 +44,15 @@
             font-size: 16px;
         }
 
-        #options1, #options2, #options3, #button2, #button3, #button4 {
-            display: none;
-        }
+#options1, #options2, #options3 {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+}
+
+#button2, #button3, #button4 {
+    display: none;
+}
     </style>
 </head>
 <body>
@@ -110,9 +116,15 @@
     <button id="button4" onclick="sendEmail()">Anfrage senden</button>
 
     <script>
-        function showOptions1() {
-            document.getElementById("options1").style.display = "block";
-        }
+function showOptions1() {
+    let options1 = document.getElementById("options1");
+    if (options1.style.display === "none" || options1.style.display === "") {
+        options1.style.display = "flex";
+        options1.style.flexDirection = "column";  // Falls nötig
+    } else {
+        options1.style.display = "none";
+    }
+}
 
         function selectOption1(choice) {
             document.getElementById("button2").style.display = "block";
