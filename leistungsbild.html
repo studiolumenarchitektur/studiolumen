@@ -38,7 +38,7 @@
             display: block;
         }
         
-#options1 button, #options2 button, #options3 button {
+#options1 button {
     color: #000;
     text-align: left;
     background: none;
@@ -51,7 +51,7 @@
     display: block;
 }
 
-#options1 button:hover, #options2 button:hover, #options3 button:hover {
+#options1 button:hover {
     color: #800020;
 }
 
@@ -73,7 +73,7 @@
     font-size: 16px;
     margin-top: 5px;
     text-align: left;
-    display: none; /* Standardmäßig verstecken */
+    display: none; /* Anfangs versteckt */
 }
 
 function showOptions1() {
@@ -167,24 +167,26 @@ function selectOption1(choice) {
     let button1 = document.getElementById("button1");
     let options1 = document.getElementById("options1");
 
-    // Hole den gewählten Text aus den Buttons
+    // Hole den gewählten Text der Option
     let selectedText = options1.children[choice - 1].innerText;
 
     // Setze den Text unter den Button
     let answerContainer = document.getElementById("selected-answer1");
     answerContainer.innerText = selectedText;
-    answerContainer.style.display = "block"; // Falls versteckt
+    answerContainer.style.display = "block"; // Zeige den Text an
 
-    // Verstecke alle Auswahlmöglichkeiten
-    options1.style.display = "none";
+    // Verstecke alle anderen Optionen
+    let buttons = options1.getElementsByTagName("button");
+    for (let i = 0; i < buttons.length; i++) {
+        buttons[i].style.display = "none";
+    }
 
-    // Button wird transparent
+    // Button 1 wird transparent
     button1.classList.add("button-selected");
 
     // Zeige den nächsten Button
     document.getElementById("button2").style.display = "block";
 }
-
         function showOptions2() {
             document.getElementById("options2").style.display = "block";
         }
