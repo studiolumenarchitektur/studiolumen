@@ -247,6 +247,8 @@ function selectOption(choice, optionsId, answerId, button) {
         // Falls keine Option mehr gewählt ist, verstecke den Answer-Container
         if (answers.length === 0) {
             answerContainer.style.display = "none";
+            answerContainer.style.fontWeight = "normal";
+            answerContainer.style.fontSize = "16px";
         }
     } else {
         // Markiere die Option als gewählt
