@@ -44,10 +44,14 @@
             font-size: 16px;
         }
 
-#options1, #options2, #options3 {
-    display: none;
-    flex-direction: column;
-    gap: 5px;
+function showOptions1() {
+    let options1 = document.getElementById("options1");
+    if (options1.style.display === "none" || options1.style.display === "") {
+        options1.style.display = "flex";
+        options1.style.flexDirection = "column";  // Falls nötig
+    } else {
+        options1.style.display = "none";
+    }
 }
 
 #button2, #button3, #button4 {
@@ -126,9 +130,10 @@ function showOptions1() {
     }
 }
 
-        function selectOption1(choice) {
-            document.getElementById("button2").style.display = "block";
-        }
+function selectOption1(choice) {
+    document.getElementById("button2").style.display = "block";
+    document.getElementById("options1").style.display = "none"; // Auswahl schließen
+}
 
         function showOptions2() {
             document.getElementById("options2").style.display = "block";
