@@ -52,19 +52,18 @@ button {
   }
         
 #button3 {
-    color: #800020;
+    position: absolute;
+    width: 100%;
+    max-width: 300px;
     background: #ffffff;
+    color: #80020;
     font-weight: bold;
     font-size: 16px;
+    padding: 12px 24px;
     cursor: pointer;
-    display: none;  /* Wird erst sichtbar, wenn eine Option gewählt wurde */
-    min-width: 200px;
-    width: 300px;
-    position: fixed;    
-    bottom: 40px; /* Immer am unteren Rand des Bildschirms */
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;   
+    display: none; /* Standardmäßig ausgeblendet */
+    text-align: center;
+    margin-bottom: 10px; /* Abstand zu den Fragen */
 }
 
 #button3:hover {
