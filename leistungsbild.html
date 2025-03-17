@@ -64,23 +64,11 @@ button {
             text-decoration: none;
         }
 
-.options button {
-    color: #000;               /* Textfarbe Schwarz */
-    font-weight: normal;       /* Normale Schrift (nicht fett) */
-    background: none;          /* Kein Hintergrund */
-    font-size: 16px;
-    padding: 10px;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    max-width: 300px;          /* Maximale Breite für saubere Darstellung */
-    text-align: left;          /* Links ausgerichteter Text */
-    word-wrap: break-word;     /* Langes Wörter umbrechen */
-    display: block;
-}
-
-.options button:hover {
-    color: #800020;           /* Hover-Farbe */
+.options {
+    display: none;
+    color: #000;
+    flex-direction: column;
+    max-width: 300px;  /* Begrenzung der Breite */
 }
 
 .selected-answer {
