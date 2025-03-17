@@ -53,6 +53,7 @@
 
 #options1 button:hover {
     color: #800020;
+    height: auto;
 }
 
 /* Nach Auswahl: Button wird transparent */
@@ -175,14 +176,17 @@ function selectOption1(choice) {
     answerContainer.innerText = selectedText;
     answerContainer.style.display = "block"; // Zeige den Text an
 
-    // Verstecke ALLE anderen Optionen außer der gewählten
+    // Verstecke alle anderen Optionen außer der gewählten
     let buttons = options1.getElementsByTagName("button");
     for (let i = 0; i < buttons.length; i++) {
-        buttons[i].style.display = (i === choice - 1) ? "block" : "none";
+        if (i !== choice - 1) {
+            buttons[i].style.display = "none";
+        }
     }
 
-    // Button 1 wird transparent
+    // Button 1 wird transparent und verliert seine Klick-Funktion
     button1.classList.add("button-selected");
+    button1.onclick = null;
 
     // Zeige den nächsten Button
     document.getElementById("button2").style.display = "block";
