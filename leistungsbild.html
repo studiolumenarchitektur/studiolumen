@@ -97,30 +97,7 @@ button {
             opacity: 1;
             text-decoration: none;
         }
-#button4 {
-    position: fixed;
-    bottom: 60px;  /* Oberhalb der Fußzeile */
-    left: 50%;
-    transform: translateX(-50%);
-    background: #800020;  /* Hintergrundfarbe */
-    color: #ffffff;  /* Schriftfarbe */
-    font-size: 16px;
-    font-weight: bold;
-    padding: 12px 24px;
-    border: 2px solid #800020;  /* Rahmen */
-    border-radius: 8px;  /* Abgerundete Ecken */
-    cursor: pointer;
-    display: none;  /* Standardmäßig versteckt */
-    text-align: center;
-    width: auto;
-    min-width: 200px;
-}
 
-#button4:hover {
-    background: #ffffff;
-    color: #800020;
-    border: 2px solid #800020;
-}
 .options {
     display: none;
     color: #000;
@@ -231,7 +208,7 @@ button {
         </select>
     </div>
 
-<button id="button4" onclick="showRequestButton()">Anfrage senden</button>
+    <button id="button4" onclick="sendEmail()" style="display: none;">Anfrage senden</button>
 
     <footer class="footer">
         <div onclick="window.location.href='impressum.html'">Impressum</div>
@@ -298,8 +275,6 @@ function selectOption(choice, optionsId, answerId, button) {
     } else if (optionsId === "options3" && answerContainer.innerHTML !== "") {
         document.getElementById("button4").style.display = "block";  // Anfrage senden sichtbar machen
     }
-    function showRequestButton() {
-    document.getElementById("button4").style.display = "block";
 }
         function sendEmail() {
             alert("Anfrage wird gesendet...");
