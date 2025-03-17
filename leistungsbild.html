@@ -52,9 +52,10 @@ button {
   }
         
 #button3 {
-    position: absolute;
-    width: 100%;
-    max-width: 300px;
+    position: fixed;
+    bottom: 20px; /* Startet unten auf der Seite */
+    left: 50%;
+    transform: translateX(-50%);
     background: #800020;
     color: #ffffff;
     font-weight: bold;
@@ -65,12 +66,14 @@ button {
     cursor: pointer;
     display: none; /* Standardmäßig ausgeblendet */
     text-align: center;
-    margin-bottom: 10px; /* Abstand zu den Fragen */
+    min-width: 200px;
+    transition: all 0.5s ease-in-out; /* Animiertes Hochrutschen */
 }
 
 #button3:hover {
     background: #ffffff;
     color: #800020;
+    border: 1px solid #800020;
 }
 #button4 {
     position: fixed;
@@ -282,15 +285,23 @@ function showOptions(optionsId, answerId, button) {
         options.style.display = "flex";
         options.style.flexDirection = "column";
 
-        // Falls Button 3 geöffnet wird, bleibt er mit den Fragen sichtbar
+        // Falls Button 3 geöffnet wird, verschiebe ihn nach oben
         if (optionsId === "options3") {
             let button3 = document.getElementById("button3");
-            button3.style.position = "relative"; // Bewegt sich mit den Fragen
-            button3.style.marginBottom = "10px";
+            let answer2 = document.getElementById("selected-answer2");
+
+            // Verschiebt Button 3 direkt unter die Antworten von Button 2
+            button3.style.position = "relative";
+            button3.style.bottom = "auto";
+            button3.style.marginTop = "10px";
+
+            // Falls Antworten aus Button 2 vorhanden sind, setze Button 3 darunter
+            if (answer2.innerHTML !== "") {
+                answer2.parentNode.insertBefore(button3, answer2.nextSibling);
+            }
         }
     }
 }
-
 function selectOption(choice, optionsId, answerId, button) {
     let options = document.getElementById(optionsId);
     let answerContainer = document.getElementById(answerId);
