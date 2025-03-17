@@ -283,10 +283,11 @@ function showOptions(optionsId, answerId, button) {
         options.style.display = "flex";
         options.style.flexDirection = "column";
 
-        // Falls Button 3 geöffnet wird, rutscht er nur unter den Strich von Button 2
+        // Falls Button 3 geöffnet wird, rutscht er genau unter die Antworten von Button 2
         if (optionsId === "options3") {
             let button3 = document.getElementById("button3");
             let answer2 = document.getElementById("selected-answer2");
+            let options3 = document.getElementById("options3");
 
             if (answer2.innerHTML !== "") {
                 let answer2Bottom = answer2.getBoundingClientRect().bottom + window.scrollY; // Position des Strichs holen
@@ -296,6 +297,9 @@ function showOptions(optionsId, answerId, button) {
                 button3.style.left = "50%";
                 button3.style.transform = "translateX(-50%)"; 
                 button3.style.top = answer2Bottom + "px"; // Button 3 genau unter Antwort 2 setzen
+                
+                // Stelle sicher, dass die Optionen von Button 3 unter ihm sind
+                options3.style.marginTop = "50px"; // Abstand schaffen, damit sie unter Button 3 sind
             }
         }
     }
