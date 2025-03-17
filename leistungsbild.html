@@ -122,14 +122,17 @@ button {
 }
 
 .selected-answer {
-    color: #800020;
-    font-size: 16px;
-    margin-top: 0px;
+    color: #800020;  /* Beibehaltung der roten Farbe */
+    font-size: 12px;  /* Kleinere Schriftgröße */
+    font-weight: normal;
+    margin-top: 5px;
     text-align: left;
     display: none;
-    font-weight: bold;
-    max-width: 300px;
+    max-width: 300px;  /* Maximale Breite */
     word-wrap: break-word;
+    opacity: 0.5;  /* Transparenz für Konsistenz */
+    border-bottom: 1px solid #800020;  /* Feine Linie unter der Antwort */
+    padding-bottom: 5px;  /* Abstand zur Linie */
 }
         button:hover {
             text-decoration: none;
