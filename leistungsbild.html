@@ -211,25 +211,34 @@ button {
     </footer>
 
     <script>
-        function showOptions(optionsId, answerId, button) {
-            document.getElementById(optionsId).style.display = "flex";
+function showOptions(optionsId, answerId, button) {
+    // Blende alle anderen Optionengruppen aus, außer die aktuelle
+    let allOptions = document.querySelectorAll(".options");
+    allOptions.forEach(opt => {
+        if (opt.id !== optionsId) {
+            opt.style.display = "none";
         }
+    });
+
+    // Zeige nur die Optionsgruppe, die gerade geöffnet wird
+    document.getElementById(optionsId).style.display = "flex";
+}
 
 function selectOption(choice, optionsId, answerId, button) {
     let options = document.getElementById(optionsId);
     let answerContainer = document.getElementById(answerId);
-    
+
     // Wenn die Option bereits markiert ist, entfernen
     if (button.classList.contains("option-selected")) {
         button.classList.remove("option-selected");
         button.style.color = "#000";  // Zurück auf normale Farbe setzen
         button.style.fontWeight = "normal";
-        
+
         // Entferne die Option aus der Liste
         let answers = answerContainer.innerHTML.split("<br>");
         answers = answers.filter(text => text.trim() !== button.innerText.trim());
         answerContainer.innerHTML = answers.join("<br>");
-        
+
         // Falls keine Option mehr gewählt ist, verstecke den Answer-Container
         if (answers.length === 0) {
             answerContainer.style.display = "none";
@@ -239,7 +248,7 @@ function selectOption(choice, optionsId, answerId, button) {
         button.classList.add("option-selected");
         button.style.color = "#800020"; 
         button.style.fontWeight = "bold";
-        
+
         // Füge die gewählte Option zur Liste hinzu
         if (answerContainer.innerHTML === "") {
             answerContainer.innerHTML = button.innerText;
