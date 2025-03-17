@@ -49,6 +49,31 @@ button {
     max-width: 300px;  /* Maximale Breite */
     word-wrap: break-word;  /* Falls nötig, bricht lange Wörter um */
     text-align: left;
+  }
+        
+#button3 {
+    position: fixed;
+    bottom: 20px; /* Immer am unteren Rand des Bildschirms */
+    left: 50%;
+    transform: translateX(-50%);
+    background: #800020;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px 24px;
+    border: 2px solid #800020;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    width: auto;
+    min-width: 200px;
+    display: none;  /* Wird erst sichtbar, wenn eine Option gewählt wurde */
+}
+
+#button3:hover {
+    background: #ffffff;
+    color: #800020;
+    border: 2px solid #800020;
 }
 #button4 {
     position: fixed;
@@ -256,7 +281,12 @@ function showOptions(optionsId, answerId, button) {
 
         // Zeige nur die aktuelle Optionsgruppe an
         options.style.display = "flex";
-        options.style.flexDirection = "column";  // Sicherstellen, dass es korrekt dargestellt wird
+        options.style.flexDirection = "column";
+
+        // Falls Button 3 gerade geöffnet wurde, verschiebe ihn nach oben
+        if (optionsId === "options3") {
+            document.getElementById("button3").style.bottom = "80px"; // Rutscht hoch, bleibt aber sichtbar
+        }
     }
 }
 
