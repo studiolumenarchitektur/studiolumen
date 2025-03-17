@@ -39,15 +39,15 @@
         }
         
 #options1 button {
-    color: #000;
-    text-align: left;
+    color: #000;                 /* Standardfarbe */
+    text-align: left;            /* Links ausrichten */
     background: none;
-    font-weight: normal;
+    font-weight: normal;         /* Nicht fett */
     font-size: 16px;
     padding: 10px;
-    border: none;
+    border: none;                /* Keine Ränder */
     cursor: pointer;
-    width: 100%;
+    width: 100%;                 /* Volle Breite für saubere Links-Ausrichtung */
     display: block;
 }
 
@@ -75,7 +75,7 @@
     text-align: left;
     display: none; /* Anfangs versteckt */
 }
-
+        
 function showOptions1() {
     let options1 = document.getElementById("options1");
     if (options1.style.display === "none" || options1.style.display === "") {
@@ -178,9 +178,7 @@ function selectOption1(choice) {
     // Verstecke ALLE anderen Optionen außer der gewählten
     let buttons = options1.getElementsByTagName("button");
     for (let i = 0; i < buttons.length; i++) {
-        if (i !== choice - 1) {
-            buttons[i].style.display = "none";
-        }
+        buttons[i].style.display = (i === choice - 1) ? "block" : "none";
     }
 
     // Button 1 wird transparent
