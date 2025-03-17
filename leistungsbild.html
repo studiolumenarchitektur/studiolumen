@@ -266,7 +266,7 @@ button {
     <script>
 function showOptions(optionsId, answerId, button) {
     let options = document.getElementById(optionsId);
-    
+
     // Wenn die Optionen bereits sichtbar sind, ausblenden
     if (options.style.display === "flex") {
         options.style.display = "none";
@@ -301,6 +301,9 @@ function showOptions(optionsId, answerId, button) {
                 // Stelle sicher, dass die Optionen von Button 3 unter ihm sind
                 options3.style.marginTop = "50px"; // Abstand schaffen, damit sie unter Button 3 sind
             }
+
+            // Sobald Button 3 geklickt wurde, Button 4 einblenden
+            document.getElementById("button4").style.display = "block";
         }
     }
 }
