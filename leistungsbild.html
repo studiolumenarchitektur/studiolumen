@@ -186,12 +186,13 @@ button {
 function selectOption(choice, optionsId, answerId, button) {
     let options = document.getElementById(optionsId);
     let answer = document.getElementById(answerId);
+    let mainButton = document.querySelector(`[onclick="showOptions('${optionsId}', '${answerId}', this)"]`);
 
     // Speichere den gewählten Text
     answer.innerText = button.innerText;
     answer.style.display = "block";
 
-    // Verstecke alle Buttons innerhalb der Optionen
+    // Verstecke alle Buttons in der Auswahl
     let buttons = options.getElementsByTagName("button");
     for (let i = 0; i < buttons.length; i++) {
         buttons[i].style.display = "none";
@@ -200,15 +201,27 @@ function selectOption(choice, optionsId, answerId, button) {
     // Verstecke auch die gewählte Option
     button.style.display = "none";
 
-    // Markiere den Hauptbutton als ausgewählt
-    button.classList.add("button-selected");
+    // Markiere den Hauptbutton als ausgewählt, aber behalte ihn klickbar
+    mainButton.classList.add("button-selected");
+
+    // Falls man erneut klickt, werden die Optionen wieder angezeigt
+    mainButton.onclick = function() {
+        options.style.display = "flex";
+
+        // Zeige alle Auswahlmöglichkeiten erneut
+        for (let i = 0; i < buttons.length; i++) {
+            buttons[i].style.display = "block";
+        }
+
+        // Verstecke den bereits gewählten Text, um Verwirrung zu vermeiden
+        answer.style.display = "none";
+    };
 
     // Zeige den nächsten Button
     if (optionsId === "options1") document.getElementById("button2").style.display = "block";
     else if (optionsId === "options2") document.getElementById("button3").style.display = "block";
     else if (optionsId === "options3") document.getElementById("button4").style.display = "block";
 }
-
         function sendEmail() {
             alert("Anfrage wird gesendet...");
         }
