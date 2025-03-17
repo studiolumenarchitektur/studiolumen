@@ -68,7 +68,20 @@ button {
 .options button:hover {
     color: #800020;  /* Hover-Farbe */
 }
+.option-selected {
+    color: #800020;
+    font-weight: bold;
+}
 
+.selected-answer {
+    color: #800020;
+    font-size: 16px;
+    margin-top: 5px;
+    text-align: left;
+    display: none;
+    max-width: 300px;
+    word-wrap: break-word;
+}
         button:hover {
             text-decoration: none;
         }
@@ -204,45 +217,45 @@ button {
 
 function selectOption(choice, optionsId, answerId, button) {
     let options = document.getElementById(optionsId);
-    let answer = document.getElementById(answerId);
-    let mainButton = document.querySelector(`[onclick="showOptions('${optionsId}', '${answerId}', this)"]`);
-
-    // Speichere den gewählten Text
-    answer.innerText = button.innerText;
-    answer.style.display = "block";
-
-    // Verstecke alle Buttons in der Auswahl
-    let buttons = options.getElementsByTagName("button");
-    for (let i = 0; i < buttons.length; i++) {
-        buttons[i].style.display = "none";
+    let answerContainer = document.getElementById(answerId);
+    
+    // Wenn die Option bereits markiert ist, entfernen
+    if (button.classList.contains("option-selected")) {
+        button.classList.remove("option-selected");
+        button.style.color = "#000";  // Zurück auf normale Farbe setzen
+        button.style.fontWeight = "normal";
+        
+        // Entferne die Option aus der Liste
+        let answers = answerContainer.innerHTML.split("<br>");
+        answers = answers.filter(text => text.trim() !== button.innerText.trim());
+        answerContainer.innerHTML = answers.join("<br>");
+        
+        // Falls keine Option mehr gewählt ist, verstecke den Answer-Container
+        if (answers.length === 0) {
+            answerContainer.style.display = "none";
+        }
+    } else {
+        // Markiere die Option als gewählt
+        button.classList.add("option-selected");
+        button.style.color = "#800020"; 
+        button.style.fontWeight = "bold";
+        
+        // Füge die gewählte Option zur Liste hinzu
+        if (answerContainer.innerHTML === "") {
+            answerContainer.innerHTML = button.innerText;
+        } else {
+            answerContainer.innerHTML += "<br>" + button.innerText;
+        }
+        answerContainer.style.display = "block";
     }
 
-    // Verstecke auch die gewählte Option
-    button.style.display = "none";
-
-    // Markiere den Hauptbutton als ausgewählt, aber behalte ihn klickbar
-    mainButton.classList.add("button-selected");
-
-    // Falls man erneut klickt, werden die Optionen wieder angezeigt
-    mainButton.onclick = function() {
-        options.style.display = "flex";
-
-        // Zeige alle Auswahlmöglichkeiten erneut
-        for (let i = 0; i < buttons.length; i++) {
-            buttons[i].style.display = "block";
-        }
-
-        // Verstecke den bereits gewählten Text, um Verwirrung zu vermeiden
-        answer.style.display = "none";
-    };
-
-    // Zeige den nächsten Button oder "Anfrage senden"
-    if (optionsId === "options1") {
+    // Zeige den nächsten Button nur, wenn mindestens eine Auswahl getroffen wurde
+    if (optionsId === "options1" && answerContainer.innerHTML !== "") {
         document.getElementById("button2").style.display = "block";
-    } else if (optionsId === "options2") {
+    } else if (optionsId === "options2" && answerContainer.innerHTML !== "") {
         document.getElementById("button3").style.display = "block";
-    } else if (optionsId === "options3") {
-        document.getElementById("button4").style.display = "block"; // Button "Anfrage senden" wird eingeblendet
+    } else if (optionsId === "options3" && answerContainer.innerHTML !== "") {
+        document.getElementById("button4").style.display = "block";  // Anfrage senden sichtbar machen
     }
 }
         function sendEmail() {
