@@ -175,10 +175,12 @@ function selectOption1(choice) {
     answerContainer.innerText = selectedText;
     answerContainer.style.display = "block"; // Zeige den Text an
 
-    // Verstecke alle anderen Optionen
+    // Verstecke ALLE anderen Optionen außer der gewählten
     let buttons = options1.getElementsByTagName("button");
     for (let i = 0; i < buttons.length; i++) {
-        buttons[i].style.display = "none";
+        if (i !== choice - 1) {
+            buttons[i].style.display = "none";
+        }
     }
 
     // Button 1 wird transparent
