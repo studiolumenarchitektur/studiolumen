@@ -67,12 +67,34 @@
       display: none;
     }
 
-    select {
-      font-family: 'Poppins', sans-serif;
-      width: 100%;
-      padding: 0.5rem;
-      font-size: 1rem;
-    }
+select {
+  font-family: 'Poppins', sans-serif;
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  background: none;
+  border: none;
+  border-bottom: 1px solid #000;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+  color: #000;
+}
+
+select.selected {
+  color: #800020;
+  border-bottom: 1px solid #800020;
+  font-weight: bold;
+}
+
+.underline {
+  height: 1px;
+  background-color: #800020;
+  margin-top: -0.25rem;
+  margin-bottom: 1.5rem;
+}
 
     .checkbox-group {
       text-align: left;
@@ -272,16 +294,18 @@
       if (label) label.classList.remove('hidden');
     }
 
- function resetOptions(id) {
+function resetOptions(id) {
   const allContainers = document.querySelectorAll(
     '.options, .dropdown, .checkbox-group, .question'
   );
+
   allContainers.forEach(container => {
+    // Zeige nur die erste Frage (Was brauchst du?) und deren Optionen
     if (container.id === 'q1') {
       container.classList.remove('hidden');
       const buttons = container.querySelectorAll('.option-button');
       buttons.forEach(btn => btn.classList.remove('selected', 'hidden'));
-    } else if (container.id.startsWith('q')) {
+    } else {
       container.classList.add('hidden');
     }
 
@@ -289,11 +313,36 @@
     buttons.forEach(btn => btn.classList.remove('selected', 'hidden'));
 
     const selects = container.querySelectorAll('select');
-    selects.forEach(select => select.selectedIndex = 0);
+    selects.forEach(select => {
+      select.selectedIndex = 0;
+      select.classList.remove('selected');
+    });
 
     const checkboxes = container.querySelectorAll('input[type="checkbox"]');
     checkboxes.forEach(cb => cb.checked = false);
+
+    // Entferne feine Linien unter ausgewählten Dropdowns
+    const underlines = container.querySelectorAll('.underline');
+    underlines.forEach(line => line.remove());
   });
+  function revealNext(nextId) {
+  showSection(nextId);
+}
+
+document.querySelectorAll('select').forEach(select => {
+  select.addEventListener('change', function () {
+    if (this.value) {
+      this.classList.add('selected');
+
+      // Linie unter dem Dropdown
+      if (!this.nextElementSibling || !this.nextElementSibling.classList?.contains('underline')) {
+        const line = document.createElement('div');
+        line.classList.add('underline');
+        this.parentNode.insertBefore(line, this.nextSibling);
+      }
+    }
+  });
+});
 }
   </script>
 </body>
