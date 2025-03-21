@@ -2,246 +2,168 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Leistungsbild</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet"/>
   <style>
     body {
       font-family: 'Poppins', sans-serif;
-      background-color: #fff;
+      background: #fff;
       color: #000;
       margin: 0;
       padding: 2rem;
-      display: flex;
-      justify-content: center;
     }
 
     .container {
       max-width: 300px;
-      width: 100%;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .back-arrow {
+      position: sticky;
+      top: 10px;
+      left: 10px;
+      font-size: 24px;
+      color: #800020;
+      text-decoration: none;
+      font-weight: bold;
+      position: fixed;
     }
 
     .question {
-      margin-bottom: 2rem;
-      text-align: center;
-    }
-
-    .question h2 {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
+      margin: 2rem 0 1rem;
+      font-weight: bold;
       cursor: pointer;
     }
 
-    .button-group {
+    .options {
       display: flex;
       flex-direction: column;
-      gap: 1rem;
+      gap: 0.5rem;
     }
 
-    .button-group button {
+    .option-button {
       background: none;
       border: none;
+      color: #000;
       padding: 0.75rem 1rem;
-      font-size: 1rem;
       cursor: pointer;
-      text-align: center;
-      transition: background 0.2s ease-in-out;
+      font-size: 1rem;
+      transition: all 0.3s;
     }
 
-    .button-group button:hover {
-      background: #f0f0f0;
-    }
-
-    .highlighted {
+    .option-button.selected {
       color: #800020;
-      font-weight: 400;
       border-bottom: 1px solid #800020;
-      padding-bottom: 4px;
     }
 
     .hidden {
       display: none;
     }
 
-    .form-section {
-      margin-top: 2rem;
-      text-align: center;
-    }
-
-    .form-section select {
-      width: 100%;
-      padding: 0.5rem;
-      margin: 0.5rem 0;
-      font-family: 'Poppins', sans-serif;
-    }
-
-    label {
-      margin-top: 1rem;
-      display: block;
+    .checkbox-group {
       text-align: left;
+      margin-top: 1rem;
     }
 
-    .back-button {
-      position: sticky;
-      top: 1rem;
-      left: 1rem;
-      font-size: 2rem;
-      color: #800020;
-      text-decoration: none;
-      display: inline-block;
+    .checkbox-group label {
+      display: block;
+      margin: 0.25rem 0;
+      cursor: pointer;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      margin-right: 0.5rem;
     }
   </style>
 </head>
 <body>
-  <a href="index.html" class="back-button">&#8592;</a>
+  <a class="back-arrow" href="index.html">&#8592;</a>
+
   <div class="container">
-    <div class="question" id="q1">
-      <h2 onclick="resetTo('q1')">Was brauchst du?</h2>
-      <div class="button-group">
-        <button onclick="showNext('q2', this)">Ich plane ein Bauvorhaben</button>
-        <button onclick="showNext('q3', this)">Ich will etwas umbauen oder modernisieren</button>
-        <button onclick="showNext('q4', this)">Ich brauche architektonische Unterstützung</button>
-      </div>
+    <div class="question" onclick="resetOptions('q1')">Was brauchst du?</div>
+    <div class="options" id="q1">
+      <button class="option-button" onclick="selectOption(this, 'q2')">Ich plane ein Bauvorhaben</button>
+      <button class="option-button" onclick="selectOption(this, 'q2')">Ich will etwas umbauen oder modernisieren</button>
+      <button class="option-button" onclick="selectOption(this, 'q2')">Ich brauche architektonische Unterstützung</button>
     </div>
 
-    <div class="question hidden" id="q2">
-      <h2 onclick="resetTo('q2')">Worum geht es bei deinem Bauvorhaben?</h2>
-      <div class="button-group">
-        <button onclick="selectPhase(['LPH 1', 'LPH 2', 'LPH 3', 'LPH 4'], this)">Ich möchte ein Haus bauen</button>
-        <button onclick="selectPhase(['LPH 0', 'LPH 1', 'LPH 2'], this)">Ich möchte erstmal wissen, was auf meinem Grundstück geht</button>
-        <button onclick="selectPhase(['LPH 1', 'LPH 2', 'LPH 3', 'LPH 4', 'LPH 5', 'LPH 6', 'LPH 7'], this)">Ich will alles von der Planung bis zur Vergabe</button>
-      </div>
+    <div class="question hidden" onclick="resetOptions('q2')">Wobei brauchst du Unterstützung?</div>
+    <div class="options hidden" id="q2">
+      <button class="option-button" onclick="selectOption(this, 'q3')">Planung & Genehmigung</button>
+      <button class="option-button" onclick="selectOption(this, 'q3')">Bestand erfassen & bewerten</button>
+      <button class="option-button" onclick="selectOption(this, 'q3')">Erstellung von Zeichnungen</button>
     </div>
 
-    <div class="question hidden" id="q3">
-      <h2 onclick="resetTo('q3')">Was soll verändert werden?</h2>
-      <div class="button-group">
-        <button onclick="selectPhase(['LPH 1', 'LPH 2', 'LPH 3', 'LPH 4'], this)">Ich will Räume neu gestalten oder erweitern</button>
-        <button onclick="selectPhase(['LPH 1', 'LPH 2', 'LPH 4'], this)">Ich möchte modernisieren oder sanieren</button>
-        <button onclick="selectPhase(['LPH 1', 'LPH 2', 'LPH 3', 'LPH 4', 'LPH 5'], this)">Ich brauche eine vollständige Umbauplanung</button>
-      </div>
+    <div class="question hidden" onclick="resetOptions('q3')">Wie groß soll das Projekt ungefähr sein?</div>
+    <div class="options hidden" id="q3">
+      <button class="option-button" onclick="selectOption(this, 'q4')">Bis 50 m²</button>
+      <button class="option-button" onclick="selectOption(this, 'q4')">Bis 100 m²</button>
+      <button class="option-button" onclick="selectOption(this, 'q4')">Bis 150 m²</button>
+      <button class="option-button" onclick="selectOption(this, 'q4')">Bis 200 m²</button>
+      <button class="option-button" onclick="selectOption(this, 'q4')">Bis 250 m²</button>
+      <button class="option-button" onclick="selectOption(this, 'q4')">Bis 300 m²</button>
+      <button class="option-button" onclick="selectOption(this, 'q4')">Über 300 m²</button>
+      <button class="option-button" onclick="selectOption(this, 'q4')">Noch unklar</button>
     </div>
 
-    <div class="question hidden" id="q4">
-      <h2 onclick="resetTo('q4')">Wobei brauchst du Unterstützung?</h2>
-      <div class="button-group">
-        <button onclick="selectPhase(['LPH 1'], this)">Ich brauche eine Grundlagenklärung (z. B. Aufmaß, Flächen)</button>
-        <button onclick="selectPhase(['LPH 2'], this)">Ich brauche erste Zeichnungen und Flächenkonzepte</button>
-        <button onclick="selectPhase(['LPH 3'], this)">Ich brauche eine Entwurfsdarstellung</button>
-      </div>
+    <div class="question hidden" onclick="resetOptions('q4')">Sind Pläne vorhanden?</div>
+    <div class="options hidden" id="q4">
+      <button class="option-button" onclick="selectOption(this, 'q5')">Ja</button>
+      <button class="option-button" onclick="selectOption(this, 'q5')">Nein</button>
+      <button class="option-button" onclick="selectOption(this, 'q5')">Unzureichend</button>
     </div>
 
-    <div class="form-section hidden" id="form">
-      <h2>Erstelle dein individuelles Angebot</h2>
-      <p>Bitte wähle die folgenden Angaben aus, damit ein HOAI-konformes Angebot erstellt werden kann:</p>
-      <form>
-        <label>Projektstandort:</label>
-        <select required>
-          <option value="">Bitte wählen …</option>
-          <option>Innerorts</option>
-          <option>Außerorts</option>
-          <option>Unklar / Noch nicht festgelegt</option>
-        </select>
-
-        <label>Was soll geplant werden?</label>
-        <select required>
-          <option value="">Bitte wählen …</option>
-          <option>Wohnhaus</option>
-          <option>Umbau eines Bestandsgebäudes</option>
-          <option>Gewerbe- oder Sonderbau</option>
-          <option>Noch unklar</option>
-        </select>
-
-        <label>Gibt es bereits ein Grundstück oder Gebäude?</label>
-        <select>
-          <option value="">Bitte wählen …</option>
-          <option>Ja</option>
-          <option>Nein</option>
-          <option>In Prüfung</option>
-        </select>
-
-        <label>Welches Budget steht für das Projekt zur Verfügung?</label>
-        <select>
-          <option value="">Bitte wählen …</option>
-          <option>unter 100.000 €</option>
-          <option>100.000 – 250.000 €</option>
-          <option>250.000 – 400.000 €</option>
-          <option>400.000 – 600.000 €</option>
-          <option>600.000 – 1 Mio. €</option>
-          <option>über 1 Mio. €</option>
-          <option>Noch unklar</option>
-        </select>
-
-        <label>Wie groß soll das Projekt ungefähr sein?</label>
-        <select>
-          <option value="">Bitte wählen …</option>
-          <option>bis 50 m²</option>
-          <option>bis 100 m²</option>
-          <option>bis 150 m²</option>
-          <option>bis 200 m²</option>
-          <option>bis 250 m²</option>
-          <option>bis 300 m²</option>
-          <option>mehr als 300 m²</option>
-          <option>Noch unklar</option>
-        </select>
-
-        <label>Gibt es vorhandene Unterlagen oder Pläne?</label>
-        <select>
-          <option value="">Bitte wählen …</option>
-          <option>Ja, vollständig</option>
-          <option>Unzureichend / Teilweise</option>
-          <option>Nein</option>
-        </select>
-
-        <label>Sonstige Hinweise oder Wünsche?</label>
-        <select>
-          <option value="">Bitte wählen …</option>
-          <option>Barrierefreiheit</option>
-          <option>Energieeffizienz</option>
-          <option>Denkmalschutz</option>
-          <option>Nachhaltigkeit</option>
-          <option>Keine besonderen Wünsche</option>
-        </select>
-
-        <p><strong>Leistungsphasen laut Auswahl:</strong></p>
-        <p id="selectedPhases"></p>
-      </form>
+    <div class="question hidden" onclick="resetOptions('q5')">Gibt es sonstige Hinweise oder Wünsche?</div>
+    <div class="checkbox-group hidden" id="q5">
+      <label><input type="checkbox" name="wunsch" value="barrierefreiheit">Barrierefreiheit berücksichtigen</label>
+      <label><input type="checkbox" name="wunsch" value="brandschutz">Anforderungen an den Brandschutz</label>
+      <label><input type="checkbox" name="wunsch" value="denkmalschutz">Denkmalschutz beachten</label>
+      <label><input type="checkbox" name="wunsch" value="nachhaltigkeit">Nachhaltigkeit / Energiestandard</label>
+      <label><input type="checkbox" name="wunsch" value="stellplätze">Stellplätze / Garagen</label>
+      <label><input type="checkbox" name="wunsch" value="gestaltung">Besondere Gestaltungsideen</label>
+      <label><input type="checkbox" name="wunsch" value="unklar">Noch unklar</label>
     </div>
   </div>
 
   <script>
-    function showNext(id, clickedButton) {
-      const parent = clickedButton.closest('.question');
-      const buttons = parent.querySelectorAll('button');
+    function selectOption(button, nextId) {
+      const parent = button.parentElement;
+      const buttons = parent.querySelectorAll('.option-button');
       buttons.forEach(btn => {
-        if (btn !== clickedButton) btn.style.display = 'none';
-        else btn.classList.add('highlighted');
+        if (btn !== button) btn.classList.add('hidden');
+        else btn.classList.add('selected');
       });
-      setTimeout(() => document.getElementById(id).classList.remove('hidden'), 400);
+
+      // Show next question and options
+      const nextQuestion = document.querySelector(`.question + #${nextId}`);
+      const nextQuestionHeader = nextQuestion?.previousElementSibling;
+      if (nextQuestion && nextQuestion.classList.contains('hidden')) {
+        nextQuestion.classList.remove('hidden');
+        if (nextQuestionHeader) nextQuestionHeader.classList.remove('hidden');
+      }
     }
 
-    function selectPhase(phases, clickedButton) {
-      const parent = clickedButton.closest('.question');
-      const buttons = parent.querySelectorAll('button');
+    function resetOptions(id) {
+      const container = document.getElementById(id);
+      const buttons = container.querySelectorAll('.option-button');
       buttons.forEach(btn => {
-        if (btn !== clickedButton) btn.style.display = 'none';
-        else btn.classList.add('highlighted');
+        btn.classList.remove('hidden', 'selected');
       });
-      setTimeout(() => {
-        document.getElementById('form').classList.remove('hidden');
-        document.getElementById('selectedPhases').innerText = phases.join(', ');
-      }, 400);
-    }
 
-    function resetTo(questionId) {
-      document.querySelectorAll('.question').forEach(q => q.classList.add('hidden'));
-      const question = document.getElementById(questionId);
-      question.classList.remove('hidden');
-      const buttons = question.querySelectorAll('button');
-      buttons.forEach(btn => {
-        btn.style.display = 'block';
-        btn.classList.remove('highlighted');
-      });
+      // Reset all following blocks
+      let next = container.nextElementSibling;
+      while (next) {
+        if (next.classList.contains('options') || next.classList.contains('checkbox-group') || next.classList.contains('question')) {
+          next.classList.add('hidden');
+          if (next.classList.contains('options')) {
+            const btns = next.querySelectorAll('.option-button');
+            btns.forEach(b => b.classList.remove('selected', 'hidden'));
+          }
+        }
+        next = next.nextElementSibling;
+      }
     }
   </script>
 </body>
