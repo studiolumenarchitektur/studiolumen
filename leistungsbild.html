@@ -248,6 +248,28 @@ select.selected {
     </div>
   </div>
 
+  <!-- Projektzeitraum -->
+<div class="question hidden" id="q_time">Wann soll das Projekt starten?</div>
+<div class="dropdown hidden" id="q_time_dropdown">
+  <select id="projectTime" onchange="generateSummary()">
+    <option value="">Bitte wählen …</option>
+    <option>Sofort</option>
+    <option>In 1–3 Monaten</option>
+    <option>In 3–6 Monaten</option>
+    <option>Später / flexibel</option>
+    <option>Noch unklar</option>
+  </select>
+</div>
+
+<!-- Zusammenfassung -->
+<div class="question hidden" id="summaryTitle">Zusammenfassung Ihrer Angaben</div>
+<div class="hidden" id="summaryOutput" style="text-align: left; font-size: 0.9rem; line-height: 1.4; margin-bottom: 2rem; border-top: 1px solid #000; padding-top: 1rem;"></div>
+
+<!-- Angebotsanfrage Button -->
+<div class="hidden" id="submitBtn">
+  <a id="mailtoBtn" href="#" style="display: inline-block; background: none; color: #800020; border: none; font-weight: bold; text-decoration: underline; cursor: pointer;">Angebot jetzt anfordern</a>
+</div>
+  
   <script>
     function selectOption(button, nextId) {
       const parent = button.parentElement;
@@ -347,6 +369,56 @@ document.querySelectorAll('select').forEach(select => {
     }
   });
 });
+}
+    function generateSummary() {
+  const summary = [];
+  const getText = selector => {
+    const el = document.querySelector(selector);
+    return el?.value || el?.innerText || '';
+  };
+
+  // Projektzeit
+  const time = document.getElementById('projectTime').value;
+  if (!time) return; // warte, bis Auswahl erfolgt
+
+  // Sammlung aus früheren Fragen (ausgewählte Buttons/Drops)
+  const needs = document.querySelector('#q1 .option-button.selected')?.innerText || '';
+  const status = document.querySelector('#q2 .option-button.selected')?.innerText || '';
+  const support = document.querySelector('#q_support select')?.value || '';
+  const size = document.querySelector('#q3 select')?.value || '';
+  const plans = document.querySelector('#q4 select')?.value || '';
+  const createPlans = document.querySelector('#q_pläne_erstellen_dropdown select')?.value || '';
+  const depth = document.querySelector('#q5 select')?.value || '';
+  const vergabe = document.querySelector('#q_vergabe_dropdown select')?.value || '';
+  const extras = [...document.querySelectorAll('#q6 input[type="checkbox"]:checked')].map(cb => cb.parentElement.innerText.trim());
+
+  // Aufbau Zusammenfassung
+  summary.push(`<strong>Was wird benötigt:</strong> ${needs}`);
+  summary.push(`<strong>Projektstatus:</strong> ${status}`);
+  if (support) summary.push(`<strong>Art der Unterstützung:</strong> ${support}`);
+  summary.push(`<strong>Projektgröße:</strong> ${size}`);
+  summary.push(`<strong>Pläne vorhanden:</strong> ${plans}`);
+  if (plans === 'Nein' || plans === 'Unzureichend') summary.push(`<strong>Pläne erstellen:</strong> ${createPlans}`);
+  summary.push(`<strong>Planungstiefe:</strong> ${depth}`);
+  if (depth === 'vergabe' || depth === 'vollständig') summary.push(`<strong>Vergabeleistung gewünscht:</strong> ${vergabe}`);
+  if (extras.length > 0) summary.push(`<strong>Besondere Anforderungen:</strong> ${extras.join(', ')}`);
+  summary.push(`<strong>Geplanter Projektbeginn:</strong> ${time}`);
+
+  const summaryHtml = summary.map(line => `<p>${line}</p>`).join('');
+  const summaryText = summary.map(line => line.replace(/<[^>]+>/g, '')).join('\n');
+
+  document.getElementById('summaryOutput').innerHTML = summaryHtml;
+
+  // Mailto-Link generieren
+  const subject = encodeURIComponent("Angebotsanfrage Architekturleistung");
+  const body = encodeURIComponent(`Folgende Angaben wurden gemacht:\n\n${summaryText}\n\nBitte senden Sie mir ein unverbindliches Angebot.`);
+  const mailtoLink = `mailto:studiolumenarchitektur@gmail.com?subject=${subject}&body=${body}`;
+  document.getElementById('mailtoBtn').href = mailtoLink;
+
+  // Anzeigen
+  document.getElementById('summaryTitle').classList.remove('hidden');
+  document.getElementById('summaryOutput').classList.remove('hidden');
+  document.getElementById('submitBtn').classList.remove('hidden');
 }
   </script>
 </body>
