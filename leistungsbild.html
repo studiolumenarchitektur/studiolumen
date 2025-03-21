@@ -420,6 +420,17 @@ document.querySelectorAll('select').forEach(select => {
   document.getElementById('summaryOutput').classList.remove('hidden');
   document.getElementById('submitBtn').classList.remove('hidden');
 }
+    // Trigger nach Klick auf eine Checkbox bei "besondere Anforderungen"
+document.querySelectorAll('#q6 input[type="checkbox"]').forEach(cb => {
+  cb.addEventListener('change', () => {
+    // Sobald mindestens eine Checkbox ausgewählt ist, zeige nächsten Schritt
+    const anyChecked = [...document.querySelectorAll('#q6 input[type="checkbox"]')].some(cb => cb.checked);
+    if (anyChecked) {
+      showSection('q_time');
+      showSection('q_time_dropdown');
+    }
+  });
+});
   </script>
 </body>
 </html>
