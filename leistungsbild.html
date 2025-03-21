@@ -1,363 +1,186 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>leistungsbild</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #fff;
-            color: #000;
-            margin: 0;
-            padding-bottom: 80px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            font-size: 14px;
-        }
-
-        header {
-            font-size: 2rem;
-            font-weight: bold;
-            margin-top: 20px;
-            text-transform: lowercase;
-        }
-
-        .back-arrow {
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            cursor: pointer;
-            font-size: 2rem;
-            color: #800020;
-            font-weight: bold;
-        }
-
-button {
-    color: #800020;
-    background: none;
-    font-weight: bold;
-    font-size: 16px;
-    padding: 10px;
-    border: none;
-    cursor: pointer;
-    margin: 10px;
-    display: block;
-    max-width: 300px;  /* Maximale Breite */
-    word-wrap: break-word;  /* Falls nötig, bricht lange Wörter um */
-    text-align: left;
-  }
-        
-#button3 {
-    position: fixed;
-    bottom: 20px; /* Startet unten auf der Seite */
-    left: 50%;
-    transform: translateX(-50%);
-    background: #ffffff;
-    color: #80020;
-    font-weight: bold;
-    font-size: 16px;
-    padding: 12px 24px;
-    cursor: pointer;
-    display: none; /* Standardmäßig ausgeblendet */
-    text-align: center;
-    min-width: 200px;
-    max-width: 300px;  /* Maximale Breite */
-    transition: all 0.5s ease-in-out; /* Animiertes Hochrutschen */
-}
-
-#button3:hover {
-    background: #ffffff;
-    color: #800020;
-}
-#button4 {
-    position: fixed;
-    bottom: 60px;  /* Oberhalb der Fußzeile */
-    left: 50%;
-    transform: translateX(-50%);
-    background: #800020;  /* Hintergrundfarbe */
-    color: #ffffff;  /* Schriftfarbe */
-    font-size: 16px;
-    font-weight: bold;
-    padding: 12px 24px;
-    border: 1px solid #800020;  /* Rahmen */
-    border-radius: 8px;  /* Abgerundete Ecken */
-    cursor: pointer;
-    display: none;  /* Standardmäßig versteckt */
-    text-align: center;
-    width: auto;
-    min-width: 200px;
-}
-
-#button4:hover {
-    background: #ffffff;
-    color: #800020;
-    border: 1px solid #800020;
-}
-        .options button {
-    color: #000;  /* Textfarbe Schwarz */
-    font-weight: normal;  /* Normale Schrift (nicht fett) */
-    background: none;
-    font-size: 16px;
-    padding: 10px;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    max-width: 300px;  /* Maximale Breite */
-    text-align: left;
-    word-wrap: break-word;
-}
-
-.options button:hover {
-    color: #800020;  /* Hover-Farbe */
-}
-.option-selected {
-    color: #800020;  /* Beibehaltung der roten Farbe */
-    font-weight: bold;  /* Kein Fett mehr */
-    opacity: 0.5;  /* Transparenz der gewählten Option */
-    font-size: 14px;  /* Gleiche Schriftgröße wie normale Optionen */
-}
-
-.selected-answer {
-    color: #800020;  /* Beibehaltung der roten Farbe */
-    font-size: 14px;  /* Kleinere Schriftgröße */
-    font-weight: normal;
-    margin-top: 5px;
-    text-align: left;
-    display: none;
-    max-width: 300px;  /* Maximale Breite */
-    word-wrap: break-word;
-    border-bottom: 1px solid #800020;  /* Feine Linie unter der Antwort */
-    padding-bottom: 5px;  /* Abstand zur Linie */
-}
-        button:hover {
-            text-decoration: none;
-        }
-
-        .button-selected {
-            opacity: 0.5;
-        }
-
-        .button-selected:hover {
-            opacity: 1;
-            text-decoration: none;
-        }
-
-.options {
-    display: none;
-    color: #000;
-    font-weight: normal;
-    flex-direction: column;
-    max-width: 300px;  /* Begrenzung der Breite */
-}
-
-.selected-answer {
-    color: #000;
-    font-size: 14px;
-    font-weight: normal;
-    margin-top: 0px;
-    text-align: left;
-    display: none;
-    max-width: 300px;  /* Maximale Breite */
-    word-wrap: break-word;
-}
-
-        select, label {
-            color: #000;
-            font-weight: normal;
-            width: 100%;
-            padding: 0px;
-            font-size: 14px;
-            margin-top: 5px;
-        }
-
-        .footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            text-align: center;
-            padding: 10px;
-            color: #777;
-            background: #fff;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leistungsbild</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #fff;
+      color: #000;
+      margin: 0;
+      padding: 2rem;
+    }
+    .question {
+      margin-bottom: 2rem;
+    }
+    .question h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .button-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .button-group button {
+      background: none;
+      border: 1px solid #000;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.2s ease-in-out;
+    }
+    .button-group button:hover {
+      background: #f0f0f0;
+    }
+    .hidden {
+      display: none;
+    }
+    .form-section {
+      margin-top: 2rem;
+    }
+    .form-section select {
+      width: 100%;
+      padding: 0.5rem;
+      margin: 0.5rem 0;
+      border: 1px solid #000;
+      font-family: 'Poppins', sans-serif;
+    }
+    label {
+      margin-top: 1rem;
+      display: block;
+    }
+  </style>
 </head>
 <body>
-
-    <div class="back-arrow" onclick="window.history.back()">←</div>
-    <header>leistungsbild</header>
-
-    <button id="button1" onclick="showOptions('options1', 'selected-answer1', this)">Was brauchst du?</button>
-    <div id="selected-answer1" class="selected-answer"></div>
-    <div id="options1" class="options">
-        <button onclick="selectOption(1, 'options1', 'selected-answer1', this)">• Ich habe bereits Pläne und brauche eine Prüfung oder Berechnung</button>
-        <button onclick="selectOption(2, 'options1', 'selected-answer1', this)">• Ich brauche eine neue Planung oder eine Anpassung meiner Pläne</button>
-        <button onclick="selectOption(3, 'options1', 'selected-answer1', this)">• Ich brauche eine vollständige Bauplanung oder Ausschreibung</button>
+  <div class="question" id="q1">
+    <h2>Was brauchst du?</h2>
+    <div class="button-group">
+      <button onclick="showQuestion('q2')">Ich plane ein Bauvorhaben</button>
+      <button onclick="showQuestion('q3')">Ich will etwas umbauen oder modernisieren</button>
+      <button onclick="showQuestion('q4')">Ich brauche architektonische Unterstützung</button>
     </div>
+  </div>
 
-    <button id="button2" onclick="showOptions('options2', 'selected-answer2', this)" style="display: none;">Was genau?</button>
-    <div id="selected-answer2" class="selected-answer"></div>
-<div id="options2" class="options">
-    <button onclick="selectOption(1, 'options2', 'selected-answer2', this)">
-        • Ich brauche eine Wohnflächenberechnung & Flächennachweis
-    </button>
-    <button onclick="selectOption(2, 'options2', 'selected-answer2', this)">
-        • Ich brauche eine Bestätigung meiner Pläne mit Architektenstempel
-    </button>
-    <button onclick="selectOption(3, 'options2', 'selected-answer2', this)">
-        • Ich brauche eine Planprüfung für meine Baufinanzierung
-    </button>
-    <button onclick="selectOption(4, 'options2', 'selected-answer2', this)">
-        • Ich brauche eine Vorplanung für mein Projekt
-    </button>
-    <button onclick="selectOption(5, 'options2', 'selected-answer2', this)">
-        • Ich brauche eine Entwurfsplanung & Konzeptentwicklung
-    </button>
-    <button onclick="selectOption(6, 'options2', 'selected-answer2', this)">
-        • Ich brauche eine Genehmigungsplanung & Bauantragsunterlagen
-    </button>
-    <button onclick="selectOption(7, 'options2', 'selected-answer2', this)">
-        • Ich brauche eine detaillierte Bauplanung mit technischen Anforderungen
-    </button>
-    <button onclick="selectOption(8, 'options2', 'selected-answer2', this)">
-        • Ich brauche eine Ausschreibung & Vergabeunterstützung
-    </button>
-</div>
-
-    <button id="button3" onclick="showOptions('options3', 'selected-answer3', this)" style="display: none;">Nur noch Details</button>
-    <div id="options3" class="options">
-        <label>Wie groß ist das Gebäude?</label>
-        <select id="size-dropdown">
-            <option>Bis 50m²</option>
-            <option>Bis 100m²</option>
-            <option>Bis 150m²</option>
-            <option>Bis 200m²</option>
-            <option>Bis 250m²</option>
-            <option>Bis 300m²</option>
-            <option>Sehr groß</option>
-        </select>
-
-        <label>Gibt es schon Pläne?</label>
-        <select id="plans-dropdown">
-            <option>Ja</option>
-            <option>Nein</option>
-        </select>
-
-        <label>Brauchst du eine Berechnung?</label>
-        <select id="calculation-dropdown">
-            <option>Ja</option>
-            <option>Nein</option>
-        </select>
+  <div class="question hidden" id="q2">
+    <h2>Worum geht es bei deinem Bauvorhaben?</h2>
+    <div class="button-group">
+      <button onclick="selectPhase(['LPH 1', 'LPH 2', 'LPH 3', 'LPH 4'])">Ich möchte ein Haus bauen</button>
+      <button onclick="selectPhase(['LPH 0', 'LPH 1', 'LPH 2'])">Ich möchte erstmal wissen, was auf meinem Grundstück geht</button>
+      <button onclick="selectPhase(['LPH 1', 'LPH 2', 'LPH 3', 'LPH 4', 'LPH 5', 'LPH 6', 'LPH 7'])">Ich will alles von der Planung bis zur Vergabe</button>
     </div>
+  </div>
 
-    <button id="button4" onclick="sendEmail()" style="display: none;">Anfrage senden</button>
+  <div class="question hidden" id="q3">
+    <h2>Was soll verändert werden?</h2>
+    <div class="button-group">
+      <button onclick="selectPhase(['LPH 1', 'LPH 2', 'LPH 3', 'LPH 4'])">Ich will Räume neu gestalten oder erweitern</button>
+      <button onclick="selectPhase(['LPH 1', 'LPH 2', 'LPH 4'])">Ich möchte modernisieren oder sanieren</button>
+      <button onclick="selectPhase(['LPH 1', 'LPH 2', 'LPH 3', 'LPH 4', 'LPH 5'])">Ich brauche eine vollständige Umbauplanung</button>
+    </div>
+  </div>
 
-    <footer class="footer">
-        <div onclick="window.location.href='impressum.html'">Impressum</div>
-        <div>© 2025 studio lumen</div>
-    </footer>
+  <div class="question hidden" id="q4">
+    <h2>Wobei brauchst du Unterstützung?</h2>
+    <div class="button-group">
+      <button onclick="selectPhase(['LPH 1'])">Ich brauche eine Grundlagenklärung (z. B. Aufmaß, Flächen)</button>
+      <button onclick="selectPhase(['LPH 2'])">Ich brauche erste Zeichnungen und Flächenkonzepte</button>
+      <button onclick="selectPhase(['LPH 3'])">Ich brauche eine Entwurfsdarstellung</button>
+    </div>
+  </div>
 
-    <script>
-function showOptions(optionsId, answerId, button) {
-    let options = document.getElementById(optionsId);
+  <div class="form-section hidden" id="form">
+    <h2>Erstelle dein individuelles Angebot</h2>
+    <p>Bitte wähle die folgenden Angaben aus, damit ein HOAI-konformes Angebot erstellt werden kann:</p>
+    <form>
+      <label>Projektstandort:</label>
+      <select required>
+        <option value="">Bitte wählen …</option>
+        <option>Innerorts</option>
+        <option>Außerorts</option>
+        <option>Unklar / Noch nicht festgelegt</option>
+      </select>
 
-    // Wenn die Optionen bereits sichtbar sind, ausblenden
-    if (options.style.display === "flex") {
-        options.style.display = "none";
-    } else {
-        // Blende alle anderen Optionengruppen aus
-        let allOptions = document.querySelectorAll(".options");
-        allOptions.forEach(opt => {
-            if (opt.id !== optionsId) {
-                opt.style.display = "none";
-            }
-        });
+      <label>Was soll geplant werden?</label>
+      <select required>
+        <option value="">Bitte wählen …</option>
+        <option>Wohnhaus</option>
+        <option>Umbau eines Bestandsgebäudes</option>
+        <option>Gewerbe- oder Sonderbau</option>
+        <option>Noch unklar</option>
+      </select>
 
-        // Zeige nur die aktuelle Optionsgruppe an
-        options.style.display = "flex";
-        options.style.flexDirection = "column";
+      <label>Gibt es bereits ein Grundstück oder Gebäude?</label>
+      <select>
+        <option value="">Bitte wählen …</option>
+        <option>Ja</option>
+        <option>Nein</option>
+        <option>In Prüfung</option>
+      </select>
 
-        // Falls Button 3 geöffnet wird, rutscht er genau unter die Antworten von Button 2
-        if (optionsId === "options3") {
-            let button3 = document.getElementById("button3");
-            let answer2 = document.getElementById("selected-answer2");
-            let options3 = document.getElementById("options3");
+      <label>Welches Budget steht für das Projekt zur Verfügung?</label>
+      <select>
+        <option value="">Bitte wählen …</option>
+        <option>unter 100.000 €</option>
+        <option>100.000 – 250.000 €</option>
+        <option>250.000 – 400.000 €</option>
+        <option>400.000 – 600.000 €</option>
+        <option>600.000 – 1 Mio. €</option>
+        <option>über 1 Mio. €</option>
+        <option>Noch unklar</option>
+      </select>
 
-            if (answer2.innerHTML !== "") {
-                let answer2Bottom = answer2.getBoundingClientRect().bottom + window.scrollY; // Position des Strichs holen
-                button3.style.position = "absolute"; 
-                button3.style.bottom = "auto";
-                button3.style.marginTop = "10px";
-                button3.style.left = "50%";
-                button3.style.transform = "translateX(-50%)"; 
-                button3.style.top = answer2Bottom + "px"; // Button 3 genau unter Antwort 2 setzen
-                
-                // Stelle sicher, dass die Optionen von Button 3 unter ihm sind
-                options3.style.marginTop = "50px"; // Abstand schaffen, damit sie unter Button 3 sind
-            }
+      <label>Wie groß soll das Projekt ungefähr sein?</label>
+      <select>
+        <option value="">Bitte wählen …</option>
+        <option>bis 50 m²</option>
+        <option>bis 100 m²</option>
+        <option>bis 150 m²</option>
+        <option>bis 200 m²</option>
+        <option>bis 250 m²</option>
+        <option>bis 300 m²</option>
+        <option>mehr als 300 m²</option>
+        <option>Noch unklar</option>
+      </select>
 
-            // Sobald Button 3 geklickt wurde, Button 4 einblenden
-            document.getElementById("button4").style.display = "block";
-        }
+      <label>Gibt es vorhandene Unterlagen oder Pläne?</label>
+      <select>
+        <option value="">Bitte wählen …</option>
+        <option>Ja, vollständig</option>
+        <option>Unzureichend / Teilweise</option>
+        <option>Nein</option>
+      </select>
+
+      <label>Sonstige Hinweise oder Wünsche?</label>
+      <select>
+        <option value="">Bitte wählen …</option>
+        <option>Barrierefreiheit</option>
+        <option>Energieeffizienz</option>
+        <option>Denkmalschutz</option>
+        <option>Nachhaltigkeit</option>
+        <option>Keine besonderen Wünsche</option>
+      </select>
+
+      <p><strong>Leistungsphasen laut Auswahl:</strong></p>
+      <p id="selectedPhases"></p>
+    </form>
+  </div>
+
+  <script>
+    function showQuestion(id) {
+      document.querySelectorAll('.question').forEach(q => q.classList.add('hidden'));
+      document.getElementById(id).classList.remove('hidden');
     }
-}
-function selectOption(choice, optionsId, answerId, button) {
-    let options = document.getElementById(optionsId);
-    let answerContainer = document.getElementById(answerId);
 
-    // Wenn die Option bereits markiert ist, entfernen
-    if (button.classList.contains("option-selected")) {
-        button.classList.remove("option-selected");
-        button.style.color = "#000";  // Zurück auf normale Farbe setzen
-        button.style.fontWeight = "normal";
-
-        // Entferne die Option aus der Liste
-        let answers = answerContainer.innerHTML.split("<br>");
-        answers = answers.filter(text => text.trim() !== button.innerText.trim());
-        answerContainer.innerHTML = answers.join("<br>");
-
-        // Falls keine Option mehr gewählt ist, verstecke den Answer-Container
-        if (answers.length === 0) {
-            answerContainer.style.display = "none";
-            answerContainer.style.fontWeight = "bold";
-            answerContainer.style.fontSize = "14px";
-        }
-    } else {
-        // Markiere die Option als gewählt
-        button.classList.add("option-selected");
-        button.style.color = "#800020"; 
-        button.style.fontWeight = "normal";
-
-        // Füge die gewählte Option zur Liste hinzu
-        if (answerContainer.innerHTML === "") {
-            answerContainer.innerHTML = button.innerText;
-        } else {
-            answerContainer.innerHTML += "<br>" + button.innerText;
-        }
-        answerContainer.style.display = "block";
-        answerContainer.style.fontWeight = "normal";
-        answerContainer.style.fontSize = "14px";
+    function selectPhase(phases) {
+      document.querySelectorAll('.question').forEach(q => q.classList.add('hidden'));
+      document.getElementById('form').classList.remove('hidden');
+      document.getElementById('selectedPhases').innerText = phases.join(', ');
     }
-
-    // Zeige den nächsten Button nur, wenn mindestens eine Auswahl getroffen wurde
-    if (optionsId === "options1" && answerContainer.innerHTML !== "") {
-        document.getElementById("button2").style.display = "block";
-    } else if (optionsId === "options2" && answerContainer.innerHTML !== "") {
-        document.getElementById("button3").style.display = "block";
-    } else if (optionsId === "options3" && answerContainer.innerHTML !== "") {
-        document.getElementById("button4").style.display = "block";  // Anfrage senden sichtbar machen
-    }
-}
-        function sendEmail() {
-            alert("Anfrage wird gesendet...");
-        }
-    </script>
-
+  </script>
 </body>
 </html>
