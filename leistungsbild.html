@@ -250,32 +250,29 @@
       if (label) label.classList.remove('hidden');
     }
 
-    function resetOptions(id) {
-      const container = document.getElementById(id);
-      if (!container) return;
-
+ function resetOptions(id) {
+  const allContainers = document.querySelectorAll(
+    '.options, .dropdown, .checkbox-group, .question'
+  );
+  allContainers.forEach(container => {
+    if (container.id === 'q1') {
+      container.classList.remove('hidden');
       const buttons = container.querySelectorAll('.option-button');
       buttons.forEach(btn => btn.classList.remove('selected', 'hidden'));
-
-      const selects = container.querySelectorAll('select');
-      selects.forEach(select => select.selectedIndex = 0);
-
-      const checkboxes = container.querySelectorAll('input[type="checkbox"]');
-      checkboxes.forEach(cb => cb.checked = false);
-
-      let next = container.nextElementSibling;
-      while (next) {
-        if (
-          next.classList.contains('options') ||
-          next.classList.contains('dropdown') ||
-          next.classList.contains('checkbox-group') ||
-          next.classList.contains('question')
-        ) {
-          next.classList.add('hidden');
-        }
-        next = next.nextElementSibling;
-      }
+    } else if (container.id.startsWith('q')) {
+      container.classList.add('hidden');
     }
+
+    const buttons = container.querySelectorAll('.option-button');
+    buttons.forEach(btn => btn.classList.remove('selected', 'hidden'));
+
+    const selects = container.querySelectorAll('select');
+    selects.forEach(select => select.selectedIndex = 0);
+
+    const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(cb => cb.checked = false);
+  });
+}
   </script>
 </body>
 </html>
