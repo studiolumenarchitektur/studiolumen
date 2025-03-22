@@ -446,7 +446,20 @@ function generateSummary() {
     lphs.add("LPH 6");
     lphs.add("LPH 7");
   }
+  
+// Automatische Ergänzung fehlender Phasen
+const lphNumbers = Array.from(lphs).map(l => parseInt(l.replace("LPH ", "")));
+const completeLPHs = new Set(lphNumbers);
 
+// Wenn z. B. LPH 1 und 3 enthalten sind → ergänze 2
+for (let i = 1; i <= 7; i++) {
+  if (completeLPHs.has(i - 1) && completeLPHs.has(i + 1) && !completeLPHs.has(i)) {
+    completeLPHs.add(i);
+  }
+}
+
+// Sortieren und zurück in „LPH x“-Format bringen
+const lphArray = Array.from(completeLPHs).sort((a, b) => a - b).map(n => `LPH ${n}`);
   const lphArray = Array.from(lphs).sort(); // sortierte Liste
   if (lphArray.length > 0) {
     summary.push(`<strong>Beauftragte Leistungsphasen:</strong><br>${lphArray.join(", ")}`);
