@@ -312,30 +312,27 @@ select.selected {
 
   // Für alle Dropdowns: Auswahl markieren & Linie anzeigen
   document.querySelectorAll('select').forEach(select => {
-    select.addEventListener('change', function () {
-      if (this.value) {
-        this.classList.add('selected');
-        if (!this.nextElementSibling || !this.nextElementSibling.classList.contains('underline')) {
-          const line = document.createElement('div');
-          line.classList.add('underline');
-          this.parentNode.insertBefore(line, this.nextSibling);
-       
-        if (this.parentElement.id === 'q_support') {
-  showSection('q3');
-}
-      }
-
-if (this.id === 'q3') {
-  if (this.value === 'unklar') {
-    showSection('q_size_hint');
-    showSection('q_size_hint_dropdown');
-  } else {
-    hideSection('q_size_hint');
-    hideSection('q_size_hint_dropdown');
+select.addEventListener('change', function () {
+  if (this.value) {
+    this.classList.add('selected');
+    if (!this.nextElementSibling || !this.nextElementSibling.classList.contains('underline')) {
+      const line = document.createElement('div');
+      line.classList.add('underline');
+      this.parentNode.insertBefore(line, this.nextSibling);
+    }
   }
-  // Immer weiter zu Pläne-Frage
-  showSection('q4');
-}
+
+  // 👉 NEU: Stelle sicher, dass das immer ausgeführt wird
+  if (this.id === 'q3') {
+    if (this.value === 'unklar') {
+      showSection('q_size_hint');
+      showSection('q_size_hint_dropdown');
+    } else {
+      hideSection('q_size_hint');
+      hideSection('q_size_hint_dropdown');
+    }
+    showSection('q4'); // <- Wichtig!
+  }
       }
       if (this.parentElement.id === 'q4') {
         if (this.value === 'nein' || this.value === 'unvollständig') {
