@@ -322,18 +322,18 @@ select.selected {
         }
       }
 
-      // Dynamische Folgefragen je nach Auswahl:
-      if (this.id === 'q3') {
-        if (this.value === 'unklar') {
-          showSection('q_size_hint');
-          showSection('q_size_hint_dropdown');
-        } else {
-          hideSection('q_size_hint');
-          hideSection('q_size_hint_dropdown');
-          showSection('q4');
-        }
+if (this.id === 'q3') {
+  if (this.value === 'unklar') {
+    showSection('q_size_hint');
+    showSection('q_size_hint_dropdown');
+  } else {
+    hideSection('q_size_hint');
+    hideSection('q_size_hint_dropdown');
+  }
+  // Immer weiter zu Pläne-Frage
+  showSection('q4');
+}
       }
-
       if (this.parentElement.id === 'q4') {
         if (this.value === 'nein' || this.value === 'unvollständig') {
           showSection('q_pläne_erstellen');
