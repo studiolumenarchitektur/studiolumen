@@ -295,23 +295,46 @@ select.selected {
       }
     }
 
-    function checkPlans(value) {
-      if (value === 'nein' || value === 'unvollständig') {
-        showSection('q_pläne_erstellen');
-        showSection('q_pläne_erstellen_dropdown');
-      } else {
-        revealNext('q5');
-      }
-    }
+function checkPlans(value) {
+  const createSection = document.getElementById('q_pläne_erstellen');
+  const createDropdown = document.getElementById('q_pläne_erstellen_dropdown');
 
-    function checkPlanningDepth(value) {
-      if (value === 'vergabe' || value === 'vollständig') {
-        showSection('q_vergabe');
-        showSection('q_vergabe_dropdown');
-      } else {
-        revealNext('q6');
-      }
+  if (value === 'nein' || value === 'unvollständig') {
+    showSection('q_pläne_erstellen');
+    showSection('q_pläne_erstellen_dropdown');
+  } else {
+    createSection.classList.add('hidden');
+    createDropdown.classList.add('hidden');
+    // Reset Auswahl
+    const select = createDropdown.querySelector('select');
+    if (select) {
+      select.selectedIndex = 0;
+      select.classList.remove('selected');
     }
+  }
+
+  revealNext('q5');
+}
+
+ function checkPlanningDepth(value) {
+  const vergabeQ = document.getElementById('q_vergabe');
+  const vergabeDropdown = document.getElementById('q_vergabe_dropdown');
+
+  if (value === 'vergabe' || value === 'vollständig') {
+    showSection('q_vergabe');
+    showSection('q_vergabe_dropdown');
+  } else {
+    vergabeQ.classList.add('hidden');
+    vergabeDropdown.classList.add('hidden');
+    const select = vergabeDropdown.querySelector('select');
+    if (select) {
+      select.selectedIndex = 0;
+      select.classList.remove('selected');
+    }
+  }
+
+  revealNext('q6');
+}
 
     function showSection(id) {
       const section = document.getElementById(id);
