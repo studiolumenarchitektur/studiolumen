@@ -319,7 +319,10 @@ select.selected {
           const line = document.createElement('div');
           line.classList.add('underline');
           this.parentNode.insertBefore(line, this.nextSibling);
-        }
+       
+        if (this.parentElement.id === 'q_support') {
+  showSection('q3');
+}
       }
 
 if (this.id === 'q3') {
@@ -415,6 +418,22 @@ function resetOptions(id) {
       underlines.forEach(line => line.remove());
     }
   });
+
+  // Zusätzlicher Reset bei Klick auf Frage 1
+  if (id === 'q1') {
+    hideSection('q_support');
+    hideSection('q_size_hint');
+    hideSection('q_size_hint_dropdown');
+    hideSection('q_pläne_erstellen');
+    hideSection('q_pläne_erstellen_dropdown');
+    hideSection('q_vergabe');
+    hideSection('q_vergabe_dropdown');
+    hideSection('q_time');
+    hideSection('q_time_dropdown');
+    hideSection('summaryOutput');
+    hideSection('summaryTitle');
+    hideSection('submitBtn');
+  }
 }
 
   // Zusammenfassung + mailto
