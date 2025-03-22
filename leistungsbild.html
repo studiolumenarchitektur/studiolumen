@@ -428,43 +428,65 @@ function generateSummary() {
   const extras = [...document.querySelectorAll('#q6 input[type="checkbox"]:checked')].map(cb => cb.parentElement.innerText.trim());
   const time = document.getElementById('projectTime').value;
 
+  // Zusammenfassung der Angaben
   summary.push(`<strong>Was wird benötigt:</strong> ${needs}`);
   summary.push(`<strong>Projektstatus:</strong> ${status}`);
   if (support) summary.push(`<strong>Art der Unterstützung:</strong> ${support}`);
   summary.push(`<strong>Projektgröße:</strong> ${size}`);
   summary.push(`<strong>Pläne vorhanden:</strong> ${plans}`);
-  if (plans === 'Nein' || plans === 'Unzureichend') summary.push(`<strong>Pläne erstellen:</strong> ${createPlans}`);
+  if (plans === 'Nein' || plans === 'Unzureichend') {
+    summary.push(`<strong>Pläne erstellen:</strong> ${createPlans}`);
+  }
   summary.push(`<strong>Planungstiefe:</strong> ${depth}`);
-  if (depth === 'vergabe' || depth === 'vollständig') summary.push(`<strong>Vergabeleistung gewünscht:</strong> ${vergabe}`);
-  if (extras.length > 0) summary.push(`<strong>Besondere Anforderungen:</strong> ${extras.join(', ')}`);
+  if (depth === 'vergabe' || depth === 'vollständig') {
+    summary.push(`<strong>Vergabeleistung gewünscht:</strong> ${vergabe}`);
+  }
+  if (extras.length > 0) {
+    summary.push(`<strong>Besondere Anforderungen:</strong> ${extras.join(', ')}`);
+  }
   summary.push(`<strong>Geplanter Projektbeginn:</strong> ${time}`);
-  document.getElementById('summaryOutput').innerHTML = summary.map(line => `<p>${line}</p>`).join('');
 
-  // 💡 Abgeleitete Leistungsphasen
+  // Automatische Ermittlung der LPHs
   const lphs = new Set();
 
-  if (status.includes("fange") || support) lphs.add("LPH 0");
-  if (status.includes("fange") || support || plans === "Nein" || plans === "Unzureichend") lphs.add("LPH 1");
-  if (support || status.includes("grobe") || plans === "Nein" || plans === "Unzureichend") lphs.add("LPH 2");
+  if (status.includes("fange") || support) lphs.add(0);
+  if (status.includes("fange") || support || plans === "Nein" || plans === "Unzureichend") lphs.add(1);
+  if (support || status.includes("grobe") || plans === "Nein" || plans === "Unzureichend") lphs.add(2);
+  if (status.includes("ziemlich")) lphs.add(3);
+  if (depth === "bauantrag") lphs.add(4);
+  if (depth === "ausführung") { lphs.add(4); lphs.add(5); }
+  if (depth === "vollständig") { lphs.add(4); lphs.add(5); lphs.add(6); lphs.add(7); }
+  if (depth === "vergabe" || vergabe === "Ja") { lphs.add(6); lphs.add(7); }
 
-  if (status.includes("ziemlich")) lphs.add("LPH 3");
+  // Logische Ergänzung (z. B. wenn 1 und 3 gewählt → ergänze 2)
+  const complete = new Set(lphs);
+  const arr = [...complete];
+  const max = Math.max(...arr);
+  for (let i = 1; i < max; i++) {
+    if (complete.has(i - 1) && complete.has(i + 1)) {
+      complete.add(i);
+    }
+  }
 
-  if (depth === "bauantrag") lphs.add("LPH 4");
-  if (depth === "ausführung") {
-    lphs.add("LPH 4");
-    lphs.add("LPH 5");
+  const final = [...complete].sort((a, b) => a - b).map(n => `LPH ${n}`);
+  if (final.length > 0) {
+    summary.push(`<strong>Beauftragte Leistungsphasen:</strong><br>${final.join(", ")}`);
   }
-  if (depth === "vollständig") {
-    lphs.add("LPH 4");
-    lphs.add("LPH 5");
-    lphs.add("LPH 6");
-    lphs.add("LPH 7");
-  }
-  if (depth === "vergabe" || vergabe === "Ja") {
-    lphs.add("LPH 6");
-    lphs.add("LPH 7");
-  }
-  
+
+  // Ausgabe in HTML
+  const summaryHtml = summary.map(line => `<p>${line}</p>`).join('');
+  const summaryText = summary.map(line => line.replace(/<[^>]+>/g, '')).join('\n');
+
+  document.getElementById('summaryOutput').innerHTML = summaryHtml;
+
+  const subject = encodeURIComponent("Angebotsanfrage Architekturleistung");
+  const body = encodeURIComponent(`Folgende Angaben wurden gemacht:\n\n${summaryText}\n\nBitte senden Sie mir ein unverbindliches Angebot.`);
+  document.getElementById('mailtoBtn').href = `mailto:studiolumenarchitektur@gmail.com?subject=${subject}&body=${body}`;
+
+  document.getElementById('summaryTitle').classList.remove('hidden');
+  document.getElementById('summaryOutput').classList.remove('hidden');
+  document.getElementById('submitBtn').classList.remove('hidden');
+}
 // Automatische Ergänzung fehlender Phasen
 const lphNumbers = Array.from(lphs).map(l => parseInt(l.replace("LPH ", "")));
 const completeLPHs = new Set(lphNumbers);
