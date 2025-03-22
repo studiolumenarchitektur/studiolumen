@@ -393,6 +393,23 @@ document.querySelectorAll('select').forEach(select => {
   });
 });
 }
+// Automatische Ergänzung fehlender Phasen (z. B. wenn 1 und 3 → ergänze 2)
+const lphNumbers = Array.from(lphs).map(l => parseInt(l.replace("LPH ", "")));
+const completeLPHs = new Set(lphNumbers);
+
+for (let i = 1; i <= 7; i++) {
+  if (completeLPHs.has(i - 1) && completeLPHs.has(i + 1) && !completeLPHs.has(i)) {
+    completeLPHs.add(i);
+  }
+}
+
+// In sortiertes LPH-Format umwandeln
+const lphArray = Array.from(completeLPHs).sort((a, b) => a - b).map(n => `LPH ${n}`);
+
+if (lphArray.length > 0) {
+  summary.push(`<strong>Beauftragte Leistungsphasen:</strong><br>${lphArray.join(", ")}`);
+}
+    
 function generateSummary() {
   const summary = [];
   const getText = selector => {
@@ -421,6 +438,7 @@ function generateSummary() {
   if (depth === 'vergabe' || depth === 'vollständig') summary.push(`<strong>Vergabeleistung gewünscht:</strong> ${vergabe}`);
   if (extras.length > 0) summary.push(`<strong>Besondere Anforderungen:</strong> ${extras.join(', ')}`);
   summary.push(`<strong>Geplanter Projektbeginn:</strong> ${time}`);
+  document.getElementById('summaryOutput').innerHTML = summary.map(line => `<p>${line}</p>`).join('');
 
   // 💡 Abgeleitete Leistungsphasen
   const lphs = new Set();
