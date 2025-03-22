@@ -393,18 +393,13 @@ document.querySelectorAll('select').forEach(select => {
   });
 });
 }
-    function generateSummary() {
+function generateSummary() {
   const summary = [];
   const getText = selector => {
     const el = document.querySelector(selector);
     return el?.value || el?.innerText || '';
   };
 
-  // Projektzeit
-  const time = document.getElementById('projectTime').value;
-  if (!time) return; // warte, bis Auswahl erfolgt
-
-  // Sammlung aus früheren Fragen (ausgewählte Buttons/Drops)
   const needs = document.querySelector('#q1 .option-button.selected')?.innerText || '';
   const status = document.querySelector('#q2 .option-button.selected')?.innerText || '';
   const support = document.querySelector('#q_support select')?.value || '';
@@ -414,8 +409,8 @@ document.querySelectorAll('select').forEach(select => {
   const depth = document.querySelector('#q5 select')?.value || '';
   const vergabe = document.querySelector('#q_vergabe_dropdown select')?.value || '';
   const extras = [...document.querySelectorAll('#q6 input[type="checkbox"]:checked')].map(cb => cb.parentElement.innerText.trim());
+  const time = document.getElementById('projectTime').value;
 
-  // Aufbau Zusammenfassung
   summary.push(`<strong>Was wird benötigt:</strong> ${needs}`);
   summary.push(`<strong>Projektstatus:</strong> ${status}`);
   if (support) summary.push(`<strong>Art der Unterstützung:</strong> ${support}`);
@@ -427,18 +422,46 @@ document.querySelectorAll('select').forEach(select => {
   if (extras.length > 0) summary.push(`<strong>Besondere Anforderungen:</strong> ${extras.join(', ')}`);
   summary.push(`<strong>Geplanter Projektbeginn:</strong> ${time}`);
 
+  // 💡 Abgeleitete Leistungsphasen
+  const lphs = new Set();
+
+  if (status.includes("fange") || support) lphs.add("LPH 0");
+  if (status.includes("fange") || support || plans === "Nein" || plans === "Unzureichend") lphs.add("LPH 1");
+  if (support || status.includes("grobe") || plans === "Nein" || plans === "Unzureichend") lphs.add("LPH 2");
+
+  if (status.includes("ziemlich")) lphs.add("LPH 3");
+
+  if (depth === "bauantrag") lphs.add("LPH 4");
+  if (depth === "ausführung") {
+    lphs.add("LPH 4");
+    lphs.add("LPH 5");
+  }
+  if (depth === "vollständig") {
+    lphs.add("LPH 4");
+    lphs.add("LPH 5");
+    lphs.add("LPH 6");
+    lphs.add("LPH 7");
+  }
+  if (depth === "vergabe" || vergabe === "Ja") {
+    lphs.add("LPH 6");
+    lphs.add("LPH 7");
+  }
+
+  const lphArray = Array.from(lphs).sort(); // sortierte Liste
+  if (lphArray.length > 0) {
+    summary.push(`<strong>Beauftragte Leistungsphasen:</strong><br>${lphArray.join(", ")}`);
+  }
+
   const summaryHtml = summary.map(line => `<p>${line}</p>`).join('');
   const summaryText = summary.map(line => line.replace(/<[^>]+>/g, '')).join('\n');
 
   document.getElementById('summaryOutput').innerHTML = summaryHtml;
 
-  // Mailto-Link generieren
   const subject = encodeURIComponent("angebotsanfrage");
   const body = encodeURIComponent(`Folgende Angaben wurden gemacht:\n\n${summaryText}\n\nKannst du mir bitte ein Angebot senden?`);
   const mailtoLink = `mailto:studiolumenarchitektur@gmail.com?subject=${subject}&body=${body}`;
   document.getElementById('mailtoBtn').href = mailtoLink;
 
-  // Anzeigen
   document.getElementById('summaryTitle').classList.remove('hidden');
   document.getElementById('summaryOutput').classList.remove('hidden');
   document.getElementById('submitBtn').classList.remove('hidden');
