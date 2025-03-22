@@ -383,30 +383,39 @@ if (this.id === 'q3') {
     });
   });
 
-  // Kompletter Reset bei Klick auf „Was brauchst du?“
-  function resetOptions(id) {
-    const allContainers = document.querySelectorAll('.options, .dropdown, .checkbox-group, .question');
-    allContainers.forEach(container => {
-      if (container.id === id) {
-        container.classList.remove('hidden');
-        const buttons = container.querySelectorAll('.option-button');
-        buttons.forEach(btn => btn.classList.remove('selected', 'hidden'));
-      } else {
-        container.classList.add('hidden');
-        const buttons = container.querySelectorAll('.option-button');
-        buttons.forEach(btn => btn.classList.remove('selected', 'hidden'));
-        const selects = container.querySelectorAll('select');
-        selects.forEach(select => {
-          select.selectedIndex = 0;
-          select.classList.remove('selected');
-        });
-        const checkboxes = container.querySelectorAll('input[type="checkbox"]');
-        checkboxes.forEach(cb => cb.checked = false);
-        const underlines = container.querySelectorAll('.underline');
-        underlines.forEach(line => line.remove());
-      }
-    });
-  }
+function resetOptions(id) {
+  const allContainers = document.querySelectorAll('.options, .dropdown, .checkbox-group, .question');
+
+  allContainers.forEach(container => {
+    const isFirst = container.id === 'q1' || container.previousElementSibling?.textContent === 'Was brauchst du?';
+
+    if (isFirst) {
+      container.classList.remove('hidden');
+
+      const buttons = container.querySelectorAll('.option-button');
+      buttons.forEach(btn => {
+        btn.classList.remove('selected', 'hidden');
+      });
+    } else {
+      container.classList.add('hidden');
+
+      const buttons = container.querySelectorAll('.option-button');
+      buttons.forEach(btn => btn.classList.remove('selected', 'hidden'));
+
+      const selects = container.querySelectorAll('select');
+      selects.forEach(select => {
+        select.selectedIndex = 0;
+        select.classList.remove('selected');
+      });
+
+      const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+      checkboxes.forEach(cb => cb.checked = false);
+
+      const underlines = container.querySelectorAll('.underline');
+      underlines.forEach(line => line.remove());
+    }
+  });
+}
 
   // Zusammenfassung + mailto
   function generateSummary() {
