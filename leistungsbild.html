@@ -135,58 +135,43 @@
 
     <!-- Frage 3b – Wenn Größe unklar -->
     <div class="question hidden" id="q_size_hint">Sollen wir das gemeinsam entwickeln?</div>
-    <div class="dropdown hidden" id="q_size_hint_dropdown">
-      <select onchange="revealNext('q4')">
-        <option value="">Bitte wählen …</option>
-        <option>Ja, lass uns besprechen</option>
-        <option>Nein, später entscheiden</option>
-      </select>
+    <div class="options hidden" id="q_size_hint_dropdown">
+      <button class="option-button" onclick="selectOption(this, 'q4')">Ja, lass uns das besprechen</button>
+      <button class="option-button" onclick="selectOption(this, 'q4')">Nein, später entscheiden</button>
     </div>
 
     <!-- Frage 4 – Pläne vorhanden -->
     <div class="question hidden" onclick="resetOptions('q4')">Sind Pläne vorhanden?</div>
-    <div class="dropdown hidden" id="q4">
-      <select onchange="checkPlans(this.value)">
-        <option value="">Bitte wählen …</option>
-        <option value="ja">Ja</option>
-        <option value="nein">Nein</option>
-        <option value="unvollständig">Nur Skizzen</option>
-      </select>
+    <div class="options hidden" id="q4">
+      <button class="option-button" onclick="checkPlans('ja')">Ja</button>
+      <button class="option-button" onclick="checkPlans('nein')">Nein</button>
+      <button class="option-button" onclick="checkPlans('unvollständig')">Nur Skizzen</button>
     </div>
 
     <!-- Frage 4b – Pläne erstellen -->
     <div class="question hidden" id="q_pläne_erstellen">Sollen die Pläne durch mich erstellt werden?</div>
-    <div class="dropdown hidden" id="q_pläne_erstellen_dropdown">
-      <select onchange="revealNext('q5')">
-        <option value="">Bitte wählen …</option>
-        <option>Ja</option>
-        <option>Nein</option>
-        <option>Noch unklar</option>
-      </select>
+    <div class="options hidden" id="q_pläne_erstellen_dropdown">
+      <button class="option-button" onclick="selectOption(this, 'q5')">Ja</button>
+      <button class="option-button" onclick="selectOption(this, 'q5')">Nein</button>
+      <button class="option-button" onclick="selectOption(this, 'q5')">Noch unklar</button>
     </div>
 
     <!-- Frage 5 – Planungstiefe -->
     <div class="question hidden" onclick="resetOptions('q5')">Wie weit soll die Planung gehen?</div>
-    <div class="dropdown hidden" id="q5">
-      <select onchange="checkPlanningDepth(this.value)">
-        <option value="">Bitte wählen …</option>
-        <option value="bauantrag">Bis zum Bauantrag</option>
-        <option value="ausführung">Bis zur Ausführung</option>
-        <option value="vergabe">Mit Vergabevorbereitung</option>
-        <option value="vollständig">Planung von A-Z</option>
-        <option value="unklar">Noch unklar</option>
-      </select>
+    <div class="options hidden" id="q5">
+      <button class="option-button" onclick="checkPlanningDepth('bauantrag')">Bis zum Bauantrag</button>
+      <button class="option-button" onclick="checkPlanningDepth('ausführung')">Bis zur Ausführung</button>
+      <button class="option-button" onclick="checkPlanningDepth('vergabe')">Mit Vergabevorbereitung</button>
+      <button class="option-button" onclick="checkPlanningDepth('vollständig')">Planung von A-Z</button>
+      <button class="option-button" onclick="checkPlanningDepth('unklar')">Noch unklar</button>
     </div>
 
     <!-- Frage 5b – Vergabe -->
     <div class="question hidden" id="q_vergabe">Sollen Bauleistungen ausgeschrieben werden?</div>
-    <div class="dropdown hidden" id="q_vergabe_dropdown">
-      <select onchange="revealNext('q6')">
-        <option value="">Bitte wählen …</option>
-        <option>Ja</option>
-        <option>Nein</option>
-        <option>Noch offen</option>
-      </select>
+    <div class="options hidden" id="q_vergabe_dropdown">
+      <button class="option-button" onclick="selectOption(this, 'q6')">Ja</button>
+      <button class="option-button" onclick="selectOption(this, 'q6')">Nein</button>
+      <button class="option-button" onclick="selectOption(this, 'q6')">Noch offen</button>
     </div>
 
     <!-- Frage 6 – Besondere Anforderungen -->
@@ -202,15 +187,12 @@
 
     <!-- Projektzeitraum -->
     <div class="question hidden" id="q_time">Wann soll das Projekt starten?</div>
-    <div class="dropdown hidden" id="q_time_dropdown">
-      <select id="projectTime" onchange="generateSummary()">
-        <option value="">Bitte wählen …</option>
-        <option>Sofort</option>
-        <option>In 1–3 Monaten</option>
-        <option>In 3–6 Monaten</option>
-        <option>Später</option>
-        <option>Noch unklar</option>
-      </select>
+    <div class="options hidden" id="q_time_dropdown">
+      <button class="option-button" onclick="selectOption(this); generateSummary()">Sofort</button>
+      <button class="option-button" onclick="selectOption(this); generateSummary()">In 1–3 Monaten</button>
+      <button class="option-button" onclick="selectOption(this); generateSummary()">In 3–6 Monaten</button>
+      <button class="option-button" onclick="selectOption(this); generateSummary()">Später</button>
+      <button class="option-button" onclick="selectOption(this); generateSummary()">Noch unklar</button>
     </div>
 
     <!-- Zusammenfassung -->
@@ -351,7 +333,7 @@
       const depth = document.querySelector('#q5 select')?.value || '';
       const vergabe = document.querySelector('#q_vergabe_dropdown select')?.value || '';
       const extras = [...document.querySelectorAll('#q6 input[type="checkbox"]:checked')].map(cb => cb.parentElement.innerText.trim());
-      const time = document.getElementById('projectTime').value;
+      const time = document.querySelector('#q_time_dropdown .option-button.selected')?.innerText || '';
 
       summary.push(`<strong>Was wird benötigt:</strong> ${needs}`);
       summary.push(`<strong>Projektstatus:</strong> ${status}`);
