@@ -245,18 +245,45 @@
   <!-- Funktionaler JavaScript-Block -->
   <script>
      function selectOption(button, nextId = null) {
-      const parent = button.parentElement;
-      const buttons = parent.querySelectorAll('.option-button');
-       buttons.forEach(btn => {
-        btn.classList.remove('selected', 'hidden');
-         if (btn !== button) btn.classList.add('hidden');
-       });
-       button.classList.add('selected');
+  const parent = button.parentElement;
+  const buttons = parent.querySelectorAll('.option-button');
 
-       if (nextId) {
-         showSection(nextId);
-       }
+  const isAlreadySelected = button.classList.contains('selected');
+
+  if (isAlreadySelected) {
+    // 1. Alle Antwortoptionen dieser Frage wieder anzeigen
+    buttons.forEach(btn => btn.classList.remove('hidden'));
+
+    // 2. Alle Folgefragen ab hier ausblenden und zurücksetzen
+    let next = parent.parentElement.nextElementSibling;
+    while (next) {
+      if (next.classList.contains('options') || next.classList.contains('dropdown') || next.classList.contains('checkbox-group')) {
+        next.classList.add('hidden');
+        const btns = next.querySelectorAll('.option-button');
+        btns.forEach(b => b.classList.remove('selected', 'hidden'));
+        const checkboxes = next.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(cb => cb.checked = false);
+      }
+      if (next.classList.contains('question')) {
+        next.classList.add('hidden');
+      }
+      next = next.nextElementSibling;
     }
+
+    return;
+  }
+
+  // Normales Verhalten: Auswahl setzen, andere ausblenden
+  buttons.forEach(btn => {
+    btn.classList.remove('selected', 'hidden');
+    if (btn !== button) btn.classList.add('hidden');
+  });
+  button.classList.add('selected');
+
+  if (nextId) {
+    showSection(nextId);
+  }
+}
 
     function showSection(id) {
       const section = document.getElementById(id);
