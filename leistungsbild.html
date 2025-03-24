@@ -68,26 +68,6 @@
       display: none;
     }
 
-    select {
-      font-family: 'Poppins', sans-serif;
-      width: 100%;
-      padding: 0.5rem;
-      font-size: 1rem;
-      background: none;
-      border: none;
-      border-bottom: 1px solid #000;
-      appearance: none;
-      cursor: pointer;
-      margin-bottom: 0.5rem;
-      color: #000;
-    }
-
-    select.selected {
-      color: #800020;
-      border-bottom: 1px solid #800020;
-      font-weight: normal; /* Kein Fett mehr */
-    }
-
     .underline {
       height: 1px;
       background-color: #800020;
@@ -133,31 +113,24 @@
 
     <!-- Frage 3a – Unterstützung -->
     <div class="question hidden" onclick="resetOptions('q_support')">Worum geht es dir?</div>
-    <div class="dropdown hidden" id="q_support">
-      <select onchange="revealNext('q3')">
-        <option value="">Bitte wählen …</option>
-        <button class="option-button" onclick="selectOption(this, 'q3')">Beratungsgespräch</button>
-        <button class="option-button" onclick="selectOption(this, 'q3')">Machbarkeitsstudien</button>
-        <button class="option-button" onclick="selectOption(this, 'q3')">Entwicklung meines Konzepts</button>
-        <button class="option-button" onclick="selectOption(this, 'q3')">Budget- und Flächenabschätzung</button>
-        <button class="option-button" onclick="selectOption(this, 'q3')">Noch unklar</button>
-      </select>
+    <div class="options hidden" id="q_support">
+      <button class="option-button" onclick="selectOption(this); showSection('q3')">Beratungsgespräch</button>
+      <button class="option-button" onclick="selectOption(this); showSection('q3')">Machbarkeitsstudien</button>
+      <button class="option-button" onclick="selectOption(this); showSection('q3')">Entwicklung meines Konzepts</button>
+      <button class="option-button" onclick="selectOption(this); showSection('q3')">Budget- und Flächenabschätzung</button>
+      <button class="option-button" onclick="selectOption(this); showSection('q3')">Noch unklar</button>
     </div>
 
     <!-- Frage 3 – Projektgröße -->
-    <div class="question hidden" onclick="resetOptions('q3')">Wie groß wird es?</div>
-    <div class="dropdown hidden" id="q3">
-      <select onchange="checkSize(this.value)">
-        <option value="">Bitte wählen …</option>
-        <option value="bis50">Bis 50 m²</option>
-        <option value="bis100">Bis 100 m²</option>
-        <option value="bis150">Bis 150 m²</option>
-        <option value="bis200">Bis 200 m²</option>
-        <option value="bis250">Bis 250 m²</option>
-        <option value="bis300">Bis 300 m²</option>
-        <option value="mehr">Über 300 m²</option>
-        <option value="unklar">Noch unklar</option>
-      </select>
+    <div class="question hidden" id="q3-label">Wie groß wird es?</div>
+      <div class="options hidden" id="q3">
+        <button class="option-button" onclick="selectOption(this, 'q4')">Bis 50 m²</button>
+        <button class="option-button" onclick="selectOption(this, 'q4')">Bis 100 m²</button>
+        <button class="option-button" onclick="selectOption(this, 'q4')">Bis 150 m²</button>
+        <button class="option-button" onclick="selectOption(this, 'q4')">Bis 200 m²</button>
+        <button class="option-button" onclick="selectOption(this, 'q4')">Bis 250 m²</button>
+        <button class="option-button" onclick="selectOption(this, 'q4')">Bis 300 m²</button>
+        <button class="option-button" onclick="selectOption(this, 'q4')">Noch unklar</button>
     </div>
 
     <!-- Frage 3b – Wenn Größe unklar -->
@@ -371,7 +344,7 @@
 
       const needs = document.querySelector('#q1 .option-button.selected')?.innerText || '';
       const status = document.querySelector('#q2 .option-button.selected')?.innerText || '';
-      const support = document.querySelector('#q_support select')?.value || '';
+      const support = document.querySelector('#q_support .option-button.selected')?.innerText || '';
       const size = document.querySelector('#q3 select')?.value || '';
       const plans = document.querySelector('#q4 select')?.value || '';
       const createPlans = document.querySelector('#q_pläne_erstellen_dropdown select')?.value || '';
