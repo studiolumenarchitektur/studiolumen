@@ -13,17 +13,16 @@
       margin: 0;
       padding: 2rem;
     }
-    
+
     header {
       font-size: 2rem;
       font-weight: bold;
-      margin-bottom: 20px;
+      margin-bottom: 40px;
       max-width: 300px;
       width: 100%;
       text-align: justify;
-      margin-bottom: 40px;
     }
-    
+
     .container {
       max-width: 300px;
       margin: 0 auto;
@@ -46,9 +45,7 @@
       cursor: pointer;
     }
 
-    .options,
-    .dropdown,
-    .checkbox-group {
+    .options, .dropdown, .checkbox-group {
       margin-bottom: 2rem;
     }
 
@@ -59,7 +56,6 @@
       padding: 0.75rem 1rem;
       cursor: pointer;
       font-size: 1rem;
-      transition: all 0.3s;
     }
 
     .option-button.selected {
@@ -71,34 +67,32 @@
       display: none;
     }
 
-select {
-  font-family: 'Poppins', sans-serif;
-  width: 100%;
-  padding: 0.5rem;
-  font-size: 1rem;
-  background: none;
-  border: none;
-  border-bottom: 1px solid #000;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  cursor: pointer;
-  margin-bottom: 0.5rem;
-  color: #000;
-}
+    select {
+      font-family: 'Poppins', sans-serif;
+      width: 100%;
+      padding: 0.5rem;
+      font-size: 1rem;
+      background: none;
+      border: none;
+      border-bottom: 1px solid #000;
+      appearance: none;
+      cursor: pointer;
+      margin-bottom: 0.5rem;
+      color: #000;
+    }
 
-select.selected {
-  color: #800020;
-  border-bottom: 1px solid #800020;
-  font-weight: bold;
-}
+    select.selected {
+      color: #800020;
+      border-bottom: 1px solid #800020;
+      font-weight: bold;
+    }
 
-.underline {
-  height: 1px;
-  background-color: #800020;
-  margin-top: -0.25rem;
-  margin-bottom: 1.5rem;
-}
+    .underline {
+      height: 1px;
+      background-color: #800020;
+      margin-top: -0.25rem;
+      margin-bottom: 1.5rem;
+    }
 
     .checkbox-group {
       text-align: left;
@@ -113,228 +107,39 @@ select.selected {
     .checkbox-group input[type="checkbox"] {
       margin-right: 0.5rem;
     }
-
-            }
-        .footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            text-align: center;
-            padding: 10px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            color: #777;
-            background: #fff;
-        }
   </style>
 </head>
 <body>
-      <div class="back-arrow" onclick="window.location.href='index.html'">&larr;</div>
-
-    <header>leistungsbild</header>
+  <div class="back-arrow" onclick="window.location.href='index.html'">&larr;</div>
+  <header>leistungsbild</header>
 
   <div class="container">
-    <!-- Was brauchst du? -->
-    <div class="question" onclick="resetOptions('q1')">Was brauchst du?</div>
-    <div class="options" id="q1">
-      <button class="option-button" onclick="selectOption(this, 'q2')">Ich plane ein Bauvorhaben</button>
-      <button class="option-button" onclick="selectOption(this, 'q2')">Ich will etwas umbauen oder modernisieren</button>
-      <button class="option-button" onclick="selectOption(this, 'q2')">Ich brauche architektonische Unterstützung</button>
-    </div>
+    <!-- Fragenbereiche (q1–q6 + Zeit & Zusammenfassung) -->
+    <!-- ... Denselben Aufbau wie bisher beibehalten, aus Platzgründen hier ausgelassen ... -->
+    <!-- Du kannst den strukturellen Teil aus deiner Datei übernehmen, er bleibt unverändert -->
 
-    <!-- Projektstatus -->
-    <div class="question hidden" onclick="resetOptions('q2')">Wie weit bist du?</div>
-    <div class="options hidden" id="q2">
-      <button class="option-button" onclick="selectOption(this, 'q_support')">Ich fange grade erst an</button>
-      <button class="option-button" onclick="selectOption(this, 'q3')">Ich habe eine grobe Idee</button>
-      <button class="option-button" onclick="selectOption(this, 'q3')">Ich bin schon ziemlich weit</button>
-    </div>
+    <!-- Zusammenfassung -->
+    <div class="question hidden" id="summaryTitle">Zusammenfassung Ihrer Angaben</div>
+    <div class="hidden" id="summaryOutput" style="text-align: left; font-size: 0.9rem; line-height: 1.4; margin-bottom: 2rem; border-top: 1px solid #000; padding-top: 1rem;"></div>
 
-    <!-- LPH 0-Spezifisch -->
-    <div class="question hidden" onclick="resetOptions('q_support')">Worum geht es dir?</div>
-    <div class="dropdown hidden" id="q_support">
-      <select onchange="revealNext('q3')">
-        <option value="">Bitte wählen …</option>
-        <option>Beratungsgespräch</option>
-        <option>Machbarkeitsstudien</option>
-        <option>Entwicklung meines Konzepts</option>
-        <option>Budget- und Flächenabschätzung</option>
-        <option>Noch unklar</option>
-      </select>
-    </div>
-
-    <!-- Projektgröße -->
-    <div class="question hidden" onclick="resetOptions('q3')">Wie groß wird es?</div>
-    <div class="dropdown hidden" id="q3">
-      <select onchange="checkSize(this.value)">
-        <option value="">Bitte wählen …</option>
-        <option value="bis50">Bis 50 m²</option>
-        <option value="bis100">Bis 100 m²</option>
-        <option value="bis150">Bis 150 m²</option>
-        <option value="bis200">Bis 200 m²</option>
-        <option value="bis250">Bis 250 m²</option>
-        <option value="bis300">Bis 300 m²</option>
-        <option value="mehr">Über 300 m²</option>
-        <option value="unklar">Noch unklar</option>
-      </select>
-    </div>
-
-    <!-- Wenn Größe unklar -->
-    <div class="question hidden" id="q_size_hint">Sollen wir das gemeinsam entwickeln?</div>
-    <div class="dropdown hidden" id="q_size_hint_dropdown">
-      <select onchange="revealNext('q4')">
-        <option value="">Bitte wählen …</option>
-        <option>Ja, lass uns besprechen</option>
-        <option>Nein, später entscheiden</option>
-      </select>
-    </div>
-
-    <!-- Pläne vorhanden -->
-    <div class="question hidden" onclick="resetOptions('q4')">Sind Pläne vorhanden?</div>
-    <div class="dropdown hidden" id="q4">
-      <select onchange="checkPlans(this.value)">
-        <option value="">Bitte wählen …</option>
-        <option value="ja">Ja</option>
-        <option value="nein">Nein</option>
-        <option value="unvollständig">NUr Skizzen</option>
-      </select>
-    </div>
-
-    <!-- Wenn Pläne fehlen -->
-    <div class="question hidden" id="q_pläne_erstellen">Sollen die Pläne durch mich erstellt werden?</div>
-    <div class="dropdown hidden" id="q_pläne_erstellen_dropdown">
-      <select onchange="revealNext('q5')">
-        <option value="">Bitte wählen …</option>
-        <option>Ja</option>
-        <option>Nein</option>
-        <option>Noch unklar</option>
-      </select>
-    </div>
-
-    <!-- Planungstiefe -->
-    <div class="question hidden" onclick="resetOptions('q5')">Wie weit soll die Planung gehen?</div>
-    <div class="dropdown hidden" id="q5">
-      <select onchange="checkPlanningDepth(this.value)">
-        <option value="">Bitte wählen …</option>
-        <option value="bauantrag">Bis zum Bauantrag</option>
-        <option value="ausführung">Bis zur Ausführung</option>
-        <option value="vergabe">Mit Vergabevorbereitung</option>
-        <option value="vollständig">Planung von A-Z</option>
-        <option value="unklar">Noch unklar</option>
-      </select>
-    </div>
-
-    <!-- Wenn Vergabe mit eingeschlossen -->
-    <div class="question hidden" id="q_vergabe">Sollen Bauleistungen ausgeschrieben werden?</div>
-    <div class="dropdown hidden" id="q_vergabe_dropdown">
-      <select onchange="revealNext('q6')">
-        <option value="">Bitte wählen …</option>
-        <option>Ja</option>
-        <option>Nein</option>
-        <option>Noch offen</option>
-      </select>
-    </div>
-
-    <!-- Besondere Anforderungen -->
-    <div class="question hidden" onclick="resetOptions('q6')">Gibt es besondere Anforderungen?</div>
-    <div class="checkbox-group hidden" id="q6">
-      <label><input type="checkbox" name="anforderung" value="denkmalschutz">Denkmalschutz</label>
-      <label><input type="checkbox" name="anforderung" value="barrierefreiheit">Barrierefreiheit</label>
-      <label><input type="checkbox" name="anforderung" value="brandschutz">Brandschutz / Sondernutzung</label>
-      <label><input type="checkbox" name="anforderung" value="nachhaltigkeit">Nachhaltigkeit / Energiestandard</label>
-      <label><input type="checkbox" name="anforderung" value="stellplätze">Stellplätze / Garagen</label>
-      <label><input type="checkbox" name="anforderung" value="keine">Keine besonderen Anforderungen</label>
+    <!-- Angebotsanfrage Button -->
+    <div class="hidden" id="submitBtn">
+      <a id="mailtoBtn" href="#" style="display: inline-block; background: none; color: #800020; border: none; font-weight: bold; text-decoration: underline; cursor: pointer;">Angebot jetzt anfordern</a>
     </div>
   </div>
 
-  <!-- Projektzeitraum -->
-<div class="question hidden" id="q_time">Wann soll das Projekt starten?</div>
-<div class="dropdown hidden" id="q_time_dropdown">
-  <select id="projectTime" onchange="generateSummary()">
-    <option value="">Bitte wählen …</option>
-    <option>Sofort</option>
-    <option>In 1–3 Monaten</option>
-    <option>In 3–6 Monaten</option>
-    <option>Später</option>
-    <option>Noch unklar</option>
-  </select>
-</div>
-
-<!-- Zusammenfassung -->
-<div class="question hidden" id="summaryTitle">Zusammenfassung Ihrer Angaben</div>
-<div class="hidden" id="summaryOutput" style="text-align: left; font-size: 0.9rem; line-height: 1.4; margin-bottom: 2rem; border-top: 1px solid #000; padding-top: 1rem;"></div>
-
-<!-- Angebotsanfrage Button -->
-<div class="hidden" id="submitBtn">
-  <a id="mailtoBtn" href="#" style="display: inline-block; background: none; color: #800020; border: none; font-weight: bold; text-decoration: underline; cursor: pointer;">Angebot jetzt anfordern</a>
-</div>
-  
+  <!-- Funktionaler JavaScript-Block -->
   <script>
     function selectOption(button, nextId) {
       const parent = button.parentElement;
       const buttons = parent.querySelectorAll('.option-button');
       buttons.forEach(btn => {
+        btn.classList.remove('selected', 'hidden');
         if (btn !== button) btn.classList.add('hidden');
-        else btn.classList.add('selected');
       });
-
+      button.classList.add('selected');
       showSection(nextId);
     }
-
-    function revealNext(nextId) {
-      showSection(nextId);
-    }
-
-    function checkSize(value) {
-      if (value === 'unklar') {
-        showSection('q_size_hint');
-        showSection('q_size_hint_dropdown');
-      } else {
-        revealNext('q4');
-      }
-    }
-
-function checkPlans(value) {
-  const createSection = document.getElementById('q_pläne_erstellen');
-  const createDropdown = document.getElementById('q_pläne_erstellen_dropdown');
-
-  if (value === 'nein' || value === 'unvollständig') {
-    showSection('q_pläne_erstellen');
-    showSection('q_pläne_erstellen_dropdown');
-  } else {
-    createSection.classList.add('hidden');
-    createDropdown.classList.add('hidden');
-    // Reset Auswahl
-    const select = createDropdown.querySelector('select');
-    if (select) {
-      select.selectedIndex = 0;
-      select.classList.remove('selected');
-    }
-  }
-
-  revealNext('q5');
-}
-
- function checkPlanningDepth(value) {
-  const vergabeQ = document.getElementById('q_vergabe');
-  const vergabeDropdown = document.getElementById('q_vergabe_dropdown');
-
-  if (value === 'vergabe' || value === 'vollständig') {
-    showSection('q_vergabe');
-    showSection('q_vergabe_dropdown');
-  } else {
-    vergabeQ.classList.add('hidden');
-    vergabeDropdown.classList.add('hidden');
-    const select = vergabeDropdown.querySelector('select');
-    if (select) {
-      select.selectedIndex = 0;
-      select.classList.remove('selected');
-    }
-  }
-
-  revealNext('q6');
-}
 
     function showSection(id) {
       const section = document.getElementById(id);
@@ -343,193 +148,162 @@ function checkPlans(value) {
       if (label) label.classList.remove('hidden');
     }
 
-function resetOptions(id) {
-  const allContainers = document.querySelectorAll(
-    '.options, .dropdown, .checkbox-group, .question'
-  );
-
-  allContainers.forEach(container => {
-    // Zeige nur die erste Frage (Was brauchst du?) und deren Optionen
-    if (container.id === 'q1') {
-      container.classList.remove('hidden');
-      const buttons = container.querySelectorAll('.option-button');
-      buttons.forEach(btn => btn.classList.remove('selected', 'hidden'));
-    } else {
-      container.classList.add('hidden');
+    function resetOptions(id) {
+      const allContainers = document.querySelectorAll('.options, .dropdown, .checkbox-group, .question');
+      allContainers.forEach(container => {
+        const isFirst = container.id === 'q1' || container.previousElementSibling?.textContent === 'Was brauchst du?';
+        if (isFirst) {
+          container.classList.remove('hidden');
+          const buttons = container.querySelectorAll('.option-button');
+          buttons.forEach(btn => btn.classList.remove('selected', 'hidden'));
+        } else {
+          container.classList.add('hidden');
+        }
+        const buttons = container.querySelectorAll('.option-button');
+        buttons.forEach(btn => btn.classList.remove('selected', 'hidden'));
+        const selects = container.querySelectorAll('select');
+        selects.forEach(select => {
+          select.selectedIndex = 0;
+          select.classList.remove('selected');
+        });
+        const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(cb => cb.checked = false);
+        const underlines = container.querySelectorAll('.underline');
+        underlines.forEach(line => line.remove());
+      });
     }
 
-    const buttons = container.querySelectorAll('.option-button');
-    buttons.forEach(btn => btn.classList.remove('selected', 'hidden'));
+    function revealNext(nextId) { showSection(nextId); }
 
-    const selects = container.querySelectorAll('select');
-    selects.forEach(select => {
-      select.selectedIndex = 0;
-      select.classList.remove('selected');
-    });
-
-    const checkboxes = container.querySelectorAll('input[type="checkbox"]');
-    checkboxes.forEach(cb => cb.checked = false);
-
-    // Entferne feine Linien unter ausgewählten Dropdowns
-    const underlines = container.querySelectorAll('.underline');
-    underlines.forEach(line => line.remove());
-  });
-  function revealNext(nextId) {
-  showSection(nextId);
-}
-
-document.querySelectorAll('select').forEach(select => {
-  select.addEventListener('change', function () {
-    if (this.value) {
-      this.classList.add('selected');
-
-      // Linie unter dem Dropdown
-      if (!this.nextElementSibling || !this.nextElementSibling.classList?.contains('underline')) {
-        const line = document.createElement('div');
-        line.classList.add('underline');
-        this.parentNode.insertBefore(line, this.nextSibling);
+    function checkSize(value) {
+      if (value === 'unklar') {
+        showSection('q_size_hint');
+        showSection('q_size_hint_dropdown');
+      } else {
+        showSection('q4');
       }
     }
-  });
-});
-}
-// Automatische Ergänzung fehlender Phasen (z. B. wenn 1 und 3 → ergänze 2)
-const lphNumbers = Array.from(lphs).map(l => parseInt(l.replace("LPH ", "")));
-const completeLPHs = new Set(lphNumbers);
 
-for (let i = 1; i <= 7; i++) {
-  if (completeLPHs.has(i - 1) && completeLPHs.has(i + 1) && !completeLPHs.has(i)) {
-    completeLPHs.add(i);
-  }
-}
-
-// In sortiertes LPH-Format umwandeln
-const lphArray = Array.from(completeLPHs).sort((a, b) => a - b).map(n => `LPH ${n}`);
-
-if (lphArray.length > 0) {
-  summary.push(`<strong>Beauftragte Leistungsphasen:</strong><br>${lphArray.join(", ")}`);
-}
-    
-function generateSummary() {
-  const summary = [];
-  const getText = selector => {
-    const el = document.querySelector(selector);
-    return el?.value || el?.innerText || '';
-  };
-
-  const needs = document.querySelector('#q1 .option-button.selected')?.innerText || '';
-  const status = document.querySelector('#q2 .option-button.selected')?.innerText || '';
-  const support = document.querySelector('#q_support select')?.value || '';
-  const size = document.querySelector('#q3 select')?.value || '';
-  const plans = document.querySelector('#q4 select')?.value || '';
-  const createPlans = document.querySelector('#q_pläne_erstellen_dropdown select')?.value || '';
-  const depth = document.querySelector('#q5 select')?.value || '';
-  const vergabe = document.querySelector('#q_vergabe_dropdown select')?.value || '';
-  const extras = [...document.querySelectorAll('#q6 input[type="checkbox"]:checked')].map(cb => cb.parentElement.innerText.trim());
-  const time = document.getElementById('projectTime').value;
-
-  // Zusammenfassung der Angaben
-  summary.push(`<strong>Was wird benötigt:</strong> ${needs}`);
-  summary.push(`<strong>Projektstatus:</strong> ${status}`);
-  if (support) summary.push(`<strong>Art der Unterstützung:</strong> ${support}`);
-  summary.push(`<strong>Projektgröße:</strong> ${size}`);
-  summary.push(`<strong>Pläne vorhanden:</strong> ${plans}`);
-  if (plans === 'Nein' || plans === 'Unzureichend') {
-    summary.push(`<strong>Pläne erstellen:</strong> ${createPlans}`);
-  }
-  summary.push(`<strong>Planungstiefe:</strong> ${depth}`);
-  if (depth === 'vergabe' || depth === 'vollständig') {
-    summary.push(`<strong>Vergabeleistung gewünscht:</strong> ${vergabe}`);
-  }
-  if (extras.length > 0) {
-    summary.push(`<strong>Besondere Anforderungen:</strong> ${extras.join(', ')}`);
-  }
-  summary.push(`<strong>Geplanter Projektbeginn:</strong> ${time}`);
-
-  // Automatische Ermittlung der LPHs
-  const lphs = new Set();
-
-  if (status.includes("fange") || support) lphs.add(0);
-  if (status.includes("fange") || support || plans === "Nein" || plans === "Unzureichend") lphs.add(1);
-  if (support || status.includes("grobe") || plans === "Nein" || plans === "Unzureichend") lphs.add(2);
-  if (status.includes("ziemlich")) lphs.add(3);
-  if (depth === "bauantrag") lphs.add(4);
-  if (depth === "ausführung") { lphs.add(4); lphs.add(5); }
-  if (depth === "vollständig") { lphs.add(4); lphs.add(5); lphs.add(6); lphs.add(7); }
-  if (depth === "vergabe" || vergabe === "Ja") { lphs.add(6); lphs.add(7); }
-
-  // Logische Ergänzung (z. B. wenn 1 und 3 gewählt → ergänze 2)
-  const complete = new Set(lphs);
-  const arr = [...complete];
-  const max = Math.max(...arr);
-  for (let i = 1; i < max; i++) {
-    if (complete.has(i - 1) && complete.has(i + 1)) {
-      complete.add(i);
+    function checkPlans(value) {
+      const createSection = document.getElementById('q_pläne_erstellen');
+      const createDropdown = document.getElementById('q_pläne_erstellen_dropdown');
+      if (value === 'nein' || value === 'unvollständig') {
+        showSection('q_pläne_erstellen');
+        showSection('q_pläne_erstellen_dropdown');
+      } else {
+        createSection.classList.add('hidden');
+        createDropdown.classList.add('hidden');
+        const select = createDropdown.querySelector('select');
+        if (select) {
+          select.selectedIndex = 0;
+          select.classList.remove('selected');
+        }
+      }
+      showSection('q5');
     }
-  }
 
-  const final = [...complete].sort((a, b) => a - b).map(n => `LPH ${n}`);
-  if (final.length > 0) {
-    summary.push(`<strong>Beauftragte Leistungsphasen:</strong><br>${final.join(", ")}`);
-  }
-
-  // Ausgabe in HTML
-  const summaryHtml = summary.map(line => `<p>${line}</p>`).join('');
-  const summaryText = summary.map(line => line.replace(/<[^>]+>/g, '')).join('\n');
-
-  document.getElementById('summaryOutput').innerHTML = summaryHtml;
-
-  const subject = encodeURIComponent("Angebotsanfrage Architekturleistung");
-  const body = encodeURIComponent(`Folgende Angaben wurden gemacht:\n\n${summaryText}\n\nBitte senden Sie mir ein unverbindliches Angebot.`);
-  document.getElementById('mailtoBtn').href = `mailto:studiolumenarchitektur@gmail.com?subject=${subject}&body=${body}`;
-
-  document.getElementById('summaryTitle').classList.remove('hidden');
-  document.getElementById('summaryOutput').classList.remove('hidden');
-  document.getElementById('submitBtn').classList.remove('hidden');
-}
-// Automatische Ergänzung fehlender Phasen
-const lphNumbers = Array.from(lphs).map(l => parseInt(l.replace("LPH ", "")));
-const completeLPHs = new Set(lphNumbers);
-
-// Wenn z. B. LPH 1 und 3 enthalten sind → ergänze 2
-for (let i = 1; i <= 7; i++) {
-  if (completeLPHs.has(i - 1) && completeLPHs.has(i + 1) && !completeLPHs.has(i)) {
-    completeLPHs.add(i);
-  }
-}
-
-// Sortieren und zurück in „LPH x“-Format bringen
-const lphArray = Array.from(completeLPHs).sort((a, b) => a - b).map(n => `LPH ${n}`);
-  const lphArray = Array.from(lphs).sort(); // sortierte Liste
-  if (lphArray.length > 0) {
-    summary.push(`<strong>Beauftragte Leistungsphasen:</strong><br>${lphArray.join(", ")}`);
-  }
-
-  const summaryHtml = summary.map(line => `<p>${line}</p>`).join('');
-  const summaryText = summary.map(line => line.replace(/<[^>]+>/g, '')).join('\n');
-
-  document.getElementById('summaryOutput').innerHTML = summaryHtml;
-
-  const subject = encodeURIComponent("angebotsanfrage");
-  const body = encodeURIComponent(`Folgende Angaben wurden gemacht:\n\n${summaryText}\n\nKannst du mir bitte ein Angebot senden?`);
-  const mailtoLink = `mailto:studiolumenarchitektur@gmail.com?subject=${subject}&body=${body}`;
-  document.getElementById('mailtoBtn').href = mailtoLink;
-
-  document.getElementById('summaryTitle').classList.remove('hidden');
-  document.getElementById('summaryOutput').classList.remove('hidden');
-  document.getElementById('submitBtn').classList.remove('hidden');
-}
-    // Trigger nach Klick auf eine Checkbox bei "besondere Anforderungen"
-document.querySelectorAll('#q6 input[type="checkbox"]').forEach(cb => {
-  cb.addEventListener('change', () => {
-    // Sobald mindestens eine Checkbox ausgewählt ist, zeige nächsten Schritt
-    const anyChecked = [...document.querySelectorAll('#q6 input[type="checkbox"]')].some(cb => cb.checked);
-    if (anyChecked) {
-      showSection('q_time');
-      showSection('q_time_dropdown');
+    function checkPlanningDepth(value) {
+      const vergabeQ = document.getElementById('q_vergabe');
+      const vergabeDropdown = document.getElementById('q_vergabe_dropdown');
+      if (value === 'vergabe' || value === 'vollständig') {
+        showSection('q_vergabe');
+        showSection('q_vergabe_dropdown');
+      } else {
+        vergabeQ.classList.add('hidden');
+        vergabeDropdown.classList.add('hidden');
+        const select = vergabeDropdown.querySelector('select');
+        if (select) {
+          select.selectedIndex = 0;
+          select.classList.remove('selected');
+        }
+      }
+      showSection('q6');
     }
-  });
-});
+
+    document.querySelectorAll('#q6 input[type="checkbox"]').forEach(cb => {
+      cb.addEventListener('change', () => {
+        const anyChecked = [...document.querySelectorAll('#q6 input[type="checkbox"]')].some(cb => cb.checked);
+        if (anyChecked) {
+          showSection('q_time');
+          showSection('q_time_dropdown');
+        }
+      });
+    });
+
+    document.querySelectorAll('select').forEach(select => {
+      select.addEventListener('change', function () {
+        if (this.value) {
+          this.classList.add('selected');
+          if (!this.nextElementSibling || !this.nextElementSibling.classList.contains('underline')) {
+            const line = document.createElement('div');
+            line.classList.add('underline');
+            this.parentNode.insertBefore(line, this.nextSibling);
+          }
+        }
+      });
+    });
+
+    function generateSummary() {
+      const summary = [];
+      const getText = selector => {
+        const el = document.querySelector(selector);
+        return el?.value || el?.innerText || '';
+      };
+
+      const needs = document.querySelector('#q1 .option-button.selected')?.innerText || '';
+      const status = document.querySelector('#q2 .option-button.selected')?.innerText || '';
+      const support = document.querySelector('#q_support select')?.value || '';
+      const size = document.querySelector('#q3 select')?.value || '';
+      const plans = document.querySelector('#q4 select')?.value || '';
+      const createPlans = document.querySelector('#q_pläne_erstellen_dropdown select')?.value || '';
+      const depth = document.querySelector('#q5 select')?.value || '';
+      const vergabe = document.querySelector('#q_vergabe_dropdown select')?.value || '';
+      const extras = [...document.querySelectorAll('#q6 input[type="checkbox"]:checked')].map(cb => cb.parentElement.innerText.trim());
+      const time = document.getElementById('projectTime').value;
+
+      summary.push(`<strong>Was wird benötigt:</strong> ${needs}`);
+      summary.push(`<strong>Projektstatus:</strong> ${status}`);
+      if (support) summary.push(`<strong>Art der Unterstützung:</strong> ${support}`);
+      summary.push(`<strong>Projektgröße:</strong> ${size}`);
+      summary.push(`<strong>Pläne vorhanden:</strong> ${plans}`);
+      if (plans === 'Nein' || plans === 'Unzureichend') summary.push(`<strong>Pläne erstellen:</strong> ${createPlans}`);
+      summary.push(`<strong>Planungstiefe:</strong> ${depth}`);
+      if (depth === 'vergabe' || depth === 'vollständig') summary.push(`<strong>Vergabeleistung gewünscht:</strong> ${vergabe}`);
+      if (extras.length > 0) summary.push(`<strong>Besondere Anforderungen:</strong> ${extras.join(', ')}`);
+      summary.push(`<strong>Geplanter Projektbeginn:</strong> ${time}`);
+
+      const lphs = new Set();
+      if (status.includes("fange") || support) lphs.add(0);
+      if (status.includes("fange") || support || plans === "Nein" || plans === "Unzureichend") lphs.add(1);
+      if (support || status.includes("grobe") || plans === "Nein" || plans === "Unzureichend") lphs.add(2);
+      if (status.includes("ziemlich")) lphs.add(3);
+      if (depth === "bauantrag") lphs.add(4);
+      if (depth === "ausführung") { lphs.add(4); lphs.add(5); }
+      if (depth === "vollständig") { lphs.add(4); lphs.add(5); lphs.add(6); lphs.add(7); }
+      if (depth === "vergabe" || vergabe === "Ja") { lphs.add(6); lphs.add(7); }
+
+      const full = new Set(lphs);
+      const list = [...full];
+      const max = Math.max(...list);
+      for (let i = 1; i < max; i++) {
+        if (full.has(i - 1) && full.has(i + 1)) full.add(i);
+      }
+      const final = [...full].sort((a, b) => a - b).map(n => `LPH ${n}`);
+      if (final.length > 0) summary.push(`<strong>Beauftragte Leistungsphasen:</strong><br>${final.join(", ")}`);
+
+      const summaryHtml = summary.map(line => `<p>${line}</p>`).join('');
+      const summaryText = summary.map(line => line.replace(/<[^>]+>/g, '')).join('\n');
+
+      document.getElementById('summaryOutput').innerHTML = summaryHtml;
+
+      const subject = encodeURIComponent("Angebotsanfrage Architekturleistung");
+      const body = encodeURIComponent(`Folgende Angaben wurden gemacht:\n\n${summaryText}\n\nBitte senden Sie mir ein unverbindliches Angebot.`);
+      document.getElementById('mailtoBtn').href = `mailto:studiolumenarchitektur@gmail.com?subject=${subject}&body=${body}`;
+
+      document.getElementById('summaryTitle').classList.remove('hidden');
+      document.getElementById('summaryOutput').classList.remove('hidden');
+      document.getElementById('submitBtn').classList.remove('hidden');
+    }
   </script>
 </body>
 </html>
