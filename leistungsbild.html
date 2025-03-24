@@ -411,7 +411,29 @@
         if (full.has(i - 1) && full.has(i + 1)) full.add(i);
       }
       const final = [...full].sort((a, b) => a - b).map(n => `LPH ${n}`);
-      if (final.length > 0) summary.push(`<strong>Beauftragte Leistungsphasen:</strong><br>${final.join(", ")}`);
+    if (final.length > 0) {
+  summary.push(`<strong>Beauftragte Leistungsphasen:</strong><br>${final.join(", ")}`);
+
+  // Unterpunkte je Phase (nur die gewählten)
+  const lphDetails = {
+    0: "Beratung, Machbarkeit, Standortbewertung, Konzept",
+    1: "Grundlagenermittlung, Bestandsaufnahme, Zieldefinition",
+    2: "Vorplanung, Skizzen, Kostenschätzung, Behördenabstimmung",
+    3: "Entwurfsplanung, Kostenberechnung, Zeichnungen",
+    4: "Genehmigungsplanung, Bauantragsunterlagen, Behördengespräche",
+    5: "Ausführungsplanung, technische Details, Werkpläne",
+    6: "Vorbereitung der Vergabe, Leistungsverzeichnisse",
+    7: "Mitwirkung bei der Vergabe, Angebotsprüfung"
+  };
+
+  summary.push("<strong>Leistungsinhalte:</strong>");
+  final.forEach(lph => {
+    const num = parseInt(lph.replace("LPH ", ""));
+    if (lphDetails[num]) {
+      summary.push(`<em>${lph}:</em> ${lphDetails[num]}`);
+    }
+  });
+}
 
       const summaryHtml = summary.map(line => `<p>${line}</p>`).join('');
       const summaryText = summary.map(line => line.replace(/<[^>]+>/g, '')).join('\n');
