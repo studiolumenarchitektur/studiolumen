@@ -118,101 +118,101 @@
     <!-- Frage 1 -->
     <div class="question" onclick="resetOptions('q1')">Was brauchst du?</div>
     <div class="options" id="q1">
-      <button class="option-button" onclick="selectOption(this, 'q2')">Planung eines Bauvorhabens</button>
-      <button class="option-button" onclick="selectOption(this, 'q2')">Umbauen oder Modernisierung</button>
-      <button class="option-button" onclick="selectOption(this, 'q2')">Architektonische Unterstützung</button>
+      <button class="option-button" onclick="selectOption(this, 'q2')">• Planung eines Bauvorhabens</button>
+      <button class="option-button" onclick="selectOption(this, 'q2')">• Umbauen oder Modernisierung</button>
+      <button class="option-button" onclick="selectOption(this, 'q2')">• Architektonische Unterstützung</button>
     </div>
 
     <!-- Frage 2 -->
     <div class="question hidden" onclick="resetOptions('q2')">Wie weit bist du?</div>
     <div class="options hidden" id="q2">
-      <button class="option-button" onclick="selectOption(this, 'q_support')">Ich fange grade erst an</button>
-      <button class="option-button" onclick="selectOption(this, 'q3')">Ich habe eine grobe Idee</button>
-      <button class="option-button" onclick="selectOption(this, 'q3')">Ich bin schon ziemlich weit</button>
+      <button class="option-button" onclick="selectOption(this, 'q_support')">• Ich fange grade erst an</button>
+      <button class="option-button" onclick="selectOption(this, 'q3')">• Ich habe eine grobe Idee</button>
+      <button class="option-button" onclick="selectOption(this, 'q3')">• Ich bin schon ziemlich weit</button>
     </div>
 
     <!-- Frage 3a – Unterstützung -->
     <div class="question hidden" onclick="resetOptions('q_support')">Worum geht es dir?</div>
     <div class="options hidden" id="q_support">
-      <button class="option-button" onclick="selectOption(this); showSection('q3')">Beratungsgespräch</button>
-      <button class="option-button" onclick="selectOption(this); showSection('q3')">Machbarkeitsstudien</button>
-      <button class="option-button" onclick="selectOption(this); showSection('q3')">Entwicklung meines Konzepts</button>
-      <button class="option-button" onclick="selectOption(this); showSection('q3')">Budget- und Flächenabschätzung</button>
-      <button class="option-button" onclick="selectOption(this); showSection('q3')">Noch unklar</button>
+      <button class="option-button" onclick="selectOption(this); showSection('q3')">• Beratungsgespräch</button>
+      <button class="option-button" onclick="selectOption(this); showSection('q3')">• Machbarkeitsstudien</button>
+      <button class="option-button" onclick="selectOption(this); showSection('q3')">• Entwicklung meines Konzepts</button>
+      <button class="option-button" onclick="selectOption(this); showSection('q3')">• Budget- und Flächenabschätzung</button>
+      <button class="option-button" onclick="selectOption(this); showSection('q3')">• Noch unklar</button>
     </div>
 
     <!-- Frage 3 – Projektgröße -->
     <div class="question hidden" id="q3-label">Wie groß wird es?</div>
       <div class="options hidden" id="q3">
-        <button class="option-button" onclick="selectOption(this, 'q4')">Bis 50 m²</button>
-        <button class="option-button" onclick="selectOption(this, 'q4')">Bis 100 m²</button>
-        <button class="option-button" onclick="selectOption(this, 'q4')">Bis 150 m²</button>
-        <button class="option-button" onclick="selectOption(this, 'q4')">Bis 200 m²</button>
-        <button class="option-button" onclick="selectOption(this, 'q4')">Bis 250 m²</button>
-        <button class="option-button" onclick="selectOption(this, 'q4')">Bis 300 m²</button>
-        <button class="option-button" onclick="selectOption(this, 'q4')">Noch unklar</button>
+        <button class="option-button" onclick="selectOption(this, 'q4')">• Bis 50 m²</button>
+        <button class="option-button" onclick="selectOption(this, 'q4')">• Bis 100 m²</button>
+        <button class="option-button" onclick="selectOption(this, 'q4')">• Bis 150 m²</button>
+        <button class="option-button" onclick="selectOption(this, 'q4')">• Bis 200 m²</button>
+        <button class="option-button" onclick="selectOption(this, 'q4')">• Bis 250 m²</button>
+        <button class="option-button" onclick="selectOption(this, 'q4')">• Bis 300 m²</button>
+        <button class="option-button" onclick="selectOption(this, 'q4')">• Noch unklar</button>
     </div>
 
     <!-- Frage 3b – Wenn Größe unklar -->
     <div class="question hidden" id="q_size_hint">Sollen wir das gemeinsam entwickeln?</div>
     <div class="options hidden" id="q_size_hint_dropdown">
-      <button class="option-button" onclick="selectOption(this, 'q4')">Ja, lass uns das besprechen</button>
-      <button class="option-button" onclick="selectOption(this, 'q4')">Nein, später entscheiden</button>
+      <button class="option-button" onclick="selectOption(this, 'q4')">• Ja, lass uns das besprechen</button>
+      <button class="option-button" onclick="selectOption(this, 'q4')">• Nein, später entscheiden</button>
     </div>
 
     <!-- Frage 4 – Pläne vorhanden -->
     <div class="question hidden" onclick="resetOptions('q4')">Sind Pläne vorhanden?</div>
     <div class="options hidden" id="q4">
-      <button class="option-button" onclick="selectOption(this); checkPlans('ja')">Ja</button>
-      <button class="option-button" onclick="selectOption(this); checkPlans('nein')">Nein</button>
-      <button class="option-button" onclick="selectOption(this); checkPlans('unvollständig')">Nur Skizzen</button>
+      <button class="option-button" onclick="selectOption(this); checkPlans('ja')">• Ja</button>
+      <button class="option-button" onclick="selectOption(this); checkPlans('nein')">• Nein</button>
+      <button class="option-button" onclick="selectOption(this); checkPlans('unvollständig')">• Nur Skizzen</button>
     </div>
 
     <!-- Frage 4b – Pläne erstellen -->
     <div class="question hidden" id="q_pläne_erstellen">Sollen die Pläne durch mich erstellt werden?</div>
     <div class="options hidden" id="q_pläne_erstellen_dropdown">
-      <button class="option-button" onclick="selectOption(this, 'q5')">Ja</button>
-      <button class="option-button" onclick="selectOption(this, 'q5')">Nein</button>
-      <button class="option-button" onclick="selectOption(this, 'q5')">Noch unklar</button>
+      <button class="option-button" onclick="selectOption(this, 'q5')">• Ja</button>
+      <button class="option-button" onclick="selectOption(this, 'q5')">• Nein</button>
+      <button class="option-button" onclick="selectOption(this, 'q5')">• Noch unklar</button>
     </div>
 
     <!-- Frage 5 – Planungstiefe -->
     <div class="question hidden" onclick="resetOptions('q5')">Wie weit soll die Planung gehen?</div>
     <div class="options hidden" id="q5">
-      <button class="option-button" onclick="selectOption(this); checkPlanningDepth('bauantrag')">Bis zum Bauantrag</button>
-      <button class="option-button" onclick="selectOption(this); checkPlanningDepth('ausführung')">Bis zur Ausführung</button>
-      <button class="option-button" onclick="selectOption(this); checkPlanningDepth('vergabe')">Mit Vergabevorbereitung</button>
-      <button class="option-button" onclick="selectOption(this); checkPlanningDepth('vollständig')">Planung von A-Z</button>
-      <button class="option-button" onclick="selectOption(this); checkPlanningDepth('unklar')">Noch unklar</button>
+      <button class="option-button" onclick="selectOption(this); checkPlanningDepth('bauantrag')">• Bis zum Bauantrag</button>
+      <button class="option-button" onclick="selectOption(this); checkPlanningDepth('ausführung')">• Bis zur Ausführung</button>
+      <button class="option-button" onclick="selectOption(this); checkPlanningDepth('vergabe')">• Mit Vergabevorbereitung</button>
+      <button class="option-button" onclick="selectOption(this); checkPlanningDepth('vollständig')">• Planung von A-Z</button>
+      <button class="option-button" onclick="selectOption(this); checkPlanningDepth('unklar')">• Noch unklar</button>
     </div>
 
     <!-- Frage 5b – Vergabe -->
     <div class="question hidden" id="q_vergabe">Sollen Bauleistungen ausgeschrieben werden?</div>
     <div class="options hidden" id="q_vergabe_dropdown">
-      <button class="option-button" onclick="selectOption(this, 'q6')">Ja</button>
-      <button class="option-button" onclick="selectOption(this, 'q6')">Nein</button>
-      <button class="option-button" onclick="selectOption(this, 'q6')">Noch offen</button>
+      <button class="option-button" onclick="selectOption(this, 'q6')">• Ja</button>
+      <button class="option-button" onclick="selectOption(this, 'q6')">• Nein</button>
+      <button class="option-button" onclick="selectOption(this, 'q6')">• Noch offen</button>
     </div>
 
     <!-- Frage 6 – Besondere Anforderungen -->
     <div class="question hidden" onclick="resetOptions('q6')">Gibt es besondere Anforderungen?</div>
     <div class="checkbox-group hidden" id="q6">
-      <label><input type="checkbox" name="anforderung" value="denkmalschutz">Denkmalschutz</label>
-      <label><input type="checkbox" name="anforderung" value="barrierefreiheit">Barrierefreiheit</label>
-      <label><input type="checkbox" name="anforderung" value="brandschutz">Brandschutz / Sondernutzung</label>
-      <label><input type="checkbox" name="anforderung" value="nachhaltigkeit">Nachhaltigkeit / Energiestandard</label>
-      <label><input type="checkbox" name="anforderung" value="stellplätze">Stellplätze / Garagen</label>
-      <label><input type="checkbox" name="anforderung" value="keine">Keine besonderen Anforderungen</label>
+      <label><input type="checkbox" name="anforderung" value="denkmalschutz">• Denkmalschutz</label>
+      <label><input type="checkbox" name="anforderung" value="barrierefreiheit">• Barrierefreiheit</label>
+      <label><input type="checkbox" name="anforderung" value="brandschutz">• Brandschutz / Sondernutzung</label>
+      <label><input type="checkbox" name="anforderung" value="nachhaltigkeit">• Nachhaltigkeit / Energiestandard</label>
+      <label><input type="checkbox" name="anforderung" value="stellplätze">• Stellplätze / Garagen</label>
+      <label><input type="checkbox" name="anforderung" value="keine">• Keine besonderen Anforderungen</label>
     </div>
 
     <!-- Projektzeitraum -->
     <div class="question hidden" id="q_time">Wann soll das Projekt starten?</div>
     <div class="options hidden" id="q_time_dropdown">
-      <button class="option-button" onclick="selectOption(this); generateSummary()">Sofort</button>
-      <button class="option-button" onclick="selectOption(this); generateSummary()">In 1–3 Monaten</button>
-      <button class="option-button" onclick="selectOption(this); generateSummary()">In 3–6 Monaten</button>
-      <button class="option-button" onclick="selectOption(this); generateSummary()">Später</button>
-      <button class="option-button" onclick="selectOption(this); generateSummary()">Noch unklar</button>
+      <button class="option-button" onclick="selectOption(this); generateSummary()">• Sofort</button>
+      <button class="option-button" onclick="selectOption(this); generateSummary()">• In 1–3 Monaten</button>
+      <button class="option-button" onclick="selectOption(this); generateSummary()">• In 3–6 Monaten</button>
+      <button class="option-button" onclick="selectOption(this); generateSummary()">• Später</button>
+      <button class="option-button" onclick="selectOption(this); generateSummary()">• Noch unklar</button>
     </div>
 
     <!-- Zusammenfassung -->
@@ -378,10 +378,10 @@
       if (status.includes("fange") || support || plans === "Nein" || plans === "Unzureichend") lphs.add(1);
       if (support || status.includes("grobe") || plans === "Nein" || plans === "Unzureichend") lphs.add(2);
       if (status.includes("ziemlich")) lphs.add(3);
-      if (depth === "Bis zum Bauantrag") lphs.add(4);
-      if (depth === "Bis zur Ausführung") { lphs.add(4); lphs.add(5); }
-      if (depth === "Planung von A-Z") { lphs.add(4); lphs.add(5); lphs.add(6); lphs.add(7); }
-      if (depth === "Mit Vergabevorbereitung") { lphs.add(6); lphs.add(7); }
+      if (depth === "• Bis zum Bauantrag") lphs.add(4);
+      if (depth === "• Bis zur Ausführung") { lphs.add(4); lphs.add(5); }
+      if (depth === "• Planung von A-Z") { lphs.add(4); lphs.add(5); lphs.add(6); lphs.add(7); }
+      if (depth === "• Mit Vergabevorbereitung") { lphs.add(6); lphs.add(7); }
 
       const full = new Set(lphs);
       const list = [...full];
@@ -419,8 +419,8 @@
 
       document.getElementById('summaryOutput').innerHTML = summaryHtml;
 
-      const subject = encodeURIComponent("Angebotsanfrage Architekturleistung");
-      const body = encodeURIComponent(`Folgende Angaben wurden gemacht:\n\n${summaryText}\n\nBitte senden Sie mir ein unverbindliches Angebot.`);
+      const subject = encodeURIComponent("Angebotsanfrage");
+      const body = encodeURIComponent(`Folgende Angaben wurden gemacht:\n\n${summaryText}\n\nSende mir bitte ein Angebot.`);
       document.getElementById('mailtoBtn').href = `mailto:studiolumenarchitektur@gmail.com?subject=${subject}&body=${body}`;
 
       document.getElementById('summaryTitle').classList.remove('hidden');
