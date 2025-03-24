@@ -342,10 +342,10 @@
       const needs = document.querySelector('#q1 .option-button.selected')?.innerText || '';
       const status = document.querySelector('#q2 .option-button.selected')?.innerText || '';
       const support = document.querySelector('#q_support .option-button.selected')?.innerText || '';
-      const size = document.querySelector('#q3 select')?.value || '';
-      const plans = document.querySelector('#q4 select')?.value || '';
+      const size = document.querySelector('#q3 .option-button.selected')?.innerText || '';
+      const plans = document.querySelector('#q4 .option-button.selected')?.innerText || '';
       const createPlans = document.querySelector('#q_pläne_erstellen_dropdown select')?.value || '';
-      const depth = document.querySelector('#q5 select')?.value || '';
+      const depth = document.querySelector('#q5 .option-button.selected')?.innerText || '';
       const vergabe = document.querySelector('#q_vergabe_dropdown select')?.value || '';
       const extras = [...document.querySelectorAll('#q6 input[type="checkbox"]:checked')].map(cb => cb.parentElement.innerText.trim());
       const time = document.querySelector('#q_time_dropdown .option-button.selected')?.innerText || '';
