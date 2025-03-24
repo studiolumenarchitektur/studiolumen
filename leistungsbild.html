@@ -379,9 +379,9 @@
       if (support || status.includes("grobe") || plans === "Nein" || plans === "Unzureichend") lphs.add(2);
       if (status.includes("ziemlich")) lphs.add(3);
       if (depth === "Bis zum Bauantrag") lphs.add(4);
-      if (depth === "ausführung") { lphs.add(4); lphs.add(5); }
-      if (depth === "vollständig") { lphs.add(4); lphs.add(5); lphs.add(6); lphs.add(7); }
-      if (depth === "vergabe" || vergabe === "Ja") { lphs.add(6); lphs.add(7); }
+      if (depth === "Bis zur Ausführung") { lphs.add(4); lphs.add(5); }
+      if (depth === "Planung von A-Z") { lphs.add(4); lphs.add(5); lphs.add(6); lphs.add(7); }
+      if (depth === "Mit Vergabevorbereitung") { lphs.add(6); lphs.add(7); }
 
       const full = new Set(lphs);
       const list = [...full];
