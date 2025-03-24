@@ -100,7 +100,13 @@
     .checkbox-group input[type="checkbox"] {
       margin-right: 0.5rem;
     }
-  </style>
+    
+    .footer {
+    position: fixed; bottom: 0; width: 100%; text-align: center; padding: 10px;
+    display: flex; justify-content: center; gap: 20px; color: #777;
+    background: #fff; 
+  }
+      </style>
 </head>
 <body>
   <div class="back-arrow" onclick="window.location.href='index.html'">&larr;</div>
@@ -215,7 +221,11 @@
     <div class="hidden" id="submitBtn">
       <a id="mailtoBtn" href="#" style="display: inline-block; background: none; color: #800020; border: none; font-weight: bold; text-decoration: underline; cursor: pointer;">Angebot jetzt anfordern</a>
     </div>
-  </div>
+  
+   <footer class="footer">
+        <div onclick="window.location.href='impressum.html'">impressum</div>
+        <div>© 2025 studio lumen</div>
+    </footer>
 
   <!-- Funktionaler JavaScript-Block -->
   <script>
