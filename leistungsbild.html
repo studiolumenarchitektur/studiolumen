@@ -85,7 +85,7 @@
     select.selected {
       color: #800020;
       border-bottom: 1px solid #800020;
-      font-weight: bold;
+      font-weight: normal; /* Kein Fett */
     }
 
     .underline {
@@ -358,11 +358,6 @@
       select.addEventListener('change', function () {
         if (this.value) {
           this.classList.add('selected');
-          if (!this.nextElementSibling || !this.nextElementSibling.classList.contains('underline')) {
-            const line = document.createElement('div');
-            line.classList.add('underline');
-            this.parentNode.insertBefore(line, this.nextSibling);
-          }
         }
       });
     });
