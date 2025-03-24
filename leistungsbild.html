@@ -85,7 +85,7 @@
     select.selected {
       color: #800020;
       border-bottom: 1px solid #800020;
-      font-weight: normal; /* Kein Fett */
+      font-weight: normal; /* Kein Fett mehr */
     }
 
     .underline {
@@ -136,11 +136,11 @@
     <div class="dropdown hidden" id="q_support">
       <select onchange="revealNext('q3')">
         <option value="">Bitte wählen …</option>
-        <option>Beratungsgespräch</option>
-        <option>Machbarkeitsstudien</option>
-        <option>Entwicklung meines Konzepts</option>
-        <option>Budget- und Flächenabschätzung</option>
-        <option>Noch unklar</option>
+        <button class="option-button" onclick="selectOption(this, 'q3')">Beratungsgespräch</button>
+        <button class="option-button" onclick="selectOption(this, 'q3')">Machbarkeitsstudien</button>
+        <button class="option-button" onclick="selectOption(this, 'q3')">Entwicklung meines Konzepts</button>
+        <button class="option-button" onclick="selectOption(this, 'q3')">Budget- und Flächenabschätzung</button>
+        <button class="option-button" onclick="selectOption(this, 'q3')">Noch unklar</button>
       </select>
     </div>
 
