@@ -26,10 +26,32 @@
             justify-content: flex-start;
             margin-top: 10px;
         }
-        header { font-size: 2rem; font-weight: bold; margin-top: 10px; }
-        .subheader { font-size: 1.2rem; margin-bottom: 5px; }
-        .textfelder { display: flex; flex-direction: column; align-items: center; gap: 5px; margin-top: 10px; }
-        .textfeld { cursor: pointer; padding: 5px; width: 200px; text-align: center; font-size: 16px; }
+        header { 
+            font-size: 2rem; 
+            font-weight: bold; 
+            margin-top: 10px; 
+        }
+        .subheader { 
+            font-size: 1.2rem; 
+            margin-bottom: 5px; 
+        }
+        .textfelder {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+          margin-top: 10px;
+          width: 300px;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        .textfeld {
+          cursor: pointer;
+          padding: 5px;
+          width: 100%;
+          text-align: justify;
+          font-size: 16px;
+          box-sizing: border-box;
+        }
         .textfeld:hover { color: #800020; }
         .footer { position: sticky; bottom: 0; width: 100%; text-align: center; padding: 10px; z-index: 1000; display: flex; justify-content: center; gap: 20px; color: #777; font-size: 16px; background: #fff; }
         
