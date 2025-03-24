@@ -171,11 +171,11 @@
     <!-- Frage 5 – Planungstiefe -->
     <div class="question hidden" onclick="resetOptions('q5')">Wie weit soll die Planung gehen?</div>
     <div class="options hidden" id="q5">
-      <button class="option-button" onclick="checkPlanningDepth('bauantrag')">Bis zum Bauantrag</button>
-      <button class="option-button" onclick="checkPlanningDepth('ausführung')">Bis zur Ausführung</button>
-      <button class="option-button" onclick="checkPlanningDepth('vergabe')">Mit Vergabevorbereitung</button>
-      <button class="option-button" onclick="checkPlanningDepth('vollständig')">Planung von A-Z</button>
-      <button class="option-button" onclick="checkPlanningDepth('unklar')">Noch unklar</button>
+      <button class="option-button" onclick="selectOption(this); checkPlanningDepth('bauantrag')">Bis zum Bauantrag</button>
+      <button class="option-button" onclick="selectOption(this); checkPlanningDepth('ausführung')">Bis zur Ausführung</button>
+      <button class="option-button" onclick="selectOption(this); checkPlanningDepth('vergabe')">Mit Vergabevorbereitung</button>
+      <button class="option-button" onclick="selectOption(this); checkPlanningDepth('vollständig')">Planung von A-Z</button>
+      <button class="option-button" onclick="selectOption(this); checkPlanningDepth('unklar')">Noch unklar</button>
     </div>
 
     <!-- Frage 5b – Vergabe -->
