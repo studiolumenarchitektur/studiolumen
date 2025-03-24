@@ -21,9 +21,9 @@
       margin-bottom: 40px;
       max-width: 300px;
       width: 100%;
-      text-align: justify;
+      text-align: center;
     }
-
+    
     .container {
       max-width: 300px;
       margin: 0 auto;
@@ -278,9 +278,11 @@
           container.classList.remove('hidden');
           const buttons = container.querySelectorAll('.option-button');
           buttons.forEach(btn => btn.classList.remove('selected', 'hidden'));
-        } else {
-          container.classList.add('hidden');
-        }
+} else {
+  if (!container.classList.contains('question')) {
+    container.classList.add('hidden');
+  }
+}
         const buttons = container.querySelectorAll('.option-button');
         buttons.forEach(btn => btn.classList.remove('selected', 'hidden'));
         const selects = container.querySelectorAll('select');
