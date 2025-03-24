@@ -154,9 +154,9 @@
     <!-- Frage 4 – Pläne vorhanden -->
     <div class="question hidden" onclick="resetOptions('q4')">Sind Pläne vorhanden?</div>
     <div class="options hidden" id="q4">
-      <button class="option-button" onclick="checkPlans('ja')">Ja</button>
-      <button class="option-button" onclick="checkPlans('nein')">Nein</button>
-      <button class="option-button" onclick="checkPlans('unvollständig')">Nur Skizzen</button>
+      <button class="option-button" onclick="selectOption(this); checkPlans('ja')">Ja</button>
+      <button class="option-button" onclick="selectOption(this); checkPlans('nein')">Nein</button>
+      <button class="option-button" onclick="selectOption(this); checkPlans('unvollständig')">Nur Skizzen</button>
     </div>
 
     <!-- Frage 4b – Pläne erstellen -->
@@ -218,15 +218,18 @@
 
   <!-- Funktionaler JavaScript-Block -->
   <script>
-    function selectOption(button, nextId) {
+     function selectOption(button, nextId = null) {
       const parent = button.parentElement;
       const buttons = parent.querySelectorAll('.option-button');
-      buttons.forEach(btn => {
+       buttons.forEach(btn => {
         btn.classList.remove('selected', 'hidden');
-        if (btn !== button) btn.classList.add('hidden');
-      });
-      button.classList.add('selected');
-      showSection(nextId);
+         if (btn !== button) btn.classList.add('hidden');
+       });
+       button.classList.add('selected');
+
+       if (nextId) {
+         showSection(nextId);
+       }
     }
 
     function showSection(id) {
