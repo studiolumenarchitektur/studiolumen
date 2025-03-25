@@ -45,18 +45,19 @@
             text-align: left;
             text-transform: none;
         }
-        .footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            text-align: center;
-            padding: 10px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            color: #777;
-            background: #fff;
-        }
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: 10px;
+  color: #777;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* Abstand zwischen den beiden Elementen */
+  text-align: center;
+  flex-wrap: wrap; /* auf kleineren Bildschirmen untereinander */
+}
     </style>
 </head>
 <body>
@@ -77,9 +78,10 @@
         <div class="unterpunkt">´08-´10 - Tischlerlehre</div>
     </div>
 
-    <footer class="footer">
-        <div onclick="window.location.href='impressum.html'">Impressum</div>
-        <div>© 2025 studio lumen</div>
+<div class="footer">
+  <div onclick="window.location.href='impressum.html'">Impressum</div>
+  <div>© 2025 studio lumen</div>
+</div>
     </footer>
 </body>
 </html>
