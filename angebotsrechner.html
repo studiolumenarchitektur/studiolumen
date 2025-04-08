@@ -1,121 +1,133 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HOAI Angebot Rechner</title>
+  <meta charset="UTF-8">
+  <title>HOAI-Angebot mit LPH-Auswahl & Exaktberechnung</title>
   <style>
-    body { font-family: sans-serif; max-width: 800px; margin: auto; padding: 2rem; }
-    label { display: block; margin-top: 1rem; }
-    input, select { width: 100%; padding: 0.5rem; margin-top: 0.25rem; }
-    small { display: block; color: #555; margin-top: 0.25rem; font-size: 0.85rem; }
-    table { width: 100%; margin-top: 1.5rem; border-collapse: collapse; }
-    th, td { border: 1px solid #ccc; padding: 0.5rem; text-align: right; }
-    th { background: #f0f0f0; }
+    body { font-family: Arial, sans-serif; margin: 2em; background: #f7f7f7; }
+    .section { background: #fff; padding: 1em; border-radius: 5px; margin-bottom: 2em; border: 1px solid #ccc; }
+    label { font-weight: bold; display: block; margin-top: 1em; }
+    select, input[type="number"], input[type="text"] { width: 100%; padding: 0.5em; margin-top: 0.2em; }
+    .lph-row { display: flex; align-items: center; margin-top: 0.5em; }
+    .lph-row label { flex: 1; }
+    .lph-row input[type="number"] { width: 60px; margin-left: 1em; }
   </style>
 </head>
 <body>
-  <h1>HOAI Angebot Rechner</h1>
-  <form id="hoai-form">
-    <label>Bruttogrundfläche (m²)
-      <input type="number" id="fläche" value="100" required />
-    </label>
 
-    <label>Standard der Bauweise
-      <select id="standard">
-        <option value="einfach">Einfach</option>
-        <option value="mittel" selected>Mittel</option>
-        <option value="hochwertig">Hochwertig</option>
-      </select>
-      <small>Einfach = geringe Ansprüche, Mittel = üblich, Hochwertig = gestalterisch/technisch anspruchsvoll</small>
-    </label>
+<h1>HOAI-Angebot mit exakter Tabelle & LPH-Auswahl</h1>
 
-    <label>Honorarzone
-      <select id="zone">
-        <option value="I">I</option>
-        <option value="II" selected>II</option>
-        <option value="III">III</option>
-        <option value="IV">IV</option>
-        <option value="V">V</option>
-      </select>
-      <small>Zone I = sehr einfache Gebäude, Zone V = sehr komplex (z. B. Labore, Krankenhäuser)</small>
-    </label>
+<div class="section">
+  <h2>1. Angaben</h2>
+  <label for="bgf">Bruttogrundfläche (BGF) in m²:</label>
+  <input type="number" id="bgf" value="100">
 
-    <label>Honorarsatz
-      <select id="satz">
-        <option value="mind">Mindestsatz</option>
-        <option value="mittel" selected>Mittelsatz</option>
-        <option value="hoch">Höchstsatz</option>
-      </select>
-      <small>Mindestsatz = einfache Projekte, Mittelsatz = Standard, Höchstsatz = hohe Komplexität</small>
-    </label>
+  <label for="bauweise">Bauweise:</label>
+  <select id="bauweise">
+    <option value="1800">Einfach</option>
+    <option value="2200" selected>Mittel</option>
+    <option value="2800">Hochwertig</option>
+  </select>
 
-    <fieldset style="margin-top:2rem;">
-      <legend><strong>Leistungsphasen auswählen &amp; anpassen</strong></legend>
-      <div id="lph-container"></div>
-    </fieldset>
+  <label for="honorarzone">Honorarzone:</label>
+  <select id="honorarzone">
+    <option value="1">Zone I</option>
+    <option value="2" selected>Zone II</option>
+    <option value="3">Zone III</option>
+    <option value="4">Zone IV</option>
+    <option value="5">Zone V</option>
+  </select>
 
-    <button type="submit" style="margin-top: 1.5rem; padding: 0.75rem;">Berechnen</button>
-  </form>
+  <label for="satz">Honorarsatz:</label>
+  <select id="satz">
+    <option value="min">Mindestsatz</option>
+    <option value="mittel" selected>Mittelsatz</option>
+    <option value="max">Höchstsatz</option>
+  </select>
 
-  <div id="ergebnis"></div>
+  <h3>Leistungsphasen (LPH) auswählen:</h3>
+  <div id="lph-container"></div>
+</div>
 
-  <script>
-    const kostensatz = { einfach: 1800, mittel: 2000, hochwertig: 2400 };
-    const honorarzonen = { I: 0.096, II: 0.127, III: 0.155, IV: 0.189, V: 0.236 };
-    const lphStandard = { 1: 2, 2: 7, 3: 15, 4: 3, 5: 38, 6: 10, 7: 4, 8: 32, 9: 2 };
+<div class="section">
+  <h2>2. Ergebnis</h2>
+  <p><strong>Anrechenbare Kosten:</strong> <span id="kosten">–</span> €</p>
+  <p><strong>Grundleistung (100 %):</strong> <span id="grundhonorar">–</span> €</p>
+  <p><strong>LPH-Gesamtanteil:</strong> <span id="lphsumme">–</span> %</p>
+  <p><strong>Honorar (nach Auswahl) + NK (5 %):</strong> <span id="gesamt">–</span> €</p>
+</div>
 
-    const lphContainer = document.getElementById("lph-container");
-    for (let i = 1; i <= 9; i++) {
-      const div = document.createElement("div");
-      div.innerHTML = `
-        <label>
-          <input type="checkbox" id="lph${i}" checked />
-          LPH ${i}
-          <input type="number" id="lph${i}percent" value="${lphStandard[i]}" min="0" max="100" step="0.1" style="width:80px; margin-left:1rem;" /> %
-        </label>`;
-      lphContainer.appendChild(div);
-    }
+<script>
+const hoaiTabelle = {{
+  "1": [83, 97],
+  "2": [101, 119],
+  "3": [117, 139],
+  "4": [135, 160],
+  "5": [152, 180]
+}};
 
-    document.getElementById("hoai-form").addEventListener("submit", function(e) {
-      e.preventDefault();
-      const fläche = parseFloat(document.getElementById("fläche").value);
-      const standard = document.getElementById("standard").value;
-      const zone = document.getElementById("zone").value;
-      const satz = document.getElementById("satz").value;
+const lphDaten = [
+  {{ nummer: 1, name: "Grundlagenermittlung", standard: 2 }},
+  {{ nummer: 2, name: "Vorplanung", standard: 7 }},
+  {{ nummer: 3, name: "Entwurfsplanung", standard: 15 }},
+  {{ nummer: 4, name: "Genehmigungsplanung", standard: 3 }},
+  {{ nummer: 5, name: "Ausführungsplanung", standard: 38 }},
+  {{ nummer: 6, name: "Vorbereitung der Vergabe", standard: 10 }},
+  {{ nummer: 7, name: "Mitwirkung bei der Vergabe", standard: 4 }},
+  {{ nummer: 8, name: "Objektüberwachung", standard: 18 }},
+  {{ nummer: 9, name: "Objektbetreuung", standard: 3 }}
+];
 
-      const baukosten = fläche * kostensatz[standard];
-      const basissatz = honorarzonen[zone];
-      const satzfaktor = satz === "mittel" ? 1 : satz === "mind" ? 0.8 : 1.2;
+const lphContainer = document.getElementById("lph-container");
+lphDaten.forEach(lph => {{
+  const div = document.createElement("div");
+  div.className = "lph-row";
+  div.innerHTML = `
+    <input type="checkbox" id="lph${{lph.nummer}}" checked>
+    <label for="lph${{lph.nummer}}">LPH ${{lph.nummer}}: ${{lph.name}}</label>
+    <input type="number" id="pct${{lph.nummer}}" value="${{lph.standard}}" min="0" max="100"> %
+  `;
+  lphContainer.appendChild(div);
+}});
 
-      let gesamtProzent = 0;
-      let ausgewählteLPH = [];
-      for (let i = 1; i <= 9; i++) {
-        const checked = document.getElementById(`lph${i}`).checked;
-        const anteil = parseFloat(document.getElementById(`lph${i}percent`).value) || 0;
-        if (checked) {
-          gesamtProzent += anteil;
-          ausgewählteLPH.push({ nummer: i, anteil });
-        }
-      }
+function berechne() {{
+  const bgf = parseFloat(document.getElementById("bgf").value);
+  const standard = parseFloat(document.getElementById("bauweise").value);
+  const zone = document.getElementById("honorarzone").value;
+  const satz = document.getElementById("satz").value;
 
-      const honorarbasis = baukosten * basissatz * satzfaktor;
-      const honoraranteil = honorarbasis * (gesamtProzent / 100);
-      const nebk = honoraranteil * 0.05;
-      const gesamtsumme = honoraranteil + nebk;
+  const anrKosten = bgf * standard;
+  document.getElementById("kosten").textContent = anrKosten.toLocaleString("de-DE");
 
-      const ergebnis = document.getElementById("ergebnis");
-      ergebnis.innerHTML = `
-        <h2>Ergebnis</h2>
-        <table>
-          <tr><th>Anrechenbare Kosten</th><td>${baukosten.toFixed(2)} €</td></tr>
-          <tr><th>Gesamthonorar (100 %)</th><td>${honorbasis.toFixed(2)} €</td></tr>
-          <tr><th>LPH-Gesamtanteil</th><td>${gesamtProzent.toFixed(2)} %</td></tr>
-          <tr><th>Honorar (LPH gesamt)</th><td>${honoraranteil.toFixed(2)} €</td></tr>
-          <tr><th>Nebenkosten (5 %)</th><td>${nebk.toFixed(2)} €</td></tr>
-          <tr><th><strong>Gesamthonorar netto</strong></th><td><strong>${gesamtsumme.toFixed(2)} €</strong></td></tr>
-        </table>`;
-    });
-  </script>
+  const [min, max] = hoaiTabelle[zone];
+  let proTsd = min;
+  if (satz === "mittel") proTsd = (min + max) / 2;
+  if (satz === "max") proTsd = max;
+
+  const grund = anrKosten / 1000 * proTsd;
+  document.getElementById("grundhonorar").textContent = grund.toLocaleString("de-DE", {{minimumFractionDigits: 2}});
+
+  let lphSum = 0;
+  lphDaten.forEach(lph => {{
+    const cb = document.getElementById(`lph${{lph.nummer}}`);
+    const pct = parseFloat(document.getElementById(`pct${{lph.nummer}}`).value || 0);
+    if (cb.checked) {{
+      lphSum += pct;
+    }}
+  }});
+  document.getElementById("lphsumme").textContent = lphSum.toFixed(2);
+
+  const teilhonorar = grund * (lphSum / 100);
+  const nk = teilhonorar * 0.05;
+  const gesamt = teilhonorar + nk;
+  document.getElementById("gesamt").textContent = gesamt.toLocaleString("de-DE", {{minimumFractionDigits: 2}});
+}}
+
+document.querySelectorAll("input, select").forEach(el => {{
+  el.addEventListener("input", berechne);
+}});
+berechne();
+</script>
+
 </body>
 </html>
