@@ -2,166 +2,85 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>HOAI-Angebot komplett</title>
+  <title>bki projektbrowser</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body { font-family: Arial, sans-serif; margin: 2em; background: #f7f7f7; }
-    .section { background: #fff; padding: 1em; border-radius: 5px; margin-bottom: 2em; border: 1px solid #ccc; }
-    label { font-weight: bold; display: block; margin-top: 1em; }
-    select, input[type="number"], input[type="text"] { width: 100%; padding: 0.5em; margin-top: 0.2em; }
-    .lph-row { display: flex; align-items: center; margin-top: 0.5em; }
-    .lph-row label { flex: 1; }
-    .lph-row input[type="number"] { width: 60px; margin-left: 1em; }
-    .projekt { background: #eef; margin: 1em 0; padding: 1em; border-radius: 4px; }
+    @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 1em;
+      font-size: 16px;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-bottom: 1em;
+      box-sizing: border-box;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+    li {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+    li:hover {
+      background-color: #f0f0f0;
+      cursor: pointer;
+    }
+    .details {
+      margin-top: 1em;
+      padding: 1em;
+      border: 1px solid #ccc;
+      display: none;
+    }
   </style>
 </head>
 <body>
+  <h2 style="text-transform: lowercase;">bki projektbrowser</h2>
+  <input type="text" id="search" placeholder="suche...">
+  <ul id="projektListe">
+    <li data-title="büroeingangszone und besprechung (1300-0107)" data-id="1300-0107" onclick="showDetails(this)">büroeingangszone und besprechung (1300-0107)</li>
+    <li data-title="gerichtsgebäude - eingangsbereich (1200-0001)" data-id="1200-0001" onclick="showDetails(this)">gerichtsgebäude - eingangsbereich (1200-0001)</li>
+    <li data-title="verwaltungsgebäude (1300-0109)" data-id="1300-0109" onclick="showDetails(this)">verwaltungsgebäude (1300-0109)</li>
+    <li data-title="gerichtsgebäude - gerichtssaal (1200-0002)" data-id="1200-0002" onclick="showDetails(this)">gerichtsgebäude - gerichtssaal (1200-0002)</li>
+    <li data-title="wohn- und geschäftshaus (6100-1379)" data-id="6100-1379" onclick="showDetails(this)">wohn- und geschäftshaus (6100-1379)</li>
+    <!-- ... hier alle weiteren <li> Einträge einfügen ... -->
+  </ul>
 
-<h1>HOAI-Angebot inkl. LPH, Erklärungen & BKI-Vergleich</h1>
+  <div class="details" id="detailsBox">
+    <h3 style="text-transform: lowercase;">projekt-details</h3>
+    <p><strong>kennziffer:</strong> <span id="detailId"></span></p>
+    <p><strong>titel:</strong> <span id="detailTitle"></span></p>
+  </div>
 
-<div class="section">
-  <h2>1. Projektangaben</h2>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const searchBox = document.getElementById('search');
+      const items = document.querySelectorAll('#projektListe li');
+      const detailId = document.getElementById('detailId');
+      const detailTitle = document.getElementById('detailTitle');
+      const detailsBox = document.getElementById('detailsBox');
 
-  <label for="nutzung">Nutzungsart / Gebäudetyp:</label>
-  <input type="text" id="nutzung" placeholder="z. B. Einfamilienhaus, Atelier">
-  <small>Beispiel: Einfamilienhaus, Atelier, Kita, Scheune</small>
+      searchBox.addEventListener('input', function () {
+        const filter = this.value.toLowerCase();
+        items.forEach(li => {
+          const title = li.dataset.title;
+          li.style.display = title.startsWith(filter) ? '' : 'none';
+        });
+      });
 
-  <label for="bgf">Bruttogrundfläche (BGF) in m²:</label>
-  <input type="number" id="bgf" value="100">
-  <small>Die BGF ist die gesamte Fläche des Gebäudes, gemessen an den äußeren Umfassungswänden.</small>
-
-  <label for="bauweise">Bauweise:</label>
-  <select id="bauweise">
-    <option value="1800">Einfach (1.800 €/m²)</option>
-    <option value="2200" selected>Mittel (2.200 €/m²)</option>
-    <option value="2800">Hochwertig (2.800 €/m²)</option>
-  </select>
-  <small>
-    <b>Einfach:</b> kostengünstige Materialien, einfache Technik<br>
-    <b>Mittel:</b> übliche Standards im Wohnungsbau<br>
-    <b>Hochwertig:</b> gehobene Ausstattung, hohe technische Anforderungen
-  </small>
-
-  <label for="honorarzone">Honorarzone:</label>
-  <select id="honorarzone">
-    <option value="1">Zone I – sehr geringe Anforderungen</option>
-    <option value="2" selected>Zone II – geringe Anforderungen</option>
-    <option value="3">Zone III – mittlere Anforderungen</option>
-    <option value="4">Zone IV – hohe Anforderungen</option>
-    <option value="5">Zone V – sehr hohe Anforderungen</option>
-  </select>
-  <small>Die Honorarzone beschreibt den Schwierigkeitsgrad des Projekts laut HOAI.</small>
-
-  <label for="satz">Honorarsatz:</label>
-  <select id="satz">
-    <option value="min">Mindestsatz</option>
-    <option value="mittel" selected>Mittelsatz</option>
-    <option value="max">Höchstsatz</option>
-  </select>
-  <small>Wähle je nach Aufwand und Anspruch deines Projekts den Satz aus der HOAI-Honorartafel.</small>
-
-  <h3>Leistungsphasen auswählen:</h3>
-  <div id="lph-container"></div>
-</div>
-
-<div class="section">
-  <h2>2. BKI-Vergleichsprojekte</h2>
-  <p><i>Basierend auf Nutzungsart und Fläche (±20 %)</i></p>
-  <div id="bki-resultate">Keine Daten geladen.</div>
-</div>
-
-<div class="section">
-  <h2>3. Honorarergebnis</h2>
-  <p><strong>Anrechenbare Kosten:</strong> <span id="kosten">–</span> €</p>
-  <p><strong>Grundhonorar (100 % LPH):</strong> <span id="grundhonorar">–</span> €</p>
-  <p><strong>LPH-Gesamtanteil:</strong> <span id="lphsumme">–</span> %</p>
-  <p><strong>Gesamthonorar inkl. 5 % NK:</strong> <span id="gesamt">–</span> €</p>
-</div>
-
-<script>
-const hoaiTabelle = {{
-  "1": [83, 97],
-  "2": [101, 119],
-  "3": [117, 139],
-  "4": [135, 160],
-  "5": [152, 180]
-}};
-
-const bkiDaten = {BKI_JSON_HIER_EINFÜGEN}; // <-- hier kommt dein JSON rein
-
-const lphDaten = [
-  {{ nummer: 1, name: "Grundlagenermittlung", standard: 2 }},
-  {{ nummer: 2, name: "Vorplanung", standard: 7 }},
-  {{ nummer: 3, name: "Entwurfsplanung", standard: 15 }},
-  {{ nummer: 4, name: "Genehmigungsplanung", standard: 3 }},
-  {{ nummer: 5, name: "Ausführungsplanung", standard: 38 }},
-  {{ nummer: 6, name: "Vorbereitung der Vergabe", standard: 10 }},
-  {{ nummer: 7, name: "Mitwirkung bei der Vergabe", standard: 4 }},
-  {{ nummer: 8, name: "Objektüberwachung", standard: 18 }},
-  {{ nummer: 9, name: "Objektbetreuung", standard: 3 }}
-];
-
-const lphContainer = document.getElementById("lph-container");
-lphDaten.forEach(lph => {{
-  const div = document.createElement("div");
-  div.className = "lph-row";
-  div.innerHTML = `
-    <input type="checkbox" id="lph${{lph.nummer}}" checked>
-    <label for="lph${{lph.nummer}}">LPH ${{lph.nummer}}: ${{lph.name}}</label>
-    <input type="number" id="pct${{lph.nummer}}" value="${{lph.standard}}" min="0" max="100"> %
-  `;
-  lphContainer.appendChild(div);
-}});
-
-function berechne() {{
-  const bgf = parseFloat(document.getElementById("bgf").value);
-  const standard = parseFloat(document.getElementById("bauweise").value);
-  const zone = document.getElementById("honorarzone").value.charAt(0);
-  const satz = document.getElementById("satz").value;
-  const nutzung = document.getElementById("nutzung").value.toLowerCase();
-
-  const anrKosten = bgf * standard;
-  document.getElementById("kosten").textContent = anrKosten.toLocaleString("de-DE");
-
-  const [min, max] = hoaiTabelle[zone];
-  let proTsd = min;
-  if (satz === "mittel") proTsd = (min + max) / 2;
-  if (satz === "max") proTsd = max;
-
-  const grund = anrKosten / 1000 * proTsd;
-  document.getElementById("grundhonorar").textContent = grund.toLocaleString("de-DE", {{minimumFractionDigits: 2}});
-
-  let lphSum = 0;
-  lphDaten.forEach(lph => {{
-    const cb = document.getElementById(`lph${{lph.nummer}}`);
-    const pct = parseFloat(document.getElementById(`pct${{lph.nummer}}`).value || 0);
-    if (cb.checked) {{
-      lphSum += pct;
-    }}
-  }});
-  document.getElementById("lphsumme").textContent = lphSum.toFixed(2);
-
-  const teilhonorar = grund * (lphSum / 100);
-  const nk = teilhonorar * 0.05;
-  const gesamt = teilhonorar + nk;
-  document.getElementById("gesamt").textContent = gesamt.toLocaleString("de-DE", {{minimumFractionDigits: 2}});
-
-  const ergebnisse = bkiDaten.filter(p => {{
-    const beschr = (p.beschreibung || "").toLowerCase();
-    const flaechenMatch = beschr.match(/(\\d{{2,4}})\\s*m²/);
-    let flaeche = flaechenMatch ? parseInt(flaechenMatch[1]) : null;
-    return beschr.includes(nutzung) && flaeche && Math.abs(flaeche - bgf) <= bgf * 0.2;
-  }});
-  const out = document.getElementById("bki-resultate");
-  out.innerHTML = ergebnisse.length
-    ? ergebnisse.map(p => `<div class="projekt"><b>${{p.objektnr}}</b><br>${{p.beschreibung}}</div>`).join("")
-    : "<p>Keine passenden Referenzen gefunden.</p>";
-}}
-
-document.querySelectorAll("input, select").forEach(el => {{
-  el.addEventListener("input", berechne);
-}});
-berechne();
-</script>
-
+      window.showDetails = function (el) {
+        detailId.textContent = el.dataset.id;
+        detailTitle.textContent = el.textContent;
+        detailsBox.style.display = 'block';
+      };
+    });
+  </script>
 </body>
 </html>
