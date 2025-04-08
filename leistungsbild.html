@@ -1,472 +1,196 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Leistungsbild</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet"/>
+  <meta charset="UTF-8">
+  <title>HOAI-Angebotsrechner</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Poppins', sans-serif;
-      background: #fff;
+      background-color: #fff;
       color: #000;
       margin: 0;
-      padding: 2rem;
-      text-align: center;
+      padding: 2em;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
     }
-
-    header {
-      font-size: 2rem;
-      font-weight: 600; /* statt nur "bold" */
-      margin-top: 0px;
-      margin-bottom: 20px;
-      text-transform: none;
-    }
-    
-    .container {
-      max-width: 300px;
-      margin: 0 auto;
-      text-align: center;
-    }
-
-    .back-arrow {
-      position: fixed; 
-      top: 10px; 
-      left: 10px; 
-      cursor: pointer; 
-      font-size: 2rem; 
-      color: #800020; 
-      font-weight: 900; 
-      z-index: 9999;
-        }
-
-    .question {
-      margin: 2rem 0 1rem;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .options, .dropdown, .checkbox-group {
-      margin: 0.5rem 0 0.75rem 0;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0rem;
-      margin: 0.5rem 0 0.5rem 0;
-    }
-
-    .option-button {
-      background: none;
-      border: none;
-      color: #000;
-      padding: 0.75rem 1rem;
-      cursor: pointer;
-      font-size: 1rem;
-      max-width: 300px;
-      width: 100%;
-      text-align: left;
-      white-space: normal;
-      overflow-wrap: break-word;
-    }
-
-    .option-button.selected {
+    h1 {
+      font-weight: 600;
+      font-size: 1.8em;
+      margin-bottom: 0.5em;
       color: #800020;
-      border-bottom: 1px solid #800020;
-      margin-top: -0,25rem;
-      margin-bottom: 0rem;
     }
-     
-    .hidden {
-      display: none;
+    h2 {
+      font-weight: 500;
+      font-size: 1.4em;
+      margin-top: 2em;
+      color: #800020;
     }
-
-    .underline {
-      height: 1px;
-      background-color: #800020;
-      margin-top: -0.25rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .checkbox-group {
-      text-align: left;
-    }
-
-    .checkbox-group label {
+    label {
       display: block;
-      margin: 0.25rem 0;
-      cursor: pointer;
+      margin-top: 1em;
+      font-weight: 500;
     }
-
-    .checkbox-group input[type="checkbox"] {
-      margin-right: 0.5rem;
+    select, input[type="number"], input[type="text"] {
+      width: 100%;
+      padding: 0.6em;
+      font-size: 1em;
+      margin-top: 0.3em;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
     }
-    
-    .footer {
-      position: fixed; 
-      bottom: 0; 
-      width: 100%; 
-      text-align: center; 
-      padding: 10px;
-      display: flex; 
-      justify-content: center; 
-      gap: 20px; 
-      color: #777; 
-      background: none;
-   }
-    
-      </style>
+    small {
+      display: block;
+      color: #666;
+      margin-bottom: 1em;
+    }
+    .lph-row {
+      display: flex;
+      align-items: center;
+      margin-top: 0.5em;
+    }
+    .lph-row label {
+      flex: 1;
+    }
+    .lph-row input[type="number"] {
+      width: 70px;
+      margin-left: 1em;
+    }
+    .projekt {
+      background: #f9f9f9;
+      margin: 1em 0;
+      padding: 1em;
+      border-left: 4px solid #800020;
+    }
+    .section {
+      margin-top: 2em;
+    }
+  </style>
 </head>
 <body>
-<div onclick="window.location.href='index.html'" style="position:fixed; top:10px; left:10px; cursor:pointer; font-size:2rem; color:#800020; font-weight:900; z-index:9999;">
-    &larr;
+
+<h1>HOAI-Angebotsrechner</h1>
+
+<div class="section">
+  <h2>1. Projektangaben</h2>
+
+  <label for="nutzung">Nutzungsart / Gebäudetyp:</label>
+  <input type="text" id="nutzung" placeholder="z. B. Einfamilienhaus, Atelier">
+  <small>Beschreibt den Gebäudetyp oder die Funktion</small>
+
+  <label for="bgf">Bruttogrundfläche (BGF) in m²:</label>
+  <input type="number" id="bgf" value="100">
+  <small>Fläche der äußeren Umfassungswände</small>
+
+  <label for="bauweise">Bauweise:</label>
+  <select id="bauweise">
+    <option value="1800">Einfach</option>
+    <option value="2200" selected>Mittel</option>
+    <option value="2800">Hochwertig</option>
+  </select>
+
+  <label for="honorarzone">Honorarzone:</label>
+  <select id="honorarzone">
+    <option value="1">Zone I</option>
+    <option value="2" selected>Zone II</option>
+    <option value="3">Zone III</option>
+    <option value="4">Zone IV</option>
+    <option value="5">Zone V</option>
+  </select>
+
+  <label for="satz">Honorarsatz:</label>
+  <select id="satz">
+    <option value="min">Mindestsatz</option>
+    <option value="mittel" selected>Mittelsatz</option>
+    <option value="max">Höchstsatz</option>
+  </select>
+
+  <h2>2. Leistungsphasen</h2>
+  <div id="lph-container"></div>
 </div>
-  
-  <header>Leistungsbild</header>
 
-  <div class="container">
-    <!-- Frage 1 -->
-    <div class="question" onclick="resetOptions('q1')">Was brauchst du?</div>
-    <div class="options" id="q1">
-      <button class="option-button" onclick="selectOption(this, 'q2')">• Planung eines Bauvorhabens</button>
-      <button class="option-button" onclick="selectOption(this, 'q2')">• Umbauen oder Modernisierung</button>
-      <button class="option-button" onclick="selectOption(this, 'q2')">• Architektonische Unterstützung</button>
-    </div>
+<div class="section">
+  <h2>3. Ergebnisse</h2>
+  <p><strong>Anrechenbare Kosten:</strong> <span id="kosten">–</span> €</p>
+  <p><strong>Grundhonorar (100 %):</strong> <span id="grundhonorar">–</span> €</p>
+  <p><strong>LPH-Anteil gesamt:</strong> <span id="lphsumme">–</span> %</p>
+  <p><strong>Honorar inkl. NK (5 %):</strong> <span id="gesamt">–</span> €</p>
+</div>
 
-    <!-- Frage 2 -->
-    <div class="question hidden" onclick="resetOptions('q2')">Wie weit bist du?</div>
-    <div class="options hidden" id="q2">
-      <button class="option-button" onclick="selectOption(this, 'q_support')">• Ich fange grade erst an</button>
-      <button class="option-button" onclick="selectOption(this, 'q3')">• Ich habe eine grobe Idee</button>
-      <button class="option-button" onclick="selectOption(this, 'q3')">• Ich bin schon ziemlich weit</button>
-    </div>
+<script>
+const hoaiTabelle = {
+  "1": [83, 97],
+  "2": [101, 119],
+  "3": [117, 139],
+  "4": [135, 160],
+  "5": [152, 180]
+};
 
-    <!-- Frage 3a – Unterstützung -->
-    <div class="question hidden" onclick="resetOptions('q_support')">Worum geht es dir?</div>
-    <div class="options hidden" id="q_support">
-      <button class="option-button" onclick="selectOption(this); showSection('q3')">• Beratungsgespräch</button>
-      <button class="option-button" onclick="selectOption(this); showSection('q3')">• Machbarkeitsstudien</button>
-      <button class="option-button" onclick="selectOption(this); showSection('q3')">• Entwicklung meines Konzepts</button>
-      <button class="option-button" onclick="selectOption(this); showSection('q3')">• Budget- und Flächenabschätzung</button>
-      <button class="option-button" onclick="selectOption(this); showSection('q3')">• Noch unklar</button>
-    </div>
+const lphDaten = [
+  { nummer: 1, name: "Grundlagenermittlung", standard: 2 },
+  { nummer: 2, name: "Vorplanung", standard: 7 },
+  { nummer: 3, name: "Entwurfsplanung", standard: 15 },
+  { nummer: 4, name: "Genehmigungsplanung", standard: 3 },
+  { nummer: 5, name: "Ausführungsplanung", standard: 38 },
+  { nummer: 6, name: "Vorbereitung der Vergabe", standard: 10 },
+  { nummer: 7, name: "Mitwirkung bei der Vergabe", standard: 4 },
+  { nummer: 8, name: "Objektüberwachung", standard: 18 },
+  { nummer: 9, name: "Objektbetreuung", standard: 3 }
+];
 
-    <!-- Frage 3 – Projektgröße -->
-    <div class="question hidden" id="q3-label">Wie groß wird es?</div>
-      <div class="options hidden" id="q3">
-        <button class="option-button" onclick="selectOption(this, 'q4')">• Bis 50 m²</button>
-        <button class="option-button" onclick="selectOption(this, 'q4')">• Bis 100 m²</button>
-        <button class="option-button" onclick="selectOption(this, 'q4')">• Bis 150 m²</button>
-        <button class="option-button" onclick="selectOption(this, 'q4')">• Bis 200 m²</button>
-        <button class="option-button" onclick="selectOption(this, 'q4')">• Bis 250 m²</button>
-        <button class="option-button" onclick="selectOption(this, 'q4')">• Bis 300 m²</button>
-        <button class="option-button" onclick="selectOption(this, 'q4')">• Noch unklar</button>
-    </div>
+const lphContainer = document.getElementById("lph-container");
+lphDaten.forEach(lph => {
+  const div = document.createElement("div");
+  div.className = "lph-row";
+  div.innerHTML = `
+    <input type="checkbox" id="lph${lph.nummer}" checked>
+    <label for="lph${lph.nummer}">LPH ${lph.nummer}: ${lph.name}</label>
+    <input type="number" id="pct${lph.nummer}" value="${lph.standard}" min="0" max="100"> %
+  `;
+  lphContainer.appendChild(div);
+});
 
-    <!-- Frage 3b – Wenn Größe unklar -->
-    <div class="question hidden" id="q_size_hint">Sollen wir das gemeinsam entwickeln?</div>
-    <div class="options hidden" id="q_size_hint_dropdown">
-      <button class="option-button" onclick="selectOption(this, 'q4')">• Ja, lass uns das besprechen</button>
-      <button class="option-button" onclick="selectOption(this, 'q4')">• Nein, später entscheiden</button>
-    </div>
+function berechne() {
+  const bgf = parseFloat(document.getElementById("bgf").value);
+  const standard = parseFloat(document.getElementById("bauweise").value);
+  const zone = document.getElementById("honorarzone").value.charAt(0);
+  const satz = document.getElementById("satz").value;
 
-    <!-- Frage 4 – Pläne vorhanden -->
-    <div class="question hidden" onclick="resetOptions('q4')">Sind Pläne vorhanden?</div>
-    <div class="options hidden" id="q4">
-      <button class="option-button" onclick="selectOption(this); checkPlans('ja')">• Ja</button>
-      <button class="option-button" onclick="selectOption(this); checkPlans('nein')">• Nein</button>
-      <button class="option-button" onclick="selectOption(this); checkPlans('unvollständig')">• Nur Skizzen</button>
-    </div>
+  const anrKosten = bgf * standard;
+  document.getElementById("kosten").textContent = anrKosten.toLocaleString("de-DE");
 
-    <!-- Frage 4b – Pläne erstellen -->
-    <div class="question hidden" id="q_pläne_erstellen">Sollen die Pläne durch mich erstellt werden?</div>
-    <div class="options hidden" id="q_pläne_erstellen_dropdown">
-      <button class="option-button" onclick="selectOption(this, 'q5')">• Ja</button>
-      <button class="option-button" onclick="selectOption(this, 'q5')">• Nein</button>
-      <button class="option-button" onclick="selectOption(this, 'q5')">• Noch unklar</button>
-    </div>
+  const [min, max] = hoaiTabelle[zone];
+  let proTsd = min;
+  if (satz === "mittel") proTsd = (min + max) / 2;
+  if (satz === "max") proTsd = max;
 
-    <!-- Frage 5 – Planungstiefe -->
-    <div class="question hidden" onclick="resetOptions('q5')">Wie weit soll die Planung gehen?</div>
-    <div class="options hidden" id="q5">
-      <button class="option-button" onclick="selectOption(this); checkPlanningDepth('bauantrag')">• Bis zum Bauantrag</button>
-      <button class="option-button" onclick="selectOption(this); checkPlanningDepth('ausführung')">• Bis zur Ausführung</button>
-      <button class="option-button" onclick="selectOption(this); checkPlanningDepth('vergabe')">• Mit Vergabevorbereitung</button>
-      <button class="option-button" onclick="selectOption(this); checkPlanningDepth('vollständig')">• Planung von A-Z</button>
-      <button class="option-button" onclick="selectOption(this); checkPlanningDepth('unklar')">• Noch unklar</button>
-    </div>
+  const grund = anrKosten / 1000 * proTsd;
+  document.getElementById("grundhonorar").textContent = grund.toLocaleString("de-DE", { minimumFractionDigits: 2 });
 
-    <!-- Frage 5b – Vergabe -->
-    <div class="question hidden" id="q_vergabe">Sollen Bauleistungen ausgeschrieben werden?</div>
-    <div class="options hidden" id="q_vergabe_dropdown">
-      <button class="option-button" onclick="selectOption(this, 'q6')">• Ja</button>
-      <button class="option-button" onclick="selectOption(this, 'q6')">• Nein</button>
-      <button class="option-button" onclick="selectOption(this, 'q6')">• Noch offen</button>
-    </div>
-
-    <!-- Frage 6 – Besondere Anforderungen -->
-    <div class="question hidden" onclick="resetOptions('q6')">Gibt es besondere Anforderungen?</div>
-    <div class="checkbox-group hidden" id="q6">
-      <label><input type="checkbox" name="anforderung" value="denkmalschutz">Denkmalschutz</label>
-      <label><input type="checkbox" name="anforderung" value="barrierefreiheit">Barrierefreiheit</label>
-      <label><input type="checkbox" name="anforderung" value="brandschutz">Brandschutz / Sondernutzung</label>
-      <label><input type="checkbox" name="anforderung" value="nachhaltigkeit">Nachhaltigkeit</label>
-      <label><input type="checkbox" name="anforderung" value="stellplätze">Stellplätze / Garagen</label>
-      <label><input type="checkbox" name="anforderung" value="keine">Keine besonderen Anforderungen</label>
-    </div>
-
-    <!-- Projektzeitraum -->
-    <div class="question hidden" id="q_time">Wann soll das Projekt starten?</div>
-    <div class="options hidden" id="q_time_dropdown">
-      <button class="option-button" onclick="selectOption(this); generateSummary()">• Sofort</button>
-      <button class="option-button" onclick="selectOption(this); generateSummary()">• In 1–3 Monaten</button>
-      <button class="option-button" onclick="selectOption(this); generateSummary()">• In 3–6 Monaten</button>
-      <button class="option-button" onclick="selectOption(this); generateSummary()">• Später</button>
-      <button class="option-button" onclick="selectOption(this); generateSummary()">• Noch unklar</button>
-    </div>
-
-    <!-- Zusammenfassung -->
-    <div class="question hidden" id="summaryTitle">Zusammenfassung Ihrer Angaben</div>
-    <div class="hidden" id="summaryOutput" style="text-align: left; font-size: 0.9rem; line-height: 1.4; margin-bottom: 2rem; border-top: 1px solid #000; padding-top: 1rem;"></div>
-
-    <!-- Angebotsanfrage Button -->
-    <div class="hidden" id="submitBtn">
-    <a id="mailtoBtn" href="#"
-   style="display: margin-bottom: 20px; inline-block; background: none; color: #800020; border: none;
-          font-weight: bold; text-decoration: underline; cursor: pointer;">
-   Angebot jetzt anfordern
-    </a>    
-    </div>
-  
-   <footer class="footer">
-        <div onclick="window.location.href='impressum.html'">Impressum</div>
-        <div>© 2025 studio lumen</div>
-    </footer>
-
-  <!-- Funktionaler JavaScript-Block -->
-  <script>
-     function selectOption(button, nextId = null) {
-  const parent = button.parentElement;
-  const buttons = parent.querySelectorAll('.option-button');
-
-  const isAlreadySelected = button.classList.contains('selected');
-
-  if (isAlreadySelected) {
-    // 1. Alle Antwortoptionen dieser Frage wieder anzeigen
-    buttons.forEach(btn => btn.classList.remove('hidden'));
-
-    // 2. Alle Folgefragen ab hier ausblenden und zurücksetzen
-    let next = parent.parentElement.nextElementSibling;
-    while (next) {
-      if (next.classList.contains('options') || next.classList.contains('dropdown') || next.classList.contains('checkbox-group')) {
-        next.classList.add('hidden');
-        const btns = next.querySelectorAll('.option-button');
-        btns.forEach(b => b.classList.remove('selected', 'hidden'));
-        const checkboxes = next.querySelectorAll('input[type="checkbox"]');
-        checkboxes.forEach(cb => cb.checked = false);
-      }
-      if (next.classList.contains('question')) {
-        next.classList.add('hidden');
-      }
-      next = next.nextElementSibling;
-    }
-
-    return;
-  }
-
-  // Normales Verhalten: Auswahl setzen, andere ausblenden
-  buttons.forEach(btn => {
-    btn.classList.remove('selected', 'hidden');
-    if (btn !== button) btn.classList.add('hidden');
-  });
-  button.classList.add('selected');
-
-  if (nextId) {
-    showSection(nextId);
-  }
-}
-
-    function showSection(id) {
-      const section = document.getElementById(id);
-      const label = section?.previousElementSibling;
-      if (section) section.classList.remove('hidden');
-      if (label) label.classList.remove('hidden');
-    }
-
-    function resetOptions(id) {
-      const allContainers = document.querySelectorAll('.options, .dropdown, .checkbox-group, .question');
-      allContainers.forEach(container => {
-        const isFirst = container.id === 'q1' || container.previousElementSibling?.textContent === 'Was brauchst du?';
-        if (isFirst) {
-          container.classList.remove('hidden');
-          const buttons = container.querySelectorAll('.option-button');
-          buttons.forEach(btn => btn.classList.remove('selected', 'hidden'));
-} else {
-  if (!container.classList.contains('question')) {
-    container.classList.add('hidden');
-  }
-}
-        const buttons = container.querySelectorAll('.option-button');
-        buttons.forEach(btn => btn.classList.remove('selected', 'hidden'));
-        const selects = container.querySelectorAll('select');
-        selects.forEach(select => {
-          select.selectedIndex = 0;
-          select.classList.remove('selected');
-        });
-        const checkboxes = container.querySelectorAll('input[type="checkbox"]');
-        checkboxes.forEach(cb => cb.checked = false);
-        const underlines = container.querySelectorAll('.underline');
-        underlines.forEach(line => line.remove());
-      });
-    }
-
-    function revealNext(nextId) { showSection(nextId); }
-
-    function checkSize(value) {
-      if (value === 'unklar') {
-        showSection('q_size_hint');
-        showSection('q_size_hint_dropdown');
-      } else {
-        showSection('q4');
-      }
-    }
-
-    function checkPlans(value) {
-      const createSection = document.getElementById('q_pläne_erstellen');
-      const createDropdown = document.getElementById('q_pläne_erstellen_dropdown');
-      if (value === 'nein' || value === 'unvollständig') {
-        showSection('q_pläne_erstellen');
-        showSection('q_pläne_erstellen_dropdown');
-      } else {
-        createSection.classList.add('hidden');
-        createDropdown.classList.add('hidden');
-        const select = createDropdown.querySelector('select');
-        if (select) {
-          select.selectedIndex = 0;
-          select.classList.remove('selected');
-        }
-      }
-      showSection('q5');
-    }
-
-    function checkPlanningDepth(value) {
-      const vergabeQ = document.getElementById('q_vergabe');
-      const vergabeDropdown = document.getElementById('q_vergabe_dropdown');
-      if (value === 'vergabe' || value === 'vollständig') {
-        showSection('q_vergabe');
-        showSection('q_vergabe_dropdown');
-      } else {
-        vergabeQ.classList.add('hidden');
-        vergabeDropdown.classList.add('hidden');
-        const select = vergabeDropdown.querySelector('select');
-        if (select) {
-          select.selectedIndex = 0;
-          select.classList.remove('selected');
-        }
-      }
-      showSection('q6');
-    }
-
-    document.querySelectorAll('#q6 input[type="checkbox"]').forEach(cb => {
-      cb.addEventListener('change', () => {
-        const anyChecked = [...document.querySelectorAll('#q6 input[type="checkbox"]')].some(cb => cb.checked);
-        if (anyChecked) {
-          showSection('q_time');
-          showSection('q_time_dropdown');
-        }
-      });
-    });
-
-    document.querySelectorAll('select').forEach(select => {
-      select.addEventListener('change', function () {
-        if (this.value) {
-          this.classList.add('selected');
-        }
-      });
-    });
-
-    function generateSummary() {
-      const summary = [];
-      const getText = selector => {
-        const el = document.querySelector(selector);
-        return el?.value || el?.innerText || '';
-      };
-
-      const needs = document.querySelector('#q1 .option-button.selected')?.innerText || '';
-      const status = document.querySelector('#q2 .option-button.selected')?.innerText || '';
-      const support = document.querySelector('#q_support .option-button.selected')?.innerText || '';
-      const size = document.querySelector('#q3 .option-button.selected')?.innerText || '';
-      const plans = document.querySelector('#q4 .option-button.selected')?.innerText || '';
-      const createPlans = document.querySelector('#q_pläne_erstellen_dropdown select')?.value || '';
-      const depth = document.querySelector('#q5 .option-button.selected')?.innerText || '';
-      const vergabe = document.querySelector('#q_vergabe_dropdown select')?.value || '';
-      const extras = [...document.querySelectorAll('#q6 input[type="checkbox"]:checked')].map(cb => cb.parentElement.innerText.trim());
-      const time = document.querySelector('#q_time_dropdown .option-button.selected')?.innerText || '';
-
-      summary.push(`<strong>Was wird benötigt:</strong> ${needs}`);
-      summary.push(`<strong>Projektstatus:</strong> ${status}`);
-      if (support) summary.push(`<strong>Art der Unterstützung:</strong> ${support}`);
-      summary.push(`<strong>Projektgröße:</strong> ${size}`);
-      summary.push(`<strong>Pläne vorhanden:</strong> ${plans}`);
-      if (plans === 'Nein' || plans === 'Unzureichend') summary.push(`<strong>Pläne erstellen:</strong> ${createPlans}`);
-      summary.push(`<strong>Planungstiefe:</strong> ${depth}`);
-      if (depth === 'vergabe' || depth === 'vollständig') summary.push(`<strong>Vergabeleistung gewünscht:</strong> ${vergabe}`);
-      if (extras.length > 0) summary.push(`<strong>Besondere Anforderungen:</strong> ${extras.join(', ')}`);
-      summary.push(`<strong>Geplanter Projektbeginn:</strong> ${time}`);
-
-      const lphs = new Set();
-      if (status.includes("fange") || support) lphs.add(0);
-      if (status.includes("fange") || support || plans === "Nein" || plans === "Unzureichend") lphs.add(1);
-      if (support || status.includes("grobe") || plans === "Nein" || plans === "Unzureichend") lphs.add(2);
-      if (status.includes("ziemlich")) lphs.add(3);
-      if (depth === "• Bis zum Bauantrag") lphs.add(4);
-      if (depth === "• Bis zur Ausführung") { lphs.add(4); lphs.add(5); }
-      if (depth === "• Planung von A-Z") { lphs.add(4); lphs.add(5); lphs.add(6); lphs.add(7); }
-      if (depth === "• Mit Vergabevorbereitung") { lphs.add(6); lphs.add(7); }
-
-      const full = new Set(lphs);
-      const list = [...full];
-      const max = Math.max(...list);
-      for (let i = 1; i < max; i++) {
-        if (full.has(i - 1) && full.has(i + 1)) full.add(i);
-      }
-      const final = [...full].sort((a, b) => a - b).map(n => `LPH ${n}`);
-    if (final.length > 0) {
-  summary.push(`<strong>Beauftragte Leistungsphasen:</strong><br>${final.join(", ")}`);
-
-  // Unterpunkte je Phase (nur die gewählten)
-  const lphDetails = {
-    0: "Beratung, Machbarkeit, Standortbewertung, Konzept",
-    1: "Grundlagenermittlung, Bestandsaufnahme, Zieldefinition",
-    2: "Vorplanung, Skizzen, Kostenschätzung, Behördenabstimmung",
-    3: "Entwurfsplanung, Kostenberechnung, Zeichnungen",
-    4: "Genehmigungsplanung, Bauantragsunterlagen, Behördengespräche",
-    5: "Ausführungsplanung, technische Details, Werkpläne",
-    6: "Vorbereitung der Vergabe, Leistungsverzeichnisse",
-    7: "Mitwirkung bei der Vergabe, Angebotsprüfung"
-  };
-
-  summary.push("<strong>Leistungsinhalte:</strong>");
-  final.forEach(lph => {
-    const num = parseInt(lph.replace("LPH ", ""));
-    if (lphDetails[num]) {
-      summary.push(`<em>${lph}:</em> ${lphDetails[num]}`);
+  let lphSum = 0;
+  lphDaten.forEach(lph => {
+    const cb = document.getElementById(`lph${lph.nummer}`);
+    const pct = parseFloat(document.getElementById(`pct${lph.nummer}`).value || 0);
+    if (cb.checked) {
+      lphSum += pct;
     }
   });
+
+  document.getElementById("lphsumme").textContent = lphSum.toFixed(2);
+
+  const teilhonorar = grund * (lphSum / 100);
+  const nk = teilhonorar * 0.05;
+  const gesamt = teilhonorar + nk;
+  document.getElementById("gesamt").textContent = gesamt.toLocaleString("de-DE", { minimumFractionDigits: 2 });
 }
 
-      const summaryHtml = summary.map(line => `<p>${line}</p>`).join('');
-      const summaryText = summary.map(line => line.replace(/<[^>]+>/g, '')).join('\n');
+document.querySelectorAll("input, select").forEach(el => {
+  el.addEventListener("input", berechne);
+});
+berechne();
+</script>
 
-      document.getElementById('summaryOutput').innerHTML = summaryHtml;
-
-      const subject = encodeURIComponent("Angebotsanfrage");
-      const body = encodeURIComponent(`Folgende Angaben wurden gemacht:\n\n${summaryText}\n\nSende mir bitte ein Angebot.`);
-      document.getElementById('mailtoBtn').href = `mailto:studiolumenarchitektur@gmail.com?subject=${subject}&body=${body}`;
-
-      document.getElementById('summaryTitle').classList.remove('hidden');
-      document.getElementById('summaryOutput').classList.remove('hidden');
-      document.getElementById('submitBtn').classList.remove('hidden');
-    }
-  </script>
 </body>
 </html>
