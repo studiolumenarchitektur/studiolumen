@@ -194,3 +194,88 @@ berechne();
 
 </body>
 </html>
+
+<div class="section">
+  <h2>3. Ergebnisse</h2>
+  <p><strong>Anrechenbare Kosten:</strong> <span id="kosten">–</span> €</p>
+  <p><strong>Grundhonorar (100 %):</strong> <span id="grundhonorar">–</span> €</p>
+  <p><strong>LPH-Anteil gesamt:</strong> <span id="lphsumme">–</span> %</p>
+  <p><strong>Honorar inkl. NK (5 %):</strong> <span id="gesamt">–</span> €</p>
+</div>
+
+<script>
+const hoaiTabelle = {
+  "1": [83, 97],
+  "2": [101, 119],
+  "3": [117, 139],
+  "4": [135, 160],
+  "5": [152, 180]
+};
+
+const lphDaten = [
+  { nummer: 1, name: "Grundlagenermittlung", standard: 2 },
+  { nummer: 2, name: "Vorplanung", standard: 7 },
+  { nummer: 3, name: "Entwurfsplanung", standard: 15 },
+  { nummer: 4, name: "Genehmigungsplanung", standard: 3 },
+  { nummer: 5, name: "Ausführungsplanung", standard: 38 },
+  { nummer: 6, name: "Vorbereitung der Vergabe", standard: 10 },
+  { nummer: 7, name: "Mitwirkung bei der Vergabe", standard: 4 },
+  { nummer: 8, name: "Objektüberwachung", standard: 18 },
+  { nummer: 9, name: "Objektbetreuung", standard: 3 }
+];
+
+const lphContainer = document.getElementById("lph-container");
+lphDaten.forEach(lph => {
+  const div = document.createElement("div");
+  div.className = "lph-row";
+  div.innerHTML = `
+    <input type="checkbox" id="lph${lph.nummer}" checked>
+    <label for="lph${lph.nummer}">LPH ${lph.nummer}: ${lph.name}</label>
+    <input type="number" id="pct${lph.nummer}" value="${lph.standard}" min="0" max="100"> %
+  `;
+  lphContainer.appendChild(div);
+});
+
+function berechne() {
+  const bgf = parseFloat(document.getElementById("bgf").value);
+  const standard = parseFloat(document.getElementById("bauweise").value);
+  const zone = document.getElementById("honorarzone").value.charAt(0);
+  const satz = document.getElementById("satz").value;
+
+  const anrKosten = bgf * standard;
+  document.getElementById("kosten").textContent = anrKosten.toLocaleString("de-DE");
+
+  const [min, max] = hoaiTabelle[zone];
+  let proTsd = min;
+  if (satz === "mittel") proTsd = (min + max) / 2;
+  if (satz === "max") proTsd = max;
+
+  const grund = anrKosten / 1000 * proTsd;
+  document.getElementById("grundhonorar").textContent = grund.toLocaleString("de-DE", { minimumFractionDigits: 2 });
+
+  let lphSum = 0;
+  lphDaten.forEach(lph => {
+    const cb = document.getElementById(`lph${lph.nummer}`);
+    const pct = parseFloat(document.getElementById(`pct${lph.nummer}`).value || 0);
+    if (cb.checked) {
+      lphSum += pct;
+    }
+  });
+
+  document.getElementById("lphsumme").textContent = lphSum.toFixed(2);
+
+  const teilhonorar = grund * (lphSum / 100);
+  const nk = teilhonorar * 0.05;
+  const gesamt = teilhonorar + nk;
+  document.getElementById("gesamt").textContent = gesamt.toLocaleString("de-DE", { minimumFractionDigits: 2 });
+}
+
+document.querySelectorAll("input, select").forEach(el => {
+  el.addEventListener("input", berechne);
+});
+berechne();
+</script>
+
+</body>
+</html>
+
