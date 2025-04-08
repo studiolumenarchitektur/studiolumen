@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>HOAI-Angebot mit LPH-Auswahl & Exaktberechnung</title>
+  <title>HOAI-Angebot komplett</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 2em; background: #f7f7f7; }
     .section { background: #fff; padding: 1em; border-radius: 5px; margin-bottom: 2em; border: 1px solid #ccc; }
@@ -11,32 +11,45 @@
     .lph-row { display: flex; align-items: center; margin-top: 0.5em; }
     .lph-row label { flex: 1; }
     .lph-row input[type="number"] { width: 60px; margin-left: 1em; }
+    .projekt { background: #eef; margin: 1em 0; padding: 1em; border-radius: 4px; }
   </style>
 </head>
 <body>
 
-<h1>HOAI-Angebot mit exakter Tabelle & LPH-Auswahl</h1>
+<h1>HOAI-Angebot inkl. LPH, Erklärungen & BKI-Vergleich</h1>
 
 <div class="section">
-  <h2>1. Angaben</h2>
+  <h2>1. Projektangaben</h2>
+
+  <label for="nutzung">Nutzungsart / Gebäudetyp:</label>
+  <input type="text" id="nutzung" placeholder="z. B. Einfamilienhaus, Atelier">
+  <small>Beispiel: Einfamilienhaus, Atelier, Kita, Scheune</small>
+
   <label for="bgf">Bruttogrundfläche (BGF) in m²:</label>
   <input type="number" id="bgf" value="100">
+  <small>Die BGF ist die gesamte Fläche des Gebäudes, gemessen an den äußeren Umfassungswänden.</small>
 
   <label for="bauweise">Bauweise:</label>
   <select id="bauweise">
-    <option value="1800">Einfach</option>
-    <option value="2200" selected>Mittel</option>
-    <option value="2800">Hochwertig</option>
+    <option value="1800">Einfach (1.800 €/m²)</option>
+    <option value="2200" selected>Mittel (2.200 €/m²)</option>
+    <option value="2800">Hochwertig (2.800 €/m²)</option>
   </select>
+  <small>
+    <b>Einfach:</b> kostengünstige Materialien, einfache Technik<br>
+    <b>Mittel:</b> übliche Standards im Wohnungsbau<br>
+    <b>Hochwertig:</b> gehobene Ausstattung, hohe technische Anforderungen
+  </small>
 
   <label for="honorarzone">Honorarzone:</label>
   <select id="honorarzone">
-    <option value="1">Zone I</option>
-    <option value="2" selected>Zone II</option>
-    <option value="3">Zone III</option>
-    <option value="4">Zone IV</option>
-    <option value="5">Zone V</option>
+    <option value="1">Zone I – sehr geringe Anforderungen</option>
+    <option value="2" selected>Zone II – geringe Anforderungen</option>
+    <option value="3">Zone III – mittlere Anforderungen</option>
+    <option value="4">Zone IV – hohe Anforderungen</option>
+    <option value="5">Zone V – sehr hohe Anforderungen</option>
   </select>
+  <small>Die Honorarzone beschreibt den Schwierigkeitsgrad des Projekts laut HOAI.</small>
 
   <label for="satz">Honorarsatz:</label>
   <select id="satz">
@@ -44,17 +57,24 @@
     <option value="mittel" selected>Mittelsatz</option>
     <option value="max">Höchstsatz</option>
   </select>
+  <small>Wähle je nach Aufwand und Anspruch deines Projekts den Satz aus der HOAI-Honorartafel.</small>
 
-  <h3>Leistungsphasen (LPH) auswählen:</h3>
+  <h3>Leistungsphasen auswählen:</h3>
   <div id="lph-container"></div>
 </div>
 
 <div class="section">
-  <h2>2. Ergebnis</h2>
+  <h2>2. BKI-Vergleichsprojekte</h2>
+  <p><i>Basierend auf Nutzungsart und Fläche (±20 %)</i></p>
+  <div id="bki-resultate">Keine Daten geladen.</div>
+</div>
+
+<div class="section">
+  <h2>3. Honorarergebnis</h2>
   <p><strong>Anrechenbare Kosten:</strong> <span id="kosten">–</span> €</p>
-  <p><strong>Grundleistung (100 %):</strong> <span id="grundhonorar">–</span> €</p>
+  <p><strong>Grundhonorar (100 % LPH):</strong> <span id="grundhonorar">–</span> €</p>
   <p><strong>LPH-Gesamtanteil:</strong> <span id="lphsumme">–</span> %</p>
-  <p><strong>Honorar (nach Auswahl) + NK (5 %):</strong> <span id="gesamt">–</span> €</p>
+  <p><strong>Gesamthonorar inkl. 5 % NK:</strong> <span id="gesamt">–</span> €</p>
 </div>
 
 <script>
@@ -65,6 +85,8 @@ const hoaiTabelle = {{
   "4": [135, 160],
   "5": [152, 180]
 }};
+
+const bkiDaten = {BKI_JSON_HIER_EINFÜGEN}; // <-- hier kommt dein JSON rein
 
 const lphDaten = [
   {{ nummer: 1, name: "Grundlagenermittlung", standard: 2 }},
@@ -93,8 +115,9 @@ lphDaten.forEach(lph => {{
 function berechne() {{
   const bgf = parseFloat(document.getElementById("bgf").value);
   const standard = parseFloat(document.getElementById("bauweise").value);
-  const zone = document.getElementById("honorarzone").value;
+  const zone = document.getElementById("honorarzone").value.charAt(0);
   const satz = document.getElementById("satz").value;
+  const nutzung = document.getElementById("nutzung").value.toLowerCase();
 
   const anrKosten = bgf * standard;
   document.getElementById("kosten").textContent = anrKosten.toLocaleString("de-DE");
@@ -121,6 +144,17 @@ function berechne() {{
   const nk = teilhonorar * 0.05;
   const gesamt = teilhonorar + nk;
   document.getElementById("gesamt").textContent = gesamt.toLocaleString("de-DE", {{minimumFractionDigits: 2}});
+
+  const ergebnisse = bkiDaten.filter(p => {{
+    const beschr = (p.beschreibung || "").toLowerCase();
+    const flaechenMatch = beschr.match(/(\\d{{2,4}})\\s*m²/);
+    let flaeche = flaechenMatch ? parseInt(flaechenMatch[1]) : null;
+    return beschr.includes(nutzung) && flaeche && Math.abs(flaeche - bgf) <= bgf * 0.2;
+  }});
+  const out = document.getElementById("bki-resultate");
+  out.innerHTML = ergebnisse.length
+    ? ergebnisse.map(p => `<div class="projekt"><b>${{p.objektnr}}</b><br>${{p.beschreibung}}</div>`).join("")
+    : "<p>Keine passenden Referenzen gefunden.</p>";
 }}
 
 document.querySelectorAll("input, select").forEach(el => {{
