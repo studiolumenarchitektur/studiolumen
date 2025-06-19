@@ -13,566 +13,704 @@
       margin: 0;
       padding: 2rem;
       text-align: center;
+      min-height: 100vh;
     }
 
     header {
       font-size: 2rem;
-      font-weight: 600; /* statt nur "bold" */
+      font-weight: 600;
       margin-top: 0px;
       margin-bottom: 20px;
       text-transform: none;
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      background: #fff;
+      padding: 0 20px;
     }
     
     .container {
-      max-width: 300px;
+      max-width: 400px;
       margin: 0 auto;
       text-align: center;
+      padding-top: 100px;
     }
 
     .back-arrow {
       position: fixed; 
-      top: 10px; 
-      left: 10px; 
+      top: 20px; 
+      left: 20px; 
       cursor: pointer; 
       font-size: 2rem; 
       color: #800020; 
       font-weight: 900; 
       z-index: 9999;
-        }
-
-    .question {
-      margin: 2rem 0 1rem;
-      font-weight: bold;
-      cursor: pointer;
     }
 
-    .options, .dropdown, .checkbox-group {
-      margin: 0.5rem 0 0.75rem 0;
+    .answered-questions {
+      margin-bottom: 2rem;
+      text-align: left;
+    }
+
+    .answered-item {
+      padding: 0.5rem 0;
+      margin-bottom: 0.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      position: relative;
+      z-index: 10;
+    }
+
+    .answered-item:hover {
+      transform: translateX(5px);
+    }
+
+    .answered-question {
+      font-weight: bold;
+      color: #800020;
+      margin-right: 0.5rem;
+    }
+
+    .answered-value {
+      color: #666;
+    }
+
+    .current-question-container {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      max-width: 400px;
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 50;
+    }
+
+    .current-question-container.answered {
+      position: static;
+      transform: none;
+      top: auto;
+      left: auto;
+    }
+
+    .question {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 2rem;
+      color: #800020;
+    }
+
+    .options {
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
-      gap: 0rem;
-      margin: 0.5rem 0 0.5rem 0;
+      gap: 0.75rem;
     }
 
     .option-button {
       background: none;
       border: none;
-      color: #000;
-      padding: 0.75rem 1rem;
+      color: #333;
+      padding: 1rem 1.5rem;
       cursor: pointer;
       font-size: 1rem;
-      max-width: 300px;
-      width: 100%;
       text-align: left;
+      transition: all 0.3s ease;
       white-space: normal;
       overflow-wrap: break-word;
     }
 
-    .option-button.selected {
+    .option-button:hover {
       color: #800020;
-      border-bottom: 1px solid #800020;
-      margin-top: -0,25rem;
-      margin-bottom: 0rem;
+      background: #fafafa;
+      transform: translateY(-2px);
     }
 
-.option-button:hover {
-  color: #800020;
-  background-color: #f9f9f9;
-}
-     
+    .option-button.selected {
+      color: #800020;
+      background: #800020;
+      color: white;
+    }
+
     .hidden {
       display: none;
     }
 
-    .underline {
-      height: 1px;
-      background-color: #800020;
-      margin-top: -0.25rem;
+    .fade-out {
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: all 0.4s ease;
+    }
+
+    .fade-in {
+      opacity: 1;
+      transform: translateY(0);
+      transition: all 0.4s ease;
+    }
+
+    .summary-section {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 2px solid #800020;
+    }
+
+    .summary-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #800020;
       margin-bottom: 1.5rem;
     }
 
-    .checkbox-group {
+    .summary-content {
       text-align: left;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      background: #f9f9f9;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
     }
 
-    .checkbox-group label {
-      display: block;
-      margin: 0.25rem 0;
+    .submit-btn {
+      display: inline-block;
+      background: #800020;
+      color: white;
+      padding: 1rem 2rem;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      background: #600018;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(128, 0, 32, 0.3);
+    }
+
+    .footer {
+      position: fixed; 
+      bottom: 0; 
+      left: 0;
+      width: 100%; 
+      text-align: center; 
+      padding: 10px;
+      display: flex; 
+      justify-content: center; 
+      gap: 20px; 
+      color: #777; 
+      background: #fff;
+      box-sizing: border-box;
+      z-index: 100;
+    }
+
+    .footer div {
       cursor: pointer;
     }
 
-    .checkbox-group input[type="checkbox"] {
-      margin-right: 0.5rem;
+    @media (max-width: 600px) {
+      .container {
+        padding: 0 1rem;
+        padding-top: 100px;
+      }
+      
+      .current-question-container {
+        max-width: 90%;
+        padding: 0 1rem;
+      }
+      
+      header {
+        font-size: 1.5rem;
+      }
     }
-    
-.footer {
-  position: fixed; 
-  bottom: 0; 
-  left: 0;
-  width: 100%; 
-  text-align: center; 
-  padding: 10px;
-  display: flex; 
-  justify-content: center; 
-  gap: 20px; 
-  color: #777; 
-  background: #fff;
-  box-sizing: border-box;
-}
-    
-      </style>
+      
+  </style>
 </head>
 <body>
-<div onclick="window.location.href='index.html'" style="position:fixed; top:10px; left:10px; cursor:pointer; font-size:2rem; color:#800020; font-weight:900; z-index:9999;">
+  <div onclick="window.location.href='index.html'" class="back-arrow">
     &larr;
-</div>
+  </div>
   
   <header>Leistungsbild</header>
 
   <div class="container">
-    <!-- Frage 1 -->
-    <div class="question" onclick="resetOptions('q1')">Was brauchst du?</div>
-    <div class="options" id="q1">
-      <button class="option-button" onclick="selectOption(this, 'q2')">• Planung eines Bauvorhabens</button>
-      <button class="option-button" onclick="selectOption(this, 'q2')">• Umbauen oder Modernisierung</button>
-      <button class="option-button" onclick="selectOption(this, 'q2')">• Architektonische Unterstützung</button>
-    </div>
-
-    <!-- Frage 2 -->
-    <div class="question hidden" onclick="resetOptions('q2')">Wie weit bist du?</div>
-    <div class="options hidden" id="q2">
-      <button class="option-button" onclick="selectOption(this, 'q_support')">• Ich fange grade erst an</button>
-      <button class="option-button" onclick="selectOption(this, 'q3')">• Ich habe eine grobe Idee</button>
-      <button class="option-button" onclick="selectOption(this, 'q3')">• Ich bin schon ziemlich weit</button>
-    </div>
-
-<div class="options hidden" id="q_support">
-  <button class="option-button" onclick="selectOption(this); showSection('q3')">• Beratungsgespräch</button>
-  <button class="option-button" onclick="selectOption(this); showSection('q3')">• Machbarkeitsstudien</button>
-  <button class="option-button" onclick="selectOption(this); showSection('q3')">• Entwicklung meines Konzepts</button>
-  <button class="option-button" onclick="selectOption(this); showSection('q3')">• Budget- und Flächenabschätzung</button>
-  <button class="option-button" onclick="selectOption(this); showSection('q3')">• Ich brauche eine Wohnflächenberechnung</button>
-  <button class="option-button" onclick="selectOption(this); showSection('q3')">• Noch unklar</button>
-</div>
-
-    <!-- Frage 3 – Projektgröße -->
-    <div class="question hidden" id="q3-label">Wie groß wird es?</div>
-      <div class="options hidden" id="q3">
-        <button class="option-button" onclick="selectOption(this, 'q4')">• Bis 50 m²</button>
-        <button class="option-button" onclick="selectOption(this, 'q4')">• Bis 100 m²</button>
-        <button class="option-button" onclick="selectOption(this, 'q4')">• Bis 150 m²</button>
-        <button class="option-button" onclick="selectOption(this, 'q4')">• Bis 200 m²</button>
-        <button class="option-button" onclick="selectOption(this, 'q4')">• Bis 250 m²</button>
-        <button class="option-button" onclick="selectOption(this, 'q4')">• Bis 300 m²</button>
-        <button class="option-button" onclick="selectOption(this, 'q4')">• Noch unklar</button>
-    </div>
-
-    <!-- Frage 3b – Wenn Größe unklar -->
-    <div class="question hidden" id="q_size_hint">Sollen wir das gemeinsam entwickeln?</div>
-    <div class="options hidden" id="q_size_hint_dropdown">
-      <button class="option-button" onclick="selectOption(this, 'q4')">• Ja, lass uns das besprechen</button>
-      <button class="option-button" onclick="selectOption(this, 'q4')">• Nein, später entscheiden</button>
-    </div>
-
-    <!-- Frage 4 – Pläne vorhanden -->
-<div class="question hidden" onclick="resetOptions('q4')">Sind Pläne vorhanden?</div>
-<div class="options hidden" id="q4">
-  <button class="option-button" onclick="selectOption(this); checkPlans('ja')">• Ja</button>
-  <button class="option-button" onclick="selectOption(this); checkPlans('nein')">• Nein</button>
-  <button class="option-button" onclick="selectOption(this); checkPlans('unvollständig')">• Nur Skizzen</button>
-</div>
-
-<!-- Frage 4a – Planqualität (NUR bei "Ja" und Wohnflächenberechnung) -->
-<div class="question hidden" id="q_plan_quality_label">Sind die Pläne vollständig bemaßt und gut lesbar?</div>
-<div class="options hidden" id="q_plan_quality">
-  <button class="option-button" onclick="selectOption(this); checkPlanQuality()">• Ja, vollständig und bemaßt</button>
-  <button class="option-button" onclick="selectOption(this); checkPlanQuality()">• Teilweise, könnte ergänzt werden</button>
-  <button class="option-button" onclick="selectOption(this); checkPlanQuality()">• Unsicher, bitte prüfen</button>
-</div>
-
-    <!-- Frage 4b – Pläne erstellen -->
-    <div class="question hidden" id="q_pläne_erstellen">Sollen die Pläne durch mich erstellt werden?</div>
-    <div class="options hidden" id="q_pläne_erstellen_dropdown">
-      <button class="option-button" onclick="selectOption(this); checkPlanCreation()">• Ja</button>
-      <button class="option-button" onclick="selectOption(this); checkPlanCreation()">• Nein</button>
-      <button class="option-button" onclick="selectOption(this); checkPlanCreation()">• Noch unklar</button>
-    </div>
+    <div class="answered-questions" id="answeredQuestions"></div>
     
-    <!-- Frage 5 – Planungstiefe -->
-    <div class="question hidden" onclick="resetOptions('q5')">Wie weit soll die Planung gehen?</div>
-    <div class="options hidden" id="q5">
-      <button class="option-button" onclick="selectOption(this); checkPlanningDepth('bauantrag')">• Bis zum Bauantrag</button>
-      <button class="option-button" onclick="selectOption(this); checkPlanningDepth('ausführung')">• Bis zur Ausführung</button>
-      <button class="option-button" onclick="selectOption(this); checkPlanningDepth('vergabe')">• Mit Vergabevorbereitung</button>
-      <button class="option-button" onclick="selectOption(this); checkPlanningDepth('vollständig')">• Planung von A-Z</button>
-      <button class="option-button" onclick="selectOption(this); checkPlanningDepth('unklar')">• Noch unklar</button>
+    <div class="current-question-container" id="currentQuestionContainer">
+      <div class="question" id="currentQuestion">Was möchten Sie machen?</div>
+      <div class="options" id="currentOptions">
+        <button class="option-button" data-value="bauen">Bauen</button>
+        <button class="option-button" data-value="umbauen">Umbauen</button>
+        <button class="option-button" data-value="renovieren">Renovieren</button>
+        <button class="option-button" data-value="beraten">Beraten</button>
+      </div>
     </div>
 
-    <!-- Frage 5b – Vergabe -->
-    <div class="question hidden" id="q_vergabe">Sollen Bauleistungen ausgeschrieben werden?</div>
-    <div class="options hidden" id="q_vergabe_dropdown">
-      <button class="option-button" onclick="selectOption(this, 'q6')">• Ja</button>
-      <button class="option-button" onclick="selectOption(this, 'q6')">• Nein</button>
-      <button class="option-button" onclick="selectOption(this, 'q6')">• Noch offen</button>
+    <div class="summary-section hidden" id="summarySection">
+      <div class="summary-title">Zusammenfassung Ihrer Angaben</div>
+      <div class="summary-content" id="summaryContent"></div>
+      <a href="#" class="submit-btn" id="submitBtn">Angebot jetzt anfordern</a>
     </div>
+  </div>
 
-    <!-- Projektzeitraum -->
-    <div class="question hidden" id="q_time">Wann soll das Projekt starten?</div>
-    <div class="options hidden" id="q_time_dropdown">
-      <button class="option-button" onclick="selectOption(this); generateSummary()">• Sofort</button>
-      <button class="option-button" onclick="selectOption(this); generateSummary()">• In 1–3 Monaten</button>
-      <button class="option-button" onclick="selectOption(this); generateSummary()">• In 3–6 Monaten</button>
-      <button class="option-button" onclick="selectOption(this); generateSummary()">• Später</button>
-      <button class="option-button" onclick="selectOption(this); generateSummary()">• Noch unklar</button>
-    </div>
+  <footer class="footer">
+    <div onclick="window.location.href='impressum.html'">Impressum</div>
+    <div>© 2025 studio lumen</div>
+  </footer>
 
-    <!-- Zusammenfassung -->
-    <div class="question hidden" id="summaryTitle">Zusammenfassung Ihrer Angaben</div>
-    <div class="hidden" id="summaryOutput" style="text-align: left; font-size: 0.9rem; line-height: 1.4; margin-bottom: 2rem; border-top: 1px solid #000; padding-top: 1rem;"></div>
-
-    <!-- Angebotsanfrage Button -->
-    <div class="hidden" id="submitBtn">
-    <a id="mailtoBtn" href="#"
-   style="display: margin-bottom: 20px; inline-block; background: none; color: #800020; border: none;
-          font-weight: bold; text-decoration: underline; cursor: pointer;">
-   Angebot jetzt anfordern
-    </a>    
-    </div>
-  
-   <footer class="footer">
-        <div onclick="window.location.href='impressum.html'">Impressum</div>
-        <div>© 2025 studio lumen</div>
-    </footer>
-
-  <!-- Funktionaler JavaScript-Block -->
   <script>
-     function selectOption(button, nextId = null) {
-  const parent = button.parentElement;
-  const buttons = parent.querySelectorAll('.option-button');
-
-  const isAlreadySelected = button.classList.contains('selected');
-
-  if (isAlreadySelected) {
-    // 1. Alle Antwortoptionen dieser Frage wieder anzeigen
-    buttons.forEach(btn => btn.classList.remove('hidden'));
-
-    // 2. Alle Folgefragen ab hier ausblenden und zurücksetzen
-    let next = parent.parentElement.nextElementSibling;
-    while (next) {
-      if (next.classList.contains('options') || next.classList.contains('dropdown') || next.classList.contains('checkbox-group')) {
-        next.classList.add('hidden');
-        const btns = next.querySelectorAll('.option-button');
-        btns.forEach(b => b.classList.remove('selected', 'hidden'));
-        const checkboxes = next.querySelectorAll('input[type="checkbox"]');
-        checkboxes.forEach(cb => cb.checked = false);
+    const questions = {
+      q1: {
+        question: "Was möchten Sie machen?",
+        options: {
+          bauen: "Bauen",
+          umbauen: "Umbauen", 
+          renovieren: "Renovieren",
+          beraten: "Beraten"
+        },
+        next: "q2"
+      },
+      q2: {
+        question: "Wie weit bist du?",
+        options: {
+          anfang: "Ich fange grade erst an",
+          idee: "Ich habe eine grobe Idee",
+          weit: "Ich bin schon ziemlich weit"
+        },
+        next: "q3"
+      },
+      q3: {
+        question: "Was brauchen Sie konkret?",
+        options: {
+          beratung: "Beratung/Erstgespräch",
+          plaene: "Pläne erstellen", 
+          bauantrag: "Bauantrag vorbereiten",
+          komplett: "Komplette Planung",
+          wohnflaeche: "Wohnflächenberechnung",
+          unklar: "Noch unklar"
+        },
+        next: "q4"
+      },
+      q4: {
+        question: "Wie groß wird es?",
+        options: {
+          "50": "Bis 50 m²",
+          "100": "Bis 100 m²",
+          "150": "Bis 150 m²", 
+          "200": "Bis 200 m²",
+          "250": "Bis 250 m²",
+          "300": "Bis 300 m²",
+          unklar: "Noch unklar"
+        },
+        next: "q5"
+      },
+      q5: {
+        question: "Sind Pläne vorhanden?",
+        options: {
+          ja: "Ja",
+          nein: "Nein", 
+          skizzen: "Nur Skizzen"
+        },
+        next: function(answers) {
+          if (answers.q3 === 'wohnflaeche') {
+            if (answers.q5 === 'ja') {
+              return "q5a";
+            } else {
+              return "q5b";
+            }
+          } else {
+            if (answers.q5 === 'ja') {
+              return "q5c";
+            } else {
+              return "q6";
+            }
+          }
+        }
+      },
+      q5a: {
+        question: "Sind die Pläne verwendbar?",
+        options: {
+          vollstaendig: "Vollständig bemaßt und lesbar",
+          teilweise: "Teilweise, könnte ergänzt werden",
+          unsicher: "Unsicher, bitte prüfen"
+        },
+        next: function(answers) {
+          if (answers.q5a === 'teilweise' || answers.q5a === 'unsicher') {
+            return "q5b";
+          } else {
+            return "q7_wohn";
+          }
+        }
+      },
+      q5b: {
+        question: "Sollen die Pläne durch mich erstellt werden?",
+        options: {
+          ja: "Ja",
+          nein: "Nein",
+          unklar: "Noch unklar"
+        },
+        next: "q7_wohn"
+      },
+      q5c: {
+        question: "Sind die vorhandenen Pläne lesbar und nutzbar?",
+        options: {
+          vollstaendig: "Ja, vollständig nutzbar",
+          teilweise: "Teilweise, müssen ergänzt werden",
+          schlecht: "Schlecht lesbar, neu erstellen nötig"
+        },
+        next: "q6"
+      },
+      q6: {
+        question: "Wie weit soll die Planung gehen?",
+        options: {
+          bauantrag: "Bis zum Bauantrag",
+          ausfuehrung: "Bis zur Ausführung",
+          vergabe: "Mit Vergabevorbereitung", 
+          komplett: "Planung von A-Z",
+          unklar: "Noch unklar"
+        },
+        next: "q7"
+      },
+      q7: {
+        question: "Wann soll es losgehen?",
+        options: {
+          sofort: "Sofort",
+          "1-3": "In 1-3 Monaten",
+          "3-6": "In 3-6 Monaten",
+          spaeter: "Später",
+          unklar: "Noch unklar"
+        },
+        next: "summary"
+      },
+      q7_wohn: {
+        question: "Wann soll es losgehen?",
+        options: {
+          sofort: "Sofort",
+          "1-3": "In 1-3 Monaten", 
+          "3-6": "In 3-6 Monaten",
+          spaeter: "Später",
+          unklar: "Noch unklar"
+        },
+        next: "summary"
       }
-      if (next.classList.contains('question')) {
-        next.classList.add('hidden');
-      }
-      next = next.nextElementSibling;
+    };
+
+    let currentStep = 'q1';
+    let answers = {};
+
+    function selectOption(button, value) {
+      console.log('selectOption called with:', value); // Debug
+      
+      // Antwort speichern
+      answers[currentStep] = value;
+      
+      // Button als selected markieren
+      document.querySelectorAll('.option-button').forEach(btn => btn.classList.remove('selected'));
+      button.classList.add('selected');
+      
+      // Nach kurzer Verzögerung zur nächsten Frage
+      setTimeout(() => {
+        moveToAnswered();
+        showNextQuestion();
+      }, 300);
     }
 
-    return;
-  }
+    function moveToAnswered() {
+      const questionText = document.getElementById('currentQuestion').textContent;
+      const selectedButton = document.querySelector('.option-button.selected');
+      const selectedText = selectedButton.textContent;
+      
+      // WICHTIG: currentStep JETZT speichern, bevor er sich ändert
+      const stepToSave = currentStep;
+      
+      // Zu beantworteten Fragen hinzufügen
+      const answeredContainer = document.getElementById('answeredQuestions');
+      const answeredItem = document.createElement('div');
+      answeredItem.className = 'answered-item';
+      answeredItem.setAttribute('data-step', stepToSave); // Gespeicherten Wert verwenden
+      answeredItem.addEventListener('click', function() {
+        console.log('Clicked on answered item:', stepToSave); // Debug
+        editQuestion(stepToSave); // Gespeicherten Wert verwenden
+      });
+      answeredItem.style.cursor = 'pointer';
+      
+      answeredItem.innerHTML = `
+        <div class="answered-question">${questionText}</div>
+        <div class="answered-value">${selectedText}</div>
+      `;
+      
+      answeredContainer.appendChild(answeredItem);
+    }
 
-  // Normales Verhalten: Auswahl setzen, andere ausblenden
-  buttons.forEach(btn => {
-    btn.classList.remove('selected', 'hidden');
-    if (btn !== button) btn.classList.add('hidden');
-  });
-  button.classList.add('selected');
-
-  if (nextId) {
-    showSection(nextId);
-  }
-}
-
-    function showSection(id) {
-      // NIEMALS die Planqualitäts-Sektion automatisch einblenden
-      if (id === 'q_plan_quality_label' || id === 'q_plan_quality') {
-        const selectedSupport = document.querySelector('#q_support .option-button.selected')?.innerText;
-        const plansAvailable = document.querySelector('#q4 .option-button.selected')?.innerText;
+    function showNextQuestion() {
+      const currentQ = questions[currentStep];
+      let nextStep;
+      
+      if (typeof currentQ.next === 'function') {
+        nextStep = currentQ.next(answers);
+      } else {
+        nextStep = currentQ.next;
+      }
+      
+      if (nextStep === 'summary') {
+        showSummary();
+        return;
+      }
+      
+      currentStep = nextStep;
+      const nextQ = questions[nextStep];
+      
+      // Aktuelle Frage-Container nach oben bewegen
+      const container = document.getElementById('currentQuestionContainer');
+      container.classList.add('answered');
+      
+      // Neue Frage laden
+      setTimeout(() => {
+        document.getElementById('currentQuestion').textContent = nextQ.question;
         
-        // Nur bei Wohnflächenberechnung UND "Ja" erlauben
-        if (selectedSupport && selectedSupport.includes('Wohnflächenberechnung') && plansAvailable === '• Ja') {
-          // OK, darf gezeigt werden
-        } else {
-          // NICHT zeigen!
-          return;
-        }
-      }
-      
-      const section = document.getElementById(id);
-      const label = section?.previousElementSibling;
-      if (section) section.classList.remove('hidden');
-      if (label) label.classList.remove('hidden');
-    }
-
-    function resetOptions(id) {
-      const allContainers = document.querySelectorAll('.options, .dropdown, .checkbox-group, .question');
-      allContainers.forEach(container => {
-        const isFirst = container.id === 'q1' || container.previousElementSibling?.textContent === 'Was brauchst du?';
-        if (isFirst) {
-          container.classList.remove('hidden');
-          const buttons = container.querySelectorAll('.option-button');
-          buttons.forEach(btn => btn.classList.remove('selected', 'hidden'));
-        } else {
-          // ALLE anderen Sektionen ausblenden
-          container.classList.add('hidden');
-        }
-        const buttons = container.querySelectorAll('.option-button');
-        buttons.forEach(btn => btn.classList.remove('selected', 'hidden'));
-        const selects = container.querySelectorAll('select');
-        selects.forEach(select => {
-          select.selectedIndex = 0;
-          select.classList.remove('selected');
+        const optionsContainer = document.getElementById('currentOptions');
+        optionsContainer.innerHTML = '';
+        
+        Object.entries(nextQ.options).forEach(([key, text]) => {
+          const button = document.createElement('button');
+          button.className = 'option-button';
+          button.textContent = text;
+          button.addEventListener('click', () => selectOption(button, key));
+          optionsContainer.appendChild(button);
         });
-        const checkboxes = container.querySelectorAll('input[type="checkbox"]');
-        checkboxes.forEach(cb => cb.checked = false);
-        const underlines = container.querySelectorAll('.underline');
-        underlines.forEach(line => line.remove());
+        
+        // Container zurück zur Mitte bewegen
+        container.classList.remove('answered');
+      }, 200);
+    }
+
+    function editQuestion(step) {
+      console.log('Editing question:', step);
+      
+      // Verhindere weitere Event-Propagation
+      if (event) event.stopPropagation();
+      
+      // Summary verstecken
+      document.getElementById('summarySection').classList.add('hidden');
+      
+      // Current question container wieder anzeigen
+      const container = document.getElementById('currentQuestionContainer');
+      container.style.display = 'block';
+      container.classList.remove('answered');
+      
+      // Alle Fragen ab diesem Schritt löschen
+      const answeredContainer = document.getElementById('answeredQuestions');
+      const items = [...answeredContainer.querySelectorAll('.answered-item')];
+      
+      let found = false;
+      items.forEach(item => {
+        const itemStep = item.getAttribute('data-step');
+        if (itemStep === step) {
+          found = true;
+        }
+        if (found) {
+          item.remove();
+        }
       });
       
-      // WICHTIG: Planqualitäts-Sektion IMMER ausblenden bei Reset
-      document.getElementById('q_plan_quality_label').classList.add('hidden');
-      document.getElementById('q_plan_quality').classList.add('hidden');
-    }
-
-    function revealNext(nextId) { showSection(nextId); }
-
-    function checkSize(value) {
-      if (value === 'unklar') {
-        showSection('q_size_hint');
-        showSection('q_size_hint_dropdown');
-      } else {
-        showSection('q4');
-      }
-    }
-
-function checkPlans(value) {
-  const selectedSupport = document.querySelector('#q_support .option-button.selected')?.innerText;
-  
-  // IMMER erstmal Planqualitäts-Sektion ausblenden (sie soll nur bei speziellen Fällen gezeigt werden)
-  document.getElementById('q_plan_quality_label').classList.add('hidden');
-  document.getElementById('q_plan_quality').classList.add('hidden');
-  
-  // Bei Wohnflächenberechnung: spezieller Ablauf
-  if (selectedSupport && selectedSupport.includes('Wohnflächenberechnung')) {
-    // Pläne-erstellen Sektion auch ausblenden
-    document.getElementById('q_pläne_erstellen').classList.add('hidden');
-    document.getElementById('q_pläne_erstellen_dropdown').classList.add('hidden');
-    
-    if (value === 'nein' || value === 'unvollständig') {
-      // Keine Pläne -> DIREKT zu "Pläne erstellen?" (NICHT Planqualität!)
-      showSection('q_pläne_erstellen');
-      showSection('q_pläne_erstellen_dropdown');
-    } else if (value === 'ja') {
-      // Pläne vorhanden -> NUR DANN Qualität prüfen
-      showSection('q_plan_quality_label');
-      showSection('q_plan_quality');
-    }
-    return;
-  }
-  
-  // Normaler Pfad für alle anderen Leistungen (KEINE Planqualität!)
-  const createSection = document.getElementById('q_pläne_erstellen');
-  const createDropdown = document.getElementById('q_pläne_erstellen_dropdown');
-  if (value === 'nein' || value === 'unvollständig') {
-    showSection('q_pläne_erstellen');
-    showSection('q_pläne_erstellen_dropdown');
-  } else {
-    createSection.classList.add('hidden');
-    createDropdown.classList.add('hidden');
-    const select = createDropdown.querySelector('select');
-    if (select) {
-      select.selectedIndex = 0;
-      select.classList.remove('selected');
-    }
-  }
-  
-  // Bei anderen Leistungen: weiter zu q5 (Planungstiefe)
-  showSection('q5');
-}
-
-    function checkPlanCreation() {
-      const selectedSupport = document.querySelector('#q_support .option-button.selected')?.innerText;
+      // Antworten ab diesem Schritt löschen
+      const stepKeys = Object.keys(answers);
+      stepKeys.forEach(key => {
+        if (key >= step) {
+          delete answers[key];
+        }
+      });
       
-      // Bei Wohnflächenberechnung: direkt zur Zeitfrage
-      if (selectedSupport && selectedSupport.includes('Wohnflächenberechnung')) {
-        showSection('q_time');
-        showSection('q_time_dropdown');
+      // Zu diesem Schritt zurückkehren
+      currentStep = step;
+      const question = questions[step];
+      
+      if (!question) {
+        console.error('Question not found:', step);
         return;
       }
       
-      // Bei anderen Leistungen: weiter zu q5
-      showSection('q5');
-    }
-
-    function checkPlanQuality() {
-      const selectedSupport = document.querySelector('#q_support .option-button.selected')?.innerText;
-      const planQuality = document.querySelector('#q_plan_quality .option-button.selected')?.innerText;
+      document.getElementById('currentQuestion').textContent = question.question;
       
-      // Bei Wohnflächenberechnung prüfen ob Pläne nachgearbeitet werden müssen
-      if (selectedSupport && selectedSupport.includes('Wohnflächenberechnung')) {
-        if (planQuality && (planQuality.includes('Teilweise') || planQuality.includes('Unsicher'))) {
-          // Pläne sind nicht vollständig - fragen ob erstellen/nacharbeiten
-          // Erst sicherstellen dass die Elemente sichtbar sind
-          document.getElementById('q_pläne_erstellen').classList.remove('hidden');
-          document.getElementById('q_pläne_erstellen_dropdown').classList.remove('hidden');
-          showSection('q_pläne_erstellen');
-          showSection('q_pläne_erstellen_dropdown');
-          return;
-        }
-        // Pläne sind vollständig - direkt zur Zeitfrage
-        showSection('q_time');
-        showSection('q_time_dropdown');
-        return;
-      }
+      const optionsContainer = document.getElementById('currentOptions');
+      optionsContainer.innerHTML = '';
       
-      // Bei anderen Leistungen: weiter zu q5
-      showSection('q5');
-    }
-
-    function checkPlanningDepth(value) {
-      const vergabeQ = document.getElementById('q_vergabe');
-      const vergabeDropdown = document.getElementById('q_vergabe_dropdown');
-      if (value === 'vergabe' || value === 'vollständig') {
-        showSection('q_vergabe');
-        showSection('q_vergabe_dropdown');
-      } else {
-        vergabeQ.classList.add('hidden');
-        vergabeDropdown.classList.add('hidden');
-        const select = vergabeDropdown.querySelector('select');
-        if (select) {
-          select.selectedIndex = 0;
-          select.classList.remove('selected');
-        }
-      }
-      showSection('q_time');
-      showSection('q_time_dropdown');
-    }
-
-    document.querySelectorAll('select').forEach(select => {
-      select.addEventListener('change', function () {
-        if (this.value) {
-          this.classList.add('selected');
-        }
+      Object.entries(question.options).forEach(([key, text]) => {
+        const button = document.createElement('button');
+        button.className = 'option-button';
+        button.textContent = text;
+        button.addEventListener('click', function() {
+          console.log('Button clicked:', key); // Debug
+          selectOption(button, key);
+        });
+        optionsContainer.appendChild(button);
       });
-    });
+    }
+
+    function showSummary() {
+      // Current question container verstecken
+      document.getElementById('currentQuestionContainer').style.display = 'none';
+      
+      // Summary generieren
+      generateSummary();
+      
+      // Summary zeigen
+      document.getElementById('summarySection').classList.remove('hidden');
+    }
 
     function generateSummary() {
       const summary = [];
-      const selectedSupport = document.querySelector('#q_support .option-button.selected')?.innerText || '';
       
-      const needs = document.querySelector('#q1 .option-button.selected')?.innerText || '';
-      const status = document.querySelector('#q2 .option-button.selected')?.innerText || '';
-      const size = document.querySelector('#q3 .option-button.selected')?.innerText || '';
-      const plans = document.querySelector('#q4 .option-button.selected')?.innerText || '';
-      const time = document.querySelector('#q_time_dropdown .option-button.selected')?.innerText || '';
-
-      summary.push(`<strong>Was wird benötigt:</strong> ${needs}`);
-      summary.push(`<strong>Projektstatus:</strong> ${status}`);
-      if (selectedSupport) summary.push(`<strong>Art der Unterstützung:</strong> ${selectedSupport}`);
-      summary.push(`<strong>Projektgröße:</strong> ${size}`);
-      summary.push(`<strong>Pläne vorhanden:</strong> ${plans}`);
-      summary.push(`<strong>Geplanter Projektbeginn:</strong> ${time}`);
-
-      // Bei Wohnflächenberechnung: spezielle LPH-Zuordnung
-      if (selectedSupport.includes('Wohnflächenberechnung')) {
-        // Planqualität anzeigen falls gefragt
-        const planQuality = document.querySelector('#q_plan_quality .option-button.selected')?.innerText || '';
-        if (planQuality) summary.push(`<strong>Planqualität:</strong> ${planQuality}`);
-        
-        // Prüfen ob Pläne erstellt werden müssen
-        const createPlans = document.querySelector('#q_pläne_erstellen_dropdown .option-button.selected')?.innerText || '';
-        const needsPlans = (plans === '• Nein' || plans === '• Nur Skizzen') || (planQuality && (planQuality.includes('Teilweise') || planQuality.includes('Unsicher')));
-        
-        if (needsPlans && createPlans) {
-          summary.push(`<strong>Pläne erstellen:</strong> ${createPlans}`);
+      // Basis-Informationen sammeln
+      const projektArt = questions.q1.options[answers.q1] || '';
+      const status = questions.q2.options[answers.q2] || '';
+      const bedarf = questions.q3.options[answers.q3] || '';
+      const groesse = questions.q4.options[answers.q4] || '';
+      const plaene = questions.q5.options[answers.q5] || '';
+      const zeitrahmen = answers.q7 ? questions.q7.options[answers.q7] : 
+                        (answers.q7_wohn ? questions.q7_wohn.options[answers.q7_wohn] : '');
+      
+      summary.push(`<strong>Projektart:</strong> ${projektArt}`);
+      summary.push(`<strong>Status:</strong> ${status}`);
+      summary.push(`<strong>Benötigte Leistung:</strong> ${bedarf}`);
+      summary.push(`<strong>Projektgröße:</strong> ${groesse}`);
+      summary.push(`<strong>Pläne vorhanden:</strong> ${plaene}`);
+      
+      // Prüfen ob Aufmaß/Vermessung erforderlich ist
+      const needsSurveying = answers.q5 === 'nein' || answers.q5 === 'skizzen' || 
+                            answers.q5c === 'teilweise' || answers.q5c === 'schlecht' ||
+                            (answers.q3 === 'wohnflaeche' && (answers.q5a === 'teilweise' || answers.q5a === 'unsicher'));
+      
+      if (needsSurveying) {
+        summary.push(`<strong>Aufmaß/Vermessung:</strong> Erforderlich`);
+      }
+      
+      // Spezielle Behandlung für Wohnflächenberechnung
+      if (answers.q3 === 'wohnflaeche') {
+        if (answers.q5a) {
+          const qualitaet = questions.q5a.options[answers.q5a];
+          summary.push(`<strong>Planqualität:</strong> ${qualitaet}`);
         }
         
-        // LPH-Zuordnung je nach Planaufwand
+        if (answers.q5b) {
+          const erstellen = questions.q5b.options[answers.q5b];
+          summary.push(`<strong>Pläne erstellen:</strong> ${erstellen}`);
+        }
+        
+        // LPH für Wohnflächenberechnung
         const lphs = ['LPH 0'];
-        const lphDetails = ['<em>LPH 0:</em> Wohnflächenberechnung nach WoFlV mit Architektenstempel'];
+        const details = ['<em>LPH 0:</em> Wohnflächenberechnung nach WoFlV'];
         
-        if (needsPlans && createPlans && createPlans.includes('Ja')) {
+        const needsPlans = answers.q5 === 'nein' || answers.q5 === 'skizzen' || 
+                          answers.q5a === 'teilweise' || answers.q5a === 'unsicher';
+        
+        if (needsPlans && answers.q5b === 'ja') {
           lphs.push('LPH 1', 'LPH 2');
-          lphDetails.push('<em>LPH 1:</em> Bestandsaufnahme, Aufmaß vor Ort');
-          lphDetails.push('<em>LPH 2:</em> Grundrisszeichnung, Plandarstellung');
+          details.push('<em>LPH 1:</em> Bestandsaufnahme, Aufmaß');
+          details.push('<em>LPH 2:</em> Grundrisszeichnung');
         }
         
-        summary.push(`<strong>Beauftragte Leistungsphasen:</strong><br>${lphs.join(", ")}`);
-        summary.push(`<strong>Leistungsinhalte:</strong>`);
-        lphDetails.forEach(detail => summary.push(detail));
-      } else {
-        // Normaler Code für andere Leistungen
-        const createPlans = document.querySelector('#q_pläne_erstellen_dropdown select')?.value || '';
-        const depth = document.querySelector('#q5 .option-button.selected')?.innerText || '';
-        const vergabe = document.querySelector('#q_vergabe_dropdown select')?.value || '';
-        const extras = [...document.querySelectorAll('#q6 input[type="checkbox"]:checked')].map(cb => cb.parentElement.innerText.trim());
+        summary.push(`<strong>Leistungsphasen:</strong> ${lphs.join(', ')}`);
+        summary.push(`<strong>Leistungen:</strong><br>${details.join('<br>')}`);
         
-        if (plans === 'Nein' || plans === 'Unzureichend') summary.push(`<strong>Pläne erstellen:</strong> ${createPlans}`);
-        summary.push(`<strong>Planungstiefe:</strong> ${depth}`);
-        if (depth === 'vergabe' || depth === 'vollständig') summary.push(`<strong>Vergabeleistung gewünscht:</strong> ${vergabe}`);
-        if (extras.length > 0) summary.push(`<strong>Besondere Anforderungen:</strong> ${extras.join(', ')}`);
-
+      } else {
+        // Normale Projekte
+        if (answers.q6) {
+          const tiefe = questions.q6.options[answers.q6];
+          summary.push(`<strong>Planungstiefe:</strong> ${tiefe}`);
+        }
+        
+        // Planqualität bei normalen Projekten
+        if (answers.q5c) {
+          const qualitaet = questions.q5c.options[answers.q5c];
+          summary.push(`<strong>Planqualität:</strong> ${qualitaet}`);
+        }
+        
         // LPH-Berechnung für normale Projekte
         const lphs = new Set();
-        if (status.includes("fange") || selectedSupport) lphs.add(0);
-        if (status.includes("fange") || selectedSupport || plans === "Nein" || plans === "Unzureichend") lphs.add(1);
-        if (selectedSupport || status.includes("grobe") || plans === "Nein" || plans === "Unzureichend") lphs.add(2);
-        if (status.includes("ziemlich")) lphs.add(3);
-        if (depth === "• Bis zum Bauantrag") lphs.add(4);
-        if (depth === "• Bis zur Ausführung") { lphs.add(4); lphs.add(5); }
-        if (depth === "• Planung von A-Z") { lphs.add(4); lphs.add(5); lphs.add(6); lphs.add(7); }
-        if (depth === "• Mit Vergabevorbereitung") { lphs.add(6); lphs.add(7); }
-
-        const full = new Set(lphs);
-        const list = [...full];
-        const max = Math.max(...list);
-        for (let i = 1; i < max; i++) {
-          if (full.has(i - 1) && full.has(i + 1)) full.add(i);
+        
+        if (answers.q2 === 'anfang' || answers.q3 === 'beratung') lphs.add(0);
+        if (answers.q2 === 'anfang' || answers.q5 === 'nein') lphs.add(1);
+        if (answers.q2 === 'idee' || answers.q3 === 'plaene') lphs.add(2);
+        if (answers.q2 === 'weit') lphs.add(3);
+        if (answers.q6 === 'bauantrag') lphs.add(4);
+        if (answers.q6 === 'ausfuehrung') { lphs.add(4); lphs.add(5); }
+        if (answers.q6 === 'komplett') { lphs.add(4); lphs.add(5); lphs.add(6); lphs.add(7); }
+        if (answers.q6 === 'vergabe') { lphs.add(6); lphs.add(7); }
+        
+        // Lücken füllen - LPH müssen aufeinanderfolgend sein
+        const sortedLphs = [...lphs].sort((a, b) => a - b);
+        if (sortedLphs.length > 0) {
+          const min = Math.min(...sortedLphs);
+          const max = Math.max(...sortedLphs);
+          
+          // Alle LPH zwischen min und max hinzufügen
+          for (let i = min; i <= max; i++) {
+            lphs.add(i);
+          }
         }
-        const final = [...full].sort((a, b) => a - b).map(n => `LPH ${n}`);
-        if (final.length > 0) {
-          summary.push(`<strong>Beauftragte Leistungsphasen:</strong><br>${final.join(", ")}`);
-
-          // Unterpunkte je Phase (nur die gewählten)
-          const lphDetails = {
-            0: "Beratung, Machbarkeit, Standortbewertung, Konzept",
-            1: "Grundlagenermittlung, Bestandsaufnahme, Zieldefinition",
-            2: "Vorplanung, Skizzen, Kostenschätzung, Behördenabstimmung",
-            3: "Entwurfsplanung, Kostenberechnung, Zeichnungen",
-            4: "Genehmigungsplanung, Bauantragsunterlagen, Behördengespräche",
-            5: "Ausführungsplanung, technische Details, Werkpläne",
-            6: "Vorbereitung der Vergabe, Leistungsverzeichnisse",
-            7: "Mitwirkung bei der Vergabe, Angebotsprüfung"
-          };
-
-          summary.push("<strong>Leistungsinhalte:</strong>");
-          final.forEach(lph => {
-            const num = parseInt(lph.replace("LPH ", ""));
-            if (lphDetails[num]) {
-              summary.push(`<em>${lph}:</em> ${lphDetails[num]}`);
+        
+        const finalLphs = [...lphs].sort((a, b) => a - b);
+        
+        // Laienverständliche Beschreibungen für LPH
+        const lphDescriptions = {
+          0: 'Beratung und Machbarkeitsstudien',
+          1: 'Grundlagenermittlung (Bestandsaufnahme, Aufmaß vor Ort, Ihre Wünsche erfassen)',
+          2: 'Vorplanung (erste Entwürfe und Skizzen)',
+          3: 'Entwurfsplanung (detaillierte Pläne, Gestaltung)',
+          4: 'Genehmigungsplanung (Bauantrag vorbereiten und einreichen)', 
+          5: 'Ausführungsplanung (detaillierte Werkpläne für Handwerker)',
+          6: 'Vorbereitung der Vergabe (Leistungsverzeichnisse erstellen)',
+          7: 'Mitwirkung bei der Vergabe (Angebote prüfen, Handwerker auswählen)',
+          8: 'Objektüberwachung (Bauüberwachung vor Ort)'
+        };
+        
+        if (finalLphs.length > 0) {
+          summary.push(`<strong>Beauftragte Leistungen:</strong>`);
+          finalLphs.forEach(lph => {
+            const description = lphDescriptions[lph];
+            if (description) {
+              summary.push(`<em>LPH ${lph}:</em> ${description}`);
             }
           });
         }
       }
-
+      
+      summary.push(`<strong>Zeitrahmen:</strong> ${zeitrahmen}`);
+      
+      // Summary anzeigen
       const summaryHtml = summary.map(line => `<p>${line}</p>`).join('');
+      document.getElementById('summaryContent').innerHTML = summaryHtml;
+      
+      // Mailto-Link erstellen
       const summaryText = summary.map(line => line.replace(/<[^>]+>/g, '')).join('\n');
-
-      document.getElementById('summaryOutput').innerHTML = summaryHtml;
-
       const subject = encodeURIComponent("Angebotsanfrage");
-      const body = encodeURIComponent(`Folgende Angaben wurden gemacht:\n\n${summaryText}\n\nSende mir bitte ein Angebot.`);
-      document.getElementById('mailtoBtn').href = `mailto:studiolumenarchitektur@gmail.com?subject=${subject}&body=${body}`;
-
-      document.getElementById('summaryTitle').classList.remove('hidden');
-      document.getElementById('summaryOutput').classList.remove('hidden');
-      document.getElementById('submitBtn').classList.remove('hidden');
+      const body = encodeURIComponent(`Folgende Angaben wurden gemacht:\n\n${summaryText}\n\nBitte senden Sie mir ein Angebot.`);
+      document.getElementById('submitBtn').href = `mailto:studiolumenarchitektur@gmail.com?subject=${subject}&body=${body}`;
     }
+
+    // Initialisierung der ersten Frage
+    function initializeFirstQuestion() {
+      console.log('Initializing first question'); // Debug
+      const buttons = document.querySelectorAll('#currentOptions .option-button');
+      buttons.forEach(button => {
+        const value = button.getAttribute('data-value');
+        console.log('Adding listener to button:', value); // Debug
+        button.addEventListener('click', function() {
+          console.log('First question button clicked:', value); // Debug
+          selectOption(button, value);
+        });
+      });
+    }
+
+    // Bei Seitenladung initialisieren
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('DOM loaded'); // Debug
+      initializeFirstQuestion();
+    });
   </script>
 </body>
 </html>
