@@ -191,9 +191,9 @@
       <button class="option-button" onclick="selectOption(this, 'q5')">• Noch unklar</button>
     </div>
 
-    <!-- Frage 4c – Planqualität bei Wohnflächenberechnung -->
-<div class="question hidden" id="q_plan_quality">Sind die Pläne vollständig bemaßt und gut lesbar?</div>
-<div class="options hidden" id="q_plan_quality_dropdown">
+<!-- Frage 4c – Planqualität bei Wohnflächenberechnung -->
+<div class="question hidden" id="q_plan_quality_label">Sind die Pläne vollständig bemaßt und gut lesbar?</div>
+<div class="options hidden" id="q_plan_quality">
   <button class="option-button" onclick="selectOption(this, 'q5')">• Ja, vollständig und bemaßt</button>
   <button class="option-button" onclick="selectOption(this, 'q5')">• Teilweise, könnte ergänzt werden</button>
   <button class="option-button" onclick="selectOption(this, 'q5')">• Unsicher, bitte prüfen</button>
@@ -362,12 +362,12 @@ function checkPlans(value) {
   
   // Neu: Bei Wohnflächenberechnung immer Planqualität abfragen
   const selectedSupport = document.querySelector('#q_support .option-button.selected')?.innerText;
-  if (selectedSupport && selectedSupport.includes('Wohnflächenberechnung') && value === 'ja') {
-    showSection('q_plan_quality');
-    showSection('q_plan_quality_dropdown');
-  } else {
-    showSection('q5');
-  }
+if (selectedSupport && selectedSupport.includes('Wohnflächenberechnung') && value === 'ja') {
+  showSection('q_plan_quality_label');
+  showSection('q_plan_quality');
+} else {
+  showSection('q5');
+}
 }
 
     function checkPlanningDepth(value) {
