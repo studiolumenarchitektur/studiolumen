@@ -191,6 +191,14 @@
       <button class="option-button" onclick="selectOption(this, 'q5')">• Noch unklar</button>
     </div>
 
+    <!-- Frage 4c – Planqualität bei Wohnflächenberechnung -->
+<div class="question hidden" id="q_plan_quality">Sind die Pläne vollständig bemaßt und gut lesbar?</div>
+<div class="options hidden" id="q_plan_quality_dropdown">
+  <button class="option-button" onclick="selectOption(this, 'q5')">• Ja, vollständig und bemaßt</button>
+  <button class="option-button" onclick="selectOption(this, 'q5')">• Teilweise, könnte ergänzt werden</button>
+  <button class="option-button" onclick="selectOption(this, 'q5')">• Unsicher, bitte prüfen</button>
+</div>
+    
     <!-- Frage 5 – Planungstiefe -->
     <div class="question hidden" onclick="resetOptions('q5')">Wie weit soll die Planung gehen?</div>
     <div class="options hidden" id="q5">
@@ -336,23 +344,31 @@
       }
     }
 
-    function checkPlans(value) {
-      const createSection = document.getElementById('q_pläne_erstellen');
-      const createDropdown = document.getElementById('q_pläne_erstellen_dropdown');
-      if (value === 'nein' || value === 'unvollständig') {
-        showSection('q_pläne_erstellen');
-        showSection('q_pläne_erstellen_dropdown');
-      } else {
-        createSection.classList.add('hidden');
-        createDropdown.classList.add('hidden');
-        const select = createDropdown.querySelector('select');
-        if (select) {
-          select.selectedIndex = 0;
-          select.classList.remove('selected');
-        }
-      }
-      showSection('q5');
+function checkPlans(value) {
+  const createSection = document.getElementById('q_pläne_erstellen');
+  const createDropdown = document.getElementById('q_pläne_erstellen_dropdown');
+  if (value === 'nein' || value === 'unvollständig') {
+    showSection('q_pläne_erstellen');
+    showSection('q_pläne_erstellen_dropdown');
+  } else {
+    createSection.classList.add('hidden');
+    createDropdown.classList.add('hidden');
+    const select = createDropdown.querySelector('select');
+    if (select) {
+      select.selectedIndex = 0;
+      select.classList.remove('selected');
     }
+  }
+  
+  // Neu: Bei Wohnflächenberechnung immer Planqualität abfragen
+  const selectedSupport = document.querySelector('#q_support .option-button.selected')?.innerText;
+  if (selectedSupport && selectedSupport.includes('Wohnflächenberechnung') && value === 'ja') {
+    showSection('q_plan_quality');
+    showSection('q_plan_quality_dropdown');
+  } else {
+    showSection('q5');
+  }
+}
 
     function checkPlanningDepth(value) {
       const vergabeQ = document.getElementById('q_vergabe');
