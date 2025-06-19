@@ -360,14 +360,14 @@ function checkPlans(value) {
     }
   }
   
-  // Neu: Bei Wohnflächenberechnung immer Planqualität abfragen
+  // Bei Wohnflächenberechnung direkt zur Zeitfrage
   const selectedSupport = document.querySelector('#q_support .option-button.selected')?.innerText;
-if (selectedSupport && selectedSupport.includes('Wohnflächenberechnung') && value === 'ja') {
-  showSection('q_plan_quality_label');
-  showSection('q_plan_quality');
-} else {
-  showSection('q5');
-}
+  if (selectedSupport && selectedSupport.includes('Wohnflächenberechnung')) {
+    showSection('q_time');
+    showSection('q_time_dropdown');
+  } else {
+    showSection('q5');
+  }
 }
 
     function checkPlanningDepth(value) {
