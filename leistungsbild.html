@@ -345,6 +345,25 @@
     }
 
 function checkPlans(value) {
+  const selectedSupport = document.querySelector('#q_support .option-button.selected')?.innerText;
+  
+  // Bei Wohnflächenberechnung: vereinfachter Pfad
+  if (selectedSupport && selectedSupport.includes('Wohnflächenberechnung')) {
+    // Alle unnötigen Sektionen ausblenden
+    document.getElementById('q_pläne_erstellen').classList.add('hidden');
+    document.getElementById('q_pläne_erstellen_dropdown').classList.add('hidden');
+    document.getElementById('q5').classList.add('hidden');
+    document.getElementById('q_vergabe').classList.add('hidden');
+    document.getElementById('q_vergabe_dropdown').classList.add('hidden');
+    document.getElementById('q6').classList.add('hidden');
+    
+    // Direkt zur Zeitfrage
+    showSection('q_time');
+    showSection('q_time_dropdown');
+    return;
+  }
+  
+  // Normaler Pfad für alle anderen Leistungen
   const createSection = document.getElementById('q_pläne_erstellen');
   const createDropdown = document.getElementById('q_pläne_erstellen_dropdown');
   if (value === 'nein' || value === 'unvollständig') {
@@ -359,15 +378,7 @@ function checkPlans(value) {
       select.classList.remove('selected');
     }
   }
-  
-  // Bei Wohnflächenberechnung direkt zur Zeitfrage
-  const selectedSupport = document.querySelector('#q_support .option-button.selected')?.innerText;
-  if (selectedSupport && selectedSupport.includes('Wohnflächenberechnung')) {
-    showSection('q_time');
-    showSection('q_time_dropdown');
-  } else {
-    showSection('q5');
-  }
+  showSection('q5');
 }
 
     function checkPlanningDepth(value) {
