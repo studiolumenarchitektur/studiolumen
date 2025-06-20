@@ -233,7 +233,7 @@
     <div class="answered-questions" id="answeredQuestions"></div>
     
     <div class="current-question-container" id="currentQuestionContainer">
-      <div class="question" id="currentQuestion">Was möchten Sie machen?</div>
+      <div class="question" id="currentQuestion">Was möchtest du machen?</div>
       <div class="options" id="currentOptions">
         <button class="option-button" data-value="bauen">Bauen</button>
         <button class="option-button" data-value="umbauen">Umbauen</button>
@@ -243,7 +243,7 @@
     </div>
 
     <div class="summary-section hidden" id="summarySection">
-      <div class="summary-title">Zusammenfassung Ihrer Angaben</div>
+      <div class="summary-title">Zusammenfassung deiner Angaben</div>
       <div class="summary-content" id="summaryContent"></div>
       <a href="#" class="submit-btn" id="submitBtn">Angebot jetzt anfordern</a>
     </div>
@@ -257,7 +257,7 @@
   <script>
     const questions = {
       q1: {
-        question: "Was möchten Sie machen?",
+        question: "Was möchtest du machen?",
         options: {
           bauen: "Bauen",
           umbauen: "Umbauen", 
@@ -276,7 +276,7 @@
         next: "q3"
       },
       q3: {
-        question: "Was brauchen Sie konkret?",
+        question: "Was brauchst du konkret?",
         options: {
           beratung: "Beratung/Erstgespräch",
           plaene: "Pläne erstellen", 
@@ -681,7 +681,7 @@
       // Mailto-Link erstellen
       const summaryText = summary.map(line => line.replace(/<[^>]+>/g, '')).join('\n');
       const subject = encodeURIComponent("Angebotsanfrage");
-      const body = encodeURIComponent(`Folgende Angaben wurden gemacht:\n\n${summaryText}\n\nBitte senden Sie mir ein Angebot.`);
+      const body = encodeURIComponent(`Folgende Angaben wurden gemacht:\n\n${summaryText}\n\nBitte sende mir ein Angebot.`);
       document.getElementById('submitBtn').href = `mailto:studiolumenarchitektur@gmail.com?subject=${subject}&body=${body}`;
     }
 
