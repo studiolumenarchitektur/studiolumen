@@ -42,7 +42,7 @@
       height: 100%;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.5s ease;
+      transition: opacity 1.5s ease;
       object-fit: contain;
       z-index: 10;
     }
@@ -191,6 +191,15 @@
 
     animate();
 
+    logoContainer.addEventListener('mouseenter', () => {
+      hoverImage.style.transition = 'opacity 1.5s ease';
+      hoverImage.classList.add('visible');
+    });
+    logoContainer.addEventListener('mouseleave', () => {
+      hoverImage.style.transition = 'opacity 1.5s ease';
+      hoverImage.classList.remove('visible');
+    });
+
     logoLink.addEventListener('click', function(e){
       e.preventDefault();
       const rect = logoLink.getBoundingClientRect();
@@ -200,16 +209,12 @@
       shockOrigin = clickX;
       shockTimer = 0;
 
+      hoverImage.style.transition = 'opacity 0.8s ease';
+      hoverImage.style.opacity = '1';
+
       setTimeout(() => {
         window.location.href = logoLink.href;
-      }, 600);
-    });
-
-    logoContainer.addEventListener('mouseenter', () => {
-      hoverImage.classList.add('visible');
-    });
-    logoContainer.addEventListener('mouseleave', () => {
-      hoverImage.classList.remove('visible');
+      }, 800);
     });
   </script>
 </body>
