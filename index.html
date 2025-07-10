@@ -17,49 +17,21 @@
       align-items: center;
       min-height: 100vh;
     }
-
     .content {
       display: flex;
       flex-direction: column;
       align-items: center;
       padding-top: 20px;
     }
-
     .logo-container {
       width: 400px;
       cursor: pointer;
     }
-
     svg {
       width: 100%;
       height: auto;
       display: block;
     }
-
-    .wave {
-      stroke: #002f6c;
-      stroke-width: 12;
-      fill: none;
-      animation: waveFloat 4s ease-in-out infinite;
-      transform-origin: center;
-    }
-
-    .wave.break {
-      animation: waveBreak 0.4s ease;
-    }
-
-    @keyframes waveFloat {
-      0%   { transform: translateY(0); }
-      50%  { transform: translateY(-3px); }
-      100% { transform: translateY(0); }
-    }
-
-    @keyframes waveBreak {
-      0%   { transform: translateY(0); }
-      50%  { transform: translateY(-14px) scaleX(1.05); }
-      100% { transform: translateY(0); }
-    }
-
     .nav-links {
       display: flex;
       flex-direction: column;
@@ -67,31 +39,26 @@
       margin-top: 30px;
       width: 300px;
     }
-
     .nav-link {
       text-align: center;
       font-size: 16px;
       padding: 5px 0;
       cursor: pointer;
     }
-
     .nav-link:hover {
       color: #555;
     }
-
     .footer {
       text-align: center;
       font-size: 14px;
       color: #777;
       padding: 15px 0;
     }
-
     .footer a {
       color: #777;
       text-decoration: none;
       margin: 0 10px;
     }
-
     .footer a:hover {
       text-decoration: underline;
     }
@@ -99,24 +66,18 @@
 </head>
 <body>
   <div class="content">
-    <div class="logo-container" onclick="breakWave()">
+    <div class="logo-container" onclick="triggerShock(event)">
       <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" aria-label="Logo architekturbüro ebbe&flut">
-        <!-- Text -->
         <g fill="#002f6c" font-family="Inter, sans-serif" font-weight="600" aria-hidden="true">
           <text x="200" y="40" font-size="18" text-anchor="middle">ARCHITEKTURBÜRO</text>
           <text x="60" y="110" font-size="64">ebbe</text>
           <text x="240" y="110" font-size="64">&amp;</text>
           <text x="240" y="180" font-size="64">flut</text>
         </g>
-
-        <!-- Horizontale Linie -->
         <line x1="60" y1="140" x2="190" y2="140" stroke="#002f6c" stroke-width="14" />
-
-        <!-- Wellenlinie -->
-        <path id="wave" class="wave" d="M60,240 C90,220 120,260 150,240 C180,220 210,260 240,240 C270,220 300,260 330,240" />
+        <path id="wavePath" stroke="#002f6c" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round" />
       </svg>
     </div>
-
     <div class="nav-links">
       <div class="nav-link" onclick="window.location.href='projekte.html'">Projekte</div>
       <div class="nav-link" onclick="window.location.href='haltung.html'">Haltung</div>
@@ -130,16 +91,77 @@
   </footer>
 
   <script>
-    function breakWave() {
-      const wave = document.getElementById('wave');
-      wave.classList.remove('break');
-      void wave.offsetWidth; // Trigger reflow
-      wave.classList.add('break');
+    const svgWidth = 400;
+    const svgHeight = 100;
 
-      setTimeout(() => {
-        wave.classList.remove('break');
-      }, 500);
+    const path = document.getElementById("wavePath");
+
+    const baseAmplitude = 20;
+    const baseFrequency = 3;  // 3 Wellenberge
+    const segments = 150;
+
+    let t = 0;
+    let tSpeed = 0.02;
+
+    let shockOrigin = null;
+    let shockTimer = 0;
+    const shockDuration = 300;
+
+    function easeInOut(x) {
+      return x < 0.5
+          ? 2 * x * x
+          : 1 - Math.pow(-2 * x + 2, 2) / 2;
     }
+
+    function animate() {
+      const points = [];
+      for (let i = 0; i <= segments; i++) {
+        const x = svgWidth * i / segments;
+
+        let localFreq = baseFrequency;
+        let localAmp = baseAmplitude;
+
+        if (shockOrigin !== null) {
+          const dist = Math.abs(x - shockOrigin);
+          const spread = svgWidth / 3;
+          const intensity = Math.max(0, 1 - dist / spread);
+          const progress = shockTimer / shockDuration;
+          const scale = easeInOut(progress <= 0.5 ? progress * 2 : 2 - progress * 2);
+
+          localFreq = baseFrequency - scale * 1 * intensity;
+          localAmp = baseAmplitude + scale * 40 * intensity;
+        }
+
+        const y = svgHeight / 2 + localAmp * Math.sin((2 * Math.PI * localFreq * x / svgWidth) + t);
+        points.push(`${x},${y}`);
+      }
+
+      path.setAttribute("d", "M " + points.join(" L "));
+
+      if (shockOrigin !== null && shockTimer < shockDuration / 2) {
+        t += tSpeed * 2.2;
+      } else {
+        t += tSpeed;
+      }
+
+      if (shockOrigin !== null) {
+        shockTimer++;
+        if (shockTimer > shockDuration) {
+          shockOrigin = null;
+          shockTimer = 0;
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    function triggerShock(e) {
+      const rect = e.currentTarget.getBoundingClientRect();
+      shockOrigin = e.clientX - rect.left;
+      shockTimer = 0;
+    }
+
+    animate();
   </script>
 </body>
 </html>
