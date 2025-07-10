@@ -42,12 +42,13 @@
       height: 100%;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 1.5s ease;
+      transition: opacity 5s ease; /* Dauer an Stoß-Animation angepasst */
       object-fit: contain;
       z-index: 10;
     }
     #hoverImage.visible {
       opacity: 0.1;
+      transition: opacity 5s ease;
     }
     .nav-links {
       display: flex;
@@ -143,7 +144,7 @@
 
     let shockOrigin = null;
     let shockTimer = 0;
-    const shockDuration = 300;
+    const shockDuration = 300; // frames
 
     function easeInOut(x) {
       return x < 0.5
@@ -192,11 +193,11 @@
     animate();
 
     logoContainer.addEventListener('mouseenter', () => {
-      hoverImage.style.transition = 'opacity 1.5s ease';
+      hoverImage.style.transition = `opacity ${shockDuration/60}s ease`;
       hoverImage.classList.add('visible');
     });
     logoContainer.addEventListener('mouseleave', () => {
-      hoverImage.style.transition = 'opacity 1.5s ease';
+      hoverImage.style.transition = `opacity ${shockDuration/60}s ease`;
       hoverImage.classList.remove('visible');
     });
 
@@ -209,11 +210,10 @@
       shockOrigin = clickX;
       shockTimer = 0;
 
-      hoverImage.style.transition = 'opacity 0.8s ease';
+      hoverImage.style.transition = `opacity ${shockDuration/60}s ease`;
       hoverImage.style.opacity = '1';
 
-      // Weiterleitung erst, wenn die Stoß-Animation abgeschlossen ist
-      const delayMs = shockDuration / 60 * 1000; // ca. 300 Frames / 60 fps = 5s
+      const delayMs = shockDuration / 60 * 1000; // Dauer der Animation in ms
 
       setTimeout(() => {
         window.location.href = logoLink.href;
