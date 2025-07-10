@@ -1,87 +1,104 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vita</title>
-</div>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #fff;
-            color: #000;
-            margin: 0;
-            padding: 20px; /* Gleicher Abstand wie in Haltung */
-            display: flex;
-            flex-direction: column;
-            align-items: center; /* Titel bleibt zentriert */
-            min-height: 100vh;
-            font-size: 16px;
-            line-height: 1; /* Reduzierter Zeilenabstand für direkte Untereinander-Positionierung */
-            text-transform: none;
-        }
-        header {
-            font-size: 2rem;
-            font-weight: bold;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .image-container {
-          position: relative;
-          width: 300px;
-          margin: 20px auto;
-        }
-        .vita-container {
-            max-width: 300px; /* Exakte Breite wie in Haltung */
-            width: 100%;
-            text-align: left; /* Linksbündig, wie du es willst */
-            margin-bottom: 40px;
-            white-space: pre-wrap;
-        }
-        .unterpunkt {
-            margin: 0; /* Kein zusätzlicher Abstand zwischen den Einträgen */
-            padding: 2px 0; /* Minimaler Abstand für bessere Lesbarkeit */
-            text-align: left;
-            text-transform: none;
-        }
-.footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  padding: 10px;
-  color: #777;
-  background: #fff;
-  display: flex;
-  justify-content: center;
-  gap: 20px; /* Abstand zwischen den beiden Elementen */
-  text-align: center;
-  flex-wrap: wrap; /* auf kleineren Bildschirmen untereinander */
-}
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vita</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #fff;
+      color: #002f6c;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      font-size: 16px;
+      line-height: 1.4;
+    }
+
+    .back-link {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      font-size: 1.5rem;
+      color: #002f6c;
+      font-weight: 600;
+      cursor: pointer;
+      z-index: 9999;
+    }
+
+    header {
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-top: 40px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .image-container {
+      width: 300px;
+      margin-bottom: 20px;
+    }
+
+    .image-container img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .vita-container {
+      max-width: 300px;
+      width: 100%;
+      text-align: left;
+    }
+
+    .unterpunkt {
+      padding: 2px 0;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 14px;
+      color: #777;
+      padding: 15px 0;
+      margin-top: 40px;
+    }
+
+    .footer a, .footer div {
+      color: #777;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
-<div onclick="window.location.href='index.html'" style="position:fixed; top:10px; left:10px; cursor:pointer; font-size:2rem; color:#800020; font-weight:900; z-index:9999;">
-    &larr;
-</div>
+  <div class="back-link" onclick="window.location.href='index.html'">&larr;</div>
 
-    <header>Vita</header>
-<div class="image-container">
-  <img src="bruno.png" alt="bruno" style="width: 100%; height: auto; display: block;">
-    <div class="vita-container">
-        <div class="unterpunkt">´25 - Gründung Studio Lumen</div>
-        <div class="unterpunkt">´21 - Eintragung in die Architektenkammer MV</div>
-        <div class="unterpunkt">´18-´25 - Mitarbeit in Rostock und Lübeck</div>
-        <div class="unterpunkt">´12-´19 - Studium der Architektur in Konstanz und Leipzig</div>
-        <div class="unterpunkt">´11-´12 - Mitarbeit Cengiz Bektas, Istanbul</div>
-        <div class="unterpunkt">´10 - Abitur</div>
-        <div class="unterpunkt">´08-´10 - Tischlerlehre</div>
-    </div>
+  <header>Vita</header>
 
-<div class="footer">
-  <div onclick="window.location.href='impressum.html'">Impressum</div>
-  <div>© 2025 studio lumen</div>
-</div>
-    </footer>
+  <div class="image-container">
+    <img src="bruno.png" alt="bruno" />
+  </div>
+
+  <div class="vita-container">
+    <div class="unterpunkt">´25 – Gründung Studio Lumen</div>
+    <div class="unterpunkt">´21 – Eintragung in die Architektenkammer MV</div>
+    <div class="unterpunkt">´18–´25 – Mitarbeit in Rostock und Lübeck</div>
+    <div class="unterpunkt">´12–´19 – Studium der Architektur in Konstanz und Leipzig</div>
+    <div class="unterpunkt">´11–´12 – Mitarbeit Cengiz Bektas, Istanbul</div>
+    <div class="unterpunkt">´10 – Abitur</div>
+    <div class="unterpunkt">´08–´10 – Tischlerlehre</div>
+  </div>
+
+  <footer class="footer">
+    <div onclick="window.location.href='impressum.html'">Impressum</div> · © ebbe&flut
+  </footer>
 </body>
 </html>
