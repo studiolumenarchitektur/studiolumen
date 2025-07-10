@@ -1,555 +1,680 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <title>bki projektbrowser</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Anfrage</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
     body {
-      font-family: 'Poppins', sans-serif;
+      font-family: 'Inter', sans-serif;
+      background: #fff;
+      color: #002f6c;
       margin: 0;
-      padding: 1em;
-      font-size: 16px;
+      padding: 2rem;
+      text-align: center;
+      min-height: 100vh;
     }
-    input {
+
+    header {
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-top: 0px;
+      margin-bottom: 20px;
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      background: #fff;
+      padding: 0 20px;
+    }
+
+    .container {
+      max-width: 300px;
+      margin: 0 auto;
+      text-align: center;
+      padding-top: 100px;
+    }
+
+    .back-arrow {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      cursor: pointer;
+      font-size: 1.5rem;
+      color: #002f6c;
+      font-weight: 600;
+      z-index: 9999;
+    }
+
+    .answered-questions {
+      margin-bottom: 2rem;
+      text-align: left;
+    }
+
+    .answered-item {
+      padding: 0.5rem 0;
+      margin-bottom: 0.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+    }
+
+    .answered-item:hover {
+      transform: translateX(5px);
+    }
+
+    .answered-question {
+      font-weight: 600;
+      margin-right: 0.5rem;
+      color: #002f6c;
+    }
+
+    .answered-value {
+      color: #666;
+    }
+
+    .current-question-container {
       width: 100%;
+      max-width: 300px;
+      margin: 2rem auto 0;
+    }
+
+    .question {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: #002f6c;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .option-button {
+      background: none;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      color: #002f6c;
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      font-size: 0.95rem;
+      text-align: left;
+      transition: all 0.2s ease;
+    }
+
+    .option-button:hover {
+      background: #f2f2f2;
+    }
+
+    .option-button.selected {
+      background: #002f6c;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .summary-section {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 2px solid #002f6c;
+    }
+
+    .summary-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #002f6c;
+      margin-bottom: 1.5rem;
+    }
+
+    .summary-content {
+      text-align: left;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      background: #f9f9f9;
+      padding: 1rem;
+      border-radius: 6px;
+      margin-bottom: 2rem;
+      color: #333;
+    }
+
+    .submit-btn {
+      display: inline-block;
+      background: #002f6c;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+    }
+
+    .submit-btn:hover {
+      background: #001c3f;
+    }
+
+    .footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      text-align: center;
       padding: 10px;
-      font-size: 16px;
-      margin-bottom: 1em;
+      font-size: 14px;
+      color: #777;
+      background: #fff;
       box-sizing: border-box;
+      z-index: 100;
     }
-    ul {
-      list-style-type: none;
-      padding: 0;
-      max-height: 70vh;
-      overflow-y: auto;
-    }
-    li {
-      padding: 10px;
-      border-bottom: 1px solid #ddd;
-    }
-    li:hover {
-      background-color: #f0f0f0;
+
+    .footer div {
       cursor: pointer;
     }
-    .details {
-      margin-top: 1em;
-      padding: 1em;
-      border: 1px solid #ccc;
-      display: none;
+
+    @media (max-width: 600px) {
+      .container {
+        padding-top: 100px;
+      }
+
+      .current-question-container {
+        max-width: 90%;
+      }
+
+      header {
+        font-size: 1.5rem;
+      }
     }
   </style>
 </head>
 <body>
-  <h2 style="text-transform: lowercase;">bki projektbrowser</h2>
-  <input type="text" id="search" placeholder="suche...">
-  <ul id="projektListe">
-    <!-- BEGIN PROJEKTE -->
-    <li data-title="gerichtsgebäude - eingangsbereich (1200-0001)" data-id="1200-0001" onclick="showDetails(this)">gerichtsgebäude - eingangsbereich (1200-0001)</li>
-<li data-title="© franke a |1a (1200-0001)" data-id="1200-0001" onclick="showDetails(this)">© franke a |1a (1200-0001)</li>
-<li data-title="gerichtsgebäude - gerichtssaal (1200-0002)" data-id="1200-0002" onclick="showDetails(this)">gerichtsgebäude - gerichtssaal (1200-0002)</li>
-<li data-title="büroeingangszone und besprechung (1300-0107)" data-id="1300-0107" onclick="showDetails(this)">büroeingangszone und besprechung (1300-0107)</li>
-<li data-title="verwaltungsgebäude (1300-0109) (1300-0109)" data-id="1300-0109" onclick="showDetails(this)">verwaltungsgebäude (1300-0109) (1300-0109)</li>
-<li data-title="verwaltungsgebäude (1300-0117) (1300-0117)" data-id="1300-0117" onclick="showDetails(this)">verwaltungsgebäude (1300-0117) (1300-0117)</li>
-<li data-title="verwaltungsgebäude (2200-0035) (2200-0035)" data-id="2200-0035" onclick="showDetails(this)">verwaltungsgebäude (2200-0035) (2200-0035)</li>
-<li data-title="bürogebäude (1300-0114) (1300-0114)" data-id="1300-0114" onclick="showDetails(this)">bürogebäude (1300-0114) (1300-0114)</li>
-<li data-title="bürogebäude (1300-0124) (1300-0124)" data-id="1300-0124" onclick="showDetails(this)">bürogebäude (1300-0124) (1300-0124)</li>
-<li data-title="bürogebäude (1300-0134) (1300-0134)" data-id="1300-0134" onclick="showDetails(this)">bürogebäude (1300-0134) (1300-0134)</li>
-<li data-title="bürogebäude (1300-0138) (1300-0138)" data-id="1300-0138" onclick="showDetails(this)">bürogebäude (1300-0138) (1300-0138)</li>
-<li data-title="bürogebäude (1300-0148) (1300-0148)" data-id="1300-0148" onclick="showDetails(this)">bürogebäude (1300-0148) (1300-0148)</li>
-<li data-title="bürogebäude (1300-0161) (1300-0161)" data-id="1300-0161" onclick="showDetails(this)">bürogebäude (1300-0161) (1300-0161)</li>
-<li data-title="bürogebäude (1300-0167) (1300-0167)" data-id="1300-0167" onclick="showDetails(this)">bürogebäude (1300-0167) (1300-0167)</li>
-<li data-title="bürogebäude (1300-0178) (1300-0178)" data-id="1300-0178" onclick="showDetails(this)">bürogebäude (1300-0178) (1300-0178)</li>
-<li data-title="rathaus (1300-0118) (1300-0118)" data-id="1300-0118" onclick="showDetails(this)">rathaus (1300-0118) (1300-0118)</li>
-<li data-title="rathaus (1300-0123) (1300-0123)" data-id="1300-0123" onclick="showDetails(this)">rathaus (1300-0123) (1300-0123)</li>
-<li data-title="bürogebäude – sozialstation (1300-0121)" data-id="1300-0121" onclick="showDetails(this)">bürogebäude – sozialstation (1300-0121)</li>
-<li data-title="bürogebäude - passivhaus (1300-0132)" data-id="1300-0132" onclick="showDetails(this)">bürogebäude - passivhaus (1300-0132)</li>
-<li data-title="bürgerhaus (1300-0154) (1300-0154)" data-id="1300-0154" onclick="showDetails(this)">bürgerhaus (1300-0154) (1300-0154)</li>
-<li data-title="bürgerhaus (6400-0073) (6400-0073)" data-id="6400-0073" onclick="showDetails(this)">bürgerhaus (6400-0073) (6400-0073)</li>
-<li data-title="büro und werkstattgebäude (1300-0186)" data-id="1300-0186" onclick="showDetails(this)">büro und werkstattgebäude (1300-0186)</li>
-<li data-title="schulungs- und verwaltungsgebäude (1300-0191)" data-id="1300-0191" onclick="showDetails(this)">schulungs- und verwaltungsgebäude (1300-0191)</li>
-<li data-title="kontorhaus – bürogeschoss (1300-0197)" data-id="1300-0197" onclick="showDetails(this)">kontorhaus – bürogeschoss (1300-0197)</li>
-<li data-title="rathaus* (1300-0200)" data-id="1300-0200" onclick="showDetails(this)">rathaus* (1300-0200)</li>
-<li data-title="kirchenverwaltung (80 ap) (1300-0207)" data-id="1300-0207" onclick="showDetails(this)">kirchenverwaltung (80 ap) (1300-0207)</li>
-<li data-title="kirchenverwaltung (70 ap) (1300-0208)" data-id="1300-0208" onclick="showDetails(this)">kirchenverwaltung (70 ap) (1300-0208)</li>
-<li data-title="kirchenamt (77 ap) (1300-0212)" data-id="1300-0212" onclick="showDetails(this)">kirchenamt (77 ap) (1300-0212)</li>
-<li data-title="büro (20 ap), stadtvilla, denkmalschutz (1300-0215)" data-id="1300-0215" onclick="showDetails(this)">büro (20 ap), stadtvilla, denkmalschutz (1300-0215)</li>
-<li data-title="bürogebäude (36 ap) (1300-0221)" data-id="1300-0221" onclick="showDetails(this)">bürogebäude (36 ap) (1300-0221)</li>
-<li data-title="> (1300-0232)" data-id="1300-0232" onclick="showDetails(this)">> (1300-0232)</li>
-<li data-title="bürogebäude (57 ap) - effizienzhaus -66% (1300-0232)" data-id="1300-0232" onclick="showDetails(this)">bürogebäude (57 ap) - effizienzhaus -66% (1300-0232)</li>
-<li data-title="verwaltungsgebäude (8 ap) (1300-0243)" data-id="1300-0243" onclick="showDetails(this)">verwaltungsgebäude (8 ap) (1300-0243)</li>
-<li data-title="1300-0117 (1300-0243)" data-id="1300-0243" onclick="showDetails(this)">1300-0117 (1300-0243)</li>
-<li data-title="kontorhaus bürogeschoss (1300-0245)" data-id="1300-0245" onclick="showDetails(this)">kontorhaus bürogeschoss (1300-0245)</li>
-<li data-title="bürogebäude - effizienzhaus -27% (1300-0247)" data-id="1300-0247" onclick="showDetails(this)">bürogebäude - effizienzhaus -27% (1300-0247)</li>
-<li data-title="1300-0297 (1300-0247)" data-id="1300-0247" onclick="showDetails(this)">1300-0297 (1300-0247)</li>
-<li data-title="verwaltungsgebäude (15 ap) (1300-0251)" data-id="1300-0251" onclick="showDetails(this)">verwaltungsgebäude (15 ap) (1300-0251)</li>
-<li data-title="bürogebäude (150 ap) (1300-0267)" data-id="1300-0267" onclick="showDetails(this)">bürogebäude (150 ap) (1300-0267)</li>
-<li data-title="bürogebäude (16 ap) (1300-0290)" data-id="1300-0290" onclick="showDetails(this)">bürogebäude (16 ap) (1300-0290)</li>
-<li data-title="fassadensanierung – verwaltungsgebäude (110 ap)* (1300-0297)" data-id="1300-0297" onclick="showDetails(this)">fassadensanierung – verwaltungsgebäude (110 ap)* (1300-0297)</li>
-<li data-title="fassadensanierung – verwaltungsgeb. (110 ap) (1300-0297)" data-id="1300-0297" onclick="showDetails(this)">fassadensanierung – verwaltungsgeb. (110 ap) (1300-0297)</li>
-<li data-title="bauzustand: schlecht (1899-1900) (1899-1900)" data-id="1899-1900" onclick="showDetails(this)">bauzustand: schlecht (1899-1900) (1899-1900)</li>
-<li data-title="bauzustand: schlecht (1904-1911) (1904-1911)" data-id="1904-1911" onclick="showDetails(this)">bauzustand: schlecht (1904-1911) (1904-1911)</li>
-<li data-title="bauzustand: schlecht (1914-1916) (1914-1916)" data-id="1914-1916" onclick="showDetails(this)">bauzustand: schlecht (1914-1916) (1914-1916)</li>
-<li data-title="bauzustand: schlecht (1950-1959) (1950-1959)" data-id="1950-1959" onclick="showDetails(this)">bauzustand: schlecht (1950-1959) (1950-1959)</li>
-<li data-title="nutzung während der bauzeit: nein (1969-1971)" data-id="1969-1971" onclick="showDetails(this)">nutzung während der bauzeit: nein (1969-1971)</li>
-<li data-title="in massivbauweise erstellt. im august 2005 richtete (1969-1972)" data-id="1969-1972" onclick="showDetails(this)">in massivbauweise erstellt. im august 2005 richtete (1969-1972)</li>
-<li data-title="14 (2022-2023)" data-id="2022-2023" onclick="showDetails(this)">14 (2022-2023)</li>
-<li data-title="neue bki altbau-dokumentationen (2022-2023)" data-id="2022-2023" onclick="showDetails(this)">neue bki altbau-dokumentationen (2022-2023)</li>
-<li data-title="lizenz für buttler architekten gmbh – kdnr: 109119 (2022-2023) (2022-2023)" data-id="2022-2023" onclick="showDetails(this)">lizenz für buttler architekten gmbh – kdnr: 109119 (2022-2023) (2022-2023)</li>
-<li data-title="lizenz für buttler architekten gmbh – kdnr: 109119 (9100-0108) (9100-0108)" data-id="9100-0108" onclick="showDetails(this)">lizenz für buttler architekten gmbh – kdnr: 109119 (9100-0108) (9100-0108)</li>
-<li data-title="lizenz für buttler architekten gmbh – kdnr: 109119 (9100-0147) (9100-0147)" data-id="9100-0147" onclick="showDetails(this)">lizenz für buttler architekten gmbh – kdnr: 109119 (9100-0147) (9100-0147)</li>
-<li data-title="lizenz für buttler architekten gmbh – kdnr: 109119 (9100-0200) (9100-0200)" data-id="9100-0200" onclick="showDetails(this)">lizenz für buttler architekten gmbh – kdnr: 109119 (9100-0200) (9100-0200)</li>
-<li data-title="institutsgebäude ökologische raumentwicklung (2200-0027)" data-id="2200-0027" onclick="showDetails(this)">institutsgebäude ökologische raumentwicklung (2200-0027)</li>
-<li data-title="gemeinschaftspraxis (3100-0011)" data-id="3100-0011" onclick="showDetails(this)">gemeinschaftspraxis (3100-0011)</li>
-<li data-title="arztpraxis (3100-0014) (3100-0014)" data-id="3100-0014" onclick="showDetails(this)">arztpraxis (3100-0014) (3100-0014)</li>
-<li data-title="arztpraxis (3100-0015) (3100-0015)" data-id="3100-0015" onclick="showDetails(this)">arztpraxis (3100-0015) (3100-0015)</li>
-<li data-title="arztpraxis – personalaufenthalt (3100-0018)" data-id="3100-0018" onclick="showDetails(this)">arztpraxis – personalaufenthalt (3100-0018)</li>
-<li data-title="arztpraxis für dermatologie (3100-0020)" data-id="3100-0020" onclick="showDetails(this)">arztpraxis für dermatologie (3100-0020)</li>
-<li data-title="orthopädiepraxis (10 ap) (3100-0022)" data-id="3100-0022" onclick="showDetails(this)">orthopädiepraxis (10 ap) (3100-0022)</li>
-<li data-title="dermatologische praxis (8 ap) (3100-0023)" data-id="3100-0023" onclick="showDetails(this)">dermatologische praxis (8 ap) (3100-0023)</li>
-<li data-title="3100-0014 (3100-0026)" data-id="3100-0026" onclick="showDetails(this)">3100-0014 (3100-0026)</li>
-<li data-title="kinderarztpraxis (3100-0026)" data-id="3100-0026" onclick="showDetails(this)">kinderarztpraxis (3100-0026)</li>
-<li data-title="psychiatrisches therapiezentrum (22 betten) (3300-0016)" data-id="3300-0016" onclick="showDetails(this)">psychiatrisches therapiezentrum (22 betten) (3300-0016)</li>
-<li data-title="7600-0091 (3300-0016)" data-id="3300-0016" onclick="showDetails(this)">7600-0091 (3300-0016)</li>
-<li data-title="altenpflegeheim (49 betten) (3400-0025)" data-id="3400-0025" onclick="showDetails(this)">altenpflegeheim (49 betten) (3400-0025)</li>
-<li data-title="gymnasium vierzügig (900 schüler) (4100-0031)" data-id="4100-0031" onclick="showDetails(this)">gymnasium vierzügig (900 schüler) (4100-0031)</li>
-<li data-title="mittelschule dreizügig (430 schüler) (4100-0032)" data-id="4100-0032" onclick="showDetails(this)">mittelschule dreizügig (430 schüler) (4100-0032)</li>
-<li data-title="4100-0031 (4100-0032)" data-id="4100-0032" onclick="showDetails(this)">4100-0031 (4100-0032)</li>
-<li data-title="und 4100-0036) – nutzung als pausenhalle bei schlechtem (4100-0033)" data-id="4100-0033" onclick="showDetails(this)">und 4100-0036) – nutzung als pausenhalle bei schlechtem (4100-0033)</li>
-<li data-title="gymnasium dreizügig (345 schüler) (4100-0034)" data-id="4100-0034" onclick="showDetails(this)">gymnasium dreizügig (345 schüler) (4100-0034)</li>
-<li data-title="gymnasium vierzügig (334 schüler) (4100-0035)" data-id="4100-0035" onclick="showDetails(this)">gymnasium vierzügig (334 schüler) (4100-0035)</li>
-<li data-title="gymnasium dreizügig (850 schüler) (4100-0037)" data-id="4100-0037" onclick="showDetails(this)">gymnasium dreizügig (850 schüler) (4100-0037)</li>
-<li data-title="gymnasium vierzügig (325 schüler) (4100-0038)" data-id="4100-0038" onclick="showDetails(this)">gymnasium vierzügig (325 schüler) (4100-0038)</li>
-<li data-title="schule – pcb-sanierung (4100-0056)" data-id="4100-0056" onclick="showDetails(this)">schule – pcb-sanierung (4100-0056)</li>
-<li data-title="regelschule (18 klassen – 504 schüler) (4100-0058)" data-id="4100-0058" onclick="showDetails(this)">regelschule (18 klassen – 504 schüler) (4100-0058)</li>
-<li data-title="grundschule (15 klassen) (4100-0066)" data-id="4100-0066" onclick="showDetails(this)">grundschule (15 klassen) (4100-0066)</li>
-<li data-title="realschule (23 klassen – 645 schüler) (4100-0081)" data-id="4100-0081" onclick="showDetails(this)">realschule (23 klassen – 645 schüler) (4100-0081)</li>
-<li data-title="offene grundschule (4100-0103)" data-id="4100-0103" onclick="showDetails(this)">offene grundschule (4100-0103)</li>
-<li data-title="gymnasium (15 klassen – 400 schüler) (4100-0106)" data-id="4100-0106" onclick="showDetails(this)">gymnasium (15 klassen – 400 schüler) (4100-0106)</li>
-<li data-title="grundschule (120 schüler) (4100-0107) (4100-0107)" data-id="4100-0107" onclick="showDetails(this)">grundschule (120 schüler) (4100-0107) (4100-0107)</li>
-<li data-title="grundschule (120 schüler) (4100-0108) (4100-0108)" data-id="4100-0108" onclick="showDetails(this)">grundschule (120 schüler) (4100-0108) (4100-0108)</li>
-<li data-title="hauptschule* (4100-0109) (4100-0109)" data-id="4100-0109" onclick="showDetails(this)">hauptschule* (4100-0109) (4100-0109)</li>
-<li data-title="hauptschule* (4100-0115) (4100-0115)" data-id="4100-0115" onclick="showDetails(this)">hauptschule* (4100-0115) (4100-0115)</li>
-<li data-title="hauptschule* (4100-0123) (4100-0123)" data-id="4100-0123" onclick="showDetails(this)">hauptschule* (4100-0123) (4100-0123)</li>
-<li data-title="volksschule* (4100-0110) (4100-0110)" data-id="4100-0110" onclick="showDetails(this)">volksschule* (4100-0110) (4100-0110)</li>
-<li data-title="volksschule* (4100-0111) (4100-0111)" data-id="4100-0111" onclick="showDetails(this)">volksschule* (4100-0111) (4100-0111)</li>
-<li data-title="volksschule* (4100-0114) (4100-0114)" data-id="4100-0114" onclick="showDetails(this)">volksschule* (4100-0114) (4100-0114)</li>
-<li data-title="mittelschule* (4100-0116)" data-id="4100-0116" onclick="showDetails(this)">mittelschule* (4100-0116)</li>
-<li data-title="anbau fluchttreppenhäuser (2 st) (4100-0117)" data-id="4100-0117" onclick="showDetails(this)">anbau fluchttreppenhäuser (2 st) (4100-0117)</li>
-<li data-title="gymnasium (39 klassen – 1.085 schüler) (4100-0118)" data-id="4100-0118" onclick="showDetails(this)">gymnasium (39 klassen – 1.085 schüler) (4100-0118)</li>
-<li data-title="realschule (4 klassen – 100 schüler) (4100-0119)" data-id="4100-0119" onclick="showDetails(this)">realschule (4 klassen – 100 schüler) (4100-0119)</li>
-<li data-title="realschule* (4100-0122)" data-id="4100-0122" onclick="showDetails(this)">realschule* (4100-0122)</li>
-<li data-title="grund- und mittelschule (22 klassen – 494 schüler) (4100-0127)" data-id="4100-0127" onclick="showDetails(this)">grund- und mittelschule (22 klassen – 494 schüler) (4100-0127)</li>
-<li data-title="grundschule (15 klassen – 375 schüler) (4100-0129)" data-id="4100-0129" onclick="showDetails(this)">grundschule (15 klassen – 375 schüler) (4100-0129)</li>
-<li data-title="schulzentrum (28 klassen – 570 schüler) (4100-0136)" data-id="4100-0136" onclick="showDetails(this)">schulzentrum (28 klassen – 570 schüler) (4100-0136)</li>
-<li data-title="4300-0019 (4100-0136)" data-id="4100-0136" onclick="showDetails(this)">4300-0019 (4100-0136)</li>
-<li data-title="grundschule, heizzentrale (2 klassen, 56 schüler) (4100-0137)" data-id="4100-0137" onclick="showDetails(this)">grundschule, heizzentrale (2 klassen, 56 schüler) (4100-0137)</li>
-<li data-title="grundschule (2 klassen) – hort (90 kinder) (4100-0141)" data-id="4100-0141" onclick="showDetails(this)">grundschule (2 klassen) – hort (90 kinder) (4100-0141)</li>
-<li data-title="gymnasium (18 klassen – 643 schüler) (4100-0146)" data-id="4100-0146" onclick="showDetails(this)">gymnasium (18 klassen – 643 Schüler) (4100-0146)</li>
-<li data-title="realschule – dachsanierung* (4100-0156)" data-id="4100-0156" onclick="showDetails(this)">realschule – Dachsanierung* (4100-0156)</li>
-<li data-title="gymnasium – fachklassentrakt (128 schüler) (4100-0159)" data-id="4100-0159" onclick="showDetails(this)">gymnasium – Fachklassentrakt (128 Schüler) (4100-0159)</li>
-<li data-title="real- und grundschule (300 schüler) - passivhaus (4100-0161)" data-id="4100-0161" onclick="showDetails(this)">real- und grundschule (300 schüler) - passivhaus (4100-0161)</li>
-<li data-title="ganztagsschule (9 klassen – 225 schüler) (4100-0173)" data-id="4100-0173" onclick="showDetails(this)">ganztagsschule (9 klassen – 225 Schüler) (4100-0173)</li>
-<li data-title="gymnasium (6 klassen – 150 schüler) (4100-0180)" data-id="4100-0180" onclick="showDetails(this)">gymnasium (6 klassen – 150 Schüler) (4100-0180)</li>
-<li data-title="grundschule (9 klassen, 173 schüler), hort (4100-0184)" data-id="4100-0184" onclick="showDetails(this)">grundschule (9 klassen, 173 schüler), hort (4100-0184)</li>
-<li data-title="gesamtschule – mensa - passivhaus (4100-0190)" data-id="4100-0190" onclick="showDetails(this)">gesamtschule – Mensa - Passivhaus (4100-0190)</li>
-<li data-title="schulerweiterung (12 klassen – 336 schüler) (4100-0194)" data-id="4100-0194" onclick="showDetails(this)">schulerweiterung (12 klassen – 336 Schüler) (4100-0194)</li>
-<li data-title="grundschule (8 klassen – 240 schüler) (4100-0196)" data-id="4100-0196" onclick="showDetails(this)">grundschule (8 klassen – 240 Schüler) (4100-0196)</li>
-<li data-title="grundschule (8 klassen) – kita (5 gruppen) (4100-0201)" data-id="4100-0201" onclick="showDetails(this)">grundschule (8 klassen) – Kita (5 Gruppen) (4100-0201)</li>
-<li data-title="gemeinschaftsschule (9 klassen – 245 schüler) (4100-0202)" data-id="4100-0202" onclick="showDetails(this)">gemeinschaftsschule (9 klassen – 245 Schüler) (4100-0202)</li>
-<li data-title="schule (2 klassen – 47 schüler) (4100-0203)" data-id="4100-0203" onclick="showDetails(this)">schule (2 klassen – 47 Schüler) (4100-0203)</li>
-<li data-title="gesamtschule (16 klassen – 352 schüler) (4100-0210)" data-id="4100-0210" onclick="showDetails(this)">gesamtschule (16 klassen – 352 Schüler) (4100-0210)</li>
-<li data-title="grundschule mit mensa (420 schüler) (4100-0214)" data-id="4100-0214" onclick="showDetails(this)">grundschule mit mensa (420 schüler) (4100-0214)</li>
-<li data-title="grundschule (8 klassen – 224 schüler) (4100-0226)" data-id="4100-0226" onclick="showDetails(this)">grundschule (8 klassen – 224 Schüler) (4100-0226)</li>
-<li data-title="ganztagesschule, mensa (15 klassen, 309 schüler) (4100-0228)" data-id="4100-0228" onclick="showDetails(this)">ganztagesschule, mensa (15 klassen, 309 schüler) (4100-0228)</li>
-<li data-title="schulmensa (54 sitzplätze) – betreuungsräume (4100-0232)" data-id="4100-0232" onclick="showDetails(this)">schulmensa (54 sitzplätze) – betreuungsräume (4100-0232)</li>
-<li data-title="jugendbildungsstätte (4200-0009)" data-id="4200-0009" onclick="showDetails(this)">jugendbildungsstätte (4200-0009)</li>
-<li data-title="berufliches gymnasium (9 klassen) – aula (4200-0023)" data-id="4200-0023" onclick="showDetails(this)">berufliches gymnasium (9 klassen) – aula (4200-0023)</li>
-<li data-title="berufsschulzentrum für technik (4200-0025) (4200-0025)" data-id="4200-0025" onclick="showDetails(this)">berufsschulzentrum für technik (4200-0025) (4200-0025)</li>
-<li data-title="berufsschulzentrum für technik (4200-0028) (4200-0028)" data-id="4200-0028" onclick="showDetails(this)">berufsschulzentrum für technik (4200-0028) (4200-0028)</li>
-<li data-title="berufsschulzentrum – verbindungsbau (4200-0029)" data-id="4200-0029" onclick="showDetails(this)">berufsschulzentrum – verbindungsbau (4200-0029)</li>
-<li data-title="ausbildungsstätte abbundhalle (4200-0033)" data-id="4200-0033" onclick="showDetails(this)">ausbildungsstätte abbundhalle (4200-0033)</li>
-<li data-title="förderschule – vereinsräume* (4300-0010)" data-id="4300-0010" onclick="showDetails(this)">förderschule – vereinsräume* (4300-0010)</li>
-<li data-title="sonderschule (10 klassen – 80 schüler) (4300-0019)" data-id="4300-0019" onclick="showDetails(this)">sonderschule (10 klassen – 80 Schüler) (4300-0019)</li>
-<li data-title="kindergarten (1 gruppe) (4400-0122)" data-id="4400-0122" onclick="showDetails(this)">kindergarten (1 gruppe) (4400-0122)</li>
-<li data-title="kindergarten – aufstockung* (4400-0132)" data-id="4400-0132" onclick="showDetails(this)">kindergarten – aufstockung* (4400-0132)</li>
-<li data-title="kindertagesstätte (261 kinder) (4400-0134)" data-id="4400-0134" onclick="showDetails(this)">kindertagesstätte (261 kinder) (4400-0134)</li>
-<li data-title="kindertagesstätte (5 gruppen – 101 kinder) (4400-0137)" data-id="4400-0137" onclick="showDetails(this)">kindertagesstätte (5 gruppen – 101 kinder) (4400-0137)</li>
-<li data-title="kindertagesstätte (6 gruppen – 138 kinder) (4400-0138)" data-id="4400-0138" onclick="showDetails(this)">kindertagesstätte (6 gruppen – 138 Kinder) (4400-0138)</li>
-<li data-title="kindertagesstätte – personalraum (4400-0140)" data-id="4400-0140" onclick="showDetails(this)">kindertagesstätte – Personalraum (4400-0140)</li>
-<li data-title="kindertagesstätte (3 gruppen – 40 kinder) (4400-0159)" data-id="4400-0159" onclick="showDetails(this)">kindertagesstätte (3 gruppen – 40 Kinder) (4400-0159)</li>
-<li data-title="kindertagesstätte (4400-0164) (4400-0164)" data-id="4400-0164" onclick="showDetails(this)">kindertagesstätte (4400-0164) (4400-0164)</li>
-<li data-title="kindertagesstätte (4400-0179) (4400-0179)" data-id="4400-0179" onclick="showDetails(this)">kindertagesstätte (4400-0179) (4400-0179)</li>
-<li data-title="kindertagesstätte (4400-0181) (4400-0181)" data-id="4400-0181" onclick="showDetails(this)">kindertagesstätte (4400-0181) (4400-0181)</li>
-<li data-title="kindertagesstätte (6 gruppen – 84 kinder) (4400-0166)" data-id="4400-0166" onclick="showDetails(this)">kindertagesstätte (6 gruppen – 84 Kinder) (4400-0166)</li>
-<li data-title="kindertagesstätte (1 gruppe – 15 kinder) (4400-0169)" data-id="4400-0169" onclick="showDetails(this)">kindertagesstätte (1 gruppe – 15 Kinder) (4400-0169)</li>
-<li data-title="kindertagesstätte (1 gruppe – 10 kinder) (4400-0175)" data-id="4400-0175" onclick="showDetails(this)">kindertagesstätte (1 gruppe – 10 Kinder) (4400-0175)</li>
-<li data-title="kindergarten (4 gruppen – 76 kinder) (4400-0180)" data-id="4400-0180" onclick="showDetails(this)">kindergarten (4 gruppen – 76 Kinder) (4400-0180)</li>
-<li data-title="kindertagesstätte (3 gruppen – 50 kinder) (4400-0195)" data-id="4400-0195" onclick="showDetails(this)">kindertagesstätte (3 gruppen – 50 Kinder) (4400-0195)</li>
-<li data-title="kindertagesstätte (2 gruppen – 24 kinder) (4400-0196)" data-id="4400-0196" onclick="showDetails(this)">kindertagesstätte (2 gruppen – 24 Kinder) (4400-0196)</li>
-<li data-title="kindertagesstätte, mensa (8 gruppen, 170 kinder) (4400-0198)" data-id="4400-0198" onclick="showDetails(this)">kindertagesstätte, mensa (8 gruppen, 170 kinder) (4400-0198)</li>
-<li data-title="kinderkrippe (2 gruppen) – gemeinderäume (4400-0203)" data-id="4400-0203" onclick="showDetails(this)">kinderkrippe (2 gruppen) – Gemeinderäume (4400-0203)</li>
-<li data-title="familienzentrum – kindertagesstätte (7 gruppen) (4400-0204)" data-id="4400-0204" onclick="showDetails(this)">familienzentrum – Kindertagesstätte (7 Gruppen) (4400-0204)</li>
-<li data-title="kindertagesstätte (40 kinder) (4400-0219)" data-id="4400-0219" onclick="showDetails(this)">kindertagesstätte (40 kinder) (4400-0219)</li>
-<li data-title="4400-0248 (4400-0228)" data-id="4400-0228" onclick="showDetails(this)">4400-0248 (4400-0228)</li>
-<li data-title="kinderkrippe (1 gruppe – 20 kinder) (4400-0228)" data-id="4400-0228" onclick="showDetails(this)">kinderkrippe (1 gruppe – 20 Kinder) (4400-0228)</li>
-<li data-title="kinderkrippe (2 gruppen – 24 kinder) (4400-0248)" data-id="4400-0248" onclick="showDetails(this)">kinderkrippe (2 gruppen – 24 Kinder) (4400-0248)</li>
-<li data-title="kinderkrippe (2 gruppen – 30 kinder) (4400-0269)" data-id="4400-0269" onclick="showDetails(this)">kinderkrippe (2 gruppen – 30 Kinder) (4400-0269)</li>
-<li data-title="kindertagesstätte – entwässerungsarbeiten (4400-0276)" data-id="4400-0276" onclick="showDetails(this)">kindertagesstätte – Entwässerungsarbeiten (4400-0276)</li>
-<li data-title="kindertagesstätte (4 gruppen – 80 kinder) (4400-0279)" data-id="4400-0279" onclick="showDetails(this)">kindertagesstätte (4 gruppen – 80 Kinder) (4400-0279)</li>
-<li data-title="kinderkrippe – zwei schlafräume (4400-0280)" data-id="4400-0280" onclick="showDetails(this)">kinderkrippe – zwei Schlafräume (4400-0280)</li>
-<li data-title="kinder- und familienzentrum (4400-0281)" data-id="4400-0281" onclick="showDetails(this)">kinder- und familienzentrum (4400-0281)</li>
-<li data-title="kindertagesstätte – nebenräume (40 kinder) (4400-0295)" data-id="4400-0295" onclick="showDetails(this)">kindertagesstätte – Nebenräume (40 Kinder) (4400-0295)</li>
-<li data-title="kindertagesstätte (70 kinder) (4400-0315)" data-id="4400-0315" onclick="showDetails(this)">kindertagesstätte (70 kinder) (4400-0315)</li>
-<li data-title="kindertagesstätte (7 gruppen – 100 kinder) (4400-0325)" data-id="4400-0325" onclick="showDetails(this)">kindertagesstätte (7 gruppen – 100 Kinder) (4400-0325)</li>
-<li data-title="kindertagesstätte (170 ki) - effizienzhaus -30% (4400-0327)" data-id="4400-0327" onclick="showDetails(this)">kindertagesstätte (170 ki) - effizienzhaus -30% (4400-0327)</li>
-<li data-title="sport- und bildungsstätte (4500-0007)" data-id="4500-0007" onclick="showDetails(this)">sport- und bildungsstätte (4500-0007)</li>
-<li data-title="ausbildungsgebäude – aufstockung (4500-0015)" data-id="4500-0015" onclick="showDetails(this)">ausbildungsgebäude – aufstockung (4500-0015)</li>
-<li data-title="seminargebäude (4500-0016)" data-id="4500-0016" onclick="showDetails(this)">seminargebäude (4500-0016)</li>
-<li data-title="schulsporthalle (5100-0039)" data-id="5100-0039" onclick="showDetails(this)">schulsporthalle (5100-0039)</li>
-<li data-title="sporthalle (5100-0041) (5100-0041)" data-id="5100-0041" onclick="showDetails(this)">sporthalle (5100-0041) (5100-0041)</li>
-<li data-title="sporthalle (5100-0044) (5100-0044)" data-id="5100-0044" onclick="showDetails(this)">sporthalle (5100-0044) (5100-0044)</li>
-<li data-title="sporthalle (5100-0046) (5100-0046)" data-id="5100-0046" onclick="showDetails(this)">sporthalle (5100-0046) (5100-0046)</li>
-<li data-title="sporthalle (5100-0075) (5100-0075)" data-id="5100-0075" onclick="showDetails(this)">sporthalle (5100-0075) (5100-0075)</li>
-<li data-title="schulsporthalle (dreifeldhalle) (5100-0077)" data-id="5100-0077" onclick="showDetails(this)">schulsporthalle (dreifeldhalle) (5100-0077)</li>
-<li data-title="sporthalle (dreifeldhalle) (5100-0093)" data-id="5100-0093" onclick="showDetails(this)">sporthalle (dreifeldhalle) (5100-0093)</li>
-<li data-title="seiten 330 bis 334 (5100-0093)" data-id="5100-0093" onclick="showDetails(this)">seiten 330 bis 334 (5100-0093)</li>
-<li data-title="sporthalle (zweifeldhalle) (5100-0101) (5100-0101)" data-id="5100-0101" onclick="showDetails(this)">sporthalle (zweifeldhalle) (5100-0101) (5100-0101)</li>
-<li data-title="sporthalle (zweifeldhalle) (5100-0122) (5100-0122)" data-id="5100-0122" onclick="showDetails(this)">sporthalle (zweifeldhalle) (5100-0122) (5100-0122)</li>
-<li data-title="sporthalle (dreifeldhalle – einfeldhalle) (5100-0124)" data-id="5100-0124" onclick="showDetails(this)">sporthalle (dreifeldhalle – einfeldhalle) (5100-0124)</li>
-<li data-title="sporthalle (einfeldhalle) (5100-0129)" data-id="5100-0129" onclick="showDetails(this)">sporthalle (einfeldhalle) (5100-0129)</li>
-<li data-title="sportbadhalle (5200-0012)" data-id="5200-0012" onclick="showDetails(this)">sportbadhalle (5200-0012)</li>
-<li data-title="6100-0527 (6100-0220)" data-id="6100-0220" onclick="showDetails(this)">6100-0527 (6100-0220)</li>
-<li data-title="mehrfamilienhaus (4 we) (6100-0220) (6100-0220)" data-id="6100-0220" onclick="showDetails(this)">mehrfamilienhaus (4 we) (6100-0220) (6100-0220)</li>
-<li data-title="mehrfamilienhaus (4 we) (6100-0717) (6100-0717)" data-id="6100-0717" onclick="showDetails(this)">mehrfamilienhaus (4 we) (6100-0717) (6100-0717)</li>
-<li data-title="mehrfamilienhaus (4 we) (6100-1579) (6100-1579)" data-id="6100-1579" onclick="showDetails(this)">mehrfamilienhaus (4 we) (6100-1579) (6100-1579)</li>
-<li data-title="mehrfamilienhaus (12 we) (6100-0233) (6100-0233)" data-id="6100-0233" onclick="showDetails(this)">mehrfamilienhaus (12 we) (6100-0233) (6100-0233)</li>
-<li data-title="mehrfamilienhaus (12 we) (6100-0460) (6100-0460)" data-id="6100-0460" onclick="showDetails(this)">mehrfamilienhaus (12 we) (6100-0460) (6100-0460)</li>
-<li data-title="mehrfamilienhaus (12 we) (6100-0725) (6100-0725)" data-id="6100-0725" onclick="showDetails(this)">mehrfamilienhaus (12 we) (6100-0725) (6100-0725)</li>
-<li data-title="mehrfamilienhaus (12 we) (6100-0864) (6100-0864)" data-id="6100-0864" onclick="showDetails(this)">mehrfamilienhaus (12 we) (6100-0864) (6100-0864)</li>
-<li data-title="mehrfamilienhaus (7 we) (6100-0235)" data-id="6100-0235" onclick="showDetails(this)">mehrfamilienhaus (7 we) (6100-0235)</li>
-<li data-title="mehrfamilienhaus (40 we) (6100-0287)" data-id="6100-0287" onclick="showDetails(this)">mehrfamilienhaus (40 we) (6100-0287)</li>
-<li data-title="einfamilienhaus mit elw (6100-0288) (6100-0288)" data-id="6100-0288" onclick="showDetails(this)">einfamilienhaus mit elw (6100-0288) (6100-0288)</li>
-<li data-title="einfamilienhaus mit elw (6100-0585) (6100-0585)" data-id="6100-0585" onclick="showDetails(this)">einfamilienhaus mit elw (6100-0585) (6100-0585)</li>
-<li data-title="einfamilienhaus mit elw (6100-0668) (6100-0668)" data-id="6100-0668" onclick="showDetails(this)">einfamilienhaus mit elw (6100-0668) (6100-0668)</li>
-<li data-title="hausmeistergebäude (6100-0314)" data-id="6100-0314" onclick="showDetails(this)">hausmeistergebäude (6100-0314)</li>
-<li data-title="stadthaus (3 we) (6100-0358)" data-id="6100-0358" onclick="showDetails(this)">stadthaus (3 we) (6100-0358)</li>
-<li data-title="reihenendhaus (1 we) (6100-0455)" data-id="6100-0455" onclick="showDetails(this)">reihenendhaus (1 we) (6100-0455)</li>
-<li data-title="mehrfamilienhaus (3 we) (6100-0456) (6100-0456)" data-id="6100-0456" onclick="showDetails(this)">mehrfamilienhaus (3 we) (6100-0456) (6100-0456)</li>
-<li data-title="mehrfamilienhaus (3 we) (6100-0597) (6100-0597)" data-id="6100-0597" onclick="showDetails(this)">mehrfamilienhaus (3 we) (6100-0597) (6100-0597)</li>
-<li data-title="mehrfamilienhaus (3 we) (6100-0641) (6100-0641)" data-id="6100-0641" onclick="showDetails(this)">mehrfamilienhaus (3 we) (6100-0641) (6100-0641)</li>
-<li data-title="mehrfamilienhaus (3 we) (6100-0674) (6100-0674)" data-id="6100-0674" onclick="showDetails(this)">mehrfamilienhaus (3 we) (6100-0674) (6100-0674)</li>
-<li data-title="mehrfamilienhaus (3 we) (6100-0783) (6100-0783)" data-id="6100-0783" onclick="showDetails(this)">mehrfamilienhaus (3 we) (6100-0783) (6100-0783)</li>
-<li data-title="mehrfamilienhaus (3 we) (6100-0856) (6100-0856)" data-id="6100-0856" onclick="showDetails(this)">mehrfamilienhaus (3 we) (6100-0856) (6100-0856)</li>
-<li data-title="mehrfamilienhaus (3 we) (6100-0979) (6100-0979)" data-id="6100-0979" onclick="showDetails(this)">mehrfamilienhaus (3 we) (6100-0979) (6100-0979)</li>
-<li data-title="mehrfamilienhaus (3 we) (6100-1384)" data-id="6100-1384" onclick="showDetails(this)">mehrfamilienhaus (3 we) (6100-1384)</li>
-<li data-title="einfamilienhaus (6100-0457)" data-id="6100-0457" onclick="showDetails(this)">einfamilienhaus (6100-0457)</li>
-<li data-title="einfamilienhaus (6100-0469)" data-id="6100-0469" onclick="showDetails(this)">einfamilienhaus (6100-0469)</li>
-<li data-title="einfamilienhaus (6100-0472)" data-id="6100-0472" onclick="showDetails(this)">einfamilienhaus (6100-0472)</li>
-<li data-title="einfamilienhaus (6100-0474)" data-id="6100-0474" onclick="showDetails(this)">einfamilienhaus (6100-0474)</li>
-<li data-title="einfamilienhaus (6100-0500)" data-id="6100-0500" onclick="showDetails(this)">einfamilienhaus (6100-0500)</li>
-<li data-title="einfamilienhaus (6100-0525)" data-id="6100-0525" onclick="showDetails(this)">einfamilienhaus (6100-0525)</li>
-<li data-title="einfamilienhaus (6100-0558)" data-id="6100-0558" onclick="showDetails(this)">einfamilienhaus (6100-0558)</li>
-<li data-title="einfamilienhaus (6100-0577)" data-id="6100-0577" onclick="showDetails(this)">einfamilienhaus (6100-0577)</li>
-<li data-title="einfamilienhaus (6100-0580)" data-id="6100-0580" onclick="showDetails(this)">einfamilienhaus (6100-0580)</li>
-<li data-title="einfamilienhaus (6100-0596)" data-id="6100-0596" onclick="showDetails(this)">einfamilienhaus (6100-0596)</li>
-<li data-title="einfamilienhaus (6100-0609)" data-id="6100-0609" onclick="showDetails(this)">einfamilienhaus (6100-0609)</li>
-<li data-title="einfamilienhaus (6100-0611)" data-id="6100-0611" onclick="showDetails(this)">einfamilienhaus (6100-0611)</li>
-<li data-title="einfamilienhaus (6100-0612)" data-id="6100-0612" onclick="showDetails(this)">einfamilienhaus (6100-0612)</li>
-<li data-title="einfamilienhaus (6100-0673)" data-id="6100-0673" onclick="showDetails(this)">einfamilienhaus (6100-0673)</li>
-<li data-title="einfamilienhaus (6100-0770)" data-id="6100-0770" onclick="showDetails(this)">einfamilienhaus (6100-0770)</li>
-<li data-title="einfamilienhaus (6100-0784)" data-id="6100-0784" onclick="showDetails(this)">einfamilienhaus (6100-0784)</li>
-<li data-title="einfamilienhaus (6100-0786)" data-id="6100-0786" onclick="showDetails(this)">einfamilienhaus (6100-0786)</li>
-<li data-title="einfamilienhaus (6100-0793)" data-id="6100-0793" onclick="showDetails(this)">einfamilienhaus (6100-0793)</li>
-<li data-title="einfamilienhaus (6100-0798)" data-id="6100-0798" onclick="showDetails(this)">einfamilienhaus (6100-0798)</li>
-<li data-title="einfamilienhaus (6100-0844)" data-id="6100-0844" onclick="showDetails(this)">einfamilienhaus (6100-0844)</li>
-<li data-title="einfamilienhaus (6100-0851)" data-id="6100-0851" onclick="showDetails(this)">einfamilienhaus (6100-0851)</li>
-<li data-title="einfamilienhaus (6100-0897)" data-id="6100-0897" onclick="showDetails(this)">einfamilienhaus (6100-0897)</li>
-<li data-title="einfamilienhaus (6100-0910)" data-id="6100-0910" onclick="showDetails(this)">einfamilienhaus (6100-0910)</li>
-<li data-title="einfamilienhaus (6100-0948)" data-id="6100-0948" onclick="showDetails(this)">einfamilienhaus (6100-0948)</li>
-<li data-title="einfamilienhaus (6100-0976)" data-id="6100-0976" onclick="showDetails(this)">einfamilienhaus (6100-0976)</li>
-<li data-title="einfamilienhaus (6100-1012)" data-id="6100-1012" onclick="showDetails(this)">einfamilienhaus (6100-1012)</li>
-<li data-title="einfamilienhaus (6100-1138)" data-id="6100-1138" onclick="showDetails(this)">einfamilienhaus (6100-1138)</li>
-<li data-title="einfamilienhaus (6100-1139)" data-id="6100-1139" onclick="showDetails(this)">einfamilienhaus (6100-1139)</li>
-<li data-title="einfamilienhaus (6100-1166)" data-id="6100-1166" onclick="showDetails(this)">einfamilienhaus (6100-1166)</li>
-<li data-title="einfamilienhaus (6100-1179)" data-id="6100-1179" onclick="showDetails(this)">einfamilienhaus (6100-1179)</li>
-<li data-title="einfamilienhaus (6100-1180)" data-id="6100-1180" onclick="showDetails(this)">einfamilienhaus (6100-1180)</li>
-<li data-title="einfamilienhaus (6100-1187)" data-id="6100-1187" onclick="showDetails(this)">einfamilienhaus (6100-1187)</li>
-<li data-title="einfamilienhaus (6100-1237)" data-id="6100-1237" onclick="showDetails(this)">einfamilienhaus (6100-1237)</li>
-<li data-title="einfamilienhaus (6100-1285)" data-id="6100-1285" onclick="showDetails(this)">einfamilienhaus (6100-1285)</li>
-<li data-title="einfamilienhaus (6100-1293)" data-id="6100-1293" onclick="showDetails(this)">einfamilienhaus (6100-1293)</li>
-<li data-title="einfamilienhaus (6100-1297)" data-id="6100-1297" onclick="showDetails(this)">einfamilienhaus (6100-1297)</li>
-<li data-title="einfamilienhaus (6100-1305)" data-id="6100-1305" onclick="showDetails(this)">einfamilienhaus (6100-1305)</li>
-<li data-title="einfamilienhaus (6100-1368)" data-id="6100-1368" onclick="showDetails(this)">einfamilienhaus (6100-1368)</li>
-<li data-title="zweifamilienhaus (1 we) (6100-0461)" data-id="6100-0461" onclick="showDetails(this)">zweifamilienhaus (1 we) (6100-0461)</li>
-<li data-title="mehrfamilienhaus (9 we) (6100-0462)" data-id="6100-0462" onclick="showDetails(this)">mehrfamilienhaus (9 we) (6100-0462)</li>
-<li data-title="mehrfamilienhaus (9 we) (6100-0652)" data-id="6100-0652" onclick="showDetails(this)">mehrfamilienhaus (9 we) (6100-0652)</li>
-<li data-title="seiten 376 bis 386 (6100-0462)" data-id="6100-0462" onclick="showDetails(this)">seiten 376 bis 386 (6100-0462)</li>
-<li data-title="mehrfamilienhaus (8 we) (6100-0465)" data-id="6100-0465" onclick="showDetails(this)">mehrfamilienhaus (8 we) (6100-0465)</li>
-<li data-title="mehrfamilienhaus (8 we) (6100-0781)" data-id="6100-0781" onclick="showDetails(this)">mehrfamilienhaus (8 we) (6100-0781)</li>
-<li data-title="mehrfamilienhaus (48 we) – fassadensanierung (6100-0467)" data-id="6100-0467" onclick="showDetails(this)">mehrfamilienhaus (48 we) – fassadensanierung (6100-0467)</li>
-<li data-title="reihenendhaus (6100-0471)" data-id="6100-0471" onclick="showDetails(this)">reihenendhaus (6100-0471)</li>
-<li data-title="reihenendhaus (6100-1329)" data-id="6100-1329" onclick="showDetails(this)">reihenendhaus (6100-1329)</li>
-<li data-title="einfamilienhaus – barrierefrei (6100-0475)" data-id="6100-0475" onclick="showDetails(this)">einfamilienhaus – barrierefrei (6100-0475)</li>
-<li data-title="mehrfamilienhaus (5 we) (6100-0480)" data-id="6100-0480" onclick="showDetails(this)">mehrfamilienhaus (5 we) (6100-0480)</li>
-<li data-title="mehrfamilienhaus (5 we) (6100-1306)" data-id="6100-1306" onclick="showDetails(this)">mehrfamilienhaus (5 we) (6100-1306)</li>
-<li data-title="betreute wohnanlage (24 we) (6100-0489)" data-id="6100-0489" onclick="showDetails(this)">betreute wohnanlage (24 we) (6100-0489)</li>
-<li data-title="betreute wohnanlage (24 we) (6100-0489)" data-id="6100-0489" onclick="showDetails(this)">betreute wohnanlage (24 we) (6100-0489)</li>
-<li data-title="mehrfamilienhaus (6100-0527)" data-id="6100-0527" onclick="showDetails(this)">mehrfamilienhaus (6100-0527)</li>
-<li data-title="mehrfamilienhaus (6100-0548)" data-id="6100-0548" onclick="showDetails(this)">mehrfamilienhaus (6100-0548)</li>
-<li data-title="mehrfamilienhaus (6100-0645)" data-id="6100-0645" onclick="showDetails(this)">mehrfamilienhaus (6100-0645)</li>
-<li data-title="mehrfamilienhaus (6100-0787)" data-id="6100-0787" onclick="showDetails(this)">mehrfamilienhaus (6100-0787)</li>
-<li data-title="maisonette-wohnung (6100-0568)" data-id="6100-0568" onclick="showDetails(this)">maisonette-wohnung (6100-0568)</li>
-<li data-title="einfamilienhaus – brandschaden (6100-0574)" data-id="6100-0574" onclick="showDetails(this)">einfamilienhaus – brandschaden (6100-0574)</li>
-<li data-title="mehrfamilienhaus (6 we) (6100-0598)" data-id="6100-0598" onclick="showDetails(this)">mehrfamilienhaus (6 we) (6100-0598)</li>
-<li data-title="mehrfamilienhaus (6 we) (6100-0681)" data-id="6100-0681" onclick="showDetails(this)">mehrfamilienhaus (6 we) (6100-0681)</li>
-<li data-title="mehrfamilienhaus (6 we) (6100-1483)" data-id="6100-1483" onclick="showDetails(this)">mehrfamilienhaus (6 we) (6100-1483)</li>
-<li data-title="reihenhaus (6100-0602)" data-id="6100-0602" onclick="showDetails(this)">reihenhaus (6100-0602)</li>
-<li data-title="mehrfamilienhaus (40 we) – fassade (6100-0620)" data-id="6100-0620" onclick="showDetails(this)">mehrfamilienhaus (40 we) – fassade (6100-0620)</li>
-<li data-title="mehrfamilienhaus (16 we) (6100-0631)" data-id="6100-0631" onclick="showDetails(this)">mehrfamilienhaus (16 we) (6100-0631)</li>
-<li data-title="mehrfamilienhaus (75 we) (6100-0634)" data-id="6100-0634" onclick="showDetails(this)">mehrfamilienhaus (75 we) (6100-0634)</li>
-<li data-title="doppelhaushälfte (6100-0637)" data-id="6100-0637" onclick="showDetails(this)">doppelhaushälfte (6100-0637)</li>
-<li data-title="doppelhaushälfte (6100-0849)" data-id="6100-0849" onclick="showDetails(this)">doppelhaushälfte (6100-0849)</li>
-<li data-title="doppelhaushälfte (6100-0901)" data-id="6100-0901" onclick="showDetails(this)">doppelhaushälfte (6100-0901)</li>
-<li data-title="doppelhaushälfte (6100-0974)" data-id="6100-0974" onclick="showDetails(this)">doppelhaushälfte (6100-0974)</li>
-<li data-title="doppelhaushälfte (6100-1126)" data-id="6100-1126" onclick="showDetails(this)">doppelhaushälfte (6100-1126)</li>
-<li data-title="doppelhaushälfte (6100-1203)" data-id="6100-1203" onclick="showDetails(this)">doppelhaushälfte (6100-1203)</li>
-<li data-title="zweifamilienhaus (6100-0648)" data-id="6100-0648" onclick="showDetails(this)">zweifamilienhaus (6100-0648)</li>
-<li data-title="zweifamilienhaus (6100-0694)" data-id="6100-0694" onclick="showDetails(this)">zweifamilienhaus (6100-0694)</li>
-<li data-title="zweifamilienhaus (6100-1160)" data-id="6100-1160" onclick="showDetails(this)">zweifamilienhaus (6100-1160)</li>
-<li data-title="zweifamilienhaus (6100-1415)" data-id="6100-1415" onclick="showDetails(this)">zweifamilienhaus (6100-1415)</li>
-<li data-title="mehrfamilienhaus (60 we) (6100-0658)" data-id="6100-0658" onclick="showDetails(this)">mehrfamilienhaus (60 we) (6100-0658)</li>
-<li data-title="mehrfamilienhaus (21 we) – kellertrocknung (6100-0686)" data-id="6100-0686" onclick="showDetails(this)">mehrfamilienhaus (21 we) – kellertrocknung (6100-0686)</li>
-<li data-title="mehrfamilienhaus – kellertrocknung (6100-0695)" data-id="6100-0695" onclick="showDetails(this)">mehrfamilienhaus – kellertrocknung (6100-0695)</li>
-<li data-title="umbau tabakfabrik (19 we) (6100-0704)" data-id="6100-0704" onclick="showDetails(this)">umbau tabakfabrik (19 we) (6100-0704)</li>
-<li data-title="mehrfamilienhaus (3 we) - passivhaus (6100-0768)" data-id="6100-0768" onclick="showDetails(this)">mehrfamilienhaus (3 we) - passivhaus (6100-0768)</li>
-<li data-title="in der bki-reihe objekt- (6100-0781)" data-id="6100-0781" onclick="showDetails(this)">in der bki-reihe objekt- (6100-0781)</li>
-<li data-title="5 entspricht 20% der kg 300 (6100-0781)" data-id="6100-0781" onclick="showDetails(this)">5 entspricht 20% der kg 300 (6100-0781)</li>
-<li data-title="mehrfamilienhäuser (31 we) (6100-0782)" data-id="6100-0782" onclick="showDetails(this)">mehrfamilienhäuser (31 we) (6100-0782)</li>
-<li data-title="zweifamilienhaus – dachausbau (6100-0785)" data-id="6100-0785" onclick="showDetails(this)">zweifamilienhaus – dachausbau (6100-0785)</li>
-<li data-title="mehrfamilienhaus (11 we) (6100-0791)" data-id="6100-0791" onclick="showDetails(this)">mehrfamilienhaus (11 we) (6100-0791)</li>
-<li data-title="doppelhaushälfte – anbau badezimmer (6100-0848)" data-id="6100-0848" onclick="showDetails(this)">doppelhaushälfte – anbau badezimmer (6100-0848)</li>
-<li data-title="mehrfamilienhaus (5 we) – gewerbe (6100-0850)" data-id="6100-0850" onclick="showDetails(this)">mehrfamilienhaus (5 we) – gewerbe (6100-0850)</li>
-<li data-title="mehrfamilienhaus (46 we) (6100-0857)" data-id="6100-0857" onclick="showDetails(this)">mehrfamilienhaus (46 we) (6100-0857)</li>
-<li data-title="mehrfamilienhaus (19 we) (6100-0858)" data-id="6100-0858" onclick="showDetails(this)">mehrfamilienhaus (19 we) (6100-0858)</li>
-<li data-title="mehrfamilienhaus (21 we) (6100-0859)" data-id="6100-0859" onclick="showDetails(this)">mehrfamilienhaus (21 we) (6100-0859)</li>
-<li data-title="wohnloft (6100-0881)" data-id="6100-0881" onclick="showDetails(this)">wohnloft (6100-0881)</li>
-<li data-title="mehrfamilienhaus (3 we) - kfw 60* (6100-0889)" data-id="6100-0889" onclick="showDetails(this)">mehrfamilienhaus (3 we) - kfw 60* (6100-0889)</li>
-<li data-title="kosten der 17 vergleichsobjekte (6100-0897)" data-id="6100-0897" onclick="showDetails(this)">kosten der 17 vergleichsobjekte (6100-0897)</li>
-<li data-title="einfamilienhaus – wintergarten (6100-0902)" data-id="6100-0902" onclick="showDetails(this)">einfamilienhaus – wintergarten (6100-0902)</li>
-<li data-title="mehrfamilienhaus (3 we) - effizienzhaus 70 (6100-0904)" data-id="6100-0904" onclick="showDetails(this)">mehrfamilienhaus (3 we) - effizienzhaus 70 (6100-0904)</li>
-<li data-title="mehrfamilienhaus (29 we) (6100-0918)" data-id="6100-0918" onclick="showDetails(this)">mehrfamilienhaus (29 we) (6100-0918)</li>
-<li data-title="mehrfamilienhäuser (3 st – 18 we) (6100-0931)" data-id="6100-0931" onclick="showDetails(this)">mehrfamilienhäuser (3 st – 18 we) (6100-0931)</li>
-<li data-title="einfamilienhaus – umnutzung scheune (6100-0937)" data-id="6100-0937" onclick="showDetails(this)">einfamilienhaus – umnutzung scheune (6100-0937)</li>
-<li data-title="reihenendhaus - effizienzhaus 115 (6100-0939)" data-id="6100-0939" onclick="showDetails(this)">reihenendhaus - effizienzhaus 115 (6100-0939)</li>
-<li data-title="einfamilienhaus – einzeldenkmal (6100-0946)" data-id="6100-0946" onclick="showDetails(this)">einfamilienhaus – einzeldenkmal (6100-0946)</li>
-<li data-title="wintergarten (6100-0950)" data-id="6100-0950" onclick="showDetails(this)">wintergarten (6100-0950)</li>
-<li data-title="wohnhaus – elw - kfw 40 (6100-0954)" data-id="6100-0954" onclick="showDetails(this)">wohnhaus – elw - kfw 40 (6100-0954)</li>
-<li data-title="anbau zweifamilienhaus (6100-0956)" data-id="6100-0956" onclick="showDetails(this)">anbau zweifamilienhaus (6100-0956)</li>
-<li data-title="einfamilienhaus – einliegerwohnung* (6100-0962)" data-id="6100-0962" onclick="showDetails(this)">einfamilienhaus – einliegerwohnung* (6100-0962)</li>
-<li data-title="doppelhaushälfte – energ. modern. (6100-0983)" data-id="6100-0983" onclick="showDetails(this)">doppelhaushälfte – energ. modern. (6100-0983)</li>
-<li data-title="mehrfamilienhaus – aufstockung - effizienzhaus 70 (6100-0984)" data-id="6100-0984" onclick="showDetails(this)">mehrfamilienhaus – aufstockung - effizienzhaus 70 (6100-0984)</li>
-<li data-title="einfamilienhaus – scheunenumbau (6100-0993)" data-id="6100-0993" onclick="showDetails(this)">einfamilienhaus – scheunenumbau (6100-0993)</li>
-<!-- weitere 40 folgen, bereits vorbereitet – sag einfach „weiter mit 351–400“ -->
-<li data-title="einfamilienhaus – umnutzung scheune (6100-0937)" data-id="6100-0937" onclick="showDetails(this)">einfamilienhaus – umnutzung scheune (6100-0937)</li>
-<li data-title="reihenendhaus - effizienzhaus 115 (6100-0939)" data-id="6100-0939" onclick="showDetails(this)">reihenendhaus - effizienzhaus 115 (6100-0939)</li>
-<li data-title="einfamilienhaus – einzeldenkmal (6100-0946)" data-id="6100-0946" onclick="showDetails(this)">einfamilienhaus – einzeldenkmal (6100-0946)</li>
-<li data-title="wintergarten (6100-0950)" data-id="6100-0950" onclick="showDetails(this)">wintergarten (6100-0950)</li>
-<li data-title="wohnhaus – elw - kfw 40 (6100-0954)" data-id="6100-0954" onclick="showDetails(this)">wohnhaus – elw - kfw 40 (6100-0954)</li>
-<li data-title="anbau zweifamilienhaus (6100-0956)" data-id="6100-0956" onclick="showDetails(this)">anbau zweifamilienhaus (6100-0956)</li>
-<li data-title="einfamilienhaus – einliegerwohnung* (6100-0962)" data-id="6100-0962" onclick="showDetails(this)">einfamilienhaus – einliegerwohnung* (6100-0962)</li>
-<li data-title="doppelhaushälfte – energ. modern. (6100-0983)" data-id="6100-0983" onclick="showDetails(this)">doppelhaushälfte – energ. modern. (6100-0983)</li>
-<li data-title="mehrfamilienhaus – aufstockung - effizienzhaus 70 (6100-0984)" data-id="6100-0984" onclick="showDetails(this)">mehrfamilienhaus – aufstockung - effizienzhaus 70 (6100-0984)</li>
-<li data-title="einfamilienhaus – scheunenumbau (6100-0993)" data-id="6100-0993" onclick="showDetails(this)">einfamilienhaus – scheunenumbau (6100-0993)</li>
-<li data-title="mehrfamilienhaus (15 we) (6100-0996)" data-id="6100-0996" onclick="showDetails(this)">mehrfamilienhaus (15 we) (6100-0996)</li>
-<li data-title="mehrfamilienhaus (15 we) (6100-1402)" data-id="6100-1402" onclick="showDetails(this)">mehrfamilienhaus (15 we) (6100-1402)</li>
-<li data-title="ts (6100-1012)" data-id="6100-1012" onclick="showDetails(this)">ts (6100-1012)</li>
-<li data-title="einfamilienhaus - kfw 130 (6100-1013)" data-id="6100-1013" onclick="showDetails(this)">einfamilienhaus - kfw 130 (6100-1013)</li>
-<li data-title="9100-0044 (6100-1013)" data-id="6100-1013" onclick="showDetails(this)">9100-0044 (6100-1013)</li>
-<li data-title="9100-0044 (9100-0051)" data-id="9100-0051" onclick="showDetails(this)">9100-0044 (9100-0051)</li>
-<li data-title="fachwerkhaus (6100-1027)" data-id="6100-1027" onclick="showDetails(this)">fachwerkhaus (6100-1027)</li>
-<li data-title="wohn- und geschäftshaus (4 we) - effizienzhaus 100* bri2.845m² bgf 1.080m² nuf 621m² (6100-1034)" data-id="6100-1034" onclick="showDetails(this)">wohn- und geschäftshaus (4 we) - effizienzhaus 100* bri2.845m² bgf 1.080m² nuf 621m² (6100-1034)</li>
-<li data-title="reihenmittelhaus - effizienzhaus 115 (6100-1035)" data-id="6100-1035" onclick="showDetails(this)">reihenmittelhaus - effizienzhaus 115 (6100-1035)</li>
-<li data-title="wohngebäude – barrierefrei (15 we) (6100-1037)" data-id="6100-1037" onclick="showDetails(this)">wohngebäude – barrierefrei (15 we) (6100-1037)</li>
-<li data-title="mehrfamilienhaus (64 we) (6100-1050)" data-id="6100-1050" onclick="showDetails(this)">mehrfamilienhaus (64 we) (6100-1050)</li>
-<li data-title="mehrfamilienhaus, büro, garage (6100-1051)" data-id="6100-1051" onclick="showDetails(this)">mehrfamilienhaus, büro, garage (6100-1051)</li>
-<li data-title="wohngebäude – kanzlei (6100-1056)" data-id="6100-1056" onclick="showDetails(this)">wohngebäude – kanzlei (6100-1056)</li>
-<li data-title="mehrgenerationenhaus (25 we), cafe, beratung (6100-1074)" data-id="6100-1074" onclick="showDetails(this)">mehrgenerationenhaus (25 we), cafe, beratung (6100-1074)</li>
-<li data-title="aufstockung wohnhaus (2 we) - passivhaus (6100-1089)" data-id="6100-1089" onclick="showDetails(this)">aufstockung wohnhaus (2 we) - passivhaus (6100-1089)</li>
-<li data-title="zweifamilienhaus – fassadensanierung (6100-1095)" data-id="6100-1095" onclick="showDetails(this)">zweifamilienhaus – fassadensanierung (6100-1095)</li>
-<li data-title="mehrfamilienhaus – grundmauersanierung* (6100-1099)" data-id="6100-1099" onclick="showDetails(this)">mehrfamilienhaus – grundmauersanierung* (6100-1099)</li>
-<li data-title="mehrfamilienhaus (13 we) – umbau dg (6100-1110)" data-id="6100-1110" onclick="showDetails(this)">mehrfamilienhaus (13 we) – umbau dg (6100-1110)</li>
-<li data-title="wohnhochhaus (179 we) (6100-1111)" data-id="6100-1111" onclick="showDetails(this)">wohnhochhaus (179 we) (6100-1111)</li>
-<li data-title="mehrfamilienhaus, vorderfassade, denkmalschutz* (6100-1112)" data-id="6100-1112" onclick="showDetails(this)">mehrfamilienhaus, vorderfassade, denkmalschutz* (6100-1112)</li>
-<li data-title="wohn- und geschäftshaus (21 we) (6100-1113)" data-id="6100-1113" onclick="showDetails(this)">wohn- und geschäftshaus (21 we) (6100-1113)</li>
-<li data-title="doppelhaushälfte - kfw 70 (6100-1127)" data-id="6100-1127" onclick="showDetails(this)">doppelhaushälfte - kfw 70 (6100-1127)</li>
-<li data-title="mehrfamilienhaus (5 we) – büro (6100-1143)" data-id="6100-1143" onclick="showDetails(this)">mehrfamilienhaus (5 we) – büro (6100-1143)</li>
-<li data-title="zweifamilienhaus - effizienzhaus 85 (6100-1144)" data-id="6100-1144" onclick="showDetails(this)">zweifamilienhaus - effizienzhaus 85 (6100-1144)</li>
-<li data-title="einfamilienhaus - effizienzhaus 100 (6100-1147)" data-id="6100-1147" onclick="showDetails(this)">einfamilienhaus - effizienzhaus 100 (6100-1147)</li>
-<li data-title="balkon (mehrfamilienhaus)* (6100-1150)" data-id="6100-1150" onclick="showDetails(this)">balkon (mehrfamilienhaus)* (6100-1150)</li>
-<li data-title="einfamilienhaus - effizienzhaus 70 (6100-1153)" data-id="6100-1153" onclick="showDetails(this)">einfamilienhaus - effizienzhaus 70 (6100-1153)</li>
-<li data-title="einfamilienhaus - effizienzhaus 40* (6100-1159)" data-id="6100-1159" onclick="showDetails(this)">einfamilienhaus - effizienzhaus 40* (6100-1159)</li>
-<li data-title="kosten der 12 vergleichsobjekte (6100-1160)" data-id="6100-1160" onclick="showDetails(this)">kosten der 12 vergleichsobjekte (6100-1160)</li>
-<li data-title="einfamilienhaus – garage - effizienzhaus 70 (6100-1162)" data-id="6100-1162" onclick="showDetails(this)">einfamilienhaus – garage - effizienzhaus 70 (6100-1162)</li>
-<li data-title="mehrfamilienhaus (6 we) - passivhaus (6100-1175)" data-id="6100-1175" onclick="showDetails(this)">mehrfamilienhaus (6 we) - passivhaus (6100-1175)</li>
-<li data-title="mehrfamilienhaus – dachsanierung* (6100-1192)" data-id="6100-1192" onclick="showDetails(this)">mehrfamilienhaus – dachsanierung* (6100-1192)</li>
-<li data-title="mehrfamilienhaus – fassadensanierung* (6100-1193)" data-id="6100-1193" onclick="showDetails(this)">mehrfamilienhaus – fassadensanierung* (6100-1193)</li>
-<li data-title="mehrfamilienhaus – dachgeschoss* (6100-1195)" data-id="6100-1195" onclick="showDetails(this)">mehrfamilienhaus – dachgeschoss* (6100-1195)</li>
-<li data-title="wohnhaus für frauen (11 we) (6100-1201)" data-id="6100-1201" onclick="showDetails(this)">wohnhaus für frauen (11 we) (6100-1201)</li>
-<li data-title="stadtvilla (6100-1202)" data-id="6100-1202" onclick="showDetails(this)">stadtvilla (6100-1202)</li>
-<li data-title="wohn- und geschäftshaus (5 we) (6100-1207)" data-id="6100-1207" onclick="showDetails(this)">wohn- und geschäftshaus (5 we) (6100-1207)</li>
-<li data-title="gründerzeithaus (1 we) (6100-1223)" data-id="6100-1223" onclick="showDetails(this)">gründerzeithaus (1 we) (6100-1223)</li>
-<li data-title="wohn- und geschäftshaus (1 we) (6100-1224)" data-id="6100-1224" onclick="showDetails(this)">wohn- und geschäftshaus (1 we) (6100-1224)</li>
-<li data-title="einfamilienhaus – aufstockung (1 we) (6100-1234)" data-id="6100-1234" onclick="showDetails(this)">einfamilienhaus – aufstockung (1 we) (6100-1234)</li>
-<li data-title="wohn- und geschäftshaus (4 we) (6100-1242)" data-id="6100-1242" onclick="showDetails(this)">wohn- und geschäftshaus (4 we) (6100-1242)</li>
-<li data-title="mehrfamilienhaus (4 we) – dachausbau (6100-1267)" data-id="6100-1267" onclick="showDetails(this)">mehrfamilienhaus (4 we) – dachausbau (6100-1267)</li>
-<li data-title="wohn- und geschäftshaus (3 we) (6100-1242)" data-id="6100-1242" onclick="showDetails(this)">wohn- und geschäftshaus (3 we) (6100-1242)</li>
-<li data-title="mehrfamilienhaus dachausbau (2 we) (6100-1262)" data-id="6100-1262" onclick="showDetails(this)">mehrfamilienhaus dachausbau (2 we) (6100-1262)</li>
-<li data-title="mehrfamilienhaus (4 we) dachausbau* (6100-1267)" data-id="6100-1267" onclick="showDetails(this)">mehrfamilienhaus (4 we) dachausbau* (6100-1267)</li>
-<li data-title="mehrfamilienhaus (4 we) – dachausbau (6100-1267)" data-id="6100-1267" onclick="showDetails(this)">mehrfamilienhaus (4 we) – dachausbau (6100-1267)</li>
-<li data-title="mehrfamilienhaus – dachgeschoss (6100-1286)" data-id="6100-1286" onclick="showDetails(this)">mehrfamilienhaus – dachgeschoss (6100-1286)</li>
-<li data-title="100-0612 (6100-1286)" data-id="6100-1286" onclick="showDetails(this)">100-0612 (6100-1286)</li>
-<li data-title="kosten der 13 vergleichsobjekte (6100-1297)" data-id="6100-1297" onclick="showDetails(this)">kosten der 13 vergleichsobjekte (6100-1297)</li>
-<li data-title="mehrfamilienhaus – carport (2 stp) (6100-1302)" data-id="6100-1302" onclick="showDetails(this)">mehrfamilienhaus – carport (2 stp) (6100-1302)</li>
-<li data-title="mehrfamilienhaus – schwammsanierung (6100-1307)" data-id="6100-1307" onclick="showDetails(this)">mehrfamilienhaus – schwammsanierung (6100-1307)</li>
-<li data-title="einfamilienhaus – dachsanierung* (6100-1345)" data-id="6100-1345" onclick="showDetails(this)">einfamilienhaus – dachsanierung* (6100-1345)</li>
-<li data-title="wohnung – dachaufstockung (6100-1346)" data-id="6100-1346" onclick="showDetails(this)">wohnung – dachaufstockung (6100-1346)</li>
-<li data-title="6100-1027 (6100-1368)" data-id="6100-1368" onclick="showDetails(this)">6100-1027 (6100-1368)</li>
-<li data-title="mehrfamilienhaus (12 we) – büros - effizienzhaus 70 (6100-1372)" data-id="6100-1372" onclick="showDetails(this)">mehrfamilienhaus (12 we) – büros - effizienzhaus 70 (6100-1372)</li>
-<li data-title="mehrfamilienhaus – aufstockung (1 we) (6100-1375)" data-id="6100-1375" onclick="showDetails(this)">mehrfamilienhaus – aufstockung (1 we) (6100-1375)</li>
-<li data-title="einfamilienhaus – garage (6100-1378)" data-id="6100-1378" onclick="showDetails(this)">einfamilienhaus – garage (6100-1378)</li>
-<li data-title="wohn- und geschäftshaus (1we) - effizienzhaus -34% bri 2.225m3 bgf762m² (6100-1379)" data-id="6100-1379" onclick="showDetails(this)">wohn- und geschäftshaus (1we) - effizienzhaus -34% bri 2.225m3 bgf762m² (6100-1379)</li>
-<li data-title="wohn- u. geschäftshaus - effizienzhaus -34% (6100-1379)" data-id="6100-1379" onclick="showDetails(this)">wohn- u. geschäftshaus - effizienzhaus -34% (6100-1379)</li>
-<li data-title="kosten der 16 vergleichsobjekte (6100-1384)" data-id="6100-1384" onclick="showDetails(this)">kosten der 16 vergleichsobjekte (6100-1384)</li>
-<li data-title="reihenendhaus – kinderzimmer* (6100-1386)" data-id="6100-1386" onclick="showDetails(this)">reihenendhaus – kinderzimmer* (6100-1386)</li>
-<li data-title="doppelhaushälfte (1 we) – büro (2 ap) (6100-1393)" data-id="6100-1393" onclick="showDetails(this)">doppelhaushälfte (1 we) – büro (2 ap) (6100-1393)</li>
-<li data-title="mehrfamilienhaus – aufstockung (2 we) (6100-1404)" data-id="6100-1404" onclick="showDetails(this)">mehrfamilienhaus – aufstockung (2 we) (6100-1404)</li>
-<li data-title="seiten 430 bis 438 (6100-1405)" data-id="6100-1405" onclick="showDetails(this)">seiten 430 bis 438 (6100-1405)</li>
-<li data-title="einfamilienhaus – dachsanierung (6100-1405)" data-id="6100-1405" onclick="showDetails(this)">einfamilienhaus – dachsanierung (6100-1405)</li>
-<li data-title="6100-1166- (6100-1415)" data-id="6100-1415" onclick="showDetails(this)">6100-1166- (6100-1415)</li>
-<li data-title="fassadensanierung wohngebäude (6100-1427)" data-id="6100-1427" onclick="showDetails(this)">fassadensanierung wohngebäude (6100-1427)</li>
-<li data-title="fassadensanierung wohngebäude* (6100-1427)" data-id="6100-1427" onclick="showDetails(this)">fassadensanierung wohngebäude* (6100-1427)</li>
-<li data-title="gründerzeitgebäude – aufstockung (2we) (6100-1431)" data-id="6100-1431" onclick="showDetails(this)">gründerzeitgebäude – aufstockung (2we) (6100-1431)</li>
-<li data-title="mehrfamilienhaus (3 we) – wintergarten (6100-1462)" data-id="6100-1462" onclick="showDetails(this)">mehrfamilienhaus (3 we) – wintergarten (6100-1462)</li>
-<li data-title="6100-0233 (6100-1462)" data-id="6100-1462" onclick="showDetails(this)">6100-0233 (6100-1462)</li>
-<li data-title="mehrfamilienhaus (18 we) (6100-1500)" data-id="6100-1500" onclick="showDetails(this)">mehrfamilienhaus (18 we) (6100-1500)</li>
-<li data-title="soziotherapeutisches zentrum (6200-0034)" data-id="6200-0034" onclick="showDetails(this)">soziotherapeutisches zentrum (6200-0034)</li>
-<li data-title="studentenwohnheim (6200-0035)" data-id="6200-0035" onclick="showDetails(this)">studentenwohnheim (6200-0035)</li>
-<li data-title="alten- und pflegeheim (6200-0055)" data-id="6200-0055" onclick="showDetails(this)">alten- und pflegeheim (6200-0055)</li>
-<li data-title="tagesförderstätte (8 pflegeplätze) (6200-0066)" data-id="6200-0066" onclick="showDetails(this)">tagesförderstätte (8 pflegeplätze) (6200-0066)</li>
-<li data-title="seniorenwohnheim (25 betten) (6200-0073)" data-id="6200-0073" onclick="showDetails(this)">seniorenwohnheim (25 betten) (6200-0073)</li>
-<li data-title="wohnunterkunft (23 we) (6200-0074)" data-id="6200-0074" onclick="showDetails(this)">wohnunterkunft (23 we) (6200-0074)</li>
-<li data-title="wohnunterkunft (23 we)* (6200-0074)" data-id="6200-0074" onclick="showDetails(this)">wohnunterkunft (23 we)* (6200-0074)</li>
-<li data-title="jugendräume (6400-0051)" data-id="6400-0051" onclick="showDetails(this)">jugendräume (6400-0051)</li>
-<li data-title="katholisches pfarrhaus (6400-0052)" data-id="6400-0052" onclick="showDetails(this)">katholisches pfarrhaus (6400-0052)</li>
-<li data-title="jugendzentrum (6400-0057)" data-id="6400-0057" onclick="showDetails(this)">jugendzentrum (6400-0057)</li>
-<li data-title="ev. pfarrhaus – fassadensanierung* (6400-0058)" data-id="6400-0058" onclick="showDetails(this)">ev. pfarrhaus – fassadensanierung* (6400-0058)</li>
-<li data-title="pfarrbüro (6400-0068)" data-id="6400-0068" onclick="showDetails(this)">pfarrbüro (6400-0068)</li>
-<li data-title="dorfgemeinschaftshaus (6400-0069)" data-id="6400-0069" onclick="showDetails(this)">dorfgemeinschaftshaus (6400-0069)</li>
-<li data-title="gemeindehaus (6400-0086)" data-id="6400-0086" onclick="showDetails(this)">gemeindehaus (6400-0086)</li>
-<li data-title="gemeindezentrum (6400-0089)" data-id="6400-0089" onclick="showDetails(this)">gemeindezentrum (6400-0089)</li>
-<li data-title="familienzentrum (6400-0092)" data-id="6400-0092" onclick="showDetails(this)">familienzentrum (6400-0092)</li>
-<li data-title="pfarrhaus – kindergarten (6400-0100)" data-id="6400-0100" onclick="showDetails(this)">pfarrhaus – kindergarten (6400-0100)</li>
-<li data-title="pfarrhaus – kindergarten (6400-0100)" data-id="6400-0100" onclick="showDetails(this)">pfarrhaus – kindergarten (6400-0100)</li>
-<li data-title="mensa – mittagsbetreuung (6500-0039)" data-id="6500-0039" onclick="showDetails(this)">mensa – mittagsbetreuung (6500-0039)</li>
-<li data-title="mensa (130 schüler) (6500-0048)" data-id="6500-0048" onclick="showDetails(this)">mensa (130 schüler) (6500-0048)</li>
-<li data-title="casino (176 sitzplätze) (6500-0054)" data-id="6500-0054" onclick="showDetails(this)">casino (176 sitzplätze) (6500-0054)</li>
-<li data-title="naturfreundehaus (6600-0015)" data-id="6600-0015" onclick="showDetails(this)">naturfreundehaus (6600-0015)</li>
-<li data-title="hotel (23 betten) (6600-0016)" data-id="6600-0016" onclick="showDetails(this)">hotel (23 betten) (6600-0016)</li>
-<li data-title="hotel (76 betten) (6600-0017)" data-id="6600-0017" onclick="showDetails(this)">hotel (76 betten) (6600-0017)</li>
-<li data-title="gästehaus (12 betten), laden, caf@ (6600-0021)" data-id="6600-0021" onclick="showDetails(this)">gästehaus (12 betten), laden, caf@ (6600-0021)</li>
-<li data-title="produktions- und bürogebäude (80 ap) (7100-0025)" data-id="7100-0025" onclick="showDetails(this)">produktions- und bürogebäude (80 ap) (7100-0025)</li>
-<li data-title="fabrikgebäude textilproduktion* (7100-0038)" data-id="7100-0038" onclick="showDetails(this)">fabrikgebäude textilproduktion* (7100-0038)</li>
-<li data-title="entwicklungszentrum (7100-0048)" data-id="7100-0048" onclick="showDetails(this)">entwicklungszentrum (7100-0048)</li>
-<li data-title="geschäftshaus – laden (7200-0036)" data-id="7200-0036" onclick="showDetails(this)">geschäftshaus – laden (7200-0036)</li>
-<li data-title="apotheke (7200-0046)" data-id="7200-0046" onclick="showDetails(this)">apotheke (7200-0046)</li>
-<li data-title="wohn- und geschäftshaus (7200-0053)" data-id="7200-0053" onclick="showDetails(this)">wohn- und geschäftshaus (7200-0053)</li>
-<li data-title="geschäftshaus, cafe, büros (7200-0061)" data-id="7200-0061" onclick="showDetails(this)">geschäftshaus, cafe, büros (7200-0061)</li>
-<li data-title="autohaus (7200-0066)" data-id="7200-0066" onclick="showDetails(this)">autohaus (7200-0066)</li>
-<li data-title="autohaus (7200-0068)" data-id="7200-0068" onclick="showDetails(this)">autohaus (7200-0068)</li>
-<li data-title="autohaus (7200-0081)" data-id="7200-0081" onclick="showDetails(this)">autohaus (7200-0081)</li>
-<li data-title="geschäftshaus mit werkstatt (7200-0069)" data-id="7200-0069" onclick="showDetails(this)">geschäftshaus mit werkstatt (7200-0069)</li>
-<li data-title="atelier (7200-0079)" data-id="7200-0079" onclick="showDetails(this)">atelier (7200-0079)</li>
-<li data-title="markthalle (7200-0090)" data-id="7200-0090" onclick="showDetails(this)">markthalle (7200-0090)</li>
-<li data-title="geschäftshaus – fassadensanierung (7200-0094)" data-id="7200-0094" onclick="showDetails(this)">geschäftshaus – fassadensanierung (7200-0094)</li>
-<li data-title="produktions- und bürogebäude (7300-0014)" data-id="7300-0014" onclick="showDetails(this)">produktions- und bürogebäude (7300-0014)</li>
-<li data-title="verwaltung und versand (7300-0058)" data-id="7300-0058" onclick="showDetails(this)">verwaltung und versand (7300-0058)</li>
-<li data-title="büro- und fertigungsgebäude (7300-0060)" data-id="7300-0060" onclick="showDetails(this)">büro- und fertigungsgebäude (7300-0060)</li>
-<li data-title="laborgebäude (7700-0036)" data-id="7700-0036" onclick="showDetails(this)">laborgebäude (7700-0036)</li>
-<li data-title="empfangsgebäude – verbindungsgänge* (7700-0051)" data-id="7700-0051" onclick="showDetails(this)">empfangsgebäude – verbindungsgänge* (7700-0051)</li>
-<li data-title="lager- und bürogebäude (7700-0058)" data-id="7700-0058" onclick="showDetails(this)">lager- und bürogebäude (7700-0058)</li>
-<li data-title="anlieferungszone (7700-0060)" data-id="7700-0060" onclick="showDetails(this)">anlieferungszone (7700-0060)</li>
-<li data-title="lagerhalle (7700-0068)" data-id="7700-0068" onclick="showDetails(this)">lagerhalle (7700-0068)</li>
-<li data-title="weinlagerhalle – büro (7700-0080)" data-id="7700-0080" onclick="showDetails(this)">weinlagerhalle – büro (7700-0080)</li>
-<li data-title="logistik- und produktionshalle (215 ap) (7700-0089)" data-id="7700-0089" onclick="showDetails(this)">logistik- und produktionshalle (215 ap) (7700-0089)</li>
-<li data-title="landwirtschaftliches museum (9100-0005)" data-id="9100-0005" onclick="showDetails(this)">landwirtschaftliches museum (9100-0005)</li>
-<li data-title="stadthistorisches museum (9100-0007)" data-id="9100-0007" onclick="showDetails(this)">stadthistorisches museum (9100-0007)</li>
-<li data-title="bücherei, museum, bürgersaal (9100-0017)" data-id="9100-0017" onclick="showDetails(this)">bücherei, museum, bürgersaal (9100-0017)</li>
-<li data-title="übergangsbau – pausenhalle* (9100-0021)" data-id="9100-0021" onclick="showDetails(this)">übergangsbau – pausenhalle* (9100-0021)</li>
-<li data-title="stadthalle (9100-0031)" data-id="9100-0031" onclick="showDetails(this)">stadthalle (9100-0031)</li>
-<li data-title="kirche – brandschaden (9100-0033)" data-id="9100-0033" onclick="showDetails(this)">kirche – brandschaden (9100-0033)</li>
-<li data-title="evangelische kirche – innenrestaurierung (9100-0035)" data-id="9100-0035" onclick="showDetails(this)">evangelische kirche – innenrestaurierung (9100-0035)</li>
-<li data-title="kosten der 5 vergleichsobjekte (9100-0039)" data-id="9100-0039" onclick="showDetails(this)">kosten der 5 vergleichsobjekte (9100-0039)</li>
-<li data-title="kirche – fassadenarbeiten (9100-0039)" data-id="9100-0039" onclick="showDetails(this)">kirche – fassadenarbeiten (9100-0039)</li>
-<li data-title="museum – eingangs- und ausstellungsbau (9100-0043)" data-id="9100-0043" onclick="showDetails(this)">museum – eingangs- und ausstellungsbau (9100-0043)</li>
-<li data-title="katholische kirche (9100-0044)" data-id="9100-0044" onclick="showDetails(this)">katholische kirche (9100-0044)</li>
-<li data-title="stadtmuseum (9100-0047)" data-id="9100-0047" onclick="showDetails(this)">stadtmuseum (9100-0047)</li>
-<li data-title="evangelische kirche (9100-0051)" data-id="9100-0051" onclick="showDetails(this)">evangelische kirche (9100-0051)</li>
-<li data-title="evangelische kirche (9100-0064)" data-id="9100-0064" onclick="showDetails(this)">evangelische kirche (9100-0064)</li>
-<li data-title="kirche – gruppenraum (9100-0073)" data-id="9100-0073" onclick="showDetails(this)">kirche – gruppenraum (9100-0073)</li>
-<li data-title="kinder- und jugendtheater (9100-0079)" data-id="9100-0079" onclick="showDetails(this)">kinder- und jugendtheater (9100-0079)</li>
-<li data-title="erschließungsbauwerk an historischem gebäude (9100-0081)" data-id="9100-0081" onclick="showDetails(this)">erschließungsbauwerk an historischem gebäude (9100-0081)</li>
-<li data-title="kapelle (9100-0088)" data-id="9100-0088" onclick="showDetails(this)">kapelle (9100-0088)</li>
-<li data-title="schloss (9100-0147)" data-id="9100-0147" onclick="showDetails(this)">schloss (9100-0147)</li>
-<li data-title="fluchttreppe* (9100-0154)" data-id="9100-0154" onclick="showDetails(this)">fluchttreppe* (9100-0154)</li>
-<li data-title="bibliothek – möblierung (9100-0157)" data-id="9100-0157" onclick="showDetails(this)">bibliothek – möblierung (9100-0157)</li>
-<li data-title="bibliothek (9100-0158)" data-id="9100-0158" onclick="showDetails(this)">bibliothek (9100-0158)</li>
-<li data-title="klosteranlage – wissenschafts- u. studierzentrum (9100-0169)" data-id="9100-0169" onclick="showDetails(this)">klosteranlage – wissenschafts- u. studierzentrum (9100-0169)</li>
-<li data-title="klosteranlage – wissenschafts- und studierzentrum (9100-0169)" data-id="9100-0169" onclick="showDetails(this)">klosteranlage – wissenschafts- und studierzentrum (9100-0169)</li>
-<li data-title="9100-0158 (9100-0170)" data-id="9100-0170" onclick="showDetails(this)">9100-0158 (9100-0170)</li>
-<li data-title="friedenskirche (290 sitzplätze) (9100-0184)" data-id="9100-0184" onclick="showDetails(this)">friedenskirche (290 sitzplätze) (9100-0184)</li>
-<li data-title="veranstaltungssaal (110 sitzplätze)* (9100-0189)" data-id="9100-0189" onclick="showDetails(this)">veranstaltungssaal (110 sitzplätze)* (9100-0189)</li>
-<li data-title="gemeindehaus (748 sitzplätze) (9100-0200)" data-id="9100-0200" onclick="showDetails(this)">gemeindehaus (748 sitzplätze) (9100-0200)</li>
-<li data-title="justizvollzugsanstalt (9600-0001)" data-id="9600-0001" onclick="showDetails(this)">justizvollzugsanstalt (9600-0001)</li>
-<li data-title="aussegnungshalle* (9700-0010)" data-id="9700-0010" onclick="showDetails(this)">aussegnungshalle* (9700-0010)</li>
-<li data-title="aussegnungshalle (9700-0019)" data-id="9700-0019" onclick="showDetails(this)">aussegnungshalle (9700-0019)</li>
-<li data-title="ateliergebäude (9900-0004)" data-id="9900-0004" onclick="showDetails(this)">ateliergebäude (9900-0004)</li>
-    
-
-
-
-    
-    
-</ul>
-
-  <div class="details" id="detailsBox">
-    <h3 style="text-transform: lowercase;">projekt-details</h3>
-    <p><strong>kennziffer:</strong> <span id="detailId"></span></p>
-    <p><strong>titel:</strong> <span id="detailTitle"></span></p>
+  <div onclick="window.location.href='index.html'" class="back-arrow">
+    &larr;
   </div>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const searchBox = document.getElementById('search');
-      const items = document.querySelectorAll('#projektListe li');
-      const detailId = document.getElementById('detailId');
-      const detailTitle = document.getElementById('detailTitle');
-      const detailsBox = document.getElementById('detailsBox');
+  <header>Anfrage</header>
 
-      searchBox.addEventListener('input', function () {
-        const filter = this.value.toLowerCase();
-        items.forEach(li => {
-          const title = li.dataset.title;
-          li.style.display = title.startsWith(filter) ? '' : 'none';
+  <div class="container">
+    <div class="answered-questions" id="answeredQuestions"></div>
+    
+    <div class="current-question-container" id="currentQuestionContainer">
+      <div class="question" id="currentQuestion">Was möchtest du machen?</div>
+      <div class="options" id="currentOptions">
+        <button class="option-button" data-value="bauen">Bauen</button>
+        <button class="option-button" data-value="umbauen">Umbauen</button>
+        <button class="option-button" data-value="renovieren">Renovieren</button>
+        <button class="option-button" data-value="beraten">Beraten</button>
+      </div>
+    </div>
+
+    <div class="summary-section hidden" id="summarySection">
+      <div class="summary-title">Zusammenfassung deiner Angaben</div>
+      <div class="summary-content" id="summaryContent"></div>
+      <a href="#" class="submit-btn" id="submitBtn">Angebot jetzt anfordern</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div onclick="window.location.href='impressum.html'">Impressum</div>
+    <div>© 2025 studio lumen</div>
+  </footer>
+
+  <script>
+    const questions = {
+      q1: {
+        question: "Was möchtest du machen?",
+        options: {
+          bauen: "Bauen",
+          umbauen: "Umbauen", 
+          renovieren: "Renovieren",
+          beraten: "Beraten"
+        },
+        next: "q2"
+      },
+      q2: {
+        question: "Wie weit bist du?",
+        options: {
+          anfang: "Ich fange grade erst an",
+          idee: "Ich habe eine grobe Idee",
+          weit: "Ich bin schon ziemlich weit"
+        },
+        next: "q3"
+      },
+      q3: {
+        question: "Was brauchst du konkret?",
+        options: {
+          beratung: "Beratung/Erstgespräch",
+          plaene: "Pläne erstellen", 
+          bauantrag: "Bauantrag vorbereiten",
+          komplett: "Komplette Planung",
+          wohnflaeche: "Wohnflächenberechnung",
+          unklar: "Noch unklar"
+        },
+        next: "q4"
+      },
+      q4: {
+        question: "Wie groß wird es?",
+        options: {
+          "50": "Bis 50 m²",
+          "100": "Bis 100 m²",
+          "150": "Bis 150 m²", 
+          "200": "Bis 200 m²",
+          "250": "Bis 250 m²",
+          "300": "Bis 300 m²",
+          unklar: "Noch unklar"
+        },
+        next: "q5"
+      },
+      q5: {
+        question: "Sind Pläne vorhanden?",
+        options: {
+          ja: "Ja",
+          nein: "Nein", 
+          skizzen: "Nur Skizzen"
+        },
+        next: function(answers) {
+          if (answers.q3 === 'wohnflaeche') {
+            if (answers.q5 === 'ja') {
+              return "q5a";
+            } else {
+              return "q5b";
+            }
+          } else {
+            if (answers.q5 === 'ja') {
+              return "q5c";
+            } else {
+              return "q6";
+            }
+          }
+        }
+      },
+      q5a: {
+        question: "Sind die Pläne verwendbar?",
+        options: {
+          vollstaendig: "Vollständig bemaßt und lesbar",
+          teilweise: "Teilweise, könnte ergänzt werden",
+          unsicher: "Unsicher, bitte prüfen"
+        },
+        next: function(answers) {
+          if (answers.q5a === 'teilweise' || answers.q5a === 'unsicher') {
+            return "q5b";
+          } else {
+            return "q7_wohn";
+          }
+        }
+      },
+      q5b: {
+        question: "Sollen die Pläne durch mich erstellt werden?",
+        options: {
+          ja: "Ja",
+          nein: "Nein",
+          unklar: "Noch unklar"
+        },
+        next: "q7_wohn"
+      },
+      q5c: {
+        question: "Sind die vorhandenen Pläne lesbar und nutzbar?",
+        options: {
+          vollstaendig: "Ja, vollständig nutzbar",
+          teilweise: "Teilweise, müssen ergänzt werden",
+          schlecht: "Schlecht lesbar, neu erstellen nötig"
+        },
+        next: "q6"
+      },
+      q6: {
+        question: "Wie weit soll die Planung gehen?",
+        options: {
+          bauantrag: "Bis zum Bauantrag",
+          ausfuehrung: "Bis zur Ausführung",
+          vergabe: "Mit Vergabevorbereitung", 
+          komplett: "Planung von A-Z",
+          unklar: "Noch unklar"
+        },
+        next: "q7"
+      },
+      q7: {
+        question: "Wann soll es losgehen?",
+        options: {
+          sofort: "Sofort",
+          "1-3": "In 1-3 Monaten",
+          "3-6": "In 3-6 Monaten",
+          spaeter: "Später",
+          unklar: "Noch unklar"
+        },
+        next: "summary"
+      },
+      q7_wohn: {
+        question: "Wann soll es losgehen?",
+        options: {
+          sofort: "Sofort",
+          "1-3": "In 1-3 Monaten", 
+          "3-6": "In 3-6 Monaten",
+          spaeter: "Später",
+          unklar: "Noch unklar"
+        },
+        next: "summary"
+      }
+    };
+
+    let currentStep = 'q1';
+    let answers = {};
+
+    function selectOption(button, value) {
+      console.log('selectOption called with:', value); // Debug
+      
+      // Antwort speichern
+      answers[currentStep] = value;
+      
+      // Button als selected markieren
+      document.querySelectorAll('.option-button').forEach(btn => btn.classList.remove('selected'));
+      button.classList.add('selected');
+      
+      // Nach kurzer Verzögerung zur nächsten Frage
+      setTimeout(() => {
+        moveToAnswered();
+        showNextQuestion();
+      }, 300);
+    }
+
+    function moveToAnswered() {
+      const questionText = document.getElementById('currentQuestion').textContent;
+      const selectedButton = document.querySelector('.option-button.selected');
+      const selectedText = selectedButton.textContent;
+      
+      // WICHTIG: currentStep JETZT speichern, bevor er sich ändert
+      const stepToSave = currentStep;
+      
+      // Zu beantworteten Fragen hinzufügen
+      const answeredContainer = document.getElementById('answeredQuestions');
+      const answeredItem = document.createElement('div');
+      answeredItem.className = 'answered-item';
+      answeredItem.setAttribute('data-step', stepToSave); // Gespeicherten Wert verwenden
+      answeredItem.addEventListener('click', function() {
+        console.log('Clicked on answered item:', stepToSave); // Debug
+        editQuestion(stepToSave); // Gespeicherten Wert verwenden
+      });
+      answeredItem.style.cursor = 'pointer';
+      
+      answeredItem.innerHTML = `
+        <div class="answered-question">${questionText}</div>
+        <div class="answered-value">${selectedText}</div>
+      `;
+      
+      answeredContainer.appendChild(answeredItem);
+    }
+
+    function showNextQuestion() {
+      const currentQ = questions[currentStep];
+      let nextStep;
+      
+      if (typeof currentQ.next === 'function') {
+        nextStep = currentQ.next(answers);
+      } else {
+        nextStep = currentQ.next;
+      }
+      
+      if (nextStep === 'summary') {
+        showSummary();
+        return;
+      }
+      
+      currentStep = nextStep;
+      const nextQ = questions[nextStep];
+      
+      // Aktuelle Frage-Container nach oben bewegen
+      const container = document.getElementById('currentQuestionContainer');
+      container.classList.add('answered');
+      
+      // Neue Frage laden
+      setTimeout(() => {
+        document.getElementById('currentQuestion').textContent = nextQ.question;
+        
+        const optionsContainer = document.getElementById('currentOptions');
+        optionsContainer.innerHTML = '';
+        
+        Object.entries(nextQ.options).forEach(([key, text]) => {
+          const button = document.createElement('button');
+          button.className = 'option-button';
+          button.textContent = text;
+          button.addEventListener('click', () => selectOption(button, key));
+          optionsContainer.appendChild(button);
+        });
+        
+        // Container zurück zur Mitte bewegen
+        container.classList.remove('answered');
+      }, 200);
+    }
+
+    function editQuestion(step) {
+      console.log('Editing question:', step);
+      
+      // Verhindere weitere Event-Propagation
+      if (event) event.stopPropagation();
+      
+      // Summary verstecken
+      document.getElementById('summarySection').classList.add('hidden');
+      
+      // Current question container wieder anzeigen
+      const container = document.getElementById('currentQuestionContainer');
+      container.style.display = 'block';
+      container.classList.remove('answered');
+      
+      // Alle Fragen ab diesem Schritt löschen
+      const answeredContainer = document.getElementById('answeredQuestions');
+      const items = [...answeredContainer.querySelectorAll('.answered-item')];
+      
+      let found = false;
+      items.forEach(item => {
+        const itemStep = item.getAttribute('data-step');
+        if (itemStep === step) {
+          found = true;
+        }
+        if (found) {
+          item.remove();
+        }
+      });
+      
+      // Antworten ab diesem Schritt löschen
+      const stepKeys = Object.keys(answers);
+      stepKeys.forEach(key => {
+        if (key >= step) {
+          delete answers[key];
+        }
+      });
+      
+      // Zu diesem Schritt zurückkehren
+      currentStep = step;
+      const question = questions[step];
+      
+      if (!question) {
+        console.error('Question not found:', step);
+        return;
+      }
+      
+      document.getElementById('currentQuestion').textContent = question.question;
+      
+      const optionsContainer = document.getElementById('currentOptions');
+      optionsContainer.innerHTML = '';
+      
+      Object.entries(question.options).forEach(([key, text]) => {
+        const button = document.createElement('button');
+        button.className = 'option-button';
+        button.textContent = text;
+        button.addEventListener('click', function() {
+          console.log('Button clicked:', key); // Debug
+          selectOption(button, key);
+        });
+        optionsContainer.appendChild(button);
+      });
+    }
+
+    function showSummary() {
+      // Current question container verstecken
+      document.getElementById('currentQuestionContainer').style.display = 'none';
+      
+      // Summary generieren
+      generateSummary();
+      
+      // Summary zeigen
+      document.getElementById('summarySection').classList.remove('hidden');
+    }
+
+    function generateSummary() {
+      const summary = [];
+      
+      // Basis-Informationen sammeln
+      const projektArt = questions.q1.options[answers.q1] || '';
+      const status = questions.q2.options[answers.q2] || '';
+      const bedarf = questions.q3.options[answers.q3] || '';
+      const groesse = questions.q4.options[answers.q4] || '';
+      const plaene = questions.q5.options[answers.q5] || '';
+      const zeitrahmen = answers.q7 ? questions.q7.options[answers.q7] : 
+                        (answers.q7_wohn ? questions.q7_wohn.options[answers.q7_wohn] : '');
+      
+      summary.push(`<strong>Projektart:</strong> ${projektArt}`);
+      summary.push(`<strong>Status:</strong> ${status}`);
+      summary.push(`<strong>Benötigte Leistung:</strong> ${bedarf}`);
+      summary.push(`<strong>Projektgröße:</strong> ${groesse}`);
+      summary.push(`<strong>Pläne vorhanden:</strong> ${plaene}`);
+      
+      // Prüfen ob Aufmaß/Vermessung erforderlich ist
+      const needsSurveying = answers.q5 === 'nein' || answers.q5 === 'skizzen' || 
+                            answers.q5c === 'teilweise' || answers.q5c === 'schlecht' ||
+                            (answers.q3 === 'wohnflaeche' && (answers.q5a === 'teilweise' || answers.q5a === 'unsicher'));
+      
+      if (needsSurveying) {
+        summary.push(`<strong>Aufmaß/Vermessung:</strong> Erforderlich`);
+      }
+      
+      // Spezielle Behandlung für Wohnflächenberechnung
+      if (answers.q3 === 'wohnflaeche') {
+        if (answers.q5a) {
+          const qualitaet = questions.q5a.options[answers.q5a];
+          summary.push(`<strong>Planqualität:</strong> ${qualitaet}`);
+        }
+        
+        if (answers.q5b) {
+          const erstellen = questions.q5b.options[answers.q5b];
+          summary.push(`<strong>Pläne erstellen:</strong> ${erstellen}`);
+        }
+        
+        // LPH für Wohnflächenberechnung
+        const lphs = ['LPH 0'];
+        const details = ['<em>LPH 0:</em> Wohnflächenberechnung nach WoFlV'];
+        
+        const needsPlans = answers.q5 === 'nein' || answers.q5 === 'skizzen' || 
+                          answers.q5a === 'teilweise' || answers.q5a === 'unsicher';
+        
+        if (needsPlans && answers.q5b === 'ja') {
+          lphs.push('LPH 1', 'LPH 2');
+          details.push('<em>LPH 1:</em> Bestandsaufnahme, Aufmaß');
+          details.push('<em>LPH 2:</em> Grundrisszeichnung');
+        }
+        
+        summary.push(`<strong>Leistungsphasen:</strong> ${lphs.join(', ')}`);
+        summary.push(`<strong>Leistungen:</strong><br>${details.join('<br>')}`);
+        
+      } else {
+        // Normale Projekte
+        if (answers.q6) {
+          const tiefe = questions.q6.options[answers.q6];
+          summary.push(`<strong>Planungstiefe:</strong> ${tiefe}`);
+        }
+        
+        // Planqualität bei normalen Projekten
+        if (answers.q5c) {
+          const qualitaet = questions.q5c.options[answers.q5c];
+          summary.push(`<strong>Planqualität:</strong> ${qualitaet}`);
+        }
+        
+        // LPH-Berechnung für normale Projekte
+        const lphs = new Set();
+        
+        if (answers.q2 === 'anfang' || answers.q3 === 'beratung') lphs.add(0);
+        if (answers.q2 === 'anfang' || answers.q5 === 'nein') lphs.add(1);
+        if (answers.q2 === 'idee' || answers.q3 === 'plaene') lphs.add(2);
+        if (answers.q2 === 'weit') lphs.add(3);
+        if (answers.q6 === 'bauantrag') lphs.add(4);
+        if (answers.q6 === 'ausfuehrung') { lphs.add(4); lphs.add(5); }
+        if (answers.q6 === 'komplett') { lphs.add(4); lphs.add(5); lphs.add(6); lphs.add(7); }
+        if (answers.q6 === 'vergabe') { lphs.add(6); lphs.add(7); }
+        
+        // Lücken füllen - LPH müssen aufeinanderfolgend sein
+        const sortedLphs = [...lphs].sort((a, b) => a - b);
+        if (sortedLphs.length > 0) {
+          const min = Math.min(...sortedLphs);
+          const max = Math.max(...sortedLphs);
+          
+          // Alle LPH zwischen min und max hinzufügen
+          for (let i = min; i <= max; i++) {
+            lphs.add(i);
+          }
+        }
+        
+        const finalLphs = [...lphs].sort((a, b) => a - b);
+        
+        // Laienverständliche Beschreibungen für LPH
+        const lphDescriptions = {
+          0: 'Beratung und Machbarkeitsstudien',
+          1: 'Grundlagenermittlung (Bestandsaufnahme, Aufmaß vor Ort, Ihre Wünsche erfassen)',
+          2: 'Vorplanung (erste Entwürfe und Skizzen)',
+          3: 'Entwurfsplanung (detaillierte Pläne, Gestaltung)',
+          4: 'Genehmigungsplanung (Bauantrag vorbereiten und einreichen)', 
+          5: 'Ausführungsplanung (detaillierte Werkpläne für Handwerker)',
+          6: 'Vorbereitung der Vergabe (Leistungsverzeichnisse erstellen)',
+          7: 'Mitwirkung bei der Vergabe (Angebote prüfen, Handwerker auswählen)',
+          8: 'Objektüberwachung (Bauüberwachung vor Ort)'
+        };
+        
+        if (finalLphs.length > 0) {
+          summary.push(`<strong>Beauftragte Leistungen:</strong>`);
+          finalLphs.forEach(lph => {
+            const description = lphDescriptions[lph];
+            if (description) {
+              summary.push(`<em>LPH ${lph}:</em> ${description}`);
+            }
+          });
+        }
+      }
+      
+      summary.push(`<strong>Zeitrahmen:</strong> ${zeitrahmen}`);
+      
+      // Summary anzeigen
+      const summaryHtml = summary.map(line => `<p>${line}</p>`).join('');
+      document.getElementById('summaryContent').innerHTML = summaryHtml;
+      
+      // Mailto-Link erstellen
+      const summaryText = summary.map(line => line.replace(/<[^>]+>/g, '')).join('\n');
+      const subject = encodeURIComponent("Angebotsanfrage");
+      const body = encodeURIComponent(`Folgende Angaben wurden gemacht:\n\n${summaryText}\n\nBitte sende mir ein Angebot.`);
+      document.getElementById('submitBtn').href = `mailto:studiolumenarchitektur@gmail.com?subject=${subject}&body=${body}`;
+    }
+
+    // Initialisierung der ersten Frage
+    function initializeFirstQuestion() {
+      console.log('Initializing first question'); // Debug
+      const buttons = document.querySelectorAll('#currentOptions .option-button');
+      buttons.forEach(button => {
+        const value = button.getAttribute('data-value');
+        console.log('Adding listener to button:', value); // Debug
+        button.addEventListener('click', function() {
+          console.log('First question button clicked:', value); // Debug
+          selectOption(button, value);
         });
       });
+    }
 
-      window.showDetails = function (el) {
-        detailId.textContent = el.dataset.id;
-        detailTitle.textContent = el.textContent;
-        detailsBox.style.display = 'block';
-      };
+    // Bei Seitenladung initialisieren
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('DOM loaded'); // Debug
+      initializeFirstQuestion();
     });
   </script>
 </body>
