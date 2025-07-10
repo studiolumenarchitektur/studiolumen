@@ -26,6 +26,8 @@
     .logo-container {
       width: 400px;
       cursor: pointer;
+      position: relative;
+      height: 300px; /* Höhe passend anpassen */
     }
     svg {
       width: 100%;
@@ -93,11 +95,12 @@
   <script>
     const svgWidth = 400;
     const svgHeight = 100;
+    const waveYOffset = 230; // vertikale Position der Welle unter "flut"
 
     const path = document.getElementById("wavePath");
 
     const baseAmplitude = 20;
-    const baseFrequency = 3;  // 3 Wellenberge
+    const baseFrequency = 3;
     const segments = 150;
 
     let t = 0;
@@ -132,7 +135,8 @@
           localAmp = baseAmplitude + scale * 40 * intensity;
         }
 
-        const y = svgHeight / 2 + localAmp * Math.sin((2 * Math.PI * localFreq * x / svgWidth) + t);
+        // y um waveYOffset nach unten verschoben (unter "flut")
+        const y = waveYOffset + localAmp * Math.sin((2 * Math.PI * localFreq * x / svgWidth) + t);
         points.push(`${x},${y}`);
       }
 
