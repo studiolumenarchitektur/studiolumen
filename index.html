@@ -27,7 +27,7 @@
       width: 400px;
       cursor: pointer;
       position: relative;
-      height: 300px; /* Höhe passend anpassen */
+      height: 300px;
     }
     svg {
       width: 100%;
@@ -50,39 +50,49 @@
     .nav-link:hover {
       color: #555;
     }
-.footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  background: #fff;
-  padding: 10px 0;
-  color: #777;
-  font-size: 14px;
-  box-sizing: border-box;
-  flex-wrap: nowrap; /* Verhindert Umbruch */
-}
-.footer > div {
-  white-space: nowrap; /* Verhindert Zeilenumbruch in einzelnen Feldern */
-}
+    .footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      background: #fff;
+      padding: 10px 0;
+      color: #777;
+      font-size: 14px;
+      box-sizing: border-box;
+      flex-wrap: nowrap;
+    }
+    .footer > div, .footer > a {
+      white-space: nowrap;
+    }
+    .footer a {
+      color: #777;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+    .footer a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
   <div class="content">
-    <div class="logo-container" onclick="triggerShock(event)">
-      <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" aria-label="Logo architekturbüro ebbe&flut">
-        <g fill="#002f6c" font-family="Inter, sans-serif" font-weight="600" aria-hidden="true">
-          <text x="200" y="40" font-size="18" text-anchor="middle">ARCHITEKTURBÜRO</text>
-          <text x="60" y="110" font-size="64">ebbe</text>
-          <text x="240" y="110" font-size="64">&amp;</text>
-          <text x="240" y="180" font-size="64">flut</text>
-        </g>
-        <line x1="60" y1="140" x2="190" y2="140" stroke="#002f6c" stroke-width="14" />
-<path id="wavePath" stroke="#002f6c" stroke-width="12" fill="none" stroke-linecap="butt" stroke-linejoin="round" />
-      </svg>
+    <div class="logo-container">
+      <a href="vita.html" aria-label="Zur Vita">
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
+          <g fill="#002f6c" font-family="Inter, sans-serif" font-weight="600">
+            <text x="200" y="40" font-size="18" text-anchor="middle">ARCHITEKTURBÜRO</text>
+            <text x="60" y="110" font-size="64">ebbe</text>
+            <text x="240" y="110" font-size="64">&amp;</text>
+            <text x="240" y="180" font-size="64">flut</text>
+          </g>
+          <line x1="60" y1="140" x2="190" y2="140" stroke="#002f6c" stroke-width="14" />
+          <path id="wavePath" stroke="#002f6c" stroke-width="12" fill="none" stroke-linecap="butt" stroke-linejoin="round" />
+        </svg>
+      </a>
     </div>
     <div class="nav-links">
       <div class="nav-link" onclick="window.location.href='projekte.html'">Projekte</div>
@@ -93,17 +103,15 @@
   </div>
 
   <footer class="footer">
-    <a href="impressum.html">Impressum</a> · © ebbe&flut
+    <a href="impressum.html">Impressum</a>
+    <div>© ebbe&flut</div>
   </footer>
 
   <script>
-    // Schriftzug "ebbe&flut" horizontal zwischen x=60 und x=330 (ca. 270px breit)
     const waveXStart = 60;
     const waveXEnd = 330;
     const waveWidth = waveXEnd - waveXStart;
-
-    const svgHeight = 100;
-    const waveYOffset = 230; // vertikale Position der Welle unter "flut"
+    const waveYOffset = 230;
 
     const path = document.getElementById("wavePath");
 
@@ -120,14 +128,13 @@
 
     function easeInOut(x) {
       return x < 0.5
-          ? 2 * x * x
-          : 1 - Math.pow(-2 * x + 2, 2) / 2;
+        ? 2 * x * x
+        : 1 - Math.pow(-2 * x + 2, 2) / 2;
     }
 
     function animate() {
       const points = [];
       for (let i = 0; i <= segments; i++) {
-        // x innerhalb des Bereichs des Schriftzugs
         const x = waveXStart + waveWidth * i / segments;
 
         let localFreq = baseFrequency;
@@ -167,15 +174,16 @@
       requestAnimationFrame(animate);
     }
 
-    function triggerShock(e) {
-      const rect = e.currentTarget.getBoundingClientRect();
+    const svgElement = document.querySelector('.logo-container a svg');
+    svgElement.addEventListener('click', (e) => {
+      e.preventDefault();
+      const rect = svgElement.getBoundingClientRect();
       let clickX = e.clientX - rect.left;
-      // Begrenze clickX auf Bereich der Welle
       if (clickX < waveXStart) clickX = waveXStart;
       if (clickX > waveXEnd) clickX = waveXEnd;
       shockOrigin = clickX;
       shockTimer = 0;
-    }
+    });
 
     animate();
   </script>
