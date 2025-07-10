@@ -81,7 +81,7 @@
 <body>
   <div class="content">
     <div class="logo-container">
-      <a href="vita.html" aria-label="Zur Vita">
+      <a href="vita.html" aria-label="Zur Vita" id="logoLink" style="display:block; cursor:pointer;">
         <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
           <g fill="#002f6c" font-family="Inter, sans-serif" font-weight="600">
             <text x="200" y="40" font-size="18" text-anchor="middle">ARCHITEKTURBÜRO</text>
@@ -114,6 +114,7 @@
     const waveYOffset = 230;
 
     const path = document.getElementById("wavePath");
+    const logoLink = document.getElementById("logoLink");
 
     const baseAmplitude = 20;
     const baseFrequency = 3;
@@ -134,38 +135,34 @@
 
     function animate() {
       const points = [];
-      for (let i = 0; i <= segments; i++) {
+      for(let i=0; i<=segments; i++) {
         const x = waveXStart + waveWidth * i / segments;
-
         let localFreq = baseFrequency;
         let localAmp = baseAmplitude;
 
-        if (shockOrigin !== null) {
+        if(shockOrigin !== null) {
           const dist = Math.abs(x - shockOrigin);
           const spread = waveWidth / 3;
           const intensity = Math.max(0, 1 - dist / spread);
           const progress = shockTimer / shockDuration;
-          const scale = easeInOut(progress <= 0.5 ? progress * 2 : 2 - progress * 2);
-
+          const scale = easeInOut(progress <= 0.5 ? progress*2 : 2 - progress*2);
           localFreq = baseFrequency - scale * 1 * intensity;
           localAmp = baseAmplitude + scale * 40 * intensity;
         }
-
         const y = waveYOffset + localAmp * Math.sin((2 * Math.PI * localFreq * (x - waveXStart) / waveWidth) + t);
         points.push(`${x},${y}`);
       }
-
       path.setAttribute("d", "M " + points.join(" L "));
 
-      if (shockOrigin !== null && shockTimer < shockDuration / 2) {
+      if(shockOrigin !== null && shockTimer < shockDuration/2) {
         t += tSpeed * 2.2;
       } else {
         t += tSpeed;
       }
 
-      if (shockOrigin !== null) {
+      if(shockOrigin !== null) {
         shockTimer++;
-        if (shockTimer > shockDuration) {
+        if(shockTimer > shockDuration) {
           shockOrigin = null;
           shockTimer = 0;
         }
@@ -174,18 +171,21 @@
       requestAnimationFrame(animate);
     }
 
-    const svgElement = document.querySelector('.logo-container a svg');
-    svgElement.addEventListener('click', (e) => {
+    animate();
+
+    logoLink.addEventListener('click', function(e){
       e.preventDefault();
-      const rect = svgElement.getBoundingClientRect();
+      const rect = logoLink.getBoundingClientRect();
       let clickX = e.clientX - rect.left;
-      if (clickX < waveXStart) clickX = waveXStart;
-      if (clickX > waveXEnd) clickX = waveXEnd;
+      if(clickX < waveXStart) clickX = waveXStart;
+      if(clickX > waveXEnd) clickX = waveXEnd;
       shockOrigin = clickX;
       shockTimer = 0;
-    });
 
-    animate();
+      setTimeout(() => {
+        window.location.href = logoLink.href;
+      }, 600);
+    });
   </script>
 </body>
 </html>
