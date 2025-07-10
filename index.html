@@ -40,18 +40,19 @@
       display: block;
     }
 
-    /* Dauerwellenbewegung */
-    .wave {
-      animation: waveMove 4s ease-in-out infinite;
+    /* Dauerhafte Wellenanimation */
+    .wave-line {
+      animation: waveMotion 3s ease-in-out infinite;
+      transform-origin: center;
     }
 
-    @keyframes waveMove {
-      0%   { transform: translateY(0); }
-      50%  { transform: translateY(2px); }
+    @keyframes waveMotion {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(2px); }
       100% { transform: translateY(0); }
     }
 
-    /* Flut-Overlay */
+    /* Flut-Effekt */
     .flood {
       position: absolute;
       top: 100%;
@@ -61,7 +62,7 @@
       background: rgba(0, 47, 108, 0.15);
       pointer-events: none;
       z-index: 2;
-      transition: top 1.5s ease;
+      transition: top 1.2s ease;
     }
 
     .logo-container.flooded .flood {
@@ -108,14 +109,11 @@
 <body>
   <div class="content">
     <div class="logo-container" onclick="floodLogo(this)">
-      <!-- Flut-Effekt -->
       <div class="flood"></div>
-
-      <!-- SVG BEGINNT -->
-      <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
-        <text x="50%" y="60" dominant-baseline="middle" text-anchor="middle" font-size="40" fill="#002f6c">ebbe&flut</text>
-        <!-- Beispielhafte gewellte Linie -->
-        <path class="wave" d="M0,100 C50,90 150,110 200,100 C250,90 350,110 400,100 C450,90 550,110 600,100" stroke="#002f6c" stroke-width="4" fill="none"/>
+      <!-- Eingebettetes SVG aus deiner Datei -->
+      <svg viewBox="0 0 500 150" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <text x="50%" y="40" text-anchor="middle" font-size="28" fill="#002f6c">ebbe&flut</text>
+        <path class="wave-line" d="M0,80 C50,70 150,90 200,80 C250,70 350,90 400,80 C450,70 500,90 550,80" stroke="#002f6c" stroke-width="3" fill="none"/>
       </svg>
     </div>
 
@@ -133,9 +131,9 @@
 
   <script>
     function floodLogo(container) {
-      container.classList.add("flooded");
+      container.classList.add('flooded');
       setTimeout(() => {
-        container.classList.remove("flooded");
+        container.classList.remove('flooded');
       }, 2000);
     }
   </script>
