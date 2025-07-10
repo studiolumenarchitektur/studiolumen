@@ -16,22 +16,18 @@
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
-      font-size: 16px;
     }
 
     .content {
-      flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
       padding-top: 20px;
     }
 
     .logo-container {
       width: 300px;
       cursor: pointer;
-      position: relative;
     }
 
     svg {
@@ -40,31 +36,28 @@
       display: block;
     }
 
-    .wave-line {
-      animation: waveMotion 3s ease-in-out infinite;
+    .wave {
+      stroke: #002f6c;
+      stroke-width: 12;
+      fill: none;
+      animation: waveFloat 4s ease-in-out infinite;
       transform-origin: center;
     }
 
-    @keyframes waveMotion {
+    .wave.break {
+      animation: waveBreak 0.4s ease;
+    }
+
+    @keyframes waveFloat {
       0%   { transform: translateY(0); }
-      50%  { transform: translateY(2px); }
+      50%  { transform: translateY(-3px); }
       100% { transform: translateY(0); }
     }
 
-    .flood {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 47, 108, 0.15);
-      pointer-events: none;
-      z-index: 2;
-      transition: top 1.2s ease;
-    }
-
-    .logo-container.flooded .flood {
-      top: 0%;
+    @keyframes waveBreak {
+      0%   { transform: translateY(0); }
+      50%  { transform: translateY(-14px) scaleX(1.05); }
+      100% { transform: translateY(0); }
     }
 
     .nav-links {
@@ -106,20 +99,21 @@
 </head>
 <body>
   <div class="content">
-    <div class="logo-container" onclick="floodLogo(this)">
-      <div class="flood"></div>
-
-      <!-- Eingebettetes animiertes SVG -->
-      <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+    <div class="logo-container" onclick="breakWave()">
+      <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+        <!-- Text -->
         <g fill="#002f6c" font-family="Inter, sans-serif" font-weight="600">
           <text x="200" y="40" font-size="18" text-anchor="middle">ARCHITEKTURBÜRO</text>
-          <text x="110" y="110" font-size="48">ebbe</text>
-          <text x="260" y="110" font-size="48">&amp;</text>
-          <text x="260" y="170" font-size="48">flut</text>
+          <text x="60" y="110" font-size="64">ebbe</text>
+          <text x="240" y="110" font-size="64">&amp;</text>
+          <text x="240" y="180" font-size="64">flut</text>
         </g>
-        <line x1="60" y1="140" x2="200" y2="140" stroke="#002f6c" stroke-width="12" />
-        <path class="wave-line" d="M60,240 C90,220 120,260 150,240 C180,220 210,260 240,240 C270,220 300,260 330,240"
-              stroke="#002f6c" stroke-width="12" fill="none"/>
+
+        <!-- Horizontale Linie -->
+        <line x1="60" y1="140" x2="190" y2="140" stroke="#002f6c" stroke-width="14" />
+
+        <!-- Wellenlinie -->
+        <path id="wave" class="wave" d="M60,240 C90,220 120,260 150,240 C180,220 210,260 240,240 C270,220 300,260 330,240" />
       </svg>
     </div>
 
@@ -136,11 +130,16 @@
   </footer>
 
   <script>
-    function floodLogo(container) {
-      container.classList.add('flooded');
+    function breakWave() {
+      const wave = document.getElementById('wave');
+      wave.classList.remove('break');
+      void wave.offsetWidth; // Trigger reflow
+      wave.classList.add('break');
+
+      // Reset to float animation
       setTimeout(() => {
-        container.classList.remove('flooded');
-      }, 2000);
+        wave.classList.remove('break');
+      }, 500);
     }
   </script>
 </body>
