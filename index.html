@@ -34,6 +34,21 @@
       height: auto;
       display: block;
     }
+    #hoverImage {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+      object-fit: contain;
+      z-index: 10;
+    }
+    #hoverImage.visible {
+      opacity: 0.1;
+    }
     .nav-links {
       display: flex;
       flex-direction: column;
@@ -81,7 +96,7 @@
 <body>
   <div class="content">
     <div class="logo-container">
-      <a href="vita.html" aria-label="Zur Vita" id="logoLink" style="display:block; cursor:pointer;">
+      <a href="vita.html" aria-label="Zur Vita" id="logoLink" style="display:block; cursor:pointer; position: relative; z-index: 20;">
         <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
           <g fill="#002f6c" font-family="Inter, sans-serif" font-weight="600">
             <text x="200" y="40" font-size="18" text-anchor="middle">ARCHITEKTURBÜRO</text>
@@ -93,6 +108,7 @@
           <path id="wavePath" stroke="#002f6c" stroke-width="12" fill="none" stroke-linecap="butt" stroke-linejoin="round" />
         </svg>
       </a>
+      <img src="bruno.png" alt="" id="hoverImage" />
     </div>
     <div class="nav-links">
       <div class="nav-link" onclick="window.location.href='projekte.html'">Projekte</div>
@@ -115,6 +131,8 @@
 
     const path = document.getElementById("wavePath");
     const logoLink = document.getElementById("logoLink");
+    const hoverImage = document.getElementById("hoverImage");
+    const logoContainer = document.querySelector('.logo-container');
 
     const baseAmplitude = 20;
     const baseFrequency = 3;
@@ -185,6 +203,13 @@
       setTimeout(() => {
         window.location.href = logoLink.href;
       }, 600);
+    });
+
+    logoContainer.addEventListener('mouseenter', () => {
+      hoverImage.classList.add('visible');
+    });
+    logoContainer.addEventListener('mouseleave', () => {
+      hoverImage.classList.remove('visible');
     });
   </script>
 </body>
