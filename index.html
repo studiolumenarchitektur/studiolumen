@@ -212,9 +212,12 @@
       hoverImage.style.transition = 'opacity 0.8s ease';
       hoverImage.style.opacity = '1';
 
+      // Weiterleitung erst, wenn die Stoß-Animation abgeschlossen ist
+      const delayMs = shockDuration / 60 * 1000; // ca. 300 Frames / 60 fps = 5s
+
       setTimeout(() => {
         window.location.href = logoLink.href;
-      }, 800);
+      }, delayMs);
     });
   </script>
 </body>
