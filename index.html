@@ -122,5 +122,128 @@
     <a href="impressum.html">Impressum</a>
     <div>© ebbe&flut</div>
   </footer>
+
+  <script>
+    const waveXStart = 60;
+    const waveXEnd = 330;
+    const waveWidth = waveXEnd - waveXStart;
+    const waveYOffset = 230;
+
+    const path = document.getElementById("wavePath");
+    const logoLink = document.getElementById("logoLink");
+    const hoverImage = document.getElementById("hoverImage");
+    const logoContainer = document.querySelector('.logo-container');
+
+    const baseAmplitude = 20;
+    const baseFrequency = 3;
+    const segments = 150;
+
+    let t = 0;
+    let tSpeed = 0.02;
+
+    let shockOrigin = null;
+    let shockTimer = 0;
+    const shockDuration = 300;
+
+    // NEW: impulse effect for hover
+    let impulses = new Array(segments + 1).fill(0);
+    let impulseVel = new Array(segments + 1).fill(0);
+    const impulseDecay = 0.9;
+    const springStrength = 0.2;
+
+    function easeInOut(x) {
+      return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
+    }
+
+    function animate() {
+      const points = [];
+      for(let i=0; i<=segments; i++) {
+        const x = waveXStart + waveWidth * i / segments;
+
+        let localFreq = baseFrequency;
+        let localAmp = baseAmplitude;
+
+        if(shockOrigin !== null) {
+          const dist = Math.abs(x - shockOrigin);
+          const spread = waveWidth / 3;
+          const intensity = Math.max(0, 1 - dist / spread);
+          const progress = shockTimer / shockDuration;
+          const scale = easeInOut(progress <= 0.5 ? progress*2 : 2 - progress*2);
+          localFreq = baseFrequency - scale * 1 * intensity;
+          localAmp = baseAmplitude + scale * 40 * intensity;
+        }
+
+        const impulseOffset = impulses[i] || 0;
+
+        const y = waveYOffset + localAmp * Math.sin((2 * Math.PI * localFreq * (x - waveXStart) / waveWidth) + t) + impulseOffset;
+        points.push(`${x},${y}`);
+      }
+
+      path.setAttribute("d", "M " + points.join(" L "));
+
+      if(shockOrigin !== null && shockTimer < shockDuration/2) {
+        t += tSpeed * 2.2;
+      } else {
+        t += tSpeed;
+      }
+
+      if(shockOrigin !== null) {
+        shockTimer++;
+        if(shockTimer > shockDuration) {
+          shockOrigin = null;
+          shockTimer = 0;
+        }
+      }
+
+      // update impulse animation
+      for (let i = 0; i <= segments; i++) {
+        const displacement = -impulses[i];
+        const force = springStrength * displacement;
+        impulseVel[i] += force;
+        impulseVel[i] *= impulseDecay;
+        impulses[i] += impulseVel[i];
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    logoContainer.addEventListener('mouseenter', () => {
+      hoverImage.classList.add('visible');
+    });
+    logoContainer.addEventListener('mouseleave', () => {
+      hoverImage.classList.remove('visible');
+    });
+
+    logoContainer.addEventListener('mousemove', (e) => {
+      const rect = logoContainer.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      if (x >= waveXStart && x <= waveXEnd) {
+        const index = Math.floor((x - waveXStart) / waveWidth * segments);
+        if (index >= 0 && index <= segments) {
+          impulseVel[index] -= 6;
+        }
+      }
+    });
+
+    logoLink.addEventListener('click', function(e){
+      e.preventDefault();
+      const rect = logoLink.getBoundingClientRect();
+      let clickX = e.clientX - rect.left;
+      if(clickX < waveXStart) clickX = waveXStart;
+      if(clickX > waveXEnd) clickX = waveXEnd;
+      shockOrigin = clickX;
+      shockTimer = 0;
+
+      hoverImage.style.transition = `opacity ${shockDuration/60}s ease`;
+      hoverImage.style.opacity = '1';
+
+      const delayMs = shockDuration / 60 * 1000;
+      setTimeout(() => {
+        window.location.href = logoLink.href;
+      }, delayMs);
+    });
+  </script>
 </body>
 </html>
