@@ -154,8 +154,9 @@
     const impulseWavelength = 0.4;
     const impulseAmplitude = 35;
 
-    let showText = false;
-    let textX = 0;
+    let hoverTextPhase = null;
+    const hoverWavelength = 0.15;
+    const hoverAmplitude = 20;
 
     function asymmetricEnvelope(progress) {
       return Math.pow(Math.sin(Math.PI * progress), 1.5) * (1 - progress);
@@ -175,7 +176,16 @@
           if (dist >= 0 && dist <= impulseWavelength) {
             const progress = dist / impulseWavelength;
             const envelope = asymmetricEnvelope(progress);
-            yOffset = impulseAmplitude * envelope;
+            yOffset += impulseAmplitude * envelope;
+          }
+        }
+
+        if (hoverTextPhase !== null) {
+          const dist = waveX - hoverTextPhase;
+          if (dist >= 0 && dist <= hoverWavelength) {
+            const progress = dist / hoverWavelength;
+            const envelope = asymmetricEnvelope(progress);
+            yOffset += hoverAmplitude * envelope;
           }
         }
 
@@ -201,22 +211,23 @@
 
     animate();
 
-    logoContainer.addEventListener('mouseenter', () => {
+    logoContainer.addEventListener('mouseenter', (e) => {
       hoverImage.classList.add('visible');
-      impulsePhase = 0;
+      const rect = logoContainer.getBoundingClientRect();
+      const mouseX = (e.clientX - rect.left - waveXStart) / waveWidth;
+      hoverTextPhase = mouseX;
+      textAlongWave.setAttribute('startOffset', `${mouseX * 100}%`);
+      textAlongWave.setAttribute('visibility', 'visible');
     });
 
     logoContainer.addEventListener('mouseleave', () => {
       hoverImage.classList.remove('visible');
       textAlongWave.setAttribute('visibility', 'hidden');
+      hoverTextPhase = null;
     });
 
     logoLink.addEventListener('click', function(e){
       e.preventDefault();
-      const rect = logoLink.getBoundingClientRect();
-      const clickX = (e.clientX - rect.left - waveXStart) / waveWidth;
-      textAlongWave.setAttribute('startOffset', `${clickX * 100}%`);
-      textAlongWave.setAttribute('visibility', 'visible');
       hoverImage.style.transition = `opacity 1s ease`;
       hoverImage.style.opacity = '1';
 
