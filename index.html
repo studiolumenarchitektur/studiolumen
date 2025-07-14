@@ -154,6 +154,16 @@
       return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
     }
 
+    function triggerWave(centerIndex, radius, strength) {
+      for (let i = -radius; i <= radius; i++) {
+        const idx = centerIndex + i;
+        if (idx >= 0 && idx <= segments) {
+          const falloff = 1 - Math.abs(i) / (radius + 1);
+          impulseVel[idx] -= strength * falloff;
+        }
+      }
+    }
+
     function animate() {
       const points = [];
       for(let i=0; i<=segments; i++) {
@@ -173,7 +183,6 @@
         }
 
         const impulseOffset = impulses[i] || 0;
-
         const y = waveYOffset + localAmp * Math.sin((2 * Math.PI * localFreq * (x - waveXStart) / waveWidth) + t) + impulseOffset;
         points.push(`${x},${y}`);
       }
@@ -209,25 +218,12 @@
 
     logoContainer.addEventListener('mouseenter', () => {
       hoverImage.classList.add('visible');
-    });
-    logoContainer.addEventListener('mouseleave', () => {
-      hoverImage.classList.remove('visible');
+      const centerIndex = Math.floor(segments / 2);
+      triggerWave(centerIndex, 30, 6);
     });
 
-    logoContainer.addEventListener('mousemove', (e) => {
-      const rect = logoContainer.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      if (x >= waveXStart && x <= waveXEnd) {
-        const index = Math.floor((x - waveXStart) / waveWidth * segments);
-        const radius = 30;
-        for (let i = -radius; i <= radius; i++) {
-          const idx = index + i;
-          if (idx >= 0 && idx <= segments) {
-            const falloff = 1 - Math.abs(i) / (radius + 1);
-            impulseVel[idx] -= 6 * falloff;
-          }
-        }
-      }
+    logoContainer.addEventListener('mouseleave', () => {
+      hoverImage.classList.remove('visible');
     });
 
     logoLink.addEventListener('click', function(e){
