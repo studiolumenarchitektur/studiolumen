@@ -48,7 +48,6 @@
     }
     #hoverImage.visible {
       opacity: 0.1;
-      transition: opacity 5s ease;
     }
     .nav-links {
       display: flex;
@@ -96,7 +95,7 @@
 </head>
 <body>
   <div class="content">
-    <div class="logo-container">
+    <div class="logo-container" id="logoContainer">
       <a href="vita.html" aria-label="Zur Vita" id="logoLink" style="display:block; cursor:pointer; position: relative; z-index: 20;">
         <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
           <g fill="#002f6c" font-family="Inter, sans-serif" font-weight="600">
@@ -133,7 +132,7 @@
     const path = document.getElementById("wavePath");
     const logoLink = document.getElementById("logoLink");
     const hoverImage = document.getElementById("hoverImage");
-    const logoContainer = document.querySelector('.logo-container');
+    const logoContainer = document.getElementById("logoContainer");
 
     const baseAmplitude = 20;
     const baseFrequency = 3;
@@ -146,6 +145,9 @@
     let shockTimer = 0;
     const shockDuration = 300;
 
+    let hoverInfluence = null;
+    let hoverTimer = 0;
+
     function easeInOut(x) {
       return x < 0.5
         ? 2 * x * x
@@ -154,19 +156,28 @@
 
     function animate() {
       const points = [];
-      for(let i=0; i<=segments; i++) {
+      for (let i = 0; i <= segments; i++) {
         const x = waveXStart + waveWidth * i / segments;
         let localFreq = baseFrequency;
         let localAmp = baseAmplitude;
 
-        if(shockOrigin !== null) {
+        // Klick-Schockeffekt
+        if (shockOrigin !== null) {
           const dist = Math.abs(x - shockOrigin);
           const spread = waveWidth / 3;
           const intensity = Math.max(0, 1 - dist / spread);
           const progress = shockTimer / shockDuration;
-          const scale = easeInOut(progress <= 0.5 ? progress*2 : 2 - progress*2);
-          localFreq = baseFrequency - scale * 1 * intensity;
-          localAmp = baseAmplitude + scale * 40 * intensity;
+          const scale = easeInOut(progress <= 0.5 ? progress * 2 : 2 - progress * 2);
+          localFreq -= scale * 1 * intensity;
+          localAmp += scale * 40 * intensity;
+        }
+
+        // Hover-Verformung
+        if (hoverInfluence !== null) {
+          const dist = Math.abs(x - hoverInfluence);
+          const hoverSpread = waveWidth / 6;
+          const hoverPower = Math.max(0, 1 - dist / hoverSpread);
+          localAmp += 10 * hoverPower;
         }
 
         const y = waveYOffset + localAmp * Math.sin((2 * Math.PI * localFreq * (x - waveXStart) / waveWidth) + t);
@@ -175,14 +186,24 @@
 
       path.setAttribute("d", "M " + points.join(" L "));
 
-      t += shockOrigin !== null && shockTimer < shockDuration/2 ? tSpeed * 2.2 : tSpeed;
+      if (shockOrigin !== null && shockTimer < shockDuration / 2) {
+        t += tSpeed * 2.2;
+      } else {
+        t += tSpeed;
+      }
 
-      if(shockOrigin !== null) {
+      if (shockOrigin !== null) {
         shockTimer++;
-        if(shockTimer > shockDuration) {
+        if (shockTimer > shockDuration) {
           shockOrigin = null;
           shockTimer = 0;
         }
+      }
+
+      hoverTimer++;
+      if (hoverTimer > 20) {
+        hoverInfluence = null;
+        hoverTimer = 0;
       }
 
       requestAnimationFrame(animate);
@@ -191,34 +212,29 @@
     animate();
 
     logoContainer.addEventListener('mousemove', (e) => {
-      const rect = logoLink.getBoundingClientRect();
-      const mouseX = e.clientX - rect.left;
-      const mouseY = e.clientY - rect.top;
-
-      const waveTop = waveYOffset - baseAmplitude * 1.2;
-      const waveBottom = waveYOffset + baseAmplitude * 1.2;
-
-      if (mouseX >= waveXStart && mouseX <= waveXEnd && mouseY >= waveTop && mouseY <= waveBottom) {
-        if (shockOrigin === null) {
-          shockOrigin = mouseX;
-          shockTimer = 0;
-          hoverImage.style.transition = `opacity ${shockDuration / 60}s ease`;
-          hoverImage.classList.add('visible');
-        }
+      const rect = logoContainer.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      if (x >= waveXStart && x <= waveXEnd) {
+        hoverInfluence = x;
+        hoverTimer = 0;
       }
     });
 
-    logoContainer.addEventListener('mouseleave', () => {
-      hoverImage.style.transition = `opacity ${shockDuration / 60}s ease`;
-      hoverImage.classList.remove('visible');
+    logoContainer.addEventListener('mouseenter', () => {
+      hoverImage.classList.add('visible');
     });
 
-    logoLink.addEventListener('click', function(e) {
+    logoContainer.addEventListener('mouseleave', () => {
+      hoverImage.classList.remove('visible');
+      hoverInfluence = null;
+    });
+
+    logoLink.addEventListener('click', function (e) {
       e.preventDefault();
       const rect = logoLink.getBoundingClientRect();
       let clickX = e.clientX - rect.left;
-      if(clickX < waveXStart) clickX = waveXStart;
-      if(clickX > waveXEnd) clickX = waveXEnd;
+      if (clickX < waveXStart) clickX = waveXStart;
+      if (clickX > waveXEnd) clickX = waveXEnd;
       shockOrigin = clickX;
       shockTimer = 0;
 
