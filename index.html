@@ -4,29 +4,36 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Architekturbüro ebbe&flut</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     body {
-      margin: 0;
-      background: #fff;
       font-family: 'Inter', sans-serif;
+      background-color: #fff;
+      color: #002f6c;
+      margin: 0;
+      padding: 0;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
     }
-
+    .content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 20px;
+    }
     .logo-container {
-      position: relative;
-      width: 600px;
-      height: 300px;
+      width: 400px;
       cursor: pointer;
+      position: relative;
+      height: 300px;
     }
-
     svg {
       width: 100%;
-      height: 100%;
+      height: auto;
+      display: block;
     }
-
     #hoverImage {
       position: absolute;
       top: 0;
@@ -34,158 +41,86 @@
       width: 100%;
       height: 100%;
       opacity: 0;
+      pointer-events: none;
       transition: opacity 5s ease;
       object-fit: contain;
       z-index: 10;
-      pointer-events: none;
     }
-
     #hoverImage.visible {
       opacity: 0.1;
+    }
+    .nav-links {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 30px;
+      width: 300px;
+    }
+    .nav-link {
+      text-align: center;
+      font-size: 16px;
+      padding: 5px 0;
+      cursor: pointer;
+    }
+    .nav-link:hover {
+      color: #555;
+    }
+    .footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      background: #fff;
+      padding: 10px 0;
+      color: #777;
+      font-size: 14px;
+      box-sizing: border-box;
+      flex-wrap: nowrap;
+    }
+    .footer > div, .footer > a {
+      white-space: nowrap;
+    }
+    .footer a {
+      color: #777;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+    .footer a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
+  <div class="content">
+    <div class="logo-container">
+      <a href="vita.html" aria-label="Zur Vita" id="logoLink" style="display:block; cursor:pointer; position: relative; z-index: 20;">
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
+          <g fill="#002f6c" font-family="Inter, sans-serif" font-weight="600">
+            <text x="200" y="40" font-size="18" text-anchor="middle">ARCHITEKTURBÜRO</text>
+            <text x="60" y="110" font-size="64">ebbe</text>
+            <text x="240" y="110" font-size="64">&amp;</text>
+            <text x="240" y="180" font-size="64">flut</text>
+          </g>
+          <line x1="60" y1="140" x2="190" y2="140" stroke="#002f6c" stroke-width="14" />
+          <path id="wavePath" stroke="#002f6c" stroke-width="12" fill="none" stroke-linecap="butt" stroke-linejoin="round" />
+        </svg>
+      </a>
+      <img src="bruno.png" alt="" id="hoverImage" />
+    </div>
+    <div class="nav-links">
+      <div class="nav-link" onclick="window.location.href='projekte.html'">Projekte</div>
+      <div class="nav-link" onclick="window.location.href='haltung.html'">Haltung</div>
+      <div class="nav-link" onclick="window.location.href='ueber_mich.html'">Über mich</div>
+      <div class="nav-link" onclick="window.location.href='leistungsbild.html'">Anfrage</div>
+    </div>
+  </div>
 
-<div class="logo-container" id="logoContainer">
-  <svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
-    <path id="wavePath" stroke="#002f6c" stroke-width="12" fill="none" stroke-linecap="round" />
-    <text x="300" y="60" text-anchor="middle" font-size="18" fill="#002f6c">ARCHITEKTURBÜRO</text>
-    <text x="120" y="140" font-size="64" fill="#002f6c">ebbe</text>
-    <text x="290" y="140" font-size="64" fill="#002f6c">&amp;</text>
-    <text x="290" y="210" font-size="64" fill="#002f6c">flut</text>
-  </svg>
-  <img src="bruno.png" id="hoverImage" alt="" />
-</div>
-
-<script>
-  const waveXStart = 60;
-  const waveXEnd = 330;
-  const waveWidth = waveXEnd - waveXStart;
-  const waveYOffset = 230;
-
-  const path = document.getElementById("wavePath");
-  const logoLink = document.getElementById("logoLink");
-  const hoverImage = document.getElementById("hoverImage");
-  const logoContainer = document.querySelector('.logo-container');
-
-  const baseAmplitude = 20;
-  const baseFrequency = 3;
-  const segments = 150;
-
-  let t = 0;
-  let tSpeed = 0.02;
-
-  // NEU: Impulswellen pro Segment
-  let impulses = new Array(segments + 1).fill(0);
-  let impulseVel = new Array(segments + 1).fill(0);
-  let impulseDecay = 0.95;
-  let springStrength = 0.1;
-
-  let shockOrigin = null;
-  let shockTimer = 0;
-  const shockDuration = 300;
-
-  function easeInOut(x) {
-    return x < 0.5
-      ? 2 * x * x
-      : 1 - Math.pow(-2 * x + 2, 2) / 2;
-  }
-
-  function animate() {
-    const points = [];
-    for (let i = 0; i <= segments; i++) {
-      const x = waveXStart + waveWidth * i / segments;
-
-      // Sinusbasis
-      const yBase = baseAmplitude * Math.sin((2 * Math.PI * baseFrequency * (x - waveXStart) / waveWidth) + t);
-
-      // Klick-Schockeffekt
-      let localFreq = baseFrequency;
-      let localAmp = baseAmplitude;
-      if (shockOrigin !== null) {
-        const dist = Math.abs(x - shockOrigin);
-        const spread = waveWidth / 3;
-        const intensity = Math.max(0, 1 - dist / spread);
-        const progress = shockTimer / shockDuration;
-        const scale = easeInOut(progress <= 0.5 ? progress * 2 : 2 - progress * 2);
-        localFreq = baseFrequency - scale * 1 * intensity;
-        localAmp = baseAmplitude + scale * 40 * intensity;
-      }
-
-      // Impuls-basierte Schwingung addieren
-      const yImpulse = impulses[i] || 0;
-
-      const y = waveYOffset + localAmp * Math.sin((2 * Math.PI * localFreq * (x - waveXStart) / waveWidth) + t) + yImpulse;
-
-      points.push(`${x},${y}`);
-    }
-
-    path.setAttribute("d", "M " + points.join(" L "));
-
-    // Zeitverlauf
-    if (shockOrigin !== null && shockTimer < shockDuration / 2) {
-      t += tSpeed * 2.2;
-    } else {
-      t += tSpeed;
-    }
-
-    if (shockOrigin !== null) {
-      shockTimer++;
-      if (shockTimer > shockDuration) {
-        shockOrigin = null;
-        shockTimer = 0;
-      }
-    }
-
-    // Physikalisches Abklingen der Impulse
-    for (let i = 0; i <= segments; i++) {
-      const displacement = -impulses[i];
-      const force = springStrength * displacement;
-      impulseVel[i] += force;
-      impulseVel[i] *= impulseDecay;
-      impulses[i] += impulseVel[i];
-    }
-
-    requestAnimationFrame(animate);
-  }
-
-  animate();
-
-  logoContainer.addEventListener('mousemove', (e) => {
-    const rect = logoContainer.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    if (x >= waveXStart && x <= waveXEnd) {
-      const index = Math.floor((x - waveXStart) / waveWidth * segments);
-      if (index >= 0 && index <= segments) {
-        // sanfte kleine Ablenkung
-        impulseVel[index] -= 4;
-      }
-    }
-  });
-
-  logoContainer.addEventListener('mouseenter', () => {
-    hoverImage.classList.add('visible');
-  });
-
-  logoContainer.addEventListener('mouseleave', () => {
-    hoverImage.classList.remove('visible');
-  });
-
-  logoLink.addEventListener('click', function (e) {
-    e.preventDefault();
-    const rect = logoLink.getBoundingClientRect();
-    let clickX = e.clientX - rect.left;
-    if (clickX < waveXStart) clickX = waveXStart;
-    if (clickX > waveXEnd) clickX = waveXEnd;
-    shockOrigin = clickX;
-    shockTimer = 0;
-
-    hoverImage.style.transition = `opacity ${shockDuration / 60}s ease`;
-    hoverImage.style.opacity = '1';
-
-    setTimeout(() => {
-      window.location.href = logoLink.href;
-    }, (shockDuration / 60) * 1000);
-  });
-</script>
+  <footer class="footer">
+    <a href="impressum.html">Impressum</a>
+    <div>© ebbe&flut</div>
+  </footer>
+</body>
+</html>
