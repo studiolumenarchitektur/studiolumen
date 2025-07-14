@@ -59,97 +59,133 @@
 </div>
 
 <script>
+  const waveXStart = 60;
+  const waveXEnd = 330;
+  const waveWidth = waveXEnd - waveXStart;
+  const waveYOffset = 230;
+
   const path = document.getElementById("wavePath");
-  const container = document.getElementById("logoContainer");
+  const logoLink = document.getElementById("logoLink");
   const hoverImage = document.getElementById("hoverImage");
+  const logoContainer = document.querySelector('.logo-container');
 
-  const width = 600;
-  const height = 300;
-  const baseY = 230;
+  const baseAmplitude = 20;
+  const baseFrequency = 3;
+  const segments = 150;
 
-  const points = 120;
-  const spacing = width / (points - 1);
+  let t = 0;
+  let tSpeed = 0.02;
 
-  let y = new Array(points).fill(baseY);
-  let velocity = new Array(points).fill(0);
-  let acceleration = new Array(points).fill(0);
+  // NEU: Impulswellen pro Segment
+  let impulses = new Array(segments + 1).fill(0);
+  let impulseVel = new Array(segments + 1).fill(0);
+  let impulseDecay = 0.95;
+  let springStrength = 0.1;
 
-  const k = 0.025; // Spring stiffness
-  const damping = 0.02; // Resistance
-  const spread = 0.25; // Neighbor pull strength
+  let shockOrigin = null;
+  let shockTimer = 0;
+  const shockDuration = 300;
 
-  function updateWave() {
-    for (let i = 0; i < points; i++) {
-      let dy = baseY - y[i];
-      acceleration[i] = k * dy - velocity[i] * damping;
-      velocity[i] += acceleration[i];
-      y[i] += velocity[i];
-    }
-
-    // spread to neighbors
-    let leftDeltas = new Array(points);
-    let rightDeltas = new Array(points);
-
-    for (let j = 0; j < 8; j++) { // multiple passes for smoother spread
-      for (let i = 0; i < points; i++) {
-        if (i > 0) {
-          leftDeltas[i] = spread * (y[i] - y[i - 1]);
-          velocity[i - 1] += leftDeltas[i];
-        }
-        if (i < points - 1) {
-          rightDeltas[i] = spread * (y[i] - y[i + 1]);
-          velocity[i + 1] += rightDeltas[i];
-        }
-      }
-    }
-  }
-
-  function drawWave() {
-    let d = `M 0,${y[0].toFixed(2)}`;
-    for (let i = 1; i < points; i++) {
-      const x = i * spacing;
-      d += ` L ${x.toFixed(2)},${y[i].toFixed(2)}`;
-    }
-    path.setAttribute("d", d);
+  function easeInOut(x) {
+    return x < 0.5
+      ? 2 * x * x
+      : 1 - Math.pow(-2 * x + 2, 2) / 2;
   }
 
   function animate() {
-    updateWave();
-    drawWave();
+    const points = [];
+    for (let i = 0; i <= segments; i++) {
+      const x = waveXStart + waveWidth * i / segments;
+
+      // Sinusbasis
+      const yBase = baseAmplitude * Math.sin((2 * Math.PI * baseFrequency * (x - waveXStart) / waveWidth) + t);
+
+      // Klick-Schockeffekt
+      let localFreq = baseFrequency;
+      let localAmp = baseAmplitude;
+      if (shockOrigin !== null) {
+        const dist = Math.abs(x - shockOrigin);
+        const spread = waveWidth / 3;
+        const intensity = Math.max(0, 1 - dist / spread);
+        const progress = shockTimer / shockDuration;
+        const scale = easeInOut(progress <= 0.5 ? progress * 2 : 2 - progress * 2);
+        localFreq = baseFrequency - scale * 1 * intensity;
+        localAmp = baseAmplitude + scale * 40 * intensity;
+      }
+
+      // Impuls-basierte Schwingung addieren
+      const yImpulse = impulses[i] || 0;
+
+      const y = waveYOffset + localAmp * Math.sin((2 * Math.PI * localFreq * (x - waveXStart) / waveWidth) + t) + yImpulse;
+
+      points.push(`${x},${y}`);
+    }
+
+    path.setAttribute("d", "M " + points.join(" L "));
+
+    // Zeitverlauf
+    if (shockOrigin !== null && shockTimer < shockDuration / 2) {
+      t += tSpeed * 2.2;
+    } else {
+      t += tSpeed;
+    }
+
+    if (shockOrigin !== null) {
+      shockTimer++;
+      if (shockTimer > shockDuration) {
+        shockOrigin = null;
+        shockTimer = 0;
+      }
+    }
+
+    // Physikalisches Abklingen der Impulse
+    for (let i = 0; i <= segments; i++) {
+      const displacement = -impulses[i];
+      const force = springStrength * displacement;
+      impulseVel[i] += force;
+      impulseVel[i] *= impulseDecay;
+      impulses[i] += impulseVel[i];
+    }
+
     requestAnimationFrame(animate);
   }
 
   animate();
 
-  // Hover-Stoß
-  container.addEventListener("mousemove", (e) => {
-    const rect = container.getBoundingClientRect();
+  logoContainer.addEventListener('mousemove', (e) => {
+    const rect = logoContainer.getBoundingClientRect();
     const x = e.clientX - rect.left;
-    const index = Math.floor((x / width) * points);
-    if (index >= 0 && index < points) {
-      velocity[index] -= 2; // kleine Ablenkung
+    if (x >= waveXStart && x <= waveXEnd) {
+      const index = Math.floor((x - waveXStart) / waveWidth * segments);
+      if (index >= 0 && index <= segments) {
+        // sanfte kleine Ablenkung
+        impulseVel[index] -= 4;
+      }
     }
   });
 
-  container.addEventListener("mouseenter", () => {
-    hoverImage.classList.add("visible");
+  logoContainer.addEventListener('mouseenter', () => {
+    hoverImage.classList.add('visible');
   });
 
-  container.addEventListener("mouseleave", () => {
-    hoverImage.classList.remove("visible");
+  logoContainer.addEventListener('mouseleave', () => {
+    hoverImage.classList.remove('visible');
   });
 
-  // Klick-Stoß mit Weiterleitung
-  container.addEventListener("click", () => {
-    for (let i = 0; i < points; i++) {
-      velocity[i] -= Math.sin((i / points) * Math.PI) * 10; // große Brechung
-    }
+  logoLink.addEventListener('click', function (e) {
+    e.preventDefault();
+    const rect = logoLink.getBoundingClientRect();
+    let clickX = e.clientX - rect.left;
+    if (clickX < waveXStart) clickX = waveXStart;
+    if (clickX > waveXEnd) clickX = waveXEnd;
+    shockOrigin = clickX;
+    shockTimer = 0;
+
+    hoverImage.style.transition = `opacity ${shockDuration / 60}s ease`;
+    hoverImage.style.opacity = '1';
 
     setTimeout(() => {
-      window.location.href = "vita.html";
-    }, 1500); // nach Beruhigung
+      window.location.href = logoLink.href;
+    }, (shockDuration / 60) * 1000);
   });
 </script>
-
-</body>
-</html>
