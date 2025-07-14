@@ -145,7 +145,7 @@
     let shockTimer = 0;
     const shockDuration = 300;
 
-    // NEW: impulse effect for hover
+    // impulse effect for hover
     let impulses = new Array(segments + 1).fill(0);
     let impulseVel = new Array(segments + 1).fill(0);
     const impulseDecay = 0.9;
@@ -195,7 +195,6 @@
         }
       }
 
-      // update impulse animation
       for (let i = 0; i <= segments; i++) {
         const displacement = -impulses[i];
         const force = springStrength * displacement;
@@ -221,8 +220,13 @@
       const x = e.clientX - rect.left;
       if (x >= waveXStart && x <= waveXEnd) {
         const index = Math.floor((x - waveXStart) / waveWidth * segments);
-        if (index >= 0 && index <= segments) {
-          impulseVel[index] -= 6;
+        const radius = 10;
+        for (let i = -radius; i <= radius; i++) {
+          const idx = index + i;
+          if (idx >= 0 && idx <= segments) {
+            const falloff = 1 - Math.abs(i) / (radius + 1);
+            impulseVel[idx] -= 4 * falloff;
+          }
         }
       }
     });
