@@ -49,11 +49,14 @@
     #hoverImage.visible {
       opacity: 0.1;
     }
-    text#floatingText {
+    .floatingLetter {
+      font-size: 14px;
+      fill: #002f6c;
+      font-family: 'Inter', sans-serif;
       opacity: 0;
-      transition: opacity 0.8s ease;
+      transition: opacity 0.6s ease;
     }
-    text#floatingText.visible {
+    .floatingLetter.visible {
       opacity: 1;
     }
     .nav-links {
@@ -114,7 +117,7 @@
           <line x1="60" y1="140" x2="190" y2="140" stroke="#002f6c" stroke-width="14" />
           <path id="wavePath" stroke="#002f6c" stroke-width="12" fill="none" stroke-linecap="butt" stroke-linejoin="round" />
           <path id="waveOverlay" stroke="#fff" stroke-width="12" fill="none" stroke-linecap="butt" stroke-linejoin="round" visibility="hidden" />
-          <text id="floatingText" font-size="14" fill="#002f6c" font-family="Inter, sans-serif" text-anchor="middle" x="200" y="230">Klicken für Vita</text>
+          <g id="floatingLettersGroup"></g>
         </svg>
       </a>
       <img src="bruno.png" alt="" id="hoverImage" />
@@ -133,6 +136,7 @@
   </footer>
 
   <script>
+    const floatingText = "Klicken für Vita";
     const waveXStart = 60;
     const waveXEnd = 330;
     const waveWidth = waveXEnd - waveXStart;
@@ -140,7 +144,7 @@
 
     const path = document.getElementById("wavePath");
     const overlay = document.getElementById("waveOverlay");
-    const floatingText = document.getElementById("floatingText");
+    const floatingGroup = document.getElementById("floatingLettersGroup");
     const logoLink = document.getElementById("logoLink");
     const hoverImage = document.getElementById("hoverImage");
     const logoContainer = document.querySelector('.logo-container');
@@ -165,20 +169,28 @@
       return Math.pow(Math.sin(Math.PI * progress), 1.5) * (1 - progress);
     }
 
+    const letterElements = [];
+    for (let i = 0; i < floatingText.length; i++) {
+      const letter = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      letter.setAttribute("class", "floatingLetter");
+      letter.setAttribute("font-size", "14");
+      letter.setAttribute("text-anchor", "middle");
+      letter.setAttribute("y", waveYOffset);
+      letter.textContent = floatingText[i];
+      floatingGroup.appendChild(letter);
+      letterElements.push(letter);
+    }
+
     function animate() {
       const points = [];
-      const overlayPoints = [];
       let pathData = "";
       let overlayData = "";
-
-      let floatingTextY = waveYOffset;
 
       for (let i = 0; i <= segments; i++) {
         const x = waveXStart + waveWidth * i / segments;
         const waveX = (x - waveXStart) / waveWidth;
 
         let yOffset = 0;
-        let overlayY = null;
 
         if (impulsePhase !== null) {
           const dist = waveX - impulsePhase;
@@ -195,25 +207,30 @@
             const progress = dist / hoverWavelength;
             const envelope = asymmetricEnvelope(progress);
             yOffset += hoverAmplitude * envelope;
-            overlayY = waveYOffset + baseAmplitude * Math.sin((2 * Math.PI * baseFrequency * waveX) + t) + yOffset;
           }
         }
 
         const y = waveYOffset + baseAmplitude * Math.sin((2 * Math.PI * baseFrequency * waveX) + t) + yOffset;
-        points.push(`${x},${y}`);
-        if (overlayY !== null) overlayPoints.push(`${x},${overlayY}`);
-
-        if (Math.abs(x - 200) < 1) floatingTextY = y - 10;
-
+        points.push({ x, y });
         pathData += (i === 0 ? "M " : " L ") + `${x},${y}`;
-        if (overlayY !== null) overlayData += (overlayPoints.length === 1 ? "M " : " L ") + `${x},${overlayY}`;
       }
 
       path.setAttribute("d", pathData);
-      overlay.setAttribute("d", overlayData);
-      overlay.setAttribute("visibility", overlayData ? "visible" : "hidden");
 
-      floatingText.setAttribute("y", floatingTextY);
+      if (hoverTextPhase !== null) {
+        const startX = waveXStart + waveWidth * hoverTextPhase;
+        const spacing = 10;
+        letterElements.forEach((el, i) => {
+          const px = startX + spacing * (i - floatingText.length / 2);
+          const localX = (px - waveXStart) / waveWidth;
+          const y = waveYOffset + baseAmplitude * Math.sin((2 * Math.PI * baseFrequency * localX) + t);
+          el.setAttribute("x", px);
+          el.setAttribute("y", y);
+          el.classList.add("visible");
+        });
+      } else {
+        letterElements.forEach(el => el.classList.remove("visible"));
+      }
 
       t += tSpeed;
 
@@ -234,12 +251,10 @@
       const rect = logoContainer.getBoundingClientRect();
       const mouseX = (e.clientX - rect.left - waveXStart) / waveWidth;
       hoverTextPhase = mouseX;
-      floatingText.classList.add('visible');
     });
 
     logoContainer.addEventListener('mouseleave', () => {
       hoverImage.classList.remove('visible');
-      floatingText.classList.remove('visible');
       hoverTextPhase = null;
     });
 
