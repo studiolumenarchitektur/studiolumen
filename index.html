@@ -42,7 +42,7 @@
       height: 100%;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 5s ease; /* Dauer an Stoß-Animation angepasst */
+      transition: opacity 5s ease;
       object-fit: contain;
       z-index: 10;
     }
@@ -144,7 +144,7 @@
 
     let shockOrigin = null;
     let shockTimer = 0;
-    const shockDuration = 300; // frames
+    const shockDuration = 300;
 
     function easeInOut(x) {
       return x < 0.5
@@ -168,16 +168,14 @@
           localFreq = baseFrequency - scale * 1 * intensity;
           localAmp = baseAmplitude + scale * 40 * intensity;
         }
+
         const y = waveYOffset + localAmp * Math.sin((2 * Math.PI * localFreq * (x - waveXStart) / waveWidth) + t);
         points.push(`${x},${y}`);
       }
+
       path.setAttribute("d", "M " + points.join(" L "));
 
-      if(shockOrigin !== null && shockTimer < shockDuration/2) {
-        t += tSpeed * 2.2;
-      } else {
-        t += tSpeed;
-      }
+      t += shockOrigin !== null && shockTimer < shockDuration/2 ? tSpeed * 2.2 : tSpeed;
 
       if(shockOrigin !== null) {
         shockTimer++;
@@ -192,16 +190,30 @@
 
     animate();
 
-    logoContainer.addEventListener('mouseenter', () => {
-      hoverImage.style.transition = `opacity ${shockDuration/60}s ease`;
-      hoverImage.classList.add('visible');
+    logoContainer.addEventListener('mousemove', (e) => {
+      const rect = logoLink.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+
+      const waveTop = waveYOffset - baseAmplitude * 1.2;
+      const waveBottom = waveYOffset + baseAmplitude * 1.2;
+
+      if (mouseX >= waveXStart && mouseX <= waveXEnd && mouseY >= waveTop && mouseY <= waveBottom) {
+        if (shockOrigin === null) {
+          shockOrigin = mouseX;
+          shockTimer = 0;
+          hoverImage.style.transition = `opacity ${shockDuration / 60}s ease`;
+          hoverImage.classList.add('visible');
+        }
+      }
     });
+
     logoContainer.addEventListener('mouseleave', () => {
-      hoverImage.style.transition = `opacity ${shockDuration/60}s ease`;
+      hoverImage.style.transition = `opacity ${shockDuration / 60}s ease`;
       hoverImage.classList.remove('visible');
     });
 
-    logoLink.addEventListener('click', function(e){
+    logoLink.addEventListener('click', function(e) {
       e.preventDefault();
       const rect = logoLink.getBoundingClientRect();
       let clickX = e.clientX - rect.left;
@@ -210,14 +222,12 @@
       shockOrigin = clickX;
       shockTimer = 0;
 
-      hoverImage.style.transition = `opacity ${shockDuration/60}s ease`;
+      hoverImage.style.transition = `opacity ${shockDuration / 60}s ease`;
       hoverImage.style.opacity = '1';
-
-      const delayMs = shockDuration / 60 * 1000; // Dauer der Animation in ms
 
       setTimeout(() => {
         window.location.href = logoLink.href;
-      }, delayMs);
+      }, (shockDuration / 60) * 1000);
     });
   </script>
 </body>
