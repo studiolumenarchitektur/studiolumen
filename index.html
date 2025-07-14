@@ -139,12 +139,16 @@
     const segments = 150;
 
     let t = 0;
-    let tSpeed = 0.02;
+    let tSpeed = 0.012; // langsamer für ruhigeres Rollen
 
     let impulsePhase = null;
-    let impulseSpeed = 0.015;
-    const impulseWavelength = 0.3;
-    const impulseAmplitude = 30;
+    let impulseSpeed = 0.006; // langsamer für rollende Ausbreitung
+    const impulseWavelength = 0.4; // länger für breitere Welle
+    const impulseAmplitude = 35;
+
+    function asymmetricEnvelope(progress) {
+      return Math.pow(Math.sin(Math.PI * progress), 1.5) * (1 - progress);
+    }
 
     function animate() {
       const points = [];
@@ -158,7 +162,7 @@
           const dist = waveX - impulsePhase;
           if (dist >= 0 && dist <= impulseWavelength) {
             const progress = dist / impulseWavelength;
-            const envelope = Math.sin(Math.PI * progress);
+            const envelope = asymmetricEnvelope(progress);
             yOffset = impulseAmplitude * envelope;
           }
         }
