@@ -98,6 +98,9 @@
     <div class="logo-container">
       <a href="vita.html" aria-label="Zur Vita" id="logoLink" style="display:block; cursor:pointer; position: relative; z-index: 20;">
         <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
+          <defs>
+            <path id="wavePathShape" d="" />
+          </defs>
           <g fill="#002f6c" font-family="Inter, sans-serif" font-weight="600">
             <text x="200" y="40" font-size="18" text-anchor="middle">ARCHITEKTURBÜRO</text>
             <text x="60" y="110" font-size="64">ebbe</text>
@@ -106,6 +109,9 @@
           </g>
           <line x1="60" y1="140" x2="190" y2="140" stroke="#002f6c" stroke-width="14" />
           <path id="wavePath" stroke="#002f6c" stroke-width="12" fill="none" stroke-linecap="butt" stroke-linejoin="round" />
+          <text font-size="14" fill="#002f6c">
+            <textPath id="textAlongWave" href="#wavePathShape" startOffset="50%" text-anchor="middle" visibility="hidden">Klicken für Vita</textPath>
+          </text>
         </svg>
       </a>
       <img src="bruno.png" alt="" id="hoverImage" />
@@ -130,6 +136,8 @@
     const waveYOffset = 230;
 
     const path = document.getElementById("wavePath");
+    const pathShape = document.getElementById("wavePathShape");
+    const textAlongWave = document.getElementById("textAlongWave");
     const logoLink = document.getElementById("logoLink");
     const hoverImage = document.getElementById("hoverImage");
     const logoContainer = document.querySelector('.logo-container');
@@ -139,12 +147,15 @@
     const segments = 150;
 
     let t = 0;
-    let tSpeed = 0.012; // langsamer für ruhigeres Rollen
+    let tSpeed = 0.012;
 
     let impulsePhase = null;
-    let impulseSpeed = 0.006; // langsamer für rollende Ausbreitung
-    const impulseWavelength = 0.4; // länger für breitere Welle
+    let impulseSpeed = 0.006;
+    const impulseWavelength = 0.4;
     const impulseAmplitude = 35;
+
+    let showText = false;
+    let textX = 0;
 
     function asymmetricEnvelope(progress) {
       return Math.pow(Math.sin(Math.PI * progress), 1.5) * (1 - progress);
@@ -152,6 +163,7 @@
 
     function animate() {
       const points = [];
+      let pathData = "";
       for (let i = 0; i <= segments; i++) {
         const x = waveXStart + waveWidth * i / segments;
         const waveX = (x - waveXStart) / waveWidth;
@@ -169,9 +181,11 @@
 
         const y = waveYOffset + baseAmplitude * Math.sin((2 * Math.PI * baseFrequency * waveX) + t) + yOffset;
         points.push(`${x},${y}`);
+        pathData += (i === 0 ? "M " : " L ") + `${x},${y}`;
       }
 
-      path.setAttribute("d", "M " + points.join(" L "));
+      path.setAttribute("d", pathData);
+      pathShape.setAttribute("d", pathData);
 
       t += tSpeed;
 
@@ -194,11 +208,15 @@
 
     logoContainer.addEventListener('mouseleave', () => {
       hoverImage.classList.remove('visible');
+      textAlongWave.setAttribute('visibility', 'hidden');
     });
 
     logoLink.addEventListener('click', function(e){
       e.preventDefault();
       const rect = logoLink.getBoundingClientRect();
+      const clickX = (e.clientX - rect.left - waveXStart) / waveWidth;
+      textAlongWave.setAttribute('startOffset', `${clickX * 100}%`);
+      textAlongWave.setAttribute('visibility', 'visible');
       hoverImage.style.transition = `opacity 1s ease`;
       hoverImage.style.opacity = '1';
 
