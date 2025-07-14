@@ -116,7 +116,7 @@
           </g>
           <line x1="60" y1="140" x2="190" y2="140" stroke="#002f6c" stroke-width="14" />
           <path id="wavePath" stroke="#002f6c" stroke-width="12" fill="none" stroke-linecap="butt" stroke-linejoin="round" />
-          <path id="waveOverlay" stroke="#fff" stroke-width="12" fill="none" stroke-linecap="butt" stroke-linejoin="round" visibility="hidden" />
+          <path id="waveOverlay" stroke="#fff" stroke-width="12" fill="none" stroke-linecap="butt" stroke-linejoin="round" />
           <g id="floatingLettersGroup"></g>
         </svg>
       </a>
@@ -156,18 +156,9 @@
     let t = 0;
     let tSpeed = 0.012;
 
-    let impulsePhase = null;
-    let impulseSpeed = 0.006;
-    const impulseWavelength = 0.4;
-    const impulseAmplitude = 35;
-
     let hoverTextPhase = null;
     const hoverWavelength = 0.15;
-    const hoverAmplitude = 20;
-
-    function asymmetricEnvelope(progress) {
-      return Math.pow(Math.sin(Math.PI * progress), 1.5) * (1 - progress);
-    }
+    const letterSpacing = 10;
 
     const letterElements = [];
     for (let i = 0; i < floatingText.length; i++) {
@@ -182,46 +173,37 @@
     }
 
     function animate() {
-      const points = [];
       let pathData = "";
       let overlayData = "";
 
       for (let i = 0; i <= segments; i++) {
         const x = waveXStart + waveWidth * i / segments;
         const waveX = (x - waveXStart) / waveWidth;
+        const y = waveYOffset + baseAmplitude * Math.sin((2 * Math.PI * baseFrequency * waveX) + t);
 
-        let yOffset = 0;
-
-        if (impulsePhase !== null) {
-          const dist = waveX - impulsePhase;
-          if (dist >= 0 && dist <= impulseWavelength) {
-            const progress = dist / impulseWavelength;
-            const envelope = asymmetricEnvelope(progress);
-            yOffset += impulseAmplitude * envelope;
-          }
-        }
+        pathData += (i === 0 ? "M " : " L ") + `${x},${y}`;
 
         if (hoverTextPhase !== null) {
           const dist = waveX - hoverTextPhase;
-          if (dist >= 0 && dist <= hoverWavelength) {
-            const progress = dist / hoverWavelength;
-            const envelope = asymmetricEnvelope(progress);
-            yOffset += hoverAmplitude * envelope;
+          if (Math.abs(dist) <= hoverWavelength / 2) {
+            overlayData += (overlayData === "" ? "M " : " L ") + `${x},${y}`;
           }
         }
-
-        const y = waveYOffset + baseAmplitude * Math.sin((2 * Math.PI * baseFrequency * waveX) + t) + yOffset;
-        points.push({ x, y });
-        pathData += (i === 0 ? "M " : " L ") + `${x},${y}`;
       }
 
       path.setAttribute("d", pathData);
 
+      if (overlayData) {
+        overlay.setAttribute("d", overlayData);
+        overlay.setAttribute("visibility", "visible");
+      } else {
+        overlay.setAttribute("visibility", "hidden");
+      }
+
       if (hoverTextPhase !== null) {
         const startX = waveXStart + waveWidth * hoverTextPhase;
-        const spacing = 10;
         letterElements.forEach((el, i) => {
-          const px = startX + spacing * (i - floatingText.length / 2);
+          const px = startX + letterSpacing * (i - floatingText.length / 2);
           const localX = (px - waveXStart) / waveWidth;
           const y = waveYOffset + baseAmplitude * Math.sin((2 * Math.PI * baseFrequency * localX) + t);
           el.setAttribute("x", px);
@@ -233,21 +215,12 @@
       }
 
       t += tSpeed;
-
-      if (impulsePhase !== null) {
-        impulsePhase += impulseSpeed;
-        if (impulsePhase > 1 + impulseWavelength) {
-          impulsePhase = null;
-        }
-      }
-
       requestAnimationFrame(animate);
     }
 
     animate();
 
-    logoContainer.addEventListener('mouseenter', (e) => {
-      hoverImage.classList.add('visible');
+    logoContainer.addEventListener('mousemove', (e) => {
       const rect = logoContainer.getBoundingClientRect();
       const mouseX = (e.clientX - rect.left - waveXStart) / waveWidth;
       hoverTextPhase = mouseX;
