@@ -109,6 +109,7 @@
           </g>
           <line x1="60" y1="140" x2="190" y2="140" stroke="#002f6c" stroke-width="14" />
           <path id="wavePath" stroke="#002f6c" stroke-width="12" fill="none" stroke-linecap="butt" stroke-linejoin="round" />
+          <path id="waveOverlay" stroke="#fff" stroke-width="12" fill="none" stroke-linecap="butt" stroke-linejoin="round" visibility="hidden" />
           <text font-size="14" fill="#002f6c">
             <textPath id="textAlongWave" href="#wavePathShape" startOffset="50%" text-anchor="middle" visibility="hidden">Klicken für Vita</textPath>
           </text>
@@ -137,6 +138,7 @@
 
     const path = document.getElementById("wavePath");
     const pathShape = document.getElementById("wavePathShape");
+    const overlay = document.getElementById("waveOverlay");
     const textAlongWave = document.getElementById("textAlongWave");
     const logoLink = document.getElementById("logoLink");
     const hoverImage = document.getElementById("hoverImage");
@@ -164,12 +166,16 @@
 
     function animate() {
       const points = [];
+      const overlayPoints = [];
       let pathData = "";
+      let overlayData = "";
+
       for (let i = 0; i <= segments; i++) {
         const x = waveXStart + waveWidth * i / segments;
         const waveX = (x - waveXStart) / waveWidth;
 
         let yOffset = 0;
+        let overlayY = null;
 
         if (impulsePhase !== null) {
           const dist = waveX - impulsePhase;
@@ -186,16 +192,22 @@
             const progress = dist / hoverWavelength;
             const envelope = asymmetricEnvelope(progress);
             yOffset += hoverAmplitude * envelope;
+            overlayY = waveYOffset + baseAmplitude * Math.sin((2 * Math.PI * baseFrequency * waveX) + t) + yOffset;
           }
         }
 
         const y = waveYOffset + baseAmplitude * Math.sin((2 * Math.PI * baseFrequency * waveX) + t) + yOffset;
         points.push(`${x},${y}`);
+        if (overlayY !== null) overlayPoints.push(`${x},${overlayY}`);
+
         pathData += (i === 0 ? "M " : " L ") + `${x},${y}`;
+        if (overlayY !== null) overlayData += (overlayPoints.length === 1 ? "M " : " L ") + `${x},${overlayY}`;
       }
 
       path.setAttribute("d", pathData);
       pathShape.setAttribute("d", pathData);
+      overlay.setAttribute("d", overlayData);
+      overlay.setAttribute("visibility", overlayData ? "visible" : "hidden");
 
       t += tSpeed;
 
