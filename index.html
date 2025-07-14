@@ -141,74 +141,41 @@
     let t = 0;
     let tSpeed = 0.02;
 
-    let shockOrigin = null;
-    let shockTimer = 0;
-    const shockDuration = 300;
-
-    let impulses = new Array(segments + 1).fill(0);
-    let impulseVel = new Array(segments + 1).fill(0);
-    const impulseDecay = 0.92;
-    const springStrength = 0.15;
-
-    function easeInOut(x) {
-      return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
-    }
-
-    function triggerWave(centerIndex, radius, strength) {
-      for (let i = -radius; i <= radius; i++) {
-        const idx = centerIndex + i;
-        if (idx >= 0 && idx <= segments) {
-          const falloff = 1 - Math.abs(i) / (radius + 1);
-          impulseVel[idx] -= strength * falloff;
-        }
-      }
-    }
+    let impulsePhase = null;
+    let impulseSpeed = 0.015;
+    const impulseWavelength = 0.3;
+    const impulseAmplitude = 30;
 
     function animate() {
       const points = [];
-      for(let i=0; i<=segments; i++) {
+      for (let i = 0; i <= segments; i++) {
         const x = waveXStart + waveWidth * i / segments;
+        const waveX = (x - waveXStart) / waveWidth;
 
-        let localFreq = baseFrequency;
-        let localAmp = baseAmplitude;
+        let yOffset = 0;
 
-        if(shockOrigin !== null) {
-          const dist = Math.abs(x - shockOrigin);
-          const spread = waveWidth / 3;
-          const intensity = Math.max(0, 1 - dist / spread);
-          const progress = shockTimer / shockDuration;
-          const scale = easeInOut(progress <= 0.5 ? progress*2 : 2 - progress*2);
-          localFreq = baseFrequency - scale * 1 * intensity;
-          localAmp = baseAmplitude + scale * 40 * intensity;
+        if (impulsePhase !== null) {
+          const dist = waveX - impulsePhase;
+          if (dist >= 0 && dist <= impulseWavelength) {
+            const progress = dist / impulseWavelength;
+            const envelope = Math.sin(Math.PI * progress);
+            yOffset = impulseAmplitude * envelope;
+          }
         }
 
-        const impulseOffset = impulses[i] || 0;
-        const y = waveYOffset + localAmp * Math.sin((2 * Math.PI * localFreq * (x - waveXStart) / waveWidth) + t) + impulseOffset;
+        const y = waveYOffset + baseAmplitude * Math.sin((2 * Math.PI * baseFrequency * waveX) + t) + yOffset;
         points.push(`${x},${y}`);
       }
 
       path.setAttribute("d", "M " + points.join(" L "));
 
-      if(shockOrigin !== null && shockTimer < shockDuration/2) {
-        t += tSpeed * 2.2;
-      } else {
-        t += tSpeed;
-      }
+      t += tSpeed;
 
-      if(shockOrigin !== null) {
-        shockTimer++;
-        if(shockTimer > shockDuration) {
-          shockOrigin = null;
-          shockTimer = 0;
+      if (impulsePhase !== null) {
+        impulsePhase += impulseSpeed;
+        if (impulsePhase > 1 + impulseWavelength) {
+          impulsePhase = null;
         }
-      }
-
-      for (let i = 0; i <= segments; i++) {
-        const displacement = -impulses[i];
-        const force = springStrength * displacement;
-        impulseVel[i] += force;
-        impulseVel[i] *= impulseDecay;
-        impulses[i] += impulseVel[i];
       }
 
       requestAnimationFrame(animate);
@@ -218,8 +185,7 @@
 
     logoContainer.addEventListener('mouseenter', () => {
       hoverImage.classList.add('visible');
-      const centerIndex = Math.floor(segments / 2);
-      triggerWave(centerIndex, 30, 6);
+      impulsePhase = 0;
     });
 
     logoContainer.addEventListener('mouseleave', () => {
@@ -229,19 +195,12 @@
     logoLink.addEventListener('click', function(e){
       e.preventDefault();
       const rect = logoLink.getBoundingClientRect();
-      let clickX = e.clientX - rect.left;
-      if(clickX < waveXStart) clickX = waveXStart;
-      if(clickX > waveXEnd) clickX = waveXEnd;
-      shockOrigin = clickX;
-      shockTimer = 0;
-
-      hoverImage.style.transition = `opacity ${shockDuration/60}s ease`;
+      hoverImage.style.transition = `opacity 1s ease`;
       hoverImage.style.opacity = '1';
 
-      const delayMs = shockDuration / 60 * 1000;
       setTimeout(() => {
         window.location.href = logoLink.href;
-      }, delayMs);
+      }, 1000);
     });
   </script>
 </body>
