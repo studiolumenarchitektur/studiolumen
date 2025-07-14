@@ -49,6 +49,13 @@
     #hoverImage.visible {
       opacity: 0.1;
     }
+    textPath#textAlongWave {
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+    textPath#textAlongWave.visible {
+      opacity: 1;
+    }
     .nav-links {
       display: flex;
       flex-direction: column;
@@ -111,7 +118,7 @@
           <path id="wavePath" stroke="#002f6c" stroke-width="12" fill="none" stroke-linecap="butt" stroke-linejoin="round" />
           <path id="waveOverlay" stroke="#fff" stroke-width="12" fill="none" stroke-linecap="butt" stroke-linejoin="round" visibility="hidden" />
           <text font-size="14" fill="#002f6c">
-            <textPath id="textAlongWave" href="#wavePathShape" startOffset="50%" text-anchor="middle" visibility="hidden">Klicken für Vita</textPath>
+            <textPath id="textAlongWave" href="#wavePathShape" startOffset="50%" text-anchor="middle">Klicken für Vita</textPath>
           </text>
         </svg>
       </a>
@@ -229,12 +236,12 @@
       const mouseX = (e.clientX - rect.left - waveXStart) / waveWidth;
       hoverTextPhase = mouseX;
       textAlongWave.setAttribute('startOffset', `${mouseX * 100}%`);
-      textAlongWave.setAttribute('visibility', 'visible');
+      textAlongWave.classList.add('visible');
     });
 
     logoContainer.addEventListener('mouseleave', () => {
       hoverImage.classList.remove('visible');
-      textAlongWave.setAttribute('visibility', 'hidden');
+      textAlongWave.classList.remove('visible');
       hoverTextPhase = null;
     });
 
