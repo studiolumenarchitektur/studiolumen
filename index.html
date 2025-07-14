@@ -49,11 +49,11 @@
     #hoverImage.visible {
       opacity: 0.1;
     }
-    textPath#textAlongWave {
+    text#floatingText {
       opacity: 0;
       transition: opacity 0.8s ease;
     }
-    textPath#textAlongWave.visible {
+    text#floatingText.visible {
       opacity: 1;
     }
     .nav-links {
@@ -105,9 +105,6 @@
     <div class="logo-container">
       <a href="vita.html" aria-label="Zur Vita" id="logoLink" style="display:block; cursor:pointer; position: relative; z-index: 20;">
         <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
-          <defs>
-            <path id="wavePathShape" d="" />
-          </defs>
           <g fill="#002f6c" font-family="Inter, sans-serif" font-weight="600">
             <text x="200" y="40" font-size="18" text-anchor="middle">ARCHITEKTURBÜRO</text>
             <text x="60" y="110" font-size="64">ebbe</text>
@@ -117,9 +114,7 @@
           <line x1="60" y1="140" x2="190" y2="140" stroke="#002f6c" stroke-width="14" />
           <path id="wavePath" stroke="#002f6c" stroke-width="12" fill="none" stroke-linecap="butt" stroke-linejoin="round" />
           <path id="waveOverlay" stroke="#fff" stroke-width="12" fill="none" stroke-linecap="butt" stroke-linejoin="round" visibility="hidden" />
-          <text font-size="14" fill="#002f6c">
-            <textPath id="textAlongWave" href="#wavePathShape" startOffset="50%" text-anchor="middle">Klicken für Vita</textPath>
-          </text>
+          <text id="floatingText" font-size="14" fill="#002f6c" font-family="Inter, sans-serif" text-anchor="middle" x="200" y="230">Klicken für Vita</text>
         </svg>
       </a>
       <img src="bruno.png" alt="" id="hoverImage" />
@@ -144,9 +139,8 @@
     const waveYOffset = 230;
 
     const path = document.getElementById("wavePath");
-    const pathShape = document.getElementById("wavePathShape");
     const overlay = document.getElementById("waveOverlay");
-    const textAlongWave = document.getElementById("textAlongWave");
+    const floatingText = document.getElementById("floatingText");
     const logoLink = document.getElementById("logoLink");
     const hoverImage = document.getElementById("hoverImage");
     const logoContainer = document.querySelector('.logo-container');
@@ -176,6 +170,8 @@
       const overlayPoints = [];
       let pathData = "";
       let overlayData = "";
+
+      let floatingTextY = waveYOffset;
 
       for (let i = 0; i <= segments; i++) {
         const x = waveXStart + waveWidth * i / segments;
@@ -207,14 +203,17 @@
         points.push(`${x},${y}`);
         if (overlayY !== null) overlayPoints.push(`${x},${overlayY}`);
 
+        if (Math.abs(x - 200) < 1) floatingTextY = y - 10;
+
         pathData += (i === 0 ? "M " : " L ") + `${x},${y}`;
         if (overlayY !== null) overlayData += (overlayPoints.length === 1 ? "M " : " L ") + `${x},${overlayY}`;
       }
 
       path.setAttribute("d", pathData);
-      pathShape.setAttribute("d", pathData);
       overlay.setAttribute("d", overlayData);
       overlay.setAttribute("visibility", overlayData ? "visible" : "hidden");
+
+      floatingText.setAttribute("y", floatingTextY);
 
       t += tSpeed;
 
@@ -235,13 +234,12 @@
       const rect = logoContainer.getBoundingClientRect();
       const mouseX = (e.clientX - rect.left - waveXStart) / waveWidth;
       hoverTextPhase = mouseX;
-      textAlongWave.setAttribute('startOffset', `${mouseX * 100}%`);
-      textAlongWave.classList.add('visible');
+      floatingText.classList.add('visible');
     });
 
     logoContainer.addEventListener('mouseleave', () => {
       hoverImage.classList.remove('visible');
-      textAlongWave.classList.remove('visible');
+      floatingText.classList.remove('visible');
       hoverTextPhase = null;
     });
 
