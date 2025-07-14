@@ -145,11 +145,10 @@
     let shockTimer = 0;
     const shockDuration = 300;
 
-    // impulse effect for hover
     let impulses = new Array(segments + 1).fill(0);
     let impulseVel = new Array(segments + 1).fill(0);
-    const impulseDecay = 0.9;
-    const springStrength = 0.2;
+    const impulseDecay = 0.92;
+    const springStrength = 0.15;
 
     function easeInOut(x) {
       return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
@@ -220,12 +219,12 @@
       const x = e.clientX - rect.left;
       if (x >= waveXStart && x <= waveXEnd) {
         const index = Math.floor((x - waveXStart) / waveWidth * segments);
-        const radius = 10;
+        const radius = 30;
         for (let i = -radius; i <= radius; i++) {
           const idx = index + i;
           if (idx >= 0 && idx <= segments) {
             const falloff = 1 - Math.abs(i) / (radius + 1);
-            impulseVel[idx] -= 4 * falloff;
+            impulseVel[idx] -= 6 * falloff;
           }
         }
       }
