@@ -42,8 +42,12 @@
       height: 100%;
       opacity: 0;
       pointer-events: none;
+      transition: opacity 3s ease;
       object-fit: contain;
       z-index: 10;
+    }
+    #hoverImage.visible {
+      opacity: 0.1;
     }
     .floatingLetter {
       font-size: 18px;
@@ -57,6 +61,9 @@
     .floatingLetter.visible {
       opacity: 1;
       transform: translateY(0);
+    }
+    .floatingLetter.fadingOut {
+      opacity: 0 !important;
     }
     .nav-links {
       display: flex;
@@ -154,10 +161,9 @@
     const segments = 150;
 
     let t = 0;
-    let normalSpeed = 0.015;
-    let shockSpeed = 0.035;
-    let tSpeed = normalSpeed;
-
+    let tSpeed = 0.015;
+    const normalSpeed = 0.015;
+    const shockSpeed = 0.035;
     let hoverTextPhase = null;
     let displayGap = 0;
     let targetGap = 0;
@@ -168,7 +174,6 @@
     let shockOrigin = null;
     let shockTimer = 0;
     const shockDuration = 300;
-    let imageFadeTimer = 0;
 
     const letterElements = [];
     for (let i = 0; i < floatingText.length; i++) {
@@ -233,15 +238,18 @@
       if (shockOrigin !== null) {
         tSpeed = shockSpeed;
         shockTimer++;
-        imageFadeTimer++;
-        hoverImage.style.opacity = Math.min(1, imageFadeTimer / shockDuration).toFixed(2);
-
-        if (shockTimer > shockDuration) {
+        if (shockTimer === shockDuration - 30) {
+          letterElements.forEach(el => el.classList.remove("visible"));
+          letterElements.forEach(el => el.classList.add("fadingOut"));
+        }
+        if (shockTimer >= shockDuration) {
           shockOrigin = null;
           shockTimer = 0;
-          imageFadeTimer = 0;
           tSpeed = normalSpeed;
-          window.location.href = logoLink.href;
+          hoverImage.style.opacity = '1';
+          setTimeout(() => {
+            window.location.href = logoLink.href;
+          }, 200);
         }
       } else {
         tSpeed = normalSpeed;
@@ -273,7 +281,7 @@
       clickX = Math.max(waveXStart, Math.min(waveXEnd, clickX));
       shockOrigin = clickX;
       shockTimer = 0;
-      imageFadeTimer = 0;
+      hoverImage.classList.add('visible');
     });
   </script>
 </body>
