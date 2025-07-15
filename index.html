@@ -135,7 +135,7 @@
 
   <footer class="footer">
     <a href="impressum.html">Impressum</a>
-    <div>© ebbe&flut</div>
+    <div>© ebbe&amp;flut</div>
   </footer>
 
   <script>
@@ -144,7 +144,6 @@
     const waveXEnd = 330;
     const waveWidth = waveXEnd - waveXStart;
     const waveYOffset = 230;
-    const textWidth = floatingText.length * 14;
 
     const waveLeft = document.getElementById("waveLeft");
     const waveRight = document.getElementById("waveRight");
@@ -158,8 +157,10 @@
     const segments = 150;
 
     let t = 0;
-    let tSpeed = 0.015;
+    let normalSpeed = 0.015;
     let shockSpeed = 0.035;
+    let tSpeed = normalSpeed;
+
     let hoverTextPhase = null;
     let displayGap = 0;
     let targetGap = 0;
@@ -231,19 +232,22 @@
         letterElements.forEach(el => el.classList.remove("visible"));
       }
 
-if (shockOrigin !== null) {
-  tSpeed = shockSpeed;
-  shockTimer++;
-  if (shockTimer > shockDuration) {
-    shockOrigin = null;
-    shockTimer = 0;
-    tSpeed = normalSpeed;
-    // Weiterleitung erfolgt NACHDEM die Schockwelle abgeschlossen ist:
-    window.location.href = logoLink.href;
-  }
-} else {
-  tSpeed = normalSpeed;
-}
+      if (shockOrigin !== null) {
+        tSpeed = shockSpeed;
+        shockTimer++;
+        if (shockTimer > shockDuration) {
+          shockOrigin = null;
+          shockTimer = 0;
+          tSpeed = normalSpeed;
+          window.location.href = logoLink.href;
+        }
+      } else {
+        tSpeed = normalSpeed;
+      }
+
+      t += tSpeed;
+      requestAnimationFrame(animate);
+    }
 
     animate();
 
@@ -269,7 +273,6 @@ if (shockOrigin !== null) {
       shockTimer = 0;
       hoverImage.style.transition = `opacity 1s ease`;
       hoverImage.style.opacity = '1';
-
     });
   </script>
 </body>
