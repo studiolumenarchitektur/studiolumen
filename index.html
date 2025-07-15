@@ -54,7 +54,7 @@
       fill: #002f6c;
       font-family: 'Inter', sans-serif;
       opacity: 0;
-      transition: opacity 1.2s ease;
+      transition: opacity 1s ease;
       dominant-baseline: middle;
     }
     .floatingLetter.visible {
@@ -159,6 +159,10 @@
     let tSpeed = 0.008;
 
     let hoverTextPhase = null;
+    let displayGap = 0;
+    let targetGap = 0;
+    const maxGap = floatingText.length * 14;
+    const easing = 0.08;
     const letterSpacing = 16;
 
     const letterElements = [];
@@ -178,14 +182,17 @@
       let rightData = "";
       const splitX = hoverTextPhase !== null ? waveXStart + hoverTextPhase * waveWidth : null;
 
+      // Smoothly animate displayGap toward targetGap
+      displayGap += (targetGap - displayGap) * easing;
+
       for (let i = 0; i <= segments; i++) {
         const x = waveXStart + waveWidth * i / segments;
         const waveX = (x - waveXStart) / waveWidth;
         const y = waveYOffset + baseAmplitude * Math.sin((2 * Math.PI * baseFrequency * waveX) + t);
 
-        if (hoverTextPhase !== null && x < splitX - textWidth / 2) {
+        if (hoverTextPhase !== null && x < splitX - displayGap / 2) {
           leftData += (leftData === "" ? "M " : " L ") + `${x},${y}`;
-        } else if (hoverTextPhase !== null && x > splitX + textWidth / 2) {
+        } else if (hoverTextPhase !== null && x > splitX + displayGap / 2) {
           rightData += (rightData === "" ? "M " : " L ") + `${x},${y}`;
         } else if (hoverTextPhase === null) {
           leftData += (leftData === "" ? "M " : " L ") + `${x},${y}`;
@@ -195,7 +202,7 @@
       waveLeft.setAttribute("d", leftData);
       waveRight.setAttribute("d", rightData);
 
-      if (hoverTextPhase !== null) {
+      if (hoverTextPhase !== null && displayGap > maxGap * 0.4) {
         const startX = splitX - (floatingText.length * letterSpacing) / 2;
         letterElements.forEach((el, i) => {
           const px = startX + i * letterSpacing;
@@ -219,11 +226,13 @@
       const rect = logoContainer.getBoundingClientRect();
       const mouseX = (e.clientX - rect.left - waveXStart) / waveWidth;
       hoverTextPhase = Math.max(0, Math.min(1, mouseX));
+      targetGap = maxGap;
     });
 
     logoContainer.addEventListener('mouseleave', () => {
       hoverImage.classList.remove('visible');
       hoverTextPhase = null;
+      targetGap = 0;
     });
 
     logoLink.addEventListener('click', function(e){
