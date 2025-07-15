@@ -149,6 +149,7 @@
   const waveXEnd = 330;
   const waveWidth = waveXEnd - waveXStart;
   const waveYOffset = 230;
+  const textWidth = floatingText.length * 14;
 
   const waveLeft = document.getElementById("waveLeft");
   const waveRight = document.getElementById("waveRight");
@@ -190,10 +191,9 @@
   }
 
   function animate() {
-    let leftData = "", rightData = "";
+    let leftData = "";
+    let rightData = "";
     const splitX = hoverTextPhase !== null ? waveXStart + hoverTextPhase * waveWidth : null;
-
-    // Gap-Animation
     displayGap += (targetGap - displayGap) * easing;
 
     for (let i = 0; i <= segments; i++) {
@@ -232,40 +232,42 @@
         const y = waveYOffset + baseAmplitude * Math.sin((2 * Math.PI * baseFrequency * localX) + t);
         el.setAttribute("x", px);
         el.setAttribute("y", y);
-        if (!el.classList.contains("visible")) el.classList.add("visible");
+        el.classList.add("visible");
         el.classList.remove("fadingOut");
       });
-    } else if (!fadingOutStarted) {
+    } else {
       letterElements.forEach(el => el.classList.remove("visible"));
     }
 
-    // Schockwelle
     if (shockOrigin !== null) {
       tSpeed = shockSpeed;
       shockTimer++;
 
-      if (shockTimer === shockDuration - 60 && !fadingOutStarted) {
+      // Start Fade-Out of Text First
+      if (shockTimer === shockDuration - 80 && !fadingOutStarted) {
         fadingOutStarted = true;
-        targetGap = 0; // Linie schließt sich
         letterElements.forEach(el => {
           el.classList.remove("visible");
           el.classList.add("fadingOut");
         });
+
+        // Delay Line Closure After Text Fade-Out
+        setTimeout(() => {
+          targetGap = 0;
+        }, 300); // delay matches CSS fade
       }
 
+      // Finish
       if (shockTimer >= shockDuration) {
         shockOrigin = null;
         shockTimer = 0;
         tSpeed = normalSpeed;
-        hoverTextPhase = null;
         fadingOutStarted = false;
-
-        hoverImage.style.transition = 'opacity 0.4s ease';
         hoverImage.style.opacity = '1';
 
         setTimeout(() => {
           window.location.href = logoLink.href;
-        }, 300);
+        }, 200);
       }
     } else {
       tSpeed = normalSpeed;
@@ -297,6 +299,7 @@
     clickX = Math.max(waveXStart, Math.min(waveXEnd, clickX));
     shockOrigin = clickX;
     shockTimer = 0;
+    fadingOutStarted = false;
     hoverImage.classList.add('visible');
   });
 </script>
