@@ -115,8 +115,8 @@
             <text x="240" y="180" font-size="64">flut</text>
           </g>
           <line x1="60" y1="140" x2="190" y2="140" stroke="#002f6c" stroke-width="14" />
-          <path id="wavePath" stroke="#002f6c" stroke-width="12" fill="none" stroke-linecap="butt" stroke-linejoin="round" />
-          <path id="waveOverlay" stroke="#fff" stroke-width="12" fill="none" stroke-linecap="butt" stroke-linejoin="round" />
+          <path id="waveLeft" stroke="#002f6c" stroke-width="12" fill="none" stroke-linecap="butt" stroke-linejoin="round" />
+          <path id="waveRight" stroke="#002f6c" stroke-width="12" fill="none" stroke-linecap="butt" stroke-linejoin="round" />
           <g id="floatingLettersGroup"></g>
         </svg>
       </a>
@@ -141,9 +141,10 @@
     const waveXEnd = 330;
     const waveWidth = waveXEnd - waveXStart;
     const waveYOffset = 230;
+    const textWidth = floatingText.length * 9;
 
-    const path = document.getElementById("wavePath");
-    const overlay = document.getElementById("waveOverlay");
+    const waveLeft = document.getElementById("waveLeft");
+    const waveRight = document.getElementById("waveRight");
     const floatingGroup = document.getElementById("floatingLettersGroup");
     const logoLink = document.getElementById("logoLink");
     const hoverImage = document.getElementById("hoverImage");
@@ -157,7 +158,6 @@
     let tSpeed = 0.012;
 
     let hoverTextPhase = null;
-    const hoverWavelength = 0.15;
     const letterSpacing = 10;
 
     const letterElements = [];
@@ -173,37 +173,31 @@
     }
 
     function animate() {
-      let pathData = "";
-      let overlayData = "";
+      let leftData = "";
+      let rightData = "";
+      const splitX = hoverTextPhase !== null ? waveXStart + hoverTextPhase * waveWidth : null;
 
       for (let i = 0; i <= segments; i++) {
         const x = waveXStart + waveWidth * i / segments;
         const waveX = (x - waveXStart) / waveWidth;
         const y = waveYOffset + baseAmplitude * Math.sin((2 * Math.PI * baseFrequency * waveX) + t);
 
-        pathData += (i === 0 ? "M " : " L ") + `${x},${y}`;
-
-        if (hoverTextPhase !== null) {
-          const dist = waveX - hoverTextPhase;
-          if (Math.abs(dist) <= hoverWavelength / 2) {
-            overlayData += (overlayData === "" ? "M " : " L ") + `${x},${y}`;
-          }
+        if (hoverTextPhase !== null && x < splitX - textWidth / 2) {
+          leftData += (leftData === "" ? "M " : " L ") + `${x},${y}`;
+        } else if (hoverTextPhase !== null && x > splitX + textWidth / 2) {
+          rightData += (rightData === "" ? "M " : " L ") + `${x},${y}`;
+        } else if (hoverTextPhase === null) {
+          leftData += (leftData === "" ? "M " : " L ") + `${x},${y}`;
         }
       }
 
-      path.setAttribute("d", pathData);
-
-      if (overlayData) {
-        overlay.setAttribute("d", overlayData);
-        overlay.setAttribute("visibility", "visible");
-      } else {
-        overlay.setAttribute("visibility", "hidden");
-      }
+      waveLeft.setAttribute("d", leftData);
+      waveRight.setAttribute("d", rightData);
 
       if (hoverTextPhase !== null) {
-        const startX = waveXStart + waveWidth * hoverTextPhase;
+        const startX = splitX - (floatingText.length * letterSpacing) / 2;
         letterElements.forEach((el, i) => {
-          const px = startX + letterSpacing * (i - floatingText.length / 2);
+          const px = startX + i * letterSpacing;
           const localX = (px - waveXStart) / waveWidth;
           const y = waveYOffset + baseAmplitude * Math.sin((2 * Math.PI * baseFrequency * localX) + t);
           el.setAttribute("x", px);
@@ -223,7 +217,7 @@
     logoContainer.addEventListener('mousemove', (e) => {
       const rect = logoContainer.getBoundingClientRect();
       const mouseX = (e.clientX - rect.left - waveXStart) / waveWidth;
-      hoverTextPhase = mouseX;
+      hoverTextPhase = Math.max(0, Math.min(1, mouseX));
     });
 
     logoContainer.addEventListener('mouseleave', () => {
