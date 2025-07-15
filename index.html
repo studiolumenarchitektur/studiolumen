@@ -42,12 +42,8 @@
       height: 100%;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 1s ease;
       object-fit: contain;
       z-index: 10;
-    }
-    #hoverImage.visible {
-      opacity: 0.1;
     }
     .floatingLetter {
       font-size: 18px;
@@ -135,7 +131,7 @@
 
   <footer class="footer">
     <a href="impressum.html">Impressum</a>
-    <div>© ebbe&flut</div>
+    <div>© ebbe&amp;flut</div>
   </footer>
 
   <script>
@@ -158,9 +154,9 @@
     const segments = 150;
 
     let t = 0;
-    let tSpeed = 0.015;
     let normalSpeed = 0.015;
     let shockSpeed = 0.035;
+    let tSpeed = normalSpeed;
 
     let hoverTextPhase = null;
     let displayGap = 0;
@@ -172,8 +168,7 @@
     let shockOrigin = null;
     let shockTimer = 0;
     const shockDuration = 300;
-
-    let redirectPending = false;
+    let imageFadeTimer = 0;
 
     const letterElements = [];
     for (let i = 0; i < floatingText.length; i++) {
@@ -238,13 +233,15 @@
       if (shockOrigin !== null) {
         tSpeed = shockSpeed;
         shockTimer++;
+        imageFadeTimer++;
+        hoverImage.style.opacity = Math.min(1, imageFadeTimer / shockDuration).toFixed(2);
+
         if (shockTimer > shockDuration) {
           shockOrigin = null;
           shockTimer = 0;
+          imageFadeTimer = 0;
           tSpeed = normalSpeed;
-          if (redirectPending) {
-            window.location.href = logoLink.href;
-          }
+          window.location.href = logoLink.href;
         }
       } else {
         tSpeed = normalSpeed;
@@ -255,12 +252,6 @@
     }
 
     animate();
-
-    hoverImage.addEventListener('transitionend', () => {
-      if (shockOrigin === null && redirectPending) {
-        window.location.href = logoLink.href;
-      }
-    });
 
     logoContainer.addEventListener('mousemove', (e) => {
       const rect = logoContainer.getBoundingClientRect();
@@ -275,17 +266,14 @@
       targetGap = 0;
     });
 
-    logoLink.addEventListener('click', function(e) {
+    logoLink.addEventListener('click', function(e){
       e.preventDefault();
       const rect = logoLink.getBoundingClientRect();
       let clickX = e.clientX - rect.left;
       clickX = Math.max(waveXStart, Math.min(waveXEnd, clickX));
       shockOrigin = clickX;
       shockTimer = 0;
-      redirectPending = true;
-
-      hoverImage.style.transition = 'opacity 1s ease';
-      hoverImage.style.opacity = '1';
+      imageFadeTimer = 0;
     });
   </script>
 </body>
