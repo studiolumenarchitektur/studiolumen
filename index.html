@@ -42,7 +42,7 @@
       height: 100%;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 5s ease;
+      transition: opacity 1s ease;
       object-fit: contain;
       z-index: 10;
     }
@@ -135,7 +135,7 @@
 
   <footer class="footer">
     <a href="impressum.html">Impressum</a>
-    <div>© ebbe&amp;flut</div>
+    <div>© ebbe&flut</div>
   </footer>
 
   <script>
@@ -144,6 +144,7 @@
     const waveXEnd = 330;
     const waveWidth = waveXEnd - waveXStart;
     const waveYOffset = 230;
+    const textWidth = floatingText.length * 14;
 
     const waveLeft = document.getElementById("waveLeft");
     const waveRight = document.getElementById("waveRight");
@@ -157,9 +158,9 @@
     const segments = 150;
 
     let t = 0;
+    let tSpeed = 0.015;
     let normalSpeed = 0.015;
     let shockSpeed = 0.035;
-    let tSpeed = normalSpeed;
 
     let hoverTextPhase = null;
     let displayGap = 0;
@@ -171,6 +172,8 @@
     let shockOrigin = null;
     let shockTimer = 0;
     const shockDuration = 300;
+
+    let redirectPending = false;
 
     const letterElements = [];
     for (let i = 0; i < floatingText.length; i++) {
@@ -239,7 +242,9 @@
           shockOrigin = null;
           shockTimer = 0;
           tSpeed = normalSpeed;
-          window.location.href = logoLink.href;
+          if (redirectPending) {
+            window.location.href = logoLink.href;
+          }
         }
       } else {
         tSpeed = normalSpeed;
@@ -250,6 +255,12 @@
     }
 
     animate();
+
+    hoverImage.addEventListener('transitionend', () => {
+      if (shockOrigin === null && redirectPending) {
+        window.location.href = logoLink.href;
+      }
+    });
 
     logoContainer.addEventListener('mousemove', (e) => {
       const rect = logoContainer.getBoundingClientRect();
@@ -264,14 +275,16 @@
       targetGap = 0;
     });
 
-    logoLink.addEventListener('click', function(e){
+    logoLink.addEventListener('click', function(e) {
       e.preventDefault();
       const rect = logoLink.getBoundingClientRect();
       let clickX = e.clientX - rect.left;
       clickX = Math.max(waveXStart, Math.min(waveXEnd, clickX));
       shockOrigin = clickX;
       shockTimer = 0;
-      hoverImage.style.transition = `opacity 1s ease`;
+      redirectPending = true;
+
+      hoverImage.style.transition = 'opacity 1s ease';
       hoverImage.style.opacity = '1';
     });
   </script>
