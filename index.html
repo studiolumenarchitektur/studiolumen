@@ -141,177 +141,170 @@
     <div>© ebbe&amp;flut</div>
   </footer>
 
-  <script>
-    const floatingText = "VITA";
-    const waveXStart = 60;
-    const waveXEnd = 330;
-    const waveWidth = waveXEnd - waveXStart;
-    const waveYOffset = 230;
-    const textWidth = floatingText.length * 14;
+ <script>
+  const floatingText = "VITA";
+  const waveXStart = 60;
+  const waveXEnd = 330;
+  const waveWidth = waveXEnd - waveXStart;
+  const waveYOffset = 230;
 
-    const waveLeft = document.getElementById("waveLeft");
-    const waveRight = document.getElementById("waveRight");
-    const floatingGroup = document.getElementById("floatingLettersGroup");
-    const logoLink = document.getElementById("logoLink");
-    const hoverImage = document.getElementById("hoverImage");
-    const logoContainer = document.querySelector('.logo-container');
+  const waveLeft = document.getElementById("waveLeft");
+  const waveRight = document.getElementById("waveRight");
+  const floatingGroup = document.getElementById("floatingLettersGroup");
+  const logoLink = document.getElementById("logoLink");
+  const hoverImage = document.getElementById("hoverImage");
+  const logoContainer = document.querySelector('.logo-container');
 
-    const baseAmplitude = 20;
-    const baseFrequency = 3;
-    const segments = 150;
+  const baseAmplitude = 20;
+  const baseFrequency = 3;
+  const segments = 150;
 
-    let t = 0;
-    let tSpeed = 0.015;
-    const normalSpeed = 0.015;
-    const shockSpeed = 0.035;
-    let hoverTextPhase = null;
-    let displayGap = 0;
-    let targetGap = 0;
-    const maxGap = floatingText.length * 18;
-    const easing = 0.08;
-    const letterSpacing = 16;
+  let t = 0;
+  let tSpeed = 0.015;
+  const normalSpeed = 0.015;
+  const shockSpeed = 0.04;
 
-    let shockOrigin = null;
-    let shockTimer = 0;
-    const shockDuration = 300;
-    let fadingOutStarted = false;
+  let hoverTextPhase = null;
+  let displayGap = 0;
+  let targetGap = 0;
+  const maxGap = floatingText.length * 18;
+  const easing = 0.05;
+  const letterSpacing = 16;
 
-    const letterElements = [];
-    for (let i = 0; i < floatingText.length; i++) {
-      const letter = document.createElementNS("http://www.w3.org/2000/svg", "text");
-      letter.setAttribute("class", "floatingLetter");
-      letter.setAttribute("font-size", "18");
-      letter.setAttribute("text-anchor", "middle");
-      letter.setAttribute("y", waveYOffset);
-      letter.textContent = floatingText[i];
-      floatingGroup.appendChild(letter);
-      letterElements.push(letter);
-    }
+  let shockOrigin = null;
+  let shockTimer = 0;
+  const shockDuration = 300;
+  let ripplePhase = 0;
 
-    function animate() {
-      let leftData = "";
-      let rightData = "";
-      const splitX = hoverTextPhase !== null ? waveXStart + hoverTextPhase * waveWidth : null;
-      displayGap += (targetGap - displayGap) * easing;
+  const letterElements = [];
+  for (let i = 0; i < floatingText.length; i++) {
+    const letter = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    letter.setAttribute("class", "floatingLetter");
+    letter.setAttribute("font-size", "18");
+    letter.setAttribute("text-anchor", "middle");
+    letter.setAttribute("y", waveYOffset);
+    letter.textContent = floatingText[i];
+    floatingGroup.appendChild(letter);
+    letterElements.push(letter);
+  }
 
-      for (let i = 0; i <= segments; i++) {
-        const x = waveXStart + waveWidth * i / segments;
-        const waveX = (x - waveXStart) / waveWidth;
-        let localAmp = baseAmplitude;
+  function animate() {
+    let leftData = "";
+    let rightData = "";
+    const splitX = hoverTextPhase !== null ? waveXStart + hoverTextPhase * waveWidth : null;
+    displayGap += (targetGap - displayGap) * easing;
+    ripplePhase += 0.2;
 
-        if (shockOrigin !== null) {
-          const dist = Math.abs(x - shockOrigin);
-          const spread = waveWidth / 3;
-          const intensity = Math.max(0, 1 - dist / spread);
-          const progress = shockTimer / shockDuration;
-          const scale = progress < 0.5 ? 3 * progress : 3 - 3 * progress; // asymmetrisch schneller abebbend
-          localAmp += scale * 60 * intensity;
-
-          // Ripple hinzufügen während Rückkehr zur Ruhe
-          if (progress > 0.5) {
-            localAmp += 5 * Math.sin(10 * waveX + t * 3) * (1 - progress);
-          }
-        }
-
-        const y = waveYOffset + localAmp * Math.sin((2 * Math.PI * baseFrequency * waveX) + t);
-
-        if (hoverTextPhase !== null && x < splitX - displayGap / 2) {
-          leftData += (leftData === "" ? "M " : " L ") + `${x},${y}`;
-        } else if (hoverTextPhase !== null && x > splitX + displayGap / 2) {
-          rightData += (rightData === "" ? "M " : " L ") + `${x},${y}`;
-        } else if (hoverTextPhase === null) {
-          leftData += (leftData === "" ? "M " : " L ") + `${x},${y}`;
-        }
-      }
-
-      waveLeft.setAttribute("d", leftData);
-      waveRight.setAttribute("d", rightData);
-
-      if (hoverTextPhase !== null && displayGap > maxGap * 0.4) {
-        const startX = splitX - (floatingText.length * letterSpacing) / 2;
-        letterElements.forEach((el, i) => {
-          const px = startX + i * letterSpacing;
-          const localX = (px - waveXStart) / waveWidth;
-          const y = waveYOffset + baseAmplitude * Math.sin((2 * Math.PI * baseFrequency * localX) + t);
-          el.setAttribute("x", px);
-          el.setAttribute("y", y);
-          el.classList.add("visible");
-        });
-      } else {
-        letterElements.forEach(el => el.classList.remove("visible"));
-      }
+    for (let i = 0; i <= segments; i++) {
+      const x = waveXStart + waveWidth * i / segments;
+      const waveX = (x - waveXStart) / waveWidth;
+      let localAmp = baseAmplitude;
 
       if (shockOrigin !== null) {
-        tSpeed = shockSpeed;
-        shockTimer++;
+        const dist = Math.abs(x - shockOrigin);
+        const spread = waveWidth / 2.5;
+        const intensity = Math.max(0, 1 - dist / spread);
+        const progress = shockTimer / shockDuration;
+        const scale = progress < 0.5 ? 2.5 * progress : 2 - 2 * progress;
 
-        if (shockTimer === shockDuration - 80 && !fadingOutStarted) {
-          fadingOutStarted = true;
-          letterElements.forEach(el => {
-            el.classList.remove("visible");
-            el.classList.add("fadingOut");
-          });
-          setTimeout(() => {
-            targetGap = 0;
-          }, 300);
-        }
+        localAmp += scale * 60 * intensity;
 
-        if (shockTimer >= shockDuration) {
-          shockOrigin = null;
-          shockTimer = 0;
-          fadingOutStarted = false;
-          tSpeed = normalSpeed;
-          hoverImage.style.opacity = '1';
-          setTimeout(() => {
-            window.location.href = logoLink.href;
-          }, 200);
+        if (progress > 0.4) {
+          localAmp += 10 * Math.sin(6 * Math.PI * waveX + ripplePhase) * (1 - progress);
         }
-      } else {
-        tSpeed = normalSpeed;
       }
 
-      t += tSpeed;
-      requestAnimationFrame(animate);
+      const y = waveYOffset + localAmp * Math.sin((2 * Math.PI * baseFrequency * waveX) + t);
+
+      if (hoverTextPhase !== null && x < splitX - displayGap / 2) {
+        leftData += (leftData === "" ? "M " : " L ") + `${x},${y}`;
+      } else if (hoverTextPhase !== null && x > splitX + displayGap / 2) {
+        rightData += (rightData === "" ? "M " : " L ") + `${x},${y}`;
+      } else if (hoverTextPhase === null) {
+        leftData += (leftData === "" ? "M " : " L ") + `${x},${y}`;
+      }
     }
 
-    animate();
+    waveLeft.setAttribute("d", leftData);
+    waveRight.setAttribute("d", rightData);
 
-    function triggerHoverAt(x) {
-      const mouseX = (x - waveXStart) / waveWidth;
-      hoverTextPhase = Math.max(0, Math.min(1, mouseX));
-      targetGap = maxGap;
+    if (hoverTextPhase !== null && displayGap > maxGap * 0.4) {
+      const startX = splitX - (floatingText.length * letterSpacing) / 2;
+      letterElements.forEach((el, i) => {
+        const px = startX + i * letterSpacing;
+        const localX = (px - waveXStart) / waveWidth;
+        const y = waveYOffset + baseAmplitude * Math.sin((2 * Math.PI * baseFrequency * localX) + t);
+        el.setAttribute("x", px);
+        el.setAttribute("y", y);
+        el.classList.add("visible");
+        el.classList.remove("fadingOut");
+      });
+    } else {
+      letterElements.forEach(el => el.classList.remove("visible"));
     }
 
-    logoContainer.addEventListener('mousemove', (e) => {
-      const rect = logoContainer.getBoundingClientRect();
-      triggerHoverAt(e.clientX - rect.left);
-    });
+    if (shockOrigin !== null) {
+      tSpeed = shockSpeed;
+      shockTimer++;
 
-    logoContainer.addEventListener('mouseleave', () => {
-      hoverImage.classList.remove('visible');
-      hoverTextPhase = null;
-      targetGap = 0;
-    });
+      if (shockTimer === shockDuration - 30) {
+        letterElements.forEach(el => {
+          el.classList.remove("visible");
+          el.classList.add("fadingOut");
+        });
+        hoverTextPhase = null;
+        targetGap = 0;
+      }
 
-    logoContainer.addEventListener('touchstart', (e) => {
-      const rect = logoContainer.getBoundingClientRect();
-      triggerHoverAt(e.touches[0].clientX - rect.left);
-    });
+      if (shockTimer >= shockDuration) {
+        shockOrigin = null;
+        shockTimer = 0;
+        tSpeed = normalSpeed;
+        hoverImage.style.opacity = '1';
+        setTimeout(() => {
+          window.location.href = logoLink.href;
+        }, 200);
+      }
+    } else {
+      tSpeed = normalSpeed;
+    }
 
-    logoContainer.addEventListener('touchend', () => {
-      hoverTextPhase = null;
-      targetGap = 0;
-    });
+    t += tSpeed;
+    requestAnimationFrame(animate);
+  }
 
-    logoLink.addEventListener('click', function(e){
-      e.preventDefault();
-      const rect = logoLink.getBoundingClientRect();
-      let clickX = e.clientX - rect.left;
-      clickX = Math.max(waveXStart, Math.min(waveXEnd, clickX));
-      shockOrigin = clickX;
-      shockTimer = 0;
-      hoverImage.classList.add('visible');
-    });
-  </script>
+  animate();
+
+  function handleHover(xClient) {
+    const rect = logoContainer.getBoundingClientRect();
+    const mouseX = (xClient - rect.left - waveXStart) / waveWidth;
+    hoverTextPhase = Math.max(0, Math.min(1, mouseX));
+    targetGap = maxGap;
+    hoverImage.classList.add('visible');
+  }
+
+  function resetHover() {
+    hoverTextPhase = null;
+    targetGap = 0;
+    hoverImage.classList.remove('visible');
+  }
+
+  logoContainer.addEventListener('mousemove', (e) => handleHover(e.clientX));
+  logoContainer.addEventListener('mouseleave', resetHover);
+  logoContainer.addEventListener('touchstart', (e) => {
+    const touch = e.touches[0];
+    if (touch) handleHover(touch.clientX);
+  });
+  logoContainer.addEventListener('touchend', resetHover);
+
+  logoLink.addEventListener('click', function(e) {
+    e.preventDefault();
+    const rect = logoLink.getBoundingClientRect();
+    let clickX = e.clientX - rect.left;
+    clickX = Math.max(waveXStart, Math.min(waveXEnd, clickX));
+    shockOrigin = clickX;
+    shockTimer = 0;
+  });
+</script>
 </body>
 </html>
