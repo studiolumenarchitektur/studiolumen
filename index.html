@@ -170,16 +170,20 @@
   let displayGap = 0;
   let targetGap = 0;
   const maxGap = floatingText.length * 18;
-  const easing = 0.08;
+  const easing = 0.04; // langsameres Driften
   const letterSpacing = 16;
 
   let shockOrigin = null;
   let shockTimer = 0;
   const shockDuration = 220;
   const shockPeakTime = 50;
-  const shockRiseSpeed = 0.08;
-  const shockFallSpeed = 0.02;
   let fadingOutStarted = false;
+
+  // Zusatz für Gegenwellen
+  const rippleCount = 3;
+  const rippleAmplitude = 6;
+  const rippleFrequency = 5;
+  const rippleDecay = 0.002;
 
   const letterElements = [];
   for (let i = 0; i < floatingText.length; i++) {
@@ -207,18 +211,29 @@
     for (let i = 0; i <= segments; i++) {
       const x = waveXStart + waveWidth * i / segments;
       const waveX = (x - waveXStart) / waveWidth;
-      let localAmp = baseAmplitude;
+      let y = waveYOffset;
+      let amp = baseAmplitude;
 
+      // Schockwelle
       if (shockOrigin !== null) {
         const dist = Math.abs(x - shockOrigin);
         const spread = waveWidth / 2.5;
         const intensity = Math.max(0, 1 - dist / spread);
         const progress = shockTimer / shockDuration;
         const scale = getShockScale(progress);
-        localAmp += scale * 60 * intensity; // larger amplitude
+        amp += scale * 60 * intensity;
       }
 
-      const y = waveYOffset + localAmp * Math.sin((2 * Math.PI * baseFrequency * waveX) + t);
+      y += amp * Math.sin((2 * Math.PI * baseFrequency * waveX) + t);
+
+      // Nachklingende kleine Gegenwellen
+      if (shockTimer >= shockDuration && shockTimer <= shockDuration + 300) {
+        for (let r = 1; r <= rippleCount; r++) {
+          const ripplePhase = -t * (1 + r * 0.5); // gegenläufig
+          const rippleAmp = rippleAmplitude * Math.exp(-rippleDecay * (shockTimer - shockDuration) * r);
+          y += rippleAmp * Math.sin((2 * Math.PI * rippleFrequency * waveX) + ripplePhase);
+        }
+      }
 
       if (hoverTextPhase !== null && x < splitX - displayGap / 2) {
         leftData += (leftData === "" ? "M " : " L ") + `${x},${y}`;
@@ -257,13 +272,12 @@
           el.classList.remove("visible");
           el.classList.add("fadingOut");
         });
-
         setTimeout(() => {
           targetGap = 0;
         }, 300);
       }
 
-      if (shockTimer >= shockDuration) {
+      if (shockTimer >= shockDuration + 300) {
         shockOrigin = null;
         shockTimer = 0;
         tSpeed = normalSpeed;
