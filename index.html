@@ -144,6 +144,7 @@
     const waveXEnd = 330;
     const waveWidth = waveXEnd - waveXStart;
     const waveYOffset = 230;
+    const textWidth = floatingText.length * 14;
 
     const waveLeft = document.getElementById("waveLeft");
     const waveRight = document.getElementById("waveRight");
@@ -162,13 +163,13 @@
     let hoverTextPhase = null;
     let displayGap = 0;
     let targetGap = 0;
-    const maxGap = floatingText.length * 14;
+    const maxGap = floatingText.length * 18;
     const easing = 0.08;
     const letterSpacing = 16;
 
     let shockOrigin = null;
     let shockTimer = 0;
-    const shockDuration = 150;
+    const shockDuration = 300;
 
     const letterElements = [];
     for (let i = 0; i < floatingText.length; i++) {
@@ -186,14 +187,11 @@
       let leftData = "";
       let rightData = "";
       const splitX = hoverTextPhase !== null ? waveXStart + hoverTextPhase * waveWidth : null;
-
       displayGap += (targetGap - displayGap) * easing;
 
       for (let i = 0; i <= segments; i++) {
         const x = waveXStart + waveWidth * i / segments;
         const waveX = (x - waveXStart) / waveWidth;
-
-        let localFreq = baseFrequency;
         let localAmp = baseAmplitude;
 
         if (shockOrigin !== null) {
@@ -201,12 +199,11 @@
           const spread = waveWidth / 3;
           const intensity = Math.max(0, 1 - dist / spread);
           const progress = shockTimer / shockDuration;
-          const scale = progress < 0.5 ? 2 * progress : 2 - 2 * (progress - 0.5);
-          localFreq -= scale * intensity;
+          const scale = progress < 0.5 ? 2 * progress : 2 - 2 * progress;
           localAmp += scale * 40 * intensity;
         }
 
-        const y = waveYOffset + localAmp * Math.sin((2 * Math.PI * localFreq * waveX) + t);
+        const y = waveYOffset + localAmp * Math.sin((2 * Math.PI * baseFrequency * waveX) + t);
 
         if (hoverTextPhase !== null && x < splitX - displayGap / 2) {
           leftData += (leftData === "" ? "M " : " L ") + `${x},${y}`;
@@ -265,11 +262,9 @@
       e.preventDefault();
       const rect = logoLink.getBoundingClientRect();
       let clickX = e.clientX - rect.left;
-      if (clickX < waveXStart) clickX = waveXStart;
-      if (clickX > waveXEnd) clickX = waveXEnd;
+      clickX = Math.max(waveXStart, Math.min(waveXEnd, clickX));
       shockOrigin = clickX;
       shockTimer = 0;
-
       hoverImage.style.transition = `opacity 1s ease`;
       hoverImage.style.opacity = '1';
 
