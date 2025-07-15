@@ -50,11 +50,12 @@
       opacity: 0.1;
     }
     .floatingLetter {
-      font-size: 14px;
+      font-size: 18px;
       fill: #002f6c;
       font-family: 'Inter', sans-serif;
       opacity: 0;
-      transition: opacity 0.6s ease;
+      transition: opacity 1.2s ease;
+      dominant-baseline: middle;
     }
     .floatingLetter.visible {
       opacity: 1;
@@ -136,12 +137,12 @@
   </footer>
 
   <script>
-    const floatingText = "Klicken für Vita";
+    const floatingText = "VITA";
     const waveXStart = 60;
     const waveXEnd = 330;
     const waveWidth = waveXEnd - waveXStart;
     const waveYOffset = 230;
-    const textWidth = floatingText.length * 9;
+    const textWidth = floatingText.length * 14;
 
     const waveLeft = document.getElementById("waveLeft");
     const waveRight = document.getElementById("waveRight");
@@ -155,16 +156,16 @@
     const segments = 150;
 
     let t = 0;
-    let tSpeed = 0.012;
+    let tSpeed = 0.008;
 
     let hoverTextPhase = null;
-    const letterSpacing = 10;
+    const letterSpacing = 16;
 
     const letterElements = [];
     for (let i = 0; i < floatingText.length; i++) {
       const letter = document.createElementNS("http://www.w3.org/2000/svg", "text");
       letter.setAttribute("class", "floatingLetter");
-      letter.setAttribute("font-size", "14");
+      letter.setAttribute("font-size", "18");
       letter.setAttribute("text-anchor", "middle");
       letter.setAttribute("y", waveYOffset);
       letter.textContent = floatingText[i];
