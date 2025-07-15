@@ -54,11 +54,13 @@
       fill: #002f6c;
       font-family: 'Inter', sans-serif;
       opacity: 0;
-      transition: opacity 1s ease;
+      transition: opacity 1.2s ease, transform 1.2s ease;
+      transform: translateY(10px);
       dominant-baseline: middle;
     }
     .floatingLetter.visible {
       opacity: 1;
+      transform: translateY(0);
     }
     .nav-links {
       display: flex;
@@ -100,150 +102,4 @@
       margin: 0 10px;
     }
     .footer a:hover {
-      text-decoration: underline;
-    }
-  </style>
-</head>
-<body>
-  <div class="content">
-    <div class="logo-container">
-      <a href="vita.html" aria-label="Zur Vita" id="logoLink" style="display:block; cursor:pointer; position: relative; z-index: 20;">
-        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
-          <g fill="#002f6c" font-family="Inter, sans-serif" font-weight="600">
-            <text x="200" y="40" font-size="18" text-anchor="middle">ARCHITEKTURBÜRO</text>
-            <text x="60" y="110" font-size="64">ebbe</text>
-            <text x="240" y="110" font-size="64">&amp;</text>
-            <text x="240" y="180" font-size="64">flut</text>
-          </g>
-          <line x1="60" y1="140" x2="190" y2="140" stroke="#002f6c" stroke-width="14" />
-          <path id="waveLeft" stroke="#002f6c" stroke-width="12" fill="none" stroke-linecap="butt" stroke-linejoin="round" />
-          <path id="waveRight" stroke="#002f6c" stroke-width="12" fill="none" stroke-linecap="butt" stroke-linejoin="round" />
-          <g id="floatingLettersGroup"></g>
-        </svg>
-      </a>
-      <img src="bruno.png" alt="" id="hoverImage" />
-    </div>
-    <div class="nav-links">
-      <div class="nav-link" onclick="window.location.href='projekte.html'">Projekte</div>
-      <div class="nav-link" onclick="window.location.href='haltung.html'">Haltung</div>
-      <div class="nav-link" onclick="window.location.href='ueber_mich.html'">Über mich</div>
-      <div class="nav-link" onclick="window.location.href='leistungsbild.html'">Anfrage</div>
-    </div>
-  </div>
-
-  <footer class="footer">
-    <a href="impressum.html">Impressum</a>
-    <div>© ebbe&flut</div>
-  </footer>
-
-  <script>
-    const floatingText = "VITA";
-    const waveXStart = 60;
-    const waveXEnd = 330;
-    const waveWidth = waveXEnd - waveXStart;
-    const waveYOffset = 230;
-    const textWidth = floatingText.length * 14;
-
-    const waveLeft = document.getElementById("waveLeft");
-    const waveRight = document.getElementById("waveRight");
-    const floatingGroup = document.getElementById("floatingLettersGroup");
-    const logoLink = document.getElementById("logoLink");
-    const hoverImage = document.getElementById("hoverImage");
-    const logoContainer = document.querySelector('.logo-container');
-
-    const baseAmplitude = 20;
-    const baseFrequency = 3;
-    const segments = 150;
-
-    let t = 0;
-    let tSpeed = 0.008;
-
-    let hoverTextPhase = null;
-    let displayGap = 0;
-    let targetGap = 0;
-    const maxGap = floatingText.length * 14;
-    const easing = 0.08;
-    const letterSpacing = 16;
-
-    const letterElements = [];
-    for (let i = 0; i < floatingText.length; i++) {
-      const letter = document.createElementNS("http://www.w3.org/2000/svg", "text");
-      letter.setAttribute("class", "floatingLetter");
-      letter.setAttribute("font-size", "18");
-      letter.setAttribute("text-anchor", "middle");
-      letter.setAttribute("y", waveYOffset);
-      letter.textContent = floatingText[i];
-      floatingGroup.appendChild(letter);
-      letterElements.push(letter);
-    }
-
-    function animate() {
-      let leftData = "";
-      let rightData = "";
-      const splitX = hoverTextPhase !== null ? waveXStart + hoverTextPhase * waveWidth : null;
-
-      // Smoothly animate displayGap toward targetGap
-      displayGap += (targetGap - displayGap) * easing;
-
-      for (let i = 0; i <= segments; i++) {
-        const x = waveXStart + waveWidth * i / segments;
-        const waveX = (x - waveXStart) / waveWidth;
-        const y = waveYOffset + baseAmplitude * Math.sin((2 * Math.PI * baseFrequency * waveX) + t);
-
-        if (hoverTextPhase !== null && x < splitX - displayGap / 2) {
-          leftData += (leftData === "" ? "M " : " L ") + `${x},${y}`;
-        } else if (hoverTextPhase !== null && x > splitX + displayGap / 2) {
-          rightData += (rightData === "" ? "M " : " L ") + `${x},${y}`;
-        } else if (hoverTextPhase === null) {
-          leftData += (leftData === "" ? "M " : " L ") + `${x},${y}`;
-        }
-      }
-
-      waveLeft.setAttribute("d", leftData);
-      waveRight.setAttribute("d", rightData);
-
-      if (hoverTextPhase !== null && displayGap > maxGap * 0.4) {
-        const startX = splitX - (floatingText.length * letterSpacing) / 2;
-        letterElements.forEach((el, i) => {
-          const px = startX + i * letterSpacing;
-          const localX = (px - waveXStart) / waveWidth;
-          const y = waveYOffset + baseAmplitude * Math.sin((2 * Math.PI * baseFrequency * localX) + t);
-          el.setAttribute("x", px);
-          el.setAttribute("y", y);
-          el.classList.add("visible");
-        });
-      } else {
-        letterElements.forEach(el => el.classList.remove("visible"));
-      }
-
-      t += tSpeed;
-      requestAnimationFrame(animate);
-    }
-
-    animate();
-
-    logoContainer.addEventListener('mousemove', (e) => {
-      const rect = logoContainer.getBoundingClientRect();
-      const mouseX = (e.clientX - rect.left - waveXStart) / waveWidth;
-      hoverTextPhase = Math.max(0, Math.min(1, mouseX));
-      targetGap = maxGap;
-    });
-
-    logoContainer.addEventListener('mouseleave', () => {
-      hoverImage.classList.remove('visible');
-      hoverTextPhase = null;
-      targetGap = 0;
-    });
-
-    logoLink.addEventListener('click', function(e){
-      e.preventDefault();
-      hoverImage.style.transition = `opacity 1s ease`;
-      hoverImage.style.opacity = '1';
-
-      setTimeout(() => {
-        window.location.href = logoLink.href;
-      }, 1000);
-    });
-  </script>
-</body>
-</html>
+      text-decoration:
