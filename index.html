@@ -142,7 +142,7 @@
   </footer>
 
  <script>
-  const floatingText = " VITA ";
+  const floatingText = "VITA";
   const waveXStart = 60;
   const waveXEnd = 330;
   const waveWidth = waveXEnd - waveXStart;
@@ -155,14 +155,14 @@
   const hoverImage = document.getElementById("hoverImage");
   const logoContainer = document.querySelector('.logo-container');
 
-  const baseAmplitude = 20;
-  const baseFrequency = 3;
+  const baseAmplitude = 45;
+  const baseFrequency = 1.5;
   const segments = 150;
 
   let t = 0;
   let tSpeed = 0.015;
   const normalSpeed = 0.015;
-  const shockSpeed = 0.06; // <-- Geändert
+  const shockSpeed = 0.06;
 
   let hoverTextPhase = null;
   let displayGap = 0;
@@ -173,7 +173,7 @@
 
   let shockOrigin = null;
   let shockTimer = 0;
-  const shockDuration = 180; // <-- Geändert
+  const shockDuration = 180;
   let ripplePhase = 0;
 
   const letterElements = [];
@@ -205,12 +205,12 @@
         const spread = waveWidth / 2.5;
         const intensity = Math.max(0, 1 - dist / spread);
         const progress = shockTimer / shockDuration;
-        const scale = progress < 0.5 ? 2.5 * progress : 2 - 2 * progress;
+        const scale = Math.sin(Math.PI * progress);
 
-        localAmp += scale * 70 * intensity; // <-- Geändert von 60 auf 80
+        localAmp += scale * 80 * intensity;
 
         if (progress > 0.4) {
-          localAmp += 12 * Math.sin(6 * Math.PI * waveX + ripplePhase) * (1 - progress); // <-- Geändert von 10 auf 12
+          localAmp += 8 * Math.sin(4 * Math.PI * waveX + ripplePhase) * Math.pow(1 - progress, 2);
         }
       }
 
