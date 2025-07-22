@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
@@ -260,7 +260,6 @@
         shockOrigin = null;
         shockTimer = 0;
         tSpeed = normalSpeed;
-        hoverImage.style.opacity = '1';
         setTimeout(() => {
           window.location.href = logoLink.href;
         }, 200);
@@ -304,6 +303,7 @@
     clickX = Math.max(waveXStart, Math.min(waveXEnd, clickX));
     shockOrigin = clickX;
     shockTimer = 0;
+    hoverImage.style.opacity = '1';
   });
 </script>
 </body>
