@@ -142,7 +142,7 @@
   </footer>
 
  <script>
-  const floatingText = "VITA";
+  const floatingText = " VITA ";
   const waveXStart = 60;
   const waveXEnd = 330;
   const waveWidth = waveXEnd - waveXStart;
@@ -155,8 +155,8 @@
   const hoverImage = document.getElementById("hoverImage");
   const logoContainer = document.querySelector('.logo-container');
 
-  const baseAmplitude = 20;
-  const baseFrequency = 3;
+  const baseAmplitude = 15;
+  const baseFrequency = 4;
   const segments = 150;
 
   let t = 0;
@@ -207,7 +207,7 @@
         const progress = shockTimer / shockDuration;
         const scale = progress < 0.5 ? 2.5 * progress : 2 - 2 * progress;
 
-        localAmp += scale * 50 * intensity; // <-- Geändert von 60 auf 80
+        localAmp += scale * 90 * intensity; // <-- Geändert von 60 auf 80
 
         if (progress > 0.4) {
           localAmp += 12 * Math.sin(6 * Math.PI * waveX + ripplePhase) * (1 - progress); // <-- Geändert von 10 auf 12
