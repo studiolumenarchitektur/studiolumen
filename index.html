@@ -162,7 +162,7 @@
   let t = 0;
   let tSpeed = 0.015;
   const normalSpeed = 0.015;
-  const shockSpeed = 0.04;
+  const shockSpeed = 0.06; // <-- Geändert
 
   let hoverTextPhase = null;
   let displayGap = 0;
@@ -173,7 +173,7 @@
 
   let shockOrigin = null;
   let shockTimer = 0;
-  const shockDuration = 300;
+  const shockDuration = 180; // <-- Geändert
   let ripplePhase = 0;
 
   const letterElements = [];
@@ -207,10 +207,10 @@
         const progress = shockTimer / shockDuration;
         const scale = progress < 0.5 ? 2.5 * progress : 2 - 2 * progress;
 
-        localAmp += scale * 60 * intensity;
+        localAmp += scale * 80 * intensity; // <-- Geändert von 60 auf 80
 
         if (progress > 0.4) {
-          localAmp += 10 * Math.sin(6 * Math.PI * waveX + ripplePhase) * (1 - progress);
+          localAmp += 12 * Math.sin(6 * Math.PI * waveX + ripplePhase) * (1 - progress); // <-- Geändert von 10 auf 12
         }
       }
 
