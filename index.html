@@ -207,7 +207,7 @@
         const progress = shockTimer / shockDuration;
         const scale = progress < 0.5 ? 2.5 * progress : 2 - 2 * progress;
 
-        localAmp += scale * 80 * intensity; // <-- Geändert von 60 auf 80
+        localAmp += scale * 50 * intensity; // <-- Geändert von 60 auf 80
 
         if (progress > 0.4) {
           localAmp += 12 * Math.sin(6 * Math.PI * waveX + ripplePhase) * (1 - progress); // <-- Geändert von 10 auf 12
