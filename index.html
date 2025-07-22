@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
@@ -42,7 +42,7 @@
       height: 100%;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 3s ease;
+      transition: opacity 1.8s ease;
       object-fit: contain;
       z-index: 10;
     }
@@ -155,14 +155,14 @@
   const hoverImage = document.getElementById("hoverImage");
   const logoContainer = document.querySelector('.logo-container');
 
-  const baseAmplitude = 25;
-  const baseFrequency = 2;
+  const baseAmplitude = 45;
+  const baseFrequency = 1.5;
   const segments = 150;
 
   let t = 0;
   let tSpeed = 0.015;
   const normalSpeed = 0.015;
-  const shockSpeed = 0.06;
+  const shockSpeed = 0.1;
 
   let hoverTextPhase = null;
   let displayGap = 0;
@@ -173,7 +173,7 @@
 
   let shockOrigin = null;
   let shockTimer = 0;
-  const shockDuration = 180;
+  const shockDuration = 120;
   let ripplePhase = 0;
 
   const letterElements = [];
@@ -247,7 +247,7 @@
       tSpeed = shockSpeed;
       shockTimer++;
 
-      if (shockTimer === shockDuration - 30) {
+      if (shockTimer === shockDuration - 20) {
         letterElements.forEach(el => {
           el.classList.remove("visible");
           el.classList.add("fadingOut");
